@@ -1,53 +1,58 @@
-# Library Tree
+功能丰富的 foobar2000 的媒体库查看器，现已扩展为包括专辑封面。
 
-Feature rich library viewer for [foobar2000](https://www.foobar2000.org), now extended to include album art.
- 
- ### FEATURES
-- Tree viewer + album art support
-- Library and playlist sources
-- Single panel and two panel modes
-- Album art flow mode
+ ### 功能
+- 树型视图 + 专辑封面视图支持
+- 媒体库和播放列表源
+- 单面板和双面板模式
+- 流动封面模式
 
-### REQUIREMENTS:
-- [foobar2000](https://www.foobar2000.org)
+### 要求:
+- foobar2000
 - [Spider Monkey Panel 1.5.2+](https://www.foobar2000.org/components)
-- IE8 or later
+- IE8 或更高版本
 - [FontAwesome](https://github.com/FortAwesome/Font-Awesome/blob/fa-4/fonts/fontawesome-webfont.ttf?raw=true)
 
-### INSTALLATION
-Install as a package as follows.
+### 安装
+按如下方式作为包安装。
 
-New install or update:
-1) Add a spider monkey panel to foobar2000 if required
-2) Close any instances of windows explorer using foobar2000 folders or subfolders
-3) Right click the spider monkey panel while pressing the windows key + shift
-4) Choose configure panel
-5) On the script tab ensure package is selected
-6) Open package manager if it doesn't open automatically
-7) Import the package
+全新安装或更新：
+1) 在 foobar2000 中添加一个 Spider Monkey 面板
+2) 关闭任何使用 foobar2000 文件夹或子文件夹的 Windows 资源管理器
+3) 右键点击 Spider Monkey 面板，必要时按 Windows + Shift 键
+4) 选择 "Configure panel..."
+5) 在 "Script" 选项卡中选择 "Package"
+6) 如果 "Script package manager" 没有自动打开，则打开它
+7) 点击 "Import" 按钮导入包
 
-## Screenshots
+#### 注意事项：
+- 安装路径包含中文，导入包会报错。
+- 或可自行解压至 foobar2000 配置文件目录\profile\foo_spider_monkey_panel\packages\{E85C9EF0-778B-46DD-AF20-F4BE831360DD}，解决路径包含中文的问题。
 
-#### Two panel mode with artist images and covers
+## 截图
+
+#### 带有艺术家图像和封面的双面板模式
 <kbd> <img src="https://user-images.githubusercontent.com/35600752/155884212-9bea1326-3430-46a4-a86e-3bc4b09e4dd4.png"> </kbd>
-The screenshot is using the dark theme and columns UI with dividing splitter hidden.
+屏幕截图使用 CUI + 深色主题 + 隐藏分隔符。
 
-#### Flow mode (upper) and tree modes (lower)
+#### 流动封面模式（上图）和树型模式（下图）
 <kbd> <img src="https://user-images.githubusercontent.com/35600752/155903327-9631a328-2f67-4f25-9cbd-316e5f5210b5.png"> </kbd>
-Tree modes shows various node styles with, left to right: user interface theme; dark theme; blend theme; album art background
+树型模式显示各种节点样式，从左到右：用户界面主题；深色主题；混合主题；专辑封面背景
 
-#### Two panel mode with index and covers
+#### 带索引和封面的双面板模式
 <kbd> <img src="https://user-images.githubusercontent.com/35600752/156163852-5d8295f4-3ff2-4ef4-849f-0bd5ce24ba8e.png"> </kbd>
-To set up the above, position two Spider Monkey Panels side by side. Add library tree to each. The screenshot is using the dark theme (display tab) and columns UI with the dividing splitter hidden.
-- Right panel: set source to panel & follow instructions on pop-up
-- Left panel: on display tab, tick 'List view (tree)'. Use a view pattern something like: 
+要设置上述内容，请并排放置两个 Spider Monkey 面板。将 Library Tree 添加到每个面板。屏幕截图使用深色主题（面板设置>显示>主题） + CUI + 隐藏分隔符。
+- 右侧面板：将源设置为面板并按照弹出窗口中的说明进行操作
+- 左侧面板：在显示选项卡上，勾选“列表视图（树型）”。使用类似如下的查看方式模版：
 ```
 $cut(%artist%,1)|%artist%|$if2(%album%,εXtra)|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%
 ```
-#### Tree mode with album art background + jump search
+#### 树型模式，带有专辑封面背景 + 跳转搜索
 <kbd> <img src="https://user-images.githubusercontent.com/35600752/118255885-b5a41e00-b4a4-11eb-8f19-7a24e5215463.png"> </kbd>
 
-### Credits
+### 致谢
 - Original Jscript library search (2013): thanhdat1710
 - Original JS smooth browser design (2015): Br3tt (aka falstaff)
 - [TT-ReBORN](https://github.com/TT-ReBORN) for clean preset inspiration 
+
+### 汉化学习过程中，感谢他们的帮助
+Asion，Elia_Is_Me，ttsping，dreamawake，木魚(ifish)，.阿太，wntjdqls，...
