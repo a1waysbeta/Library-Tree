@@ -1,9 +1,9 @@
 ﻿{
-  "author": "WilB",
-  "description": "Feature rich library viewer, now extended to include album art.\r\n\r\n• Tree viewer + album art support\r\n• Library and playlist sources\r\n• Single panel and two panel modes\r\n• Album art flow mode\r\n\r\nCredits\r\n\r\n• Original Jscript library search (2013): thanhdat1710\r\n• Original JS smooth browser design (2015): Br3tt (aka falstaff)",
+  "author": "WilB（汉化always beta）",
+  "description": "功能丰富的媒体库查看器，现已扩展为包括专辑封面。\r\n\r\n• 支持树型视图 + 专辑封面视图\r\n• 可选媒体库和播放列表来源\r\n• 单面板和双面板模式\r\n• 流动封面模式\r\n\r\n致谢\r\n\r\n• Original Jscript library search (2013): thanhdat1710\r\n• Original JS smooth browser design (2015): Br3tt (aka falstaff)",
   "enableDragDrop": false,
   "id": "{E85C9EF0-778B-46DD-AF20-F4BE831360DD}",
   "name": "Library Tree",
   "shouldGrabFocus": true,
-  "version": "2.3.0"
+  "version": "2.3.4"
 }
