@@ -107,7 +107,7 @@ class Library {
 					if (!panel.list.Count) {
 						pop.clearTree();
 						sbar.setRows(0);
-						this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+						this.none = this.validSearch ? '没有与搜索条件匹配的项' : '无效的搜索表达式';
 						panel.treePaint();
 						this.noListUpd = true;
 					}
@@ -178,7 +178,7 @@ class Library {
 					if (!panel.list.Count) {
 						pop.clearTree();
 						sbar.setRows(0);
-						this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+						this.none = this.validSearch ? '没有与搜索条件匹配的项' : '无效的搜索表达式';
 						panel.treePaint();
 						this.noListUpd = true;
 					}
@@ -205,7 +205,7 @@ class Library {
 							i = this.list.Find(h);
 							if (i != -1) this.format(items[j], panel.splitter, i, this.libNode);
 						});
-						if (!this.list.Count) this.none = 'Nothing found';
+						if (!this.list.Count) this.none = '没有与搜索条件匹配的项';
 						break;
 					}
 					default:
@@ -214,7 +214,7 @@ class Library {
 							i = this.list.Find(h);
 							if (i != -1) this.format(items[j], '\\', i, this.libNode);
 						});
-						if (!this.list.Count) this.none = 'Nothing found';
+						if (!this.list.Count) this.none = '没有与搜索条件匹配的项';
 						break;
 				}
 		}
@@ -425,7 +425,7 @@ class Library {
 		if (ppt.libSource && (!this.list.Count || !fb.IsLibraryEnabled())) {
 			pop.clearTree();
 			sbar.setRows(0);
-			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? 'Nothing to show\n\nClick here to configure the media library' : 'Nothing found\n\n') : 'Panel Mode\nNo items received\n';
+			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? '没有可以显示的项目\n\n单击此处配置媒体库' : '没有项目\n\n') : '面板模式\n未收到任何项目\n';
 			panel.treePaint();
 			return;
 		}
@@ -442,7 +442,7 @@ class Library {
 		if (!this.list.Count) {
 			pop.clearTree();
 			sbar.setRows(0);
-			this.none = 'Nothing found';
+			this.none = '没有项目';
 			panel.treePaint();
 			return;
 		}
@@ -622,14 +622,14 @@ class Library {
 			if (!panel.list.Count) {
 				pop.clearTree();
 				sbar.setRows(0);
-				this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+				this.none = this.validSearch ? '没有与搜索条件匹配的项' : '无效的搜索表达式';
 				panel.treePaint();
 				this.noListUpd = true;
 			}
 		} else panel.list = this.list;
 
 		if (ppt.libSource && !this.full_list.Count) {
-			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? 'Nothing to show\n\nClick here to configure the media library' : 'Nothing found\n\n') : 'Panel Mode\nNo items received\n';
+			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? '没有可以显示的项目\n\n单击此处配置媒体库' : '没有项目\n\n') : '面板模式\n未收到任何项目\n';
 			this.root = [];
 			pop.clearTree();
 			sbar.setRows(0);
@@ -722,7 +722,7 @@ class Library {
 			if (!panel.list.Count) {
 				pop.clearTree();
 				sbar.setRows(0);
-				this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+				this.none = this.validSearch ? '没有与搜索条件匹配的项' : '无效的搜索表达式';
 				panel.treePaint();
 				return;
 			}
@@ -1017,7 +1017,7 @@ class Library {
 						if (!panel.list.Count) {
 							pop.clearTree();
 							sbar.setRows(0);
-							this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+							this.none = this.validSearch ? '没有与搜索条件匹配的项' : '无效的搜索表达式';
 							panel.treePaint();
 							break;
 						}

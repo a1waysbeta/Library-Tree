@@ -11,6 +11,7 @@ class Images {
 		this.columnWidth = 150;
 		this.database = this.newDatabase();
 		this.end = 1;
+		this.groupField = '';
 		this.items = [];
 		this.overlayHeight = 0;
 		this.panel = {};
@@ -62,7 +63,7 @@ class Images {
 			preLoad: 7
 		}
 
-		this.labels = {}
+		this.labels = {duration: ppt.itemShowDuration ? 1 : 0}
 
 		this.letter = {
 			no: 1,
@@ -181,7 +182,6 @@ class Images {
 				}
 
 				this.checkCache();
-				let strr = Date.now();
 				this.format(image, ppt.artId, ['default', 'crop', 'circular'][this.style.image], this.im.w, this.im.w, ppt.albumArtLabelType == 3, 'display', ix, key);
 				if (this.style.rootComposite && ix < this.rootNo) this.rootDebounce();
 			}
@@ -208,7 +208,7 @@ class Images {
 			}, 1000);
 
 		} catch (e) {
-			$.trace('unable to load thumbnail image: ' + key);
+			$.trace('无法加载缩略图：' + key);
 		}
 		this.drawDebounce();
 	}
@@ -217,12 +217,11 @@ class Images {
 		try {
 			if (image) {
 				this.checkCache();
-				let strr = Date.now();
 				this.format(image, ppt.artId, ['default', 'crop', 'circular'][this.style.image], this.im.w, this.im.w, ppt.albumArtLabelType == 3, 'displayPreload', ix, key);
 			}
 			if (this.style.rootComposite && ix < this.rootNo) this.rootDebounce();
 		} catch (e) {
-			$.trace('unable to load thumbnail image: ' + key);
+			$.trace('无法加载缩略图：' + key);
 		}
 		panel.treePaint();
 	}
@@ -275,21 +274,25 @@ class Images {
 		panel.treePaint();
 	}
 
-	checkTooltip(gr, item, x, y1, y2, w, tt1, tt2, font1, font2) {
+	checkTooltip(gr, item, x, y1, y2, y3, w, tt1, tt2, tt3, font1, font2, font3) {
 		if (panel.colMarker) {
 			if (tt1) tt1 = tt1.replace(/@!#.*?@!#/g, '');
 			if (tt2) tt2 = tt2.replace(/@!#.*?@!#/g, '');
 		}
 		let text = tt1 ? tt1 : '';
-		if (tt2 && panel.lines == 2) text += '\n' + tt2;
+		if (tt2 && (panel.lines == 2 || panel.lines == 1 && this.labels.duration)) text += '\n' + tt2;
+		if (tt3 && this.labels.duration) text += '\n' + tt3;
+		text = text.replace(/&/g, '&&');
 		item.tt = {
 			text: text,
 			x: x,
 			y1: y1,
 			y2: y2,
+			y3: y3,
 			w: w,
 			1: tt1 ? gr.CalcTextWidth(tt1, font1) > w ? tt1 : false : false,
-			2: tt2 ? gr.CalcTextWidth(tt2, font2) > w ? tt2 : false : false
+			2: tt2 ? gr.CalcTextWidth(tt2, font2) > w ? tt2 : false : false,
+			3: tt3 ? gr.CalcTextWidth(tt3, font3) > w ? tt3 : false : false
 		}
 	}
 
@@ -412,11 +415,12 @@ class Images {
 				const item = pop.tree[i];
 				const grp = item.grp;
 				const lot = item.lot;
+				const duration = this.labels.duration ? (!item.root && this.labels.counts ? item.count + ' | ' : '') + item._duration : '';
 				const cur_img = !this.zooming ? this.getImg(item.key) : null;
 				const nowp = this.checkNowPlaying(item);
 				const grpCol = this.getGrpCol(item, nowp, pop.highlight.text && i == pop.m.i);
 				const lotCol = this.getLotCol(item, nowp, pop.highlight.text && i == pop.m.i);
-				if (!this.labels.hide) this.drawSelBg(gr, cur_img, box_x, box_y, i, nowp || item.sel);
+				this.drawSelBg(gr, cur_img, box_x, box_y, i, nowp || item.sel);
 				this.im.y = this.im.offset + box_y;
 				if (pop.rowStripes && this.labels.right) {
 					if (i % 2 == 0) gr.FillSolidRect(0, box_y + 1, panel.tree.stripe.w, this.row.h, ui.col.bg1);
@@ -473,37 +477,46 @@ class Images {
 				}
 				this.drawItemOverlay(gr, item, x1, y1, iw, ih);
 				if (i == pop.m.i) {
-					if (pop.highlight.row == 3 || pop.highlight.row == 2 && (this.labels.overlay || this.labels.hide)) {
-						this.drawFrame(gr, box_x, box_y, ui.col.frameImg, !this.labels.overlay && !this.labels.hide ? 'stnd' : 'thick');
+					if (pop.highlight.row == 3 || pop.highlight.row == 2 && (((this.labels.overlay || this.labels.hide) && this.style.image != 2))) {
+						if (!ppt.frameImage) this.drawFrame(gr, box_x, box_y, ui.col.frameImg, !this.labels.overlay && !this.labels.hide ? 'stnd' : 'thick');
+						else this.drawImageFrame(gr, x1, y1, iw, ih, ui.col.frameImg);
 					} else if (pop.highlight.row == 1 && !sbar.draw_timer) gr.FillSolidRect(ui.l.w, y1, ui.sz.sideMarker, this.im.w, ui.col.sideMarker);
 				}
-				if ((this.labels.overlay || this.labels.hide) && item.sel) this.drawFrame(gr, box_x, box_y, ui.col.imgBgSel, 'thick');
+				if (item.sel) {
+					if (this.labels.overlay && this.style.image != 2) this.drawFrame(gr, box_x, box_y, ui.col.frameImgSel, 'thick');
+					else if (this.labels.hide && pop.highlight.row == 3 && ppt.frameImage) this.drawImageFrame(gr, x1, y1, iw, ih, ui.col.frameImgSel);
+				}
 				if (!this.labels.hide) {
 					const x = box_x + this.text.x;
 					let type = 0;
 					if (panel.colMarker) type = item.sel ? 2 : pop.highlight.text && i == pop.m.i ? 1 : 0;
 					if (!this.labels.overlay) {
 						y1 = this.im.y + this.text.y1;
-						y2 = this.im.y + this.text.y2
+						y2 = this.im.y + this.text.y2;
+						const y3 = this.im.y + this.text.y3;
 						if (panel.lines == 2) {
-							this.checkTooltip(gr, item, x, y1, y2, this.text.w, grp, lot, ui.font.group, ui.font.lot);
+							this.checkTooltip(gr, item, x, y1, y2, y3, this.text.w, grp, lot, duration, ui.font.group, ui.font.lot, ui.font.duration);
 							!panel.colMarker ? gr.GdiDrawText(grp, ui.font.group, grpCol, x, y1, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[1] ? panel.cc : panel.lc) : pop.cusCol(gr, grp, item, x, y1, this.text.w, this.text.h, type, nowp, ui.font.group, ui.font.groupEllipsisSpace, 'group');
 							!panel.colMarker ? gr.GdiDrawText(lot, ui.font.lot, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[2] ? panel.cc : panel.lc) : pop.cusCol(gr, lot, item, x, y2, this.text.w, this.text.h, type, nowp, ui.font.lot, ui.font.lotEllipsisSpace, 'lott');
+							if (duration) gr.GdiDrawText(duration, ui.font.duration, lotCol, x, y3, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right ? panel.cc : panel.lc)
 						} else {
-							this.checkTooltip(gr, item, x, y1, -1, this.text.w, grp, false, ui.font.main, ui.font.main);
-							!panel.colMarker ? gr.GdiDrawText(grp, ui.font.main, grpCol, x, y1, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[1] ? panel.cc : panel.lc) : pop.cusCol(gr, grp, item, x, y1, this.text.w, this.text.h, type, nowp, ui.font.main, ui.font.mainEllipsisSpace, 'group');
-							this.checkTooltip(gr, item, x, y1, -1, this.text.w, grp, false, ui.font.main, ui.font.main);
+							this.checkTooltip(gr, item, x, y1, duration ? y2 : -1, -1, this.text.w, grp, duration, false, ui.font.main, ui.font.main);
+							!panel.colMarker ? gr.GdiDrawText(grp, ui.font.group, grpCol, x, y1, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[1] ? panel.cc : panel.lc) : pop.cusCol(gr, grp, item, x, y1, this.text.w, this.text.h, type, nowp, ui.font.main, ui.font.mainEllipsisSpace, 'group');
+							if (duration) gr.GdiDrawText(duration, ui.font.duration, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right ? panel.cc : panel.lc)
 						}
 					} else {
 						y1 = this.im.y + this.text.y1;
-						y2 = y1 + this.text.h * 0.9;
+						y2 = y1 + this.text.h * (this.labels.duration ? 0.93 : 0.9);
+						const y3 = y2 + this.text.h * 0.95;
 						if (panel.lines == 2) {
-							this.checkTooltip(gr, item, x, y1, y2, this.text.w, grp, lot, ui.font.group, ui.font.lot);
+							this.checkTooltip(gr, item, x, y1, y2, y3, this.text.w, grp, lot, duration, ui.font.group, ui.font.lot, ui.font.duration);
 							!panel.colMarker ? gr.GdiDrawText(grp, ui.font.group, grpCol, x, y1, this.text.w, this.text.h, this.style.image != 1 && !item.tt[1] ? panel.cc : panel.lc) : pop.cusCol(gr, grp, item, x, y1, this.text.w, this.text.h, type, nowp, ui.font.group, ui.font.groupEllipsisSpace, 'lott');
 							!panel.colMarker ? gr.GdiDrawText(lot, ui.font.lot, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 && !item.tt[2] ? panel.cc : panel.lc) : pop.cusCol(gr, lot, item, x, y2, this.text.w, this.text.h, type, nowp, ui.font.lot, ui.font.lotEllipsisSpace, 'group');
+							if (duration) gr.GdiDrawText(duration, ui.font.duration, lotCol, x, y3, this.text.w, this.text.h, this.style.image != 1 ? panel.cc : panel.lc)
 						} else {
-							this.checkTooltip(gr, item, x, y1 + (this.overlayHeight - this.text.h) / 2, -1, this.text.w, grp, false, ui.font.group, ui.font.lot);
+							this.checkTooltip(gr, item, x, y1, duration ? y2 : -1, -1, this.text.w, grp, false, false, ui.font.group, ui.font.lot, ui.font.duration);
 							!panel.colMarker ? gr.GdiDrawText(grp, ui.font.group, grpCol, x, y1, this.text.w, this.text.h, this.style.image != 1 && !item.tt[1] ? panel.cc : panel.lc) : pop.cusCol(gr, grp, item, x, y1, this.text.w, this.text.h, type, nowp, ui.font.group, ui.font.groupEllipsisSpace, 'group');
+							if (duration) gr.GdiDrawText(duration, ui.font.duration, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 ? panel.cc : panel.lc)
 						}
 					}
 				}
@@ -533,6 +546,14 @@ class Images {
 				break;
 		}
 		gr.DrawRect(x, y, w, h, l_w, col);
+	}
+
+	drawImageFrame(gr, x, y, w, h, col) {
+		const l_w = 3;
+		gr.SetSmoothingMode(2);
+		if (this.style.image != 2) gr.DrawRect(x, y, w - l_w / 2, h - l_w / 2, l_w, col);
+		else gr.DrawEllipse(x, y, w - l_w / 2, h - l_w / 2, l_w, col);
+		gr.SetSmoothingMode(0);
 	}
 
 	drawItemOverlay(gr, item, x, y, w) {
@@ -580,11 +601,12 @@ class Images {
 	}
 
 	drawSelBg(gr, cur_img, box_x, box_y, i, nowpOrSel) {
+		if (this.labels.hide && (this.style.image != 2 || pop.highlight.row == 3 && ppt.frameImage)) return;
 		let col, x, y, w, h;
 		switch (true) {
 			case nowpOrSel:
 				col = ui.col.imgBgSel;
-				switch (this.labels.overlay) {
+				switch (this.labels.overlay || this.labels.hide) {
 					case true:
 						x = box_x + Math.round((this.box.w - (cur_img ? cur_img.Width : this.im.w)) / 2);
 						y = box_y + (cur_img ? 2 + this.im.w - cur_img.Height : 2)
@@ -599,12 +621,19 @@ class Images {
 						break
 				}
 				break;
-			case pop.highlight.row == 2 && i == pop.m.i && !this.labels.overlay:
-				col = ui.col.bg_h
-				x = !this.labels.right ? box_x : ui.sz.pad;
-				y = box_y + (this.labels.bottom ? (!this.labels.right ? 2 : 2) : 2);
-				w = !this.labels.right ? this.box.w - 2 : panel.tree.sel.w;
-				h = this.box.h + (this.labels.bottom ? (!this.labels.right ? 0 : -3) : -3);
+			case pop.highlight.row == 2 && i == pop.m.i:
+				col = ui.col.bg_h;
+				if ((this.labels.overlay || this.labels.hide) && this.style.image == 2) {
+					x = box_x + Math.round((this.box.w - (cur_img ? cur_img.Width : this.im.w)) / 2);
+					y = box_y + (cur_img ? 2 + this.im.w - cur_img.Height : 2)
+					w = cur_img ? cur_img.Width : this.im.w;
+					h = cur_img ? cur_img.Height : this.im.w;
+				} else {
+					x = !this.labels.right ? box_x : ui.sz.pad;
+					y = box_y + (!this.labels.right ? 2 : 1);
+					w = !this.labels.right ? this.box.w : panel.tree.sel.w;
+					h = this.box.h;
+				}
 				break;
 		}
 		gr.FillSolidRect(x, y, w, h, col);
@@ -655,25 +684,6 @@ class Images {
 			accessed: caller == 'display' ? ++this.accessed : 0
 		}
 		else return image;
-	}
-
-	getDefaultGroupField(n) {
-		switch (n) {
-			case 0:
-				return panel.lines == 2 ? 'Album' : 'Artist';
-			case 1:
-				return panel.lines == 2 ? 'Album' : 'Album Artist';
-			case 2:
-				return panel.lines == 2 ? 'Track' : 'Album';
-			case 3:
-				return panel.lines == 2 ? 'Track' : 'Album';
-			case 4:
-				return panel.lines == 2 ? 'Album' : 'Genre';
-			case 5:
-				return panel.lines == 2 ? 'Album' : 'Year';
-			case 6:
-				return 'Item';
-		}
 	}
 
 	getField(handle, name, arr) {
@@ -767,6 +777,22 @@ class Images {
 		return o.img;
 	}
 
+	getItem(i) {
+		if (!pop.tree[i]) {
+			return null;
+		}
+		const key = pop.tree[i].key;
+		if (!this.cache[key] && this.database[key] && this.database[key] != 'noAlbumArt') {
+			if ($.file(this.cacheFolder + this.database[key])) { // cacheItPreload if file exists
+				return {
+					ix: i,
+					key: key
+				}
+			}
+		}
+		return null;
+	}
+
 	getItemsToDraw(preLoad) {
 		switch (true) {
 			case this.style.vertical:
@@ -835,40 +861,48 @@ class Images {
 	}
 
 	load() {
-		const defaultView = !panel.folderView ? panel.defaultViews.indexOf(panel.grp[ppt.viewBy].type.trim()) : 6;
+		const albumArtGrpNames = $.jsonParse(ppt.albumArtGrpNames, {});
 		const fields = [];
 		const mod = pop.tree.length < 1000 ? 1 : pop.tree.length < 3500 ? Math.round(pop.tree.length / 1000) : 3;
 		const tf_d = FbTitleFormat('[$year(%date%)]');
-		const getItemCount = ppt.itemOverlayType != 1 && (ppt.albumArtLabelType == 2 && panel.lines == 1) && (pop.nodeCounts == 1 || pop.nodeCounts == 2);
-		let groupField = defaultView != -1 ? this.getDefaultGroupField(defaultView) : '';
+		const getItemCount = ppt.itemOverlayType != 1 && ppt.albumArtLabelType == 2 && !this.labels.duration && (pop.nodeCounts == 1 || pop.nodeCounts == 2);
+		this.groupField = albumArtGrpNames[`${panel.grp[ppt.viewBy].type.trim()}${panel.lines}`];
+		
 		pop.tree.forEach((v, i) => {
 			const handle = panel.list[v.item[0].start];
 			v.handle = handle;
 			const arr = pop.tree[i].name.split('^@^');
+			if (this.labels.duration) v._duration = pop.calcTotalDuration(v);
 			v.grp = panel.lines == 1 || !ppt.albumArtFlipLabels ? arr[0] : arr[1];
 			v.lot = panel.lines == 2 ? !ppt.albumArtFlipLabels ? arr[1] : arr[0] : '';
 			v.key = md5.hashStr(handle.Path + handle.SubSong + (panel.lines == 1 ? (arr[0] || 'Unknown') : ((arr[0] || 'Unknown') + ' - ' + (arr[1] || 'Unknown'))) + ppt.artId);
 			if (ppt.itemOverlayType == 2) v.year = tf_d.EvalWithMetadb(handle).replace('0000', '');
-			if (defaultView == -1 && i % mod === 0) this.getField(handle, panel.lines == 1 || ppt.albumArtFlipLabels ? v.grp : v.lot, fields);
-			if (getItemCount) v.grp += v.count;
+			if (!this.groupField && !panel.folderView && i % mod === 0) this.getField(handle, panel.lines == 1 || ppt.albumArtFlipLabels ? v.grp : v.lot, fields);
+			if (getItemCount) {
+				const count = v.count.replace(/\D/g, '');
+				if (panel.lines == 1 || ppt.albumArtFlipLabels) v.grp += ` (${count})`;
+				else v.lot += ` (${count})`;
+			}
 		});
-		if (defaultView == -1) {
-			groupField = this.getMostFrequentField(fields) || 'Item';
+
+		if (!this.groupField && !panel.folderView) {
+			this.groupField = this.getMostFrequentField(fields) || '个项目';
+			this.groupField = $.titlecase(this.groupField);
 		}
-		groupField = $.titlecase(groupField);
 
 		if (ppt.rootNode) {
-			if (!groupField) groupField = 'Item';
-			const pluralField = pluralize(groupField).replace(/(album|artist|top)s\s/gi, '$1 ').replace(/(similar artist)\s/gi, '$1s ');
+			if (!this.groupField) this.groupField = '个项目';
+			const plurals = this.groupField.split(' ').map(v => pluralize(v));
+			const pluralField = plurals.join(' ').replace(/(album|artist|top|track)s\s/gi, '$1 ').replace(/(similar artist)\s/gi, '$1s ');
 			pop.tree[0].key = pop.tree[0].name;
 			const ln1 = pop.tree.length - 1;
 			const ln2 = panel.list.Count;
-			const nm = `${!ppt.showSource ? 'All' : panel.sourceName} (` + ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${groupField}`) + `)`;
+			const nm = `${!ppt.showSource ? '所有' : panel.sourceName} (` + ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${this.groupField}`) + `)`;
 			if (ppt.rootNode == 3) pop.tree[0].grp = nm;
-			else if (panel.lines == 1) pop.tree[0].grp = panel.rootName + (ppt.nodeCounts ? ' (' + (ppt.nodeCounts == 2 && ppt.rootNode != 3 ? ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${groupField}`) : ln2 + (ln2 > 1 ? ' Tracks' : ' Track')) + ')' : '');
+			else if (panel.lines == 1) pop.tree[0].grp = panel.rootName + (ppt.nodeCounts ? ' (' + (ppt.nodeCounts == 2 && ppt.rootNode != 3 ? ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${this.groupField}`) : ln2 + ' 首歌曲') + ')' : '');
 			if (panel.lines == 2) {
 				if (ppt.rootNode != 3) pop.tree[0].grp = panel.rootName;
-				pop.tree[0].lot = ppt.nodeCounts == 2 && ppt.rootNode != 3 ? ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${groupField}`) : ln2 + (ln2 > 1 ? ' Tracks' : ' Track');
+				pop.tree[0].lot = ppt.nodeCounts == 2 && ppt.rootNode != 3 ? ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${this.groupField}`) : ln2 + ' 首歌曲';
 			}
 		}
 		this.metrics();
@@ -894,14 +928,6 @@ class Images {
 			vertical: !ppt.albumArtFlowMode ? true : ui.h - panel.search.h > ui.w - ui.sbar.w
 		}
 		this.letter.show = ppt.albumArtLetter;
-		if (this.letter.show) {
-			this.letter.no = ppt.albumArtLetterNo;
-			if (ppt.albumArtYearAuto) {
-				const m = panel.view.replace(/#@#.*?#@#/g, '').match(/%.*?%/);
-				const isLeadingDate = /%(<|)date(>|)%/i.test(m[0]);
-				if (isLeadingDate) this.letter.no = 4;
-			}
-		}
 
 		switch (this.style.vertical) {
 			case true: {
@@ -911,7 +937,8 @@ class Images {
 					right: !ppt.albumArtFlowMode ? ppt.albumArtLabelType == 2 : false,
 					overlay: ppt.albumArtLabelType == 3 || ppt.albumArtLabelType == 4,
 					overlayDark: ppt.albumArtLabelType == 4,
-					flip: ppt.albumArtFlipLabels
+					flip: ppt.albumArtFlipLabels,
+					duration: ppt.itemShowDuration ? 1 : 0
 				}
 				this.bor.pad = ppt.thumbNailGapStnd == 0 ? Math.round(this.text.h * (!this.labels.right ? 1.05 : 0.75)) : ppt.thumbNailGapStnd - Math.round(2 * $.scale);
 				this.im.offset = Math.round(!this.labels.hide && !this.labels.overlay ? this.bor.pad / 2 : 0);
@@ -933,12 +960,12 @@ class Images {
 				this.panel.w = ui.w - ui.l.w * 2 - (ui.sbar.type == 0 || ppt.sbarShow != 2 ? Math.max(margin, ui.sbar.w) * 2 : (margin * 2 + ui.sbar.w));
 				this.panel.h = ui.h - this.panel.y;
 
-				this.blockWidth = Math.round(ui.row.h * 4 * $.scale * ppt.zoomImg / 100 * [0.66, 1, 1.75, 2.5][ppt.thumbNailSize]);
+				this.blockWidth = Math.round(ui.row.h * 4 * $.scale * ppt.zoomImg / 100 * [0.66, 1, 1.5, 2, 2.5][ppt.thumbNailSize]);
 				this.columns = ppt.albumArtFlowMode || this.labels.right ? 1 : Math.max(Math.floor(this.panel.w / this.blockWidth), 1);
 				let gap = this.panel.w - this.columns * this.blockWidth;
 				gap = Math.floor(gap / this.columns);
 				this.columnWidth = !this.labels.right ? $.clamp(this.blockWidth + gap, 10, Math.min(this.panel.w, this.panel.h)) : $.clamp(this.blockWidth, 10, Math.min(this.panel.w, this.panel.h));
-				this.overlayHeight = !this.labels.overlay ? 0 : (panel.lines != 2 ? this.text.h * 1.2 : Math.round(this.text.h * 2.1));
+				this.overlayHeight = !this.labels.overlay ? 0 : (panel.lines != 2 ? this.text.h * (1.2 + this.labels.duration) : Math.round(this.text.h * (2.1 + this.labels.duration)));
 				this.im.w = Math.round(Math.max(this.columnWidth - this.bor.side * 2 - this.bor.cov * 2 - (this.labels.hide || this.labels.overlay ? 1 : 0), 10));
 
 				if (this.labels.hide || this.labels.overlay) {
@@ -946,7 +973,7 @@ class Images {
 					this.row.h = this.im.w + this.bor.cov;
 				} else {
 					this.im.w = Math.round(Math.max(this.columnWidth - this.bor.cov * 2 - this.bor.side * 2, 10));
-					this.row.h = !this.labels.right ? this.im.w + this.text.h * panel.lines + this.bor.cov * 2 + this.bor.side * 2 : this.im.w + this.bor.pad + 2;
+					this.row.h = !this.labels.right ? this.im.w + this.text.h * (panel.lines + this.labels.duration) + this.bor.cov * 2 + this.bor.side * 2 : this.im.w + this.bor.pad + 2;
 				}
 				if (this.row.h > this.panel.h) {
 					this.im.w -= this.row.h - this.panel.h;
@@ -954,7 +981,7 @@ class Images {
 					this.row.h = this.panel.h;
 				}
 				this.box.w = this.columnWidth - this.bor.side * 2;
-				this.box.h = this.row.h - (!this.labels.right ? this.bor.side * 2 : 0)
+				this.box.h = this.row.h - (!this.labels.right ? this.bor.side * 2 : 0);
 				panel.rows = Math.max(Math.floor(this.panel.h / this.row.h));
 				sbar.metrics(sbar.x, sbar.y, sbar.w, sbar.h, panel.rows, this.row.h, this.style.vertical);
 				sbar.setRows(Math.ceil(pop.tree.length / this.columns));
@@ -967,7 +994,8 @@ class Images {
 					right: false,
 					overlay: ppt.albumArtLabelType == 3 || ppt.albumArtLabelType == 4,
 					overlayDark: ppt.albumArtLabelType == 4,
-					flip: ppt.albumArtFlipLabels
+					flip: ppt.albumArtFlipLabels,
+					duration: ppt.itemShowDuration ? 1 : 0
 				}
 				this.bor.pad = ppt.thumbNailGapStnd == 0 ? Math.round(this.text.h * 1.05) : ppt.thumbNailGapStnd - Math.round(2 * $.scale);
 				this.im.offset = Math.round(!this.labels.hide && !this.labels.overlay ? this.bor.pad / 2 : 0);
@@ -988,7 +1016,7 @@ class Images {
 				this.panel.w = ui.w;
 				if (!this.labels.hide && !this.labels.overlay) {
 					this.row.h = this.panel.h;
-					const extra = this.text.h * panel.lines + this.bor.cov * 2 + this.bor.side * 2;
+					const extra = this.text.h * (panel.lines + this.labels.duration) + this.bor.cov * 2 + this.bor.side * 2;
 					this.im.w = Math.min(this.panel.h - extra, this.panel.h - extra);
 					this.im.w = $.clamp(this.im.w, 10, Math.round(this.panel.w - (this.bor.cov * 2 + this.bor.side * 2)));
 					this.blockWidth = this.im.w + this.bor.cov * 2 + this.bor.side * 2;
@@ -1001,7 +1029,7 @@ class Images {
 					this.row.h = this.im.w + extra;
 				}
 				this.columns = Math.max(Math.floor(this.panel.w / this.blockWidth), 1);
-				this.overlayHeight = !this.labels.overlay ? 0 : (panel.lines != 2 ? this.text.h * 1.2 : Math.round(this.text.h * 2.1));
+				this.overlayHeight = !this.labels.overlay ? 0 : (panel.lines != 2 ? this.text.h * (1.2 + this.labels.duration) : Math.round(this.text.h * (2.1 + this.labels.duration)));
 				this.box.w = this.blockWidth - this.bor.side * 2;
 				this.box.h = this.row.h - this.bor.bot;
 				panel.rows = Math.max(Math.floor(this.panel.w / this.blockWidth));
@@ -1014,17 +1042,19 @@ class Images {
 		}
 
 		this.cellWidth = Math.max(200, this.im.w / 2);
+		this.labels.counts = ppt.itemOverlayType != 1 && ppt.nodeCounts;
 		this.style.y = this.style.vertical ? Math.floor(this.panel.y + (!this.labels.hide && !this.labels.overlay ? ppt.thumbNailGapStnd / 2 : ppt.thumbNailGapCompact / 2)) : this.panel.y;
 
 		if (!this.labels.hide) {
 			if (!this.labels.overlay) {
 				this.text.x = !this.labels.right ? Math.round((this.box.w - this.im.w) / 2) : Math.max(Math.round((this.box.w - this.im.w) / 2), 5 * $.scale) * 2 + this.im.w;
-				this.text.y1 = !this.labels.right ? this.im.w + Math.round(this.bor.cov * 0.5) : Math.round((this.im.w - this.text.h * panel.lines) / 2);
+				this.text.y1 = !this.labels.right ? this.im.w + Math.round(this.bor.cov * 0.5) : Math.round((this.im.w - this.text.h * panel.lines) / 2) - (this.labels.duration ? this.text.h / 2 : 0);
 				this.text.y2 = !this.labels.right ? Math.round(this.text.y1 + this.text.h * 0.95) : this.text.y1 + this.text.h;
+				this.text.y3 = !this.labels.right ? Math.round(this.text.y2 + this.text.h * 0.95) : this.text.y2 + this.text.h;
 				this.text.w = !this.labels.right ? this.im.w : this.panel.w - this.text.x - 12;
 			} else {
 				this.text.x = Math.round(10 + (ppt.thumbNailGapCompact - 3) / 2);
-				this.text.y1 = Math.round(this.im.w - this.overlayHeight + 2 + (this.overlayHeight - this.text.h * panel.lines) / 2);
+				this.text.y1 = Math.round(this.im.w - this.overlayHeight + 2 + (this.overlayHeight - this.text.h * (panel.lines + this.labels.duration)) / 2);
 				this.text.w = this.box.w - 20 - ppt.thumbNailGapCompact - 6;
 			}
 		}
@@ -1068,22 +1098,6 @@ class Images {
 			panel.treePaint();
 		}
 	}
-	
-	getItem(i) {
-			if (!pop.tree[i]) {
-				return null;
-			}
-			const key = pop.tree[i].key;
-			if (!this.cache[key] && this.database[key] && this.database[key] != 'noAlbumArt') {
-				if ($.file(this.cacheFolder + this.database[key])) { // cacheItPreload if file exists
-					return {
-						ix: i,
-						key: key
-					}
-				}
-			}
-			return null;
-		}
 
 	preLoad() {
 		if (!panel.imgView) return;
@@ -1162,13 +1176,13 @@ class Images {
 						const app = new ActiveXObject('Shell.Application');
 						app.NameSpace(10).MoveHere(this.cachePath); // remove all saved images & databases if albumArtDiskCache
 					} catch (e) {
-						$.trace('unable to empty image cache: can be emptied in windows explorer'); // Wine fix
+						$.trace('无法清空图像缓存：可以在 Windows 资源管理器中清空'); // Wine fix
 					}
 				}
 			}
-			const caption = 'Reset All Images';
-			const prompt = 'This action resets the library tree thumbnail disk cache\n\nContinue?';
-			const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+			const caption = '重置所有图像';
+			const prompt = '此操作将重置 Library Tree 的缩略图磁盘缓存\n\n继续？';
+			const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, '是', '否', continue_confirmation) : true;
 			if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 			return;
 		}

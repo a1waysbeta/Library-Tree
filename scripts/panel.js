@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 class Panel {
 	constructor() {
@@ -10,6 +10,7 @@ class Panel {
 		const DT_END_ELLIPSIS = 0x00008000;
 
 		this.cc = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX;
+		this.cce = this.cc | DT_END_ELLIPSIS;
 		this.curPattern = '';
 		this.defaultViews = [];
 		this.defFilterPatterns = [];
@@ -29,6 +30,7 @@ class Panel {
 		this.menu = [];
 		this.paint_y = Math.floor(ui.style.topBarShow || !ppt.sbarShow ? ui.row.h * 1.2 : 0);
 		this.pn_h_auto = ppt.pn_h_auto && ppt.rootNode;
+		this.propNames = [];
 		this.newView = true;
 		this.pos = -1;
 		this.rc = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX | DT_END_ELLIPSIS;
@@ -138,6 +140,17 @@ class Panel {
 		this.search.w = ppt.searchShow && (ppt.filterShow || ppt.settingsShow) ? this.filter.x - this.search.x - 11 : ui.w - ui.sz.marginSearch - Math.round(ui.row.h * 0.75) - this.search.x + 1;
 	}
 
+	clear(type) {
+		if (type == 'views' || type == 'both') {
+			for (let i = 0; i < 100; i++) {
+				ppt.set(`View ${$.padNumber(i, 2)}: Name // Pattern`, null);
+			}
+		}
+		if (type == 'filters' || type == 'both') {
+			for (let i = 0; i < 100; i++) ppt.set(`Filter ${$.padNumber(i, 2)}: Name // Query`, null);
+		}
+	}
+
 	forcePaint() {
 		window.RepaintRect(0, this.paint_y, ui.w, ui.h - this.paint_y + 1, true);
 	}
@@ -157,7 +170,6 @@ class Panel {
 		this.multiProcess = false;
 		this.noDisplay = false;
 		this.multiValueTagSort = '';
-		//this.softSplit = false;
 		this.statistics = false;
 		this.view = '';
 		this.view_ppt.forEach((v, i) => {
@@ -169,6 +181,7 @@ class Panel {
 				}
 			}
 		});
+
 		grps = [];
 		this.filter_ppt.forEach((v, i) => {
 			if (v.includes('//')) {
@@ -326,18 +339,24 @@ class Panel {
 		this.menu = this.grp.map(name);
 	}
 
+	getFilterIndex(arr, name, type) {
+		let findFilterIndex = arr.findIndex(v => v.name === name && v.type === type);
+		if (findFilterIndex != -1) ppt.filterBy = findFilterIndex;
+		return findFilterIndex;
+	}
+
 	getFilters() {
 		let pt = [
-			['Filter 01: Name // Query', 'Filter // Button Name'],
-			['Filter 02: Name // Query', 'Lossless // "$info(encoding)" IS lossless'],
-			['Filter 03: Name // Query', 'Lossy // "$info(encoding)" IS lossy'],
-			['Filter 04: Name // Query', 'Missing Replaygain // %replaygain_track_gain% MISSING'],
-			['Filter 05: Name // Query', 'Never Played // %play_count% MISSING'],
-			['Filter 06: Name // Query', 'Played Often // %play_count% GREATER 9'],
-			['Filter 07: Name // Query', 'Recently Added // %added% DURING LAST 2 WEEKS'],
-			['Filter 08: Name // Query', 'Recently Played // %last_played% DURING LAST 2 WEEKS'],
-			['Filter 09: Name // Query', 'Top Rated // %rating% IS 5'],
-			['Filter 10: Name // Query', 'Nowplaying Artist // artist IS $nowplaying{$meta(artist,0)}']
+			['Filter 01: Name // Query', '过滤 // 按钮名称'],
+			['Filter 02: Name // Query', '无损 // "$info(encoding)" IS lossless'],
+			['Filter 03: Name // Query', '有损 // "$info(encoding)" IS lossy'],
+			['Filter 04: Name // Query', '无增益 // %replaygain_track_gain% MISSING'],
+			['Filter 05: Name // Query', '从未播放 // %play_count% MISSING'],
+			['Filter 06: Name // Query', '经常播放 // %play_count% GREATER 9'],
+			['Filter 07: Name // Query', '最近添加 // %added% DURING LAST 2 WEEKS'],
+			['Filter 08: Name // Query', '最近播放 // %last_played% DURING LAST 2 WEEKS'],
+			['Filter 09: Name // Query', '最高评级 // %rating% IS 5'],
+			['Filter 10: Name // Query', '正在播放艺术家 // artist IS $nowplaying{$meta(artist,0)}']
 		];
 
 		let grps = [];
@@ -357,17 +376,17 @@ class Panel {
 			const v = pt[i];
 			const prop = ppt.initialLoadFilters ? ppt.get(v[0], v[1]) : ppt.get(v[0]);
 			if (!i) {
-				const defValid = prop && prop.endsWith('// Button Name');
-				dialogFilters.push(defValid ? prop : 'Filter // Button Name');
-				this.filter_ppt.push(defValid ? prop : 'Filter // Button Name');
+				const defValid = prop && prop.endsWith('// 按钮名称');
+				dialogFilters.push(defValid ? prop : '过滤 // 按钮名称');
+				this.filter_ppt.push(defValid ? prop : '过滤 // 按钮名称');
 				if (!defValid) ppt.set(v[0], v[1]);
 				pptNo++;
 			} else {
 				if (prop) {
 					if (prop.includes('//') || prop.includes('/hide/')) dialogFilters.push(prop);
 					if (prop.includes('//')) this.filter_ppt.push(prop);
-					pptNo++;
 				}
+				if (prop || prop === null) pptNo++;
 			}
 		}
 
@@ -404,15 +423,23 @@ class Panel {
 		this.defFilterPatterns.push(this.defFilterPatterns.shift());
 	}
 
+	getViewIndex(arr, name, type) {
+		let findViewIndex = arr.findIndex(v => {
+			return v.name.trim() === name && v.type.trimStart() === type;
+		})
+		if (findViewIndex != -1) ppt.viewBy = findViewIndex;
+		return findViewIndex;
+	}
+
 	getViews() {
 		let pt = [
-			['View 01: Name // Pattern', 'View by Folder Structure // Pattern Not Configurable'],
-			['View 02: Name // Pattern', 'View by Artist // %artist%|%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%'],
-			['View 03: Name // Pattern', 'View by Album Artist // %album artist%|%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%'],
-			['View 04: Name // Pattern', "View by Album Artist - Album // [%album artist% - ]['['%date%']' ]%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"],
-			['View 05: Name // Pattern', "View by Album // %album%[ '['%album artist%']']|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"],
-			['View 06: Name // Pattern', 'View by Genre // %<genre>%|[%album artist% - ]%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%'],
-			['View 07: Name // Pattern', 'View by Year // %date%|[%album artist% - ]%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%']
+			['View 01: Name // Pattern', '按文件夹结构 // 无需配置模版'],
+			['View 02: Name // Pattern', '按艺术家 // %artist%|%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%'],
+			['View 03: Name // Pattern', '按专辑艺术家 // %album artist%|%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%'],
+			['View 04: Name // Pattern', "按专辑艺术家 - 专辑 // [%album artist% - ]['['$date($replace(%date%,/,-,.,-))']' ]%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"],
+			['View 05: Name // Pattern', "按专辑 // %album%[ '['%album artist%']']|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"],
+			['View 06: Name // Pattern', '按流派 // %<genre>%|[%album artist% - ]%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%'],
+			['View 07: Name // Pattern', '按年份 // $date($replace(%date%,/,-,.,-))|[%album artist% - ]%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%']
 		];
 		let grps = [];
 		this.defViewPatterns = pt.map(v => {
@@ -427,6 +454,14 @@ class Panel {
 		this.defaultViews = this.defViewPatterns.map(v => v.type);
 		this.defaultViews.shift();
 
+		const names1 = ['位艺术家', '位专辑艺术家', '张专辑', '张专辑', '个流派', '个年份'];
+		const names2 = ['张专辑', '张专辑', '首歌曲', '首歌曲', '张专辑', '张专辑'];
+		const albumArtGrpNames = $.jsonParse(ppt.albumArtGrpNames, {});
+		this.defaultViews.forEach((v, i) => {
+			if (!albumArtGrpNames[`${v}1`]) albumArtGrpNames[`${v}1`] = names1[i];
+			if (!albumArtGrpNames[`${v}2`]) albumArtGrpNames[`${v}2`] = names2[i];
+		});
+
 		const dialogViews = [];
 		this.view_ppt = [];
 		let pptNo = 0;
@@ -434,21 +469,22 @@ class Panel {
 			const v = pt[i];
 			const prop = ppt.initialLoadViews ? ppt.get(v[0], v[1]) : ppt.get(v[0]);
 			if (!i) {
-				const defValid = prop && prop.endsWith('// Pattern Not Configurable');
-				dialogViews.push(defValid ? prop : 'View by Folder Structure // Pattern Not Configurable');
-				this.view_ppt.push(defValid ? prop : 'View by Folder Structure // Pattern Not Configurable');
+				const defValid = prop && prop.endsWith('// 无需配置模版');
+				dialogViews.push(defValid ? prop : '按文件夹结构 // 无需配置模版');
+				this.view_ppt.push(defValid ? prop : '按文件夹结构 // 无需配置模版');
 				if (!defValid) ppt.set(v[0], v[1]);
 				pptNo++;
 			} else {
 				if (prop) {
 					if (prop.includes('//') || prop.includes('/hide/')) dialogViews.push(prop);
 					if (prop.includes('//')) this.view_ppt.push(prop);
-					pptNo++;
 				}
+				if (prop || prop === null) pptNo++;
 			}
 		}
 
 		pt = undefined;
+
 		let nm = '';
 		for (let i = pptNo + 1; i < 100; i++) {
 			nm = ppt.get(`View ${$.padNumber(i, 2)}: Name // Pattern`);
@@ -457,6 +493,19 @@ class Panel {
 				if (nm.includes('//')) this.view_ppt.push(nm);
 			}
 		}
+
+		nm = '';
+		this.propNames = [];
+		for (let i = 1; i < 100; i++) {
+			const propName = `View ${$.padNumber(i, 2)}: Name // Pattern`;
+			nm = ppt.get(propName);
+			if (nm) {
+				if (nm.includes('//')) {
+					this.propNames.push(propName);
+				}
+			}
+		}
+		this.propNames.shift();
 
 		this.dialogGrps = dialogViews.map(v => {
 			if (v.includes('//')) {
@@ -480,20 +529,19 @@ class Panel {
 		this.dialogGrps.push(this.dialogGrps.shift());
 		this.defViewPatterns.push(this.defViewPatterns.shift());
 		this.view_ppt.push(this.view_ppt.shift());
-	}
-
-	getFilterIndex(arr, name, type) {
-		let findFilterIndex = arr.findIndex(v => v.name === name && v.type === type);
-		if (findFilterIndex != -1) ppt.filterBy = findFilterIndex;
-		return findFilterIndex;
-	}
-
-	getViewIndex(arr, name, type) {
-		let findViewIndex = arr.findIndex(v => {
-			return v.name.trim() === name && v.type.trimStart() === type;
-		})
-		if (findViewIndex != -1) ppt.viewBy = findViewIndex;
-		return findViewIndex;
+		
+		const albumArtGrpNameKeys = Object.keys(albumArtGrpNames);
+		if (albumArtGrpNameKeys.length > 100) {
+			let keysPresent = this.dialogGrps.map(v => `${v.type}1`);
+			albumArtGrpNameKeys.forEach(v => {
+				if (!keysPresent.includes(`${v}1`)) delete albumArtGrpNames[`${v}1`];
+			});
+			keysPresent = this.dialogGrps.map(v => `${v.type}2`);
+			albumArtGrpNameKeys.forEach(v => {
+				if (!keysPresent.includes(`${v}2`)) delete albumArtGrpNames[`${v}2`];
+			});
+		}
+		ppt.albumArtGrpNames = JSON.stringify(albumArtGrpNames);
 	}
 
 	load() {
@@ -506,157 +554,11 @@ class Panel {
 		window.Reload();
 	}
 
-	open(page) {
-		const ok_callback = (new_cfg, new_ppt, type, new_cfgWindow) => {
-			if (new_cfg) {
-				let cfg = $.jsonParse(new_cfg, []);
-				this.clear('both');
-				let i = cfg[0].length;
-				while (i--)
-					if (!cfg[0][i].type) cfg[0].splice(i, 1);
-				cfg[0].forEach((v, i) => {
-					const nm = v.type ? v.name + (v.menu ? ' // ' : ' /hide/ ') + v.type : null;
-					ppt.set(v.type != 'Pattern Not Configurable' ? `View ${$.padNumber(i + 2, 2)}: Name // Pattern` : `View 01: Name // Pattern`, nm);
-				});
-				i = cfg[1].length;
-				while (i--)
-					if (!cfg[1][i].type) cfg[1].splice(i, 1);
-				cfg[1].forEach((v, i) => {
-					const nm = v.type ? v.name + (v.menu ? ' // ' : ' /hide/ ') + v.type : null;
-					ppt.set(v.type != 'Button Name' ? `Filter ${$.padNumber(i + 2, 2)}: Name // Query` : `Filter 01: Name // Query`, nm);
-				});
-				const view_name = this.grp[ppt.viewBy].name;
-				const view_type = this.grp[ppt.viewBy].type.trimStart();
-				const filter_name = this.filter.mode[ppt.filterBy].name;
-				const filter_type = this.filter.mode[ppt.filterBy].type;
-				this.getViews();
-				this.getFilters();
-				this.getFields(ppt.viewBy, ppt.filterBy, true);
-				if (this.getViewIndex(this.grp, view_name, view_type) == -1 || this.getFilterIndex(this.filter.mode, filter_name, filter_type) == -1) {
-					lib.logTree();
-					window.Reload();
-				} else this.getFields(ppt.viewBy, ppt.filterBy);
-			}
-
-			if (new_ppt) this.updateProp($.jsonParse(new_ppt, {}), 'value');
-
-			if (new_cfgWindow) ppt.set('Library Tree Dialog Box', new_cfgWindow);
-
-			if (type == 'reset') {
-				this.updateProp(ppt, 'default_value');
-			}
-
-			if (new_cfg || new_ppt || type == 'reset') {
-				men.refreshMainMenu();
-				men.refreshFilterMenu();
-			}
-		}
-
-		this.getViews();
-		let cfgWindow = ppt.get('Library Tree Dialog Box');
-		if (page !== undefined) {
-			cfgWindow = $.jsonParse(cfgWindow);
-			cfgWindow.page = page;
-			cfgWindow = JSON.stringify(cfgWindow);
-			ppt.set('Library Tree Dialog Box', cfgWindow);
-		}
-		popUpBox.config(JSON.stringify([this.dialogGrps, this.dialogFiltGrps, this.defViewPatterns, this.defFilterPatterns]), JSON.stringify(ppt), cfgWindow, ok_callback);
-	}
-
-	updateProp(prop, value) {
-		Object.entries(prop).forEach(v => {
-			ppt[v[0].replace('_internal', '')] = v[1][value]
-		});
-
-		img.asyncBypass = Date.now();
-		img.preLoadItems = [];
-		clearInterval(img.timer.preLoad);
-		img.timer.preLoad = null;
-		pop.autoPlay.send = ppt.autoPlay;
-		pop.autoPlay = {
-			click: ppt.clickAction < 2 ? false : ppt.clickAction,
-			send: ppt.autoPlay
-		}
-		pop.autoFill = {
-			mouse: ppt.clickAction == 1 ? true : false,
-			key: ppt.keyAction
-		}
-		ppt.autoExpandLimit = Math.round(ppt.autoExpandLimit);
-		if (isNaN(ppt.autoExpandLimit)) ppt.autoExpandLimit = 350;
-		ppt.autoExpandLimit = $.clamp(ppt.autoExpandLimit, 10, 1000);
-		ppt.margin = Math.round(ppt.margin);
-		if (isNaN(ppt.margin)) ppt.margin = 8 * $.scale;
-		ppt.margin = $.clamp(ppt.margin, 0, 100);
-		ppt.treeIndent = Math.round(ppt.treeIndent);
-		if (isNaN(ppt.treeIndent)) ppt.treeIndent = 19 * $.scale;
-		ppt.treeIndent = $.clamp(ppt.treeIndent, 0, 100);
-
-		lib.checkView();
-		lib.logTree();
-		img.setRoot();
-		ppt.albumArtLetterNo = Math.max(ppt.albumArtLetterNo, 1);
-		ppt.zoomImg = Math.round($.clamp(ppt.zoomImg, 10, 500));
-
-		let o = !this.imgView ? 'verticalPad' : 'verticalAlbumArtPad';
-		if (!ppt[o]) ppt[o] = !this.imgView ? 3 : 2;
-		ppt[o] = Math.round(ppt[o]);
-		if (isNaN(ppt[o])) ppt[o] = !this.imgView ? 3 : 2;
-		ppt[o] = $.clamp(ppt[o], 0, !this.imgView ? 100 : 20);
-
-		ppt.iconCustom = ppt.iconCustom.trim();
-		ui.setNodes();
-		sbar.active = true;
-		sbar.duration = {
-			drag: 200,
-			inertia: ppt.durationTouchFlick,
-			full: ppt.durationScroll
-		};
-		sbar.duration.scroll = Math.round(sbar.duration.full * 0.8);
-		sbar.duration.step = Math.round(sbar.duration.full * 2 / 3);
-		sbar.duration.bar = sbar.duration.full;
-		sbar.duration.barFast = sbar.duration.step;
-		if (!ppt.butCustIconFont.length) ppt.butCustIconFont = 'Segoe UI Symbol';
-		ui.setSbar();
-		on_colours_changed();
-		this.setRootName();
-		but.setSbarIcon();
-		pop.setValues();
-		pop.inlineRoot = ppt.rootNode && ppt.inlineRoot;
-
-		ui.getFont();
-		this.on_size();
-		this.tree.y = this.search.h;
-		but.createImages();
-		but.refresh(true);
-		find.on_size();
-		pop.createImages();
-
-		if (ppt.highLightNowplaying) {
-			pop.getNowplaying();
-			pop.nowPlayingShow()
-		}
-
-		if (panel.imgView && pop.tree.length) {
-			img.trimCache(pop.tree[0].key);
-			img.metrics();
-		}
-		lib.rootNodes(1, true);
-		this.pn_h_auto = ppt.pn_h_auto && ppt.rootNode;
-		if (this.pn_h_auto) {
-			window.MaxHeight = window.MinHeight = ppt.pn_h;
-		}
-		if (panel.pn_h_auto && !panel.imgView && ppt.pn_h == ppt.pn_h_min && this.tree[0]) this.clearChild(this.tree[0]);
-		pop.checkAutoHeight();
-		if (sbar.scroll > sbar.max_scroll) sbar.checkScroll(sbar.max_scroll);
-		window.Repaint();
-
-	}
-
 	on_size(fontChanged) {
 		const ln_sp = ui.style.topBarShow && !ui.id.local ? Math.floor(ui.row.h * 0.1) : 0;
 		const sbarStyle = !ppt.sbarFullHeight ? 2 : 0;
 		this.calcText();
-		this.ln.x = ppt.countsRight || ppt.rowStripes || ppt.fullLineSelection || pop.inlineRoot ? 0 : ui.sz.marginSearch;
+		this.ln.x = ppt.countsRight || ppt.itemShowDuration || ppt.rowStripes || ppt.fullLineSelection || pop.inlineRoot ? 0 : ui.sz.marginSearch;
 		this.ln.w = ui.w - this.ln.x - 1;
 		this.search.h = ui.style.topBarShow ? ui.row.h + (!ui.id.local ? ln_sp * 2 : 0) : ui.sz.margin;
 		this.search.sp = this.search.h - ln_sp;
@@ -707,12 +609,68 @@ class Panel {
 		}
 	}
 
+	open(page) {
+		const ok_callback = (new_cfg, new_ppt, type, new_cfgWindow) => {
+			if (new_cfg) {
+				let cfg = $.jsonParse(new_cfg, []);
+				this.clear('both');
+				let i = cfg[0].length;
+				while (i--)
+					if (!cfg[0][i].type) cfg[0].splice(i, 1);
+				cfg[0].forEach((v, i) => {
+					const nm = v.type ? v.name + (v.menu ? ' // ' : ' /hide/ ') + v.type : null;
+					ppt.set(v.type != '无需配置模版' ? `View ${$.padNumber(i + 2, 2)}: Name // Pattern` : `View 01: Name // Pattern`, nm);
+				});
+				i = cfg[1].length;
+				while (i--)
+					if (!cfg[1][i].type) cfg[1].splice(i, 1);
+				cfg[1].forEach((v, i) => {
+					const nm = v.type ? v.name + (v.menu ? ' // ' : ' /hide/ ') + v.type : null;
+					ppt.set(v.type != '按钮名称' ? `Filter ${$.padNumber(i + 2, 2)}: Name // Query` : `Filter 01: Name // Query`, nm);
+				});
+				const view_name = this.grp[ppt.viewBy].name;
+				const view_type = this.grp[ppt.viewBy].type.trimStart();
+				const filter_name = this.filter.mode[ppt.filterBy].name;
+				const filter_type = this.filter.mode[ppt.filterBy].type;
+				this.getViews();
+				this.getFilters();
+				this.getFields(ppt.viewBy, ppt.filterBy, true);
+				if (this.getViewIndex(this.grp, view_name, view_type) == -1 || this.getFilterIndex(this.filter.mode, filter_name, filter_type) == -1) {
+					lib.logTree();
+					window.Reload();
+				} else this.getFields(ppt.viewBy, ppt.filterBy);
+			}
+
+			if (new_ppt) this.updateProp($.jsonParse(new_ppt, {}), 'value');
+
+			if (new_cfgWindow) ppt.set('Library Tree Dialog Box', new_cfgWindow);
+
+			if (type == 'reset') {
+				this.updateProp(ppt, 'default_value');
+			}
+		}
+
+		this.getViews();
+		let cfgWindow = ppt.get('Library Tree Dialog Box');
+		if (page !== undefined) {
+			cfgWindow = $.jsonParse(cfgWindow);
+			cfgWindow.page = page;
+			cfgWindow = JSON.stringify(cfgWindow);
+			ppt.set('Library Tree Dialog Box', cfgWindow);
+		}
+		if (popUpBox.isHtmlDialogSupported()) popUpBox.config(JSON.stringify([this.dialogGrps, this.dialogFiltGrps, this.defViewPatterns, this.defFilterPatterns]), JSON.stringify(ppt), cfgWindow, ok_callback);
+		else {
+			popUpBox.ok = false;
+			$.trace('选项对话框在当前操作系统中不可用。选项中的所有设置都可以在面板属性中找到。菜单上有常用设置。');
+		}
+	}
+
 	searchPaint() {
 		window.RepaintRect(0, 0, ui.w, this.search.h);
 	}
 
 	set(n, i, treeArtToggle) {
-		const prompt = 'This changes various options\n\nContinue?';
+		const prompt = '这将更改' + (i < 5 ? '显示标签页' : i < 12 ? '显示和专辑封面标签页' : '') + '中的多个选项' + '\n\n继续？';
 		switch (n) {
 			case 'quickSetup':
 				switch (i) {
@@ -720,6 +678,7 @@ class Panel {
 						const continue_confirmation = (status, confirmed) => {
 							if (confirmed) {
 								ppt.countsRight = false;
+								ppt.itemShowDuration = false;
 								ppt.nodeStyle = 0;
 								ppt.inlineRoot = false;
 								ppt.autoCollapse = false;
@@ -737,13 +696,13 @@ class Panel {
 								ppt.rootNode = 1;
 								panel.imgView = ppt.albumArtShow = false;
 								ppt.albumArtLabelType = 1;
-								ppt.thumbNailSize = 1;
+								ppt.thumbNailSize = 2;
 								ppt.artId = 0;
 								this.load();
 							}
 						}
-						const caption = 'Quick Setup: Traditional Style';
-						const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+						const caption = '快速设置：传统样式';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
 					}
@@ -751,7 +710,8 @@ class Panel {
 						const continue_confirmation = (status, confirmed) => {
 							if (confirmed) {
 								ppt.countsRight = true;
-								ppt.nodeStyle = 2;
+								ppt.itemShowDuration = false;
+								ppt.nodeStyle = 1;
 								ppt.inlineRoot = true;
 								ppt.autoCollapse = false;
 								ppt.treeAutoExpandSingle = false;
@@ -768,13 +728,13 @@ class Panel {
 								ppt.rootNode = 3;
 								panel.imgView = ppt.albumArtShow = false;
 								ppt.albumArtLabelType = 1;
-								ppt.thumbNailSize = 1;
+								ppt.thumbNailSize = 2;
 								ppt.artId = 0;
 								this.load();
 							}
 						}
-						const caption = 'Quick Setup: Modern Style';
-						const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+						const caption = '快速设置：现代样式';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
 					}
@@ -782,6 +742,7 @@ class Panel {
 						const continue_confirmation = (status, confirmed) => {
 							if (confirmed) {
 								ppt.countsRight = true;
+								ppt.itemShowDuration = true;
 								ppt.nodeStyle = 3;
 								ppt.inlineRoot = true;
 								ppt.autoCollapse = true;
@@ -798,14 +759,21 @@ class Panel {
 								ppt.verticalPad = 5;
 								ppt.rootNode = 3;
 								panel.imgView = ppt.albumArtShow = false;
+								if (!ppt.presetLoadCurView) ppt.viewBy = 1;
+								ppt.albumArtFlowMode = false;
 								ppt.albumArtLabelType = 1;
-								ppt.thumbNailSize = 1;
+								ppt.albumArtFlipLabels = true;
+								ppt.imgStyleFront = 1;
+								ppt.itemOverlayType = 1;
+								ppt.thumbNailSize = 2;
+								ppt.artId = 0;
+								ppt.albumArtGrpLevel = 0;
 								ppt.artId = 0;
 								this.load();
 							}
 						}
-						const caption = 'Quick Setup: Ultra Modern Style';
-						const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+						const caption = '快速设置：超现代样式';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
 					}
@@ -813,7 +781,8 @@ class Panel {
 						const continue_confirmation = (status, confirmed) => {
 							if (confirmed) {
 								ppt.countsRight = true;
-								ppt.nodeStyle = 4;
+								ppt.itemShowDuration = false;
+								ppt.nodeStyle = 5;
 								ppt.inlineRoot = true;
 								ppt.autoCollapse = false;
 								ppt.treeAutoExpandSingle = false;
@@ -830,13 +799,13 @@ class Panel {
 								ppt.rootNode = 3;
 								panel.imgView = ppt.albumArtShow = false;
 								ppt.albumArtLabelType = 1;
-								ppt.thumbNailSize = 1;
+								ppt.thumbNailSize = 2;
 								ppt.artId = 0;
 								this.load();
 							}
 						}
-						const caption = 'Quick Setup: Clean';
-						const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+						const caption = '快速设置：简洁';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
 					}
@@ -844,14 +813,15 @@ class Panel {
 						const continue_confirmation = (status, confirmed) => {
 							if (confirmed) {
 								ppt.countsRight = true;
-								ppt.nodeStyle = 2;
+								ppt.itemShowDuration = false;
+								ppt.nodeStyle = 1;
 								ppt.inlineRoot = true;
 								ppt.autoCollapse = false;
 								ppt.treeAutoExpandSingle = false;
 								ppt.treeListView = true;
 								panel.imgView = ppt.albumArtShow = false;
 								ppt.albumArtLabelType = 1;
-								ppt.thumbNailSize = 1;
+								ppt.thumbNailSize = 2;
 								ppt.artId = 0;
 								ui.sbar.type = 1;
 								ppt.sbarType = 1;
@@ -866,8 +836,8 @@ class Panel {
 								this.load();
 							}
 						}
-						const caption = 'Quick Setup: List View';
-						const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+						const caption = '快速设置：列表视图';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
 					}
@@ -889,16 +859,18 @@ class Panel {
 								if (!ppt.presetLoadCurView) ppt.viewBy = 1;
 								ppt.albumArtFlowMode = false;
 								ppt.albumArtLabelType = 2;
+								ppt.albumArtFlipLabels = true;
+								ppt.itemShowDuration = true;
 								ppt.imgStyleFront = 1;
 								ppt.itemOverlayType = 2;
-								ppt.thumbNailSize = 0;
+								ppt.thumbNailSize = 2;
 								ppt.artId = 0;
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
 						}
-						const caption = 'Quick Setup: List View + Album Covers';
-						const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+						const caption = '快速设置：封面 [右侧标签]';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
 					}
@@ -917,19 +889,21 @@ class Panel {
 								ppt.rootNode = 3;
 								ppt.treeListView = false;
 								panel.imgView = ppt.albumArtShow = true;
-								if (!ppt.presetLoadCurView) ppt.viewBy = 0;
+								if (!ppt.presetLoadCurView) ppt.viewBy = 1;
 								ppt.albumArtFlowMode = false;
-								ppt.albumArtLabelType = 2;
-								ppt.imgStyleArtist = 2;
-								ppt.itemOverlayType = 0;
-								ppt.thumbNailSize = 0;
-								ppt.artId = 4;
+								ppt.albumArtLabelType = 1;
+								ppt.albumArtFlipLabels = true;
+								ppt.itemShowDuration = false;
+								ppt.imgStyleFront = 1;
+								ppt.itemOverlayType = 1;
+								ppt.thumbNailSize = 2;
+								ppt.artId = 0;
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
 						}
-						const caption = 'Quick Setup: List View + Artist Photos';
-						const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+						const caption = '快速设置：封面 [底部标签]';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
 					}
@@ -950,25 +924,61 @@ class Panel {
 								panel.imgView = ppt.albumArtShow = true;
 								if (!ppt.presetLoadCurView) ppt.viewBy = 1;
 								ppt.albumArtFlowMode = false;
-								ppt.albumArtLabelType = 1;
+								ppt.albumArtLabelType = 4;
+								ppt.albumArtFlipLabels = true;
+								ppt.itemShowDuration = false;
 								ppt.imgStyleFront = 1;
-								ppt.itemOverlayType = 1;
-								ppt.thumbNailSize = 1;
+								ppt.itemOverlayType = 0;
+								ppt.thumbNailSize = 3;
 								ppt.artId = 0;
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
 						}
-						const caption = 'Quick Setup: Album Covers';
-						const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+						const caption = '快速设置：封面 [叠加标签]';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
 					}
 					case 8: {
 						const continue_confirmation = (status, confirmed) => {
 							if (confirmed) {
+								ui.sbar.type = 1;
+								ppt.sbarType = 1;
+								ppt.sbarShow = 1;
+								ppt.fullLineSelection = true;
+								ppt.highLightText = false;
+								ppt.rowStripes = true;
+								ppt.highLightRow = 1;
+								ppt.highLightNode = false;
+								ppt.verticalPad = 5;
+								ppt.rootNode = 3;
+								ppt.treeListView = false;
+								panel.imgView = ppt.albumArtShow = true;
+								if (!ppt.presetLoadCurView) ppt.viewBy = 0;
+								ppt.albumArtFlowMode = false;
+								ppt.albumArtLabelType = 2;
+								ppt.itemShowDuration = false;
+								ppt.imgStyleArtist = 2;
+								ppt.itemOverlayType = 0;
+								ppt.thumbNailSize = 1;
+								ppt.artId = 4;
+								ppt.albumArtGrpLevel = 0;
+								this.load();
+							}
+						}
+						const caption = '快速设置：艺术家图像 [右侧标签]';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
+						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
+						break;
+					}
+					case 9: ppt.thumbNailSize++; this.load(); break;
+					case 10: ppt.thumbNailSize--; this.load(); break;
+					case 11: {
+						const continue_confirmation = (status, confirmed) => {
+							if (confirmed) {
 								ppt.countsRight = true;
-								ppt.nodeStyle = 2;
+								ppt.nodeStyle = 1;
 								ppt.inlineRoot = true;
 								ppt.autoCollapse = false;
 								ppt.treeAutoExpandSingle = false;
@@ -977,20 +987,21 @@ class Panel {
 								if (!ppt.presetLoadCurView) ppt.viewBy = 1;
 								ppt.albumArtFlowMode = true;
 								ppt.albumArtLabelType = 1;
+								ppt.itemShowDuration = false;
 								ppt.imgStyleFront = 1;
-								ppt.itemOverlayType = 1;
-								ppt.thumbNailSize = 1;
+								ppt.itemOverlayType = 0;
+								ppt.thumbNailSize = 2;
 								if (!ppt.presetLoadCurView) ppt.artId = 0;
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
 						}
-						const caption = 'Quick Setup: Flow Mode';
-						const wsh = popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation);
+						const caption = '快速设置：流动封面模式';
+						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
 					}
-					case 9:
+					case 12:
 						ppt.toggle('presetLoadCurView');
 						return;
 				}
@@ -1054,21 +1065,21 @@ class Panel {
 	}
 
 	setRootName() {
-		this.sourceName = ['Active Playlist', !ppt.fixedPlaylist ? 'Library' : ppt.fixedPlaylistName, 'Panel'][ppt.libSource];
+		this.sourceName = ['活动列表', !ppt.fixedPlaylist ? '媒体库' : ppt.fixedPlaylistName, '面板'][ppt.libSource];
 		this.viewName = this.grp[ppt.viewBy].name;
 		switch (ppt.rootNode) {
 			case 1:
-				this.rootName = !ppt.showSource ? 'All Music' : this.sourceName;
+				this.rootName = !ppt.showSource ? '所有音乐' : this.sourceName;
 				break;
 			case 2:
 				this.rootName = this.viewName + (!ppt.showSource ? '' : ' [' + this.sourceName + ']');
 				break;
 			case 3: {
-				const nm = this.viewName.replace(/view by|^by\b/i, '').trim();
+				const nm = this.viewName.replace(/查看按|^按\b/i, '').trim();
 				const basenames = nm.split(' ').map(v => pluralize(v));
 				const basename = basenames.join(' ').replace(/(album|artist|top|track)s\s/gi, '$1 ').replace(/(similar artist)\s/gi, '$1s ');
-				this.rootName = (!this.imgView ? `${!ppt.showSource ? 'All' : this.sourceName} (#^^^^# ${basename})` : `All #^^^^# ${basename}`);
-				this.rootName1 = (!this.imgView ? `${!ppt.showSource ? 'All' : this.sourceName} (1 ${nm})` : `All 1 ${nm}`);
+				this.rootName = (!this.imgView ? `${!ppt.showSource ? '所有' : this.sourceName} (#^^^^# ${basename})` : `所有 #^^^^# ${basename}`);
+				this.rootName1 = (!this.imgView ? `${!ppt.showSource ? '所有' : this.sourceName} (1 ${nm})` : `所有 1 ${nm}`);
 				break;
 			}
 		}
@@ -1078,7 +1089,7 @@ class Panel {
 		let sz = Math.round(12 * $.scale * this.zoomFilter);
 		let mod = 0;
 		if (sz > 15) mod = (sz % 2) - 1;
-		this.filter.font = gdi.Font('Segoe UI', this.zoomFilter > 1.05 ? Math.floor(11 * $.scale * this.zoomFilter) : Math.max(11 * $.scale * this.zoomFilter, 9), 1);
+		this.filter.font = gdi.Font('Microsoft Yahei UI', this.zoomFilter > 1.05 ? Math.floor(11 * $.scale * this.zoomFilter) : Math.max(11 * $.scale * this.zoomFilter, 12), 1);
 		this.settings.font = gdi.Font('Segoe UI Symbol', sz + mod, 0);
 		this.settings.icon = '\uE10C';
 		this.settings.offset = Math.round(1 * this.settings.font.Size / 17);
@@ -1101,15 +1112,91 @@ class Panel {
 		window.RepaintRect(0, this.paint_y, ui.w, ui.h - this.paint_y + 1);
 	}
 
-	clear(type) {
-		if (type == 'views' || type == 'both') {
-			for (let i = 0; i < 100; i++) {
-				ppt.set(`View ${$.padNumber(i, 2)}: Name // Pattern`, null);
-			}
+	updateProp(prop, value) {
+		Object.entries(prop).forEach(v => {
+			ppt[v[0].replace('_internal', '')] = v[1][value]
+		});
+
+		img.asyncBypass = Date.now();
+		img.preLoadItems = [];
+		clearInterval(img.timer.preLoad);
+		img.timer.preLoad = null;
+		pop.autoPlay.send = ppt.autoPlay;
+		pop.autoPlay = {
+			click: ppt.clickAction < 2 ? false : ppt.clickAction,
+			send: ppt.autoPlay
 		}
-		if (type == 'filters' || type == 'both') {
-			for (let i = 0; i < 100; i++) ppt.set(`Filter ${$.padNumber(i, 2)}: Name // Query`, null);
+		pop.autoFill = {
+			mouse: ppt.clickAction == 1 ? true : false,
+			key: ppt.keyAction
 		}
+		ppt.autoExpandLimit = Math.round(ppt.autoExpandLimit);
+		if (isNaN(ppt.autoExpandLimit)) ppt.autoExpandLimit = 350;
+		ppt.autoExpandLimit = $.clamp(ppt.autoExpandLimit, 10, 1000);
+		ppt.margin = Math.round(ppt.margin);
+		if (isNaN(ppt.margin)) ppt.margin = 8 * $.scale;
+		ppt.margin = $.clamp(ppt.margin, 0, 100);
+		ppt.treeIndent = Math.round(ppt.treeIndent);
+		if (isNaN(ppt.treeIndent)) ppt.treeIndent = 19 * $.scale;
+		ppt.treeIndent = $.clamp(ppt.treeIndent, 0, 100);
+
+		lib.checkView();
+		lib.logTree();
+		img.setRoot();
+		ppt.zoomImg = Math.round($.clamp(ppt.zoomImg, 10, 500));
+
+		let o = !this.imgView ? 'verticalPad' : 'verticalAlbumArtPad';
+		if (!ppt[o]) ppt[o] = !this.imgView ? 3 : 2;
+		ppt[o] = Math.round(ppt[o]);
+		if (isNaN(ppt[o])) ppt[o] = !this.imgView ? 3 : 2;
+		ppt[o] = $.clamp(ppt[o], 0, !this.imgView ? 100 : 20);
+
+		ppt.iconCustom = ppt.iconCustom.trim();
+		ui.setNodes();
+		sbar.active = true;
+		sbar.duration = {
+			drag: 200,
+			inertia: ppt.durationTouchFlick,
+			full: ppt.durationScroll
+		};
+		sbar.duration.scroll = Math.round(sbar.duration.full * 0.8);
+		sbar.duration.step = Math.round(sbar.duration.full * 2 / 3);
+		sbar.duration.bar = sbar.duration.full;
+		sbar.duration.barFast = sbar.duration.step;
+		if (!ppt.butCustIconFont.length) ppt.butCustIconFont = 'Segoe UI Symbol';
+		ui.setSbar();
+		on_colours_changed();
+		this.setRootName();
+		but.setSbarIcon();
+		pop.setValues();
+		pop.inlineRoot = ppt.rootNode && ppt.inlineRoot;
+
+		ui.getFont();
+		this.on_size();
+		this.tree.y = this.search.h;
+		but.createImages();
+		but.refresh(true);
+		find.on_size();
+		pop.createImages();
+
+		if (ppt.highLightNowplaying) {
+			pop.getNowplaying();
+			pop.nowPlayingShow()
+		}
+
+		if (panel.imgView && pop.tree.length) {
+			img.trimCache(pop.tree[0].key);
+			img.metrics();
+		}
+		lib.rootNodes(1, true);
+		this.pn_h_auto = ppt.pn_h_auto && ppt.rootNode;
+		if (this.pn_h_auto) {
+			window.MaxHeight = window.MinHeight = ppt.pn_h;
+		}
+		if (panel.pn_h_auto && !panel.imgView && ppt.pn_h == ppt.pn_h_min && this.tree[0]) this.clearChild(this.tree[0]);
+		pop.checkAutoHeight();
+		if (sbar.scroll > sbar.max_scroll) sbar.checkScroll(sbar.max_scroll);
+		window.Repaint();
 	}
 
 	zoomReset() {

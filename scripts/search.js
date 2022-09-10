@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 class Search {
 	constructor() {
@@ -33,7 +33,6 @@ class Search {
 			}
 			this.menu.sort((a, b) => pop.collator.compare(a.search, b.search));
 			ppt.searchHistory = JSON.stringify(this.menu);
-			men.refreshSearchHistoryMenu();
 		}, 3000);
 		
 	}
@@ -68,7 +67,7 @@ class Search {
 			this.drawSel(gr);
 			this.getOffset(gr);
 			gr.GdiDrawText(panel.search.txt.substr(this.offset), ui.font.main, ui.col.search, panel.search.x, 0, panel.search.w, panel.search.sp, panel.l);
-		} else gr.GdiDrawText('Search', ui.font.search, ui.col.txt_box, panel.search.x, 0, panel.search.w, panel.search.sp, panel.l);
+		} else gr.GdiDrawText('搜索', ui.font.search, ui.col.txt_box, panel.search.x, 0, panel.search.w, panel.search.sp, panel.l);
 		this.drawCursor(gr);
 	}
 
@@ -453,7 +452,7 @@ class Find {
 			if (!this.jSearch) return;
 			pop.sel_items = [];
 			this.jump_search = true;
-			window.RepaintRect(0, this.j.y, ui.w, this.j.h + 1);
+			panel.treePaint();
 			timer.clear(timer.jsearch1);
 			timer.jsearch1.id = setTimeout(() => {
 				pop.tree.some((v, i) => {
@@ -483,7 +482,7 @@ class Find {
 					} else if (pos >= 0 && pos < pop.tree.length) pop.setPlaylistSelection(pos, pop.tree[pos]);
 				}
 				this.jSearch = '';
-				window.RepaintRect(0, this.j.y, ui.w, this.j.h + 1);
+				panel.treePaint();
 				timer.jsearch2.id = null;
 			}, 1200);
 		}

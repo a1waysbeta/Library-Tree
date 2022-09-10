@@ -351,27 +351,27 @@ class Buttons {
 		this.transition = new Transition(this.btns, v => v.state !== 'normal');
 		this.btns.s_img = new Btn(this.q.x - this.margin / 2, this.hoverArea, this.q.h + this.margin, this.hot_h, 4, this.q.x, this.q.y, this.q.h, {
 			normal: this.q.s_img
-		}, false, '', () => sMenu.load(this.q.x - this.margin / 2, panel.search.h), () => 'History and query syntax help. Ctrl+E focuses search', true, 's_img');
+		}, false, '', () => sMenu.load(this.q.x - this.margin / 2, panel.search.h), () => '搜索历史记录和查询语法帮助。Ctrl+E 聚焦搜索框', true, 's_img');
 
 		this.btns.cross2 = new Btn(this.q.x - this.margin / 2, this.hoverArea, this.q.h + this.margin, this.hot_h, 5, this.q.x, this.b.y, this.b.h, {
 			normal: this.cross.normal,
 			hover: this.cross.hover
-		}, true, '', () => search.clear(), () => panel.search.txt ? 'Clear search text (escape). Double click to show history' : 'No search text to clear', true, 'cross2');
+		}, true, '', () => search.clear(), () => panel.search.txt ? '清除搜索文本（Esc 键）。双击以显示历史记录' : '没有要清除的搜索文本', true, 'cross2');
 
 		this.btns.filter = new Btn(ppt.searchShow ? panel.filter.x + this.margin / 2 : panel.filter.x - this.margin / 2, 0, ppt.searchShow ? panel.filter.w - this.margin : panel.filter.w + this.margin, panel.search.sp, 6, panel.filter.x, ppt.searchShow ? panel.cc : panel.lc, panel.filter.w, {
 			normal: !ui.id.local ? ui.col.txt_box : ui.col.txt_box,
 			hover: !ui.id.local ? ui.col.txt_box_h : ui.col.txt_box
-		}, !ppt.filterShow, '', () => fMenu.load(panel.filter.x, panel.search.h), () => 'Filter', true, 'filter');
+		}, !ppt.filterShow, '', () => fMenu.load(panel.filter.x, panel.search.h), () => '过滤', true, 'filter');
 
 		this.btns.settings = new Btn(this.s.x, panel.settings.offset, this.s.w1, panel.search.sp, 7, this.s.w2, panel.search.sp, panel.settings.y, {
 			normal: !ui.id.local ? ui.col.txt_box : ui.col.txt_box,
 			hover: !ui.id.local ? ui.col.txt_box_h : ui.col.txt_box
-		}, !ppt.settingsShow, '', () => men.rbtn_up(this.s.x, panel.search.h, true), () => 'Settings', true, 'settings');
+		}, !ppt.settingsShow, '', () => men.rbtn_up(this.s.x, panel.search.h, true), () => '设置', true, 'settings');
 
 		this.btns.cross1 = new Btn(this.b.x - this.margin / 2, this.hoverArea, this.q.h + this.margin, this.hot_h, 5, this.b.x, this.b.y, this.b.h, {
 			normal: this.cross.normal,
 			hover: this.cross.hover
-		}, !ppt.searchShow || ppt.filterShow || ppt.settingsShow, '', () => search.clear(), () => panel.search.txt ? 'Clear search text (escape)' : 'No search text to clear', true, 'cross1');
+		}, !ppt.searchShow || ppt.filterShow || ppt.settingsShow, '', () => search.clear(), () => panel.search.txt ? '清除搜索文本（Esc 键）' : '没有要清除的搜索文本', true, 'cross1');
 		this.setSearchBtnsHide();
 	}
 

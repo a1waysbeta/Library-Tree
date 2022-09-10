@@ -10,7 +10,7 @@ function is_compatible(requiredVersionStr) {
 		if (currentVersion[i] != requiredVersion[i]) return currentVersion[i] > requiredVersion[i];
 	return true;
 }
-if (!is_compatible(requiredVersionStr)) fb.ShowPopupMessage(`Library Tree requires v${requiredVersionStr}. Current component version is v${utils.Version}.`);
+if (!is_compatible(requiredVersionStr)) fb.ShowPopupMessage(`Library Tree 最低组件版本需要 v${requiredVersionStr}. 当前组件版本是 v${utils.Version}.`);
 
 const doc = new ActiveXObject('htmlfile');
 const fso = new ActiveXObject('Scripting.FileSystemObject');
@@ -30,7 +30,7 @@ class Helpers {
 	}
 
 	browser(c) {
-		if (!this.run(c)) fb.ShowPopupMessage('Unable to launch your default browser.', 'Library Tree');
+		if (!this.run(c)) fb.ShowPopupMessage('无法启动默认浏览器。', 'Library Tree');
 	}
 
 	buildPth(pth) {
@@ -101,6 +101,7 @@ class Helpers {
 	}
 
 	gr(w, h, im, func) {
+		if (isNaN(w) || isNaN(h)) return;
 		let i = gdi.CreateImage(Math.max(w, 2), Math.max(h, 2));
 		let g = i.GetGraphics();
 		func(g, i);
@@ -141,7 +142,11 @@ class Helpers {
 	}
 
 	open(f) {
-		return this.file(f) ? utils.ReadTextFile(f) : '';
+		try { // handle locked files
+			return this.file(f) ? utils.ReadTextFile(f) : '';
+		} catch (e) {
+			return '';
+		}
 	}
 
 	padNumber(num, len, base) {
@@ -155,6 +160,10 @@ class Helpers {
 			l = fb.GetQueryItems(h, q);
 		} catch (e) {}
 		return l;
+	}
+
+	regexEscape(n) {
+		return n.replace(/[*+\-?^!:&"~${}()|[\]/\\]/g, '\\$&');
 	}
 
 	replaceAt(str, pos, chr) {
@@ -197,7 +206,7 @@ class Helpers {
 		try {
 			utils.WriteTextFile(fn, text, bom)
 		} catch (e) {
-			this.trace('error saving: ' + fn);
+			this.trace('保存时出错：' + fn);
 		}
 	}
 
@@ -208,7 +217,7 @@ class Helpers {
 			try {
 				doc.parentWindow.clipboardData.setData('Text', n);
 			} catch(e) {
-				this.trace('unable to set clipboard text');
+				this.trace('无法设置剪贴板文本');
 			}
 		}
 	}

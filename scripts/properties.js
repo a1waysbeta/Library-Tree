@@ -87,6 +87,7 @@ class PanelProperties {
 }
 
 let properties = [
+	['- Show Html Dialog Unsupported-0 Supported-1 Autocheck-2', 2, 'isHtmlDialogSupported'],
 	['Colour Swap', false, 'swapCol'],
 	['Cover Auto-Fill', true, 'autoFill'],
 	['Cover Opacity (0-100)', 10, 'covAlpha'],
@@ -133,11 +134,14 @@ let properties = [
 
 	['Custom Font', 'Segoe UI,16,0', 'custFont'],
 	['Custom Font Album Art Line 1', 'Segoe UI,1', 'custAlbumArtGrpFont'],
-	['Custom Font Album Art Line 2', 'Segoe UI,2', 'custAlbumArtLotFont'],
+	['Custom Font Album Art Line 2', 'Segoe UI Semibold,0', 'custAlbumArtLotFont'],
+	['Custom Font Album Art Line 3', 'Segoe UI,0', 'custAlbumArtDurFont'],
 
 	['Custom Font Use', false, 'custFontUse'],
 	['Custom Font Album Art Line 1 Use', false, 'custAlbumArtGrpFontUse'],
 	['Custom Font Album Art Line 2 Use', false, 'custAlbumArtLotFontUse'],
+	['Custom Font Album Art Line 3 Use', false, 'custAlbumArtDurFontUse'],
+	
 	['Custom Font Node Icon', 'Segoe UI Symbol', 'custIconFont'],
 	['Custom Font Scroll Icon', 'Segoe UI Symbol', 'butCustIconFont'],
 
@@ -151,6 +155,7 @@ let properties = [
 	['Height Auto-Expand', 578, 'pn_h_max'],
 	['Highlight Nowplaying', false, 'highLightNowplaying'],
 	['Highlight Row', 2, 'highLightRow'],
+	['Highlight Frame Image', false, 'frameImage'],
 	['Highlight Text', false, 'highLightText'],
 	['Hot Key [Focus Not Needed]: 1-10 // Assign Spider Monkey Panel index in keyboard shortcuts', 'CollapseAll,0,PlaylistAdd,0,PlaylistInsert,0,PlaylistNew,0,Search,0,SearchClear,0', 'hotKeys'],
 
@@ -162,6 +167,7 @@ let properties = [
 	['Image Current No Cover', 6, 'curNoCoverImg'],
 	['Image Disk Cache Enabled', true, 'albumArtDiskCache'],
 	['Image Group Level', 0, 'albumArtGrpLevel'],
+	['Image Group Names', JSON.stringify({}), 'albumArtGrpNames'],
 	['Image Flip Labels', false, 'albumArtFlipLabels'],
 	['Image Flow Mode', false, 'albumArtFlowMode'],
 	['Image Follow Selection Flow Mode', true, 'flowModeFollowSelection'],
@@ -175,8 +181,6 @@ let properties = [
 	['Image Root Images', JSON.stringify([]), 'rootImages'],
 	['Image Show Album Art', false, 'albumArtShow'],
 	['Image Show Index Letter', true, 'albumArtLetter'],
-	['Image Show Index Number', 1, 'albumArtLetterNo'],
-	['Image Show Index Year Auto', true, 'albumArtYearAuto'],
 	['Image Show Options', true, 'albumArtOptionsShow'],
 	['Image Style [Front] Regular-0 Auto-Fill-1 Circular-2', 1, 'imgStyleFront'],
 	['Image Style [Back] Regular-0 Auto-Fill-1 Circular-2', 1, 'imgStyleBack'],
@@ -185,7 +189,7 @@ let properties = [
 	['Image Style [Artist] Regular-0 Auto-Fill-1 Circular-2', 2, 'imgStyleArtist'],
 	['Image Thumbnail Gap Standard', 0, 'thumbNailGapStnd'],
 	['Image Thumbnail Gap Compact', 3, 'thumbNailGapCompact'],
-	['Image Thumbnail Size', 1, 'thumbNailSize'],
+	['Image Thumbnail Size', 2, 'thumbNailSize'],
 	['Image Type', 0, 'artId'],
 	['Image View By: Same As Tree', true, 'artTreeSameView'],
 
@@ -193,6 +197,8 @@ let properties = [
 	['Initial Load Views', true, 'initialLoadViews'],
 	['Key: Send to Playlist', 0, 'keyAction'],
 	['Library Auto-Sync', true, 'libAutoSync'],
+	['Library Sort Date Before Album', true, 'yearBeforeAlbum'],
+	
 	['Library Source', 1, 'libSource'],
 	['Library Source: Active Playlist Follow Focus', true, 'followPlaylistFocus'],
 	['Library Source: Fixed Playlist', false, 'fixedPlaylist'],
@@ -210,6 +216,7 @@ let properties = [
 	['Node: Highlight on Hover', true, 'highLightNode'],
 	['Node: Item Counts Align Right', true, 'countsRight'],
 	['Node: Item Counts Hide-0 Tracks-1 Sub-Items-2', 1, 'nodeCounts'],
+	['Node: Item Show Duration', false, 'itemShowDuration'],
 	['Node: Root Hide-0 All Music-1 View Name-2', 1, 'rootNode'],
 	['Node: Root Inline Style', true, 'inlineRoot'],
 	['Node: Root Show Source', false, 'showSource'],
@@ -223,9 +230,9 @@ let properties = [
 	['Playlist: Add to Current [Alt+Click]', false, 'altAddToCur'],
 	['Playlist: Add to Current [MiddleClick]', true, 'mbtnAddToCur'],
 	['Playlist: Custom Sort', '', 'customSort'],
-	['Playlist: Default', 'Library View', 'libPlaylist'],
+	['Playlist: Default', '媒体库查看', 'libPlaylist'],
 	['Playlist: Default Activate on Change', true, 'activateOnChange'],
-	['Playlist: Panel Selection', 'Library Tree Panel Selection', 'panelSelectionPlaylist'],
+	['Playlist: Panel Selection', 'LT 面板选择项', 'panelSelectionPlaylist'],
 	['Playlist: Send to Current', false, 'sendToCur'],
 	['Prefixes to Strip or Swap (| Separator)', 'A|The', 'prefix'],
 	['Preset: Load Current View', true, 'presetLoadCurView'],
@@ -286,5 +293,7 @@ const ppt = new PanelProperties;
 ppt.init('auto', properties);
 ppt.set('Image Pre-Load Images In Disk Cache', null);
 ppt.set('Image Root Collage', null);
+ppt.set('Image Show Index Number', null);
+ppt.set('Image Show Index Year Auto', null);
 ppt.set('Node [Squares]: Windows 0 or 1', null);
 properties = undefined;
