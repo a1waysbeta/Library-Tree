@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 	<html>
 	<head>
 
 	<meta http-equiv="x-ua-compatible" content="IE=8" />
-    <link rel="stylesheet" type="text/css" href="styles10.css">
-    <style type="text/css">
+	<link rel="stylesheet" type="text/css" href="styles10.css">
+	<style type="text/css">
 
 	body, html {height:100%; margin:0;}
 
-	.tablink {background-color:#e5e5e5; overflow:hidden; font:1em Arial;}
+	.tablink {background-color:#e5e5e5; overflow:hidden; font:1em Microsoft Yahei UI;}
 	.tablink a {margin:0; background-color:#555; color:white; text-align:center; float:left; border:none; border-bottom:1px solid #d0d0d0; outline:none; cursor:pointer; padding:0.31em 2px; width:13%;}
 	.tablink a:hover {padding:0.31em 2px; background-color:#777;}
 	.tablink a:focus {padding:0.31em 2px; background-color:#777;}
@@ -73,15 +73,15 @@
 	.div_text6 {padding:1.25em 0 0.31em;}
 	.div_text7 {padding:1.01em 0 0;}
 	.alignLeftH, .alignRightH, .div_text1, .div_text2, .div_text3, .div_text4, .div_text6, .div_text7 {
-		font:bold 1.15em Segoe UI; color:#0066cc; word-wrap:break-word; white-space:pre-wrap;
+		font:bold 1em Microsoft Yahei UI; color:#0066cc; word-wrap:break-word; white-space:pre-wrap;
 	}
 
 	.dropbtn {white-space:nowrap; width:100%; background-color:#3e8e41; color:white; text-decoration:none; padding:0.13em 5px; border:none; cursor:pointer;}
-	.dropbtnLight {white-space:nowrap; width:100%; background-color::#E8E8E8; color:black; text-decoration:none; padding:0.13em 5px; border:none; cursor:pointer;}
+	.dropbtnLight {white-space:nowrap; width:100%; color:black; text-decoration:none; padding:0.13em 5px; border:none; cursor:pointer;}
 	.dropbtn:after {font-family: FontAwesome; content: "\f107"; padding-left:0.5em; padding-right:0.19em;}
 	.dropbtnLight:after {font-family: FontAwesome; content: "\f107"; padding-left:0.5em; padding-right:0.19em;}
 	.dropdown {margin-top: 10px; position:static; display:inline-block;}
-	.dropdown-content {display:none; position:absolute; background-color:#f9f9f9; min-width:160px; box-shadow:0 8px 1.01em 0 rgba(0,0,0,0.2); z-index:1;}
+	.dropdown-content {display:none; position:absolute; background-color:#f9f9f9; min-width:10em; white-space:nowrap; box-shadow:0 8px 1.01em 0 rgba(0,0,0,0.2); z-index:1;}
 	.dropdown-content a {padding:0.13em 5px; color:black; text-decoration:none; display:block;}
 	.dropdown-content a:hover {background-color:#f1f1f1;}
 	.dropdown .dropdown-content {display:none;}
@@ -92,7 +92,7 @@
 	.stub {border:0; vertical-align:middle; margin-bottom:0.2em;}
 
 	table {width: 100%; text-align:center; border-collapse:collapse; border:1px solid Gainsboro; empty-cells:show;}
-	th {font:bold 100% Segoe UI; color:green; border:0;}
+	th {font:bold 95% Microsoft Yahei UI; color:green; border:0;}
 	td {padding-right:5px; border:0;}
 	tr {border:0;}
 	.table77 {width:76.5%;}
@@ -120,125 +120,125 @@
 	<body>
 		<div style="clear:both;"></div>
 		<div id="tablink" class="tablink">
-			<a onclick="openPage('views', this, 'red')" id="viewsCfg">Views</a>
-			<a onclick="openPage('filters', this, 'green')" id="filtersCfg">Filters</a>
-			<a onclick="openPage('behaviour', this, 'orange')" id="behaviourCfg">Behaviour</a>
-			<a onclick="openPage('display', this, 'blue')" id="displayCfg">Display</a>
-			<a onclick="openPage('albumArt', this, 'red')" id="albumArtCfg">Album Art</a>
-			<a onclick="openPage('custom', this, 'green')" id="customCfg">Custom</a>
-			<a onclick="openPage('advanced', this, 'orange')" id="advancedCfg">Advanced</a>
+			<a onclick="openPage('views', this, 'red')" id="viewsCfg">查看</a>
+			<a onclick="openPage('filters', this, 'green')" id="filtersCfg">过滤</a>
+			<a onclick="openPage('behaviour', this, 'orange')" id="behaviourCfg">行为</a>
+			<a onclick="openPage('display', this, 'blue')" id="displayCfg">显示</a>
+			<a onclick="openPage('albumArt', this, 'red')" id="albumArtCfg">专辑封面</a>
+			<a onclick="openPage('custom', this, 'green')" id="customCfg">自定义</a>
+			<a onclick="openPage('advanced', this, 'orange')" id="advancedCfg">高级</a>
 		</div>
 <div id="mainMargin">
 		<div style="clear:both;"></div>
 		<div id='views' class="tabcontent">	
-			<span class="alignLeftH">Name</span>
-			<span class="alignRightH">Pattern</span>
+			<span class="alignLeftH">名称</span>
+			<span class="alignRightH">模版</span>
 			<div style="clear:both;"></div>
 			<div id="view"></div>
 			<div class="info1">
-Selected items will be displayed in the menu.
+选定的项目将显示在菜单中。
 		</div>
-		<p "><a href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target=\"_blank\">Title format reference</a></p>
-		<button id="syntax_button" name="syntax_button" style="margin-left:0px;" type="button">Show Extended Syntax Help</button><div id="syntax_help" style="display: none;">
+		<p "><a href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target=\"_blank\">标题格式参考</a></p>
+		<button id="syntax_button" name="syntax_button" style="margin-left:0px;" type="button">显示扩展语法帮助</button><div id="syntax_help" style="display: none;">
 <table id="syntax" class="table98">
 <br>
 <colgroup>
 	<col span="1" style="width:20%">
 </colgroup>
 </table>
-<div class="info8" style="color:#0066cc;"><b>$colour{normal,hover,selected}</b></div>
+<div class="info8" style="color:#0066cc;"><b>$colour{正常,悬停,选定}</b></div>
 <div class="info7">
-Set different colours for parts of a line of text. All colours are optional: any undefined are set to default. Colours apply after the $colour code until either another $colour code is encountered or a splitter is reached (| or &#166 in the view pattern) or a reset code is reached: $colour{}
+为一行文本的不同内容设置不同的颜色。所有颜色都是可选的：任何未定义的颜色都设置为默认颜色。颜色在 $colour 代码之后应用，直到遇到另一个 $colour 代码或到达一个分隔符（查看模版中为 | 或 &#166）或到达一个重置代码：$colour{}
 
-Normal, hover & selected can either be r-g-b or a highlight or dim indicator, e.g.
-$colour{r-g-b,r-g-b,r-g-b} or $colour{-,++,+++}
+正常、悬停和选定可以是 r-g-b 或 亮、暗指标，例如：
+$colour{r-g-b,r-g-b,r-g-b} 或 $colour{-,++,+++}
 </div>
-<div class="info7" style="color:#0066cc;"><i>Hover effect requires that "Hover effect (foreground): Highlight text" is enabled (display tab).</i></div>
+<div class="info7" style="color:#0066cc;"><i>悬停效果要求启用 "悬停效果（前景）：高亮文本" （在显示标签页设置）。</i></div>
 <div class="info7">
-<i>Highlight & dim indicators:</i>
-- dim text
--- dimmer text
---- dimmest text
-+ bright text
-++ brighter text
-+++ brightest text
+<i>亮 & 暗指标：</i>
+- 暗文本
+-- 较暗文本
+--- 最暗文本
++ 亮文本
+++ 较亮文本
++++ 最亮文本
 
-Format, r-g-b & -/+ style, can be mixed in same $colour{} function.
+格式，r-g-b 和 -/+ 样式，可以在同一个 $colour{} 函数中混合。
 
-<i>Syntax examples:</i>
-$colour{} reset all colours to defaults.
-$colour{255-0-0} set normal text colour to red; set hover & selected text colours to defaults since undefined.
-$colour{,,+++} set selected text colour to brightest; set normal & hover text colours to defaults since undefined.
-$colour{0-255-0,++} set normal text colour to green & hover text colour to brighter; set selected text colour to default since undefined.
-$colour{255-0-0,0-255-0,0-255-255} set normal, hover and selected text colours to red, green & cyan, respectively.
+<i>语法示例：</i>
+$colour{} 重置所有颜色为默认值。
+$colour{255-0-0} 设置普通文本颜色为红色；设置悬停和选定文本颜色为默认值，因为未定义。
+$colour{,,+++} 设置选定文本颜色为最亮；设置正常和悬停文本颜色为默认值，因为未定义。
+$colour{0-255-0,++} 设置正常文本颜色为绿色，悬停文本颜色为较亮。设置选定文本颜色为默认值，因为未定义。
+$colour{255-0-0,0-255-0,0-255-255} 设置正常、悬停和选定文本颜色分别为红色、绿色和青色。
 
-<i>Example pattern:</i></div>
+<i>模版示例：</i></div>
 <div class="input_cnt3"><input class="input98" style="font:0.87em Segoe UI; border:none; background:none;" value="$colour{-}%artist%[$colour{+} - %album%][$colour{96-127-127} - '['%date%']'][$colour{111-132-138} - %genre%]$colour{--}|[$colour{--,++,0-192-192}%tracknumber%. ]$colour{-,++,0-228-228}%title%"/></div>
 <div class="info7">
-Item counts are a special case. They don't form part of the view pattern.
-Align right: drawn separately; not controlled by $colour codes; already dimmed.
-End of text: effected by $colour codes. Use $colour{} at the end of the line to reset or set to a different colour if desired ($colour{--} is used in the example above).
+项目计数是一种特殊情况。它们不构成查看模版的一部分。
+右对齐：单独绘制；不受 $colour 代码控制；已经变暗。
+文本结尾：由 $colour 代码设置。如果需要，在行尾使用 $colour{} 来重置或设置为不同颜色（在上面的示例中使用了 $colour{--}）。
 </div>
-<div class="info7" style="color:#0066cc;"><b>String limitation</b></div>
+<div class="info7" style="color:#0066cc;"><b>字符串限制</b></div>
 <div class="info7">
-$nodisplay & $colour are generally unsafe inside string manipulation functions that remove a part of a string or insert a substring by position. Instead, they should be put before the string function, e.g.
+$nodisplay & $colour 在字符串操作函数中通常是不安全的，这些函数会删除字符串的一部分或按位置插入子字符串。相反，它们应该放在字符串函数之前，例如：
 
-Use $colour{255-0-0}$substr(str,from,to). Don't use $substr($colour{255-0-0}str,from,to).
-Use $colour{0-255-0}$swapbranchprefix{%&ltartist&gt%}. Don't use $swapbranchprefix{$colour{0-255-0}%&ltartist&gt%}.
+使用 $colour{255-0-0}$substr(str,from,to)。不要使用 $substr($colour{255-0-0}str,from,to)。
+使用 $colour{0-255-0}$swapbranchprefix{%&ltartist&gt%}。不要使用 $swapbranchprefix{$colour{0-255-0}%&ltartist&gt%}。
 
 </div>
 		</div>
 		</div>
 		<div style="clear:both;"></div>
-		<div id='filters' class="tabcontent">		
-			<span class="alignLeftH">Name</span>
-			<span class="alignRightH">Query</span>
+		<div id='filters' class="tabcontent">
+			<span class="alignLeftH">名称</span>
+			<span class="alignRightH">查询</span>
 			<div style="clear:both;"></div>
 			<div id="filter"></div>
 			<div class="info1">
-Selected items will be displayed in the menu.
+选定的项目将显示在菜单中。
 		</div>
 		</div>
 		<div style="clear:both;"></div>
 		<div id="btn_cnt_right" class="btn_cnt"> 
-			<button id="btn_ok" >OK</button>
-			<button class="button_apply" id="btn_apply">Apply</button>
-			<button id="btn_cancel">Cancel</button>
+			<button id="btn_ok" >确定</button>
+			<button class="button_apply" id="btn_apply">应用</button>
+			<button id="btn_cancel">取消</button>
 		</div>
 		<div id="btn_cnt_left" class="btn_cnt">
-			<button id="btn_reset" >Reset all</button>
-			<button id="btn_resetPage" >Reset page</button>
+			<button id="btn_reset" >重置全部</button>
+			<button id="btn_resetPage" >重置页面</button>
 		</div>
 		<div id="btn_cnt_center" class="btn_cnt"> 
-			<button id="btn_add" >Add new</button>
-			<button id="btn_up" >Up</button>
-			<button id="btn_down" >Down</button>
-			<button id="btn_delete" >Delete</button>
+			<button id="btn_add" >新建</button>
+			<button id="btn_up" >上移</button>
+			<button id="btn_down" >下移</button>
+			<button id="btn_delete" >删除</button>
 		</div>
 
 		<div id="behaviour" class="tabcontent">
 		<div class="row">
 
 			<div class="column32" style="margin-right:1%;">
-				<div class="div_text1">Action</div>
-				<span class="info4"><b>Single-click:</b></span>
+				<div class="div_text1">操作</div>
+				<span class="info4"><b>单击：</b></span>
 				<span class="dropdown" style="margin-top:0"><a id="click_dropdown" class="dropbtnLight" href="#" onclick="toggle('click');"></a>
 				<span id="click" class="dropdown-content"></span>
 				</span>
 				<div style="clear:both;"></div>
-				<span class="info5"><b>Double-click:</b></span>
+				<span class="info5"><b>双击：</b></span>
 				<span class="dropdown" style="margin-top:0"><a id="dblClick_dropdown" class="dropbtnLight" href="#" onclick="toggle('dblClick');"></a>
 				<span id="dblClick" class="dropdown-content"></span>
 				</span>
 				<div style="clear:both;"></div>
-				<span class="info5"><b>Keystroke:</b></span>
+				<span class="info5"><b>按键：</b></span>
 				<span class="dropdown" style="margin-top:0"><a id="keystroke_dropdown" class="dropbtnLight" href="#" onclick="toggle('keystroke');"></a>
 				<span id="keystroke" class="dropdown-content"></span>
 				</span>
-				<div class="div_text6">Selection</div>
+				<div class="div_text6">选择</div>
 				<div id="selection"></div>
-				<div class="div_text2" style="margin-bottom:0.6em;">Scroll</div>
-				<span class="info3">Bar:</span>
+				<div class="div_text2" style="margin-bottom:0.6em;">滚动</div>
+				<span class="info3">滚动条：</span>
 				<span style="margin:0 0 0.31em;" class="dropdown"><a id="sbarShow_dropdown" class="dropbtn" href="#" onclick="toggle('sbarShow');"></a>
 				<span id="sbarShow" class="dropdown-content"></span>
 				</span>
@@ -255,25 +255,25 @@ Selected items will be displayed in the menu.
 			</div>
 			
 			<div class="column33">
-				<div class="div_text1">Search</div>
+				<div class="div_text1">搜索</div>
 				<span class="dropdown"><a id="search_dropdown" class="dropbtn" href="#" onclick="toggle('search');"></a>
 				<span id="search" class="dropdown-content"></span>
 				</span>
-				<div id="searchEnter" style="padding-top:0.5em;"></div>				
-				<div class="div_text2">Tree</div>
+				<div id="searchEnter" style="padding-top:0.5em;"></div>
+				<div class="div_text2">树型列表</div>
 				<div id="expand"></div>
 				<div id="expandLimit"></div>
-				<div class="div_text2">Remember state</div>
+				<div class="div_text2">记住状态</div>
 				<div id="remember"></div>
-				<div class="info9"><a id="setSize" style="text-decoration:none;" href="#" onclick="setWindowSize();return false;">Click to reset window size</a></div>				
+				<div class="info9"><a id="setSize" style="text-decoration:none;" href="#" onclick="setWindowSize();return false;">单击以重置窗口大小</a></div>
 			</div>
 
 			<div class="column33">
-				<div class="div_text1">Playlist</div>
+				<div class="div_text1">播放列表</div>
 				<div id="playlist"></div>
-				<div class="info4">Use %view_name% for name of current view</div>
+				<div class="info4">使用 %view_name% 可获取当前查看方式名称</div>
 				<div id="playlistSort"></div>
-				<div class="div_text4"><i>Target playlist:</i></div>
+				<div class="div_text4"><i>目标播放列表：</i></div>
 				<table id="targetPlaylist" class="table77">
 					<colgroup>
 						<col span="3" style="width:30%">
@@ -286,48 +286,48 @@ Selected items will be displayed in the menu.
 		<div id="display" class="tabcontent">
 		<div class="row">
 
-			<div class="column33">		
-				<div class="div_text1">Top bar</b></div>
+			<div class="column33">
+				<div class="div_text1">顶部栏</b></div>
 				<div id="bar"></div>
-				<div style="padding-right:10%;" class="info4"><i>*If hidden, right click over filter or icon. If all hidden, use menu.</i></div>
-				<div class="div_text2">Theme</div>
+				<div style="padding-right:10%;" class="info4"><i>*如果隐藏，请右键单击过滤器或图标。如果全部隐藏，请使用上下文菜单。</i></div>
+				<div class="div_text2">主题</div>
 				<span class="dropdown"><a id="theme_dropdown" class="dropbtn" href="#" onclick="toggle('themeBg');"></a>
 				<span id="themeBg" class="dropdown-content"></span>
 				</span>
 				<div id="themeStyle" style="padding-top:0.5em;"></div>
 				<div id="coverFormat"></div>
-			</div>				
+			</div>
 
 			<div class="column33">
-				<div class="div_text1">Root</div>
+				<div class="div_text1">根节点</div>
 				<span class="dropdown"><a id="root_dropdown" class="dropbtn" href="#" onclick="toggle('root');"></a>
 				<span id="root" class="dropdown-content"></span>
 				</span>
 				<div id="rootStyle" style="padding-top:0.5em;"></div>
-				<div class="div_text2">Node style</div>
+				<div class="div_text2">节点样式</div>
 				<span class="dropdown"><a id="node_dropdown" class="dropbtn" href="#" onclick="toggle('node');"></a>
 				<span id="node" class="dropdown-content"></span>
 				</span>
 				<div id="nodeLines" style="padding-top:0.5em;"></div>
-				<div class="div_text2">Item counts</div>
+				<div class="div_text2">项目计数和持续时间</div>
 				<span class="dropdown"><a id="itemCounts_dropdown" class="dropbtn" href="#" onclick="toggle('itemCounts');"></a>
 				<span id="itemCounts" class="dropdown-content"></span>
 				</span>
 				<div id="countsRight" style="padding-top:0.5em;"></div>
-				<div class="info5">
-<i>For best preview of nodes on 'Apply', display an expanded branch.</i></div>
+				<div class="info5"><i>为了在 “应用” 时对节点进行最佳预览，请显示一个展开的分支。</i></div>
 			</div>
 					
 			<div class="column33">
-				<div class="div_text1">Hover effect (background)</div>
+				<div class="div_text1">悬停效果（背景）</div>
 				<span class="dropdown"><a id="showHl_dropdown" class="dropbtn" href="#" onclick="toggle('showHl');"></a>
 				<span id="showHl" class="dropdown-content"></span>
 				</span>
-				<div class="div_text2">Hover effect (foreground)</div>
+				<div id="frameStyle" style="padding-top:0.5em;"></div>
+				<div class="div_text2">悬停效果（前景）</div>
 				<div id="showH2"></div>
-				<div class="div_text2">Show</div>
+				<div class="div_text2">显示</div>
 				<div id="show"></div>
-				<div class="div_text2">Layout metrics</div>
+				<div class="div_text2">布局度量</div>
 				<div class="row">
 				<div class="column38">
 				<div id="metrics1"></div>
@@ -345,22 +345,22 @@ Selected items will be displayed in the menu.
 		<div class="row">
 
 			<div class="column25">
-				<div class="div_text1">Labels</div>
+				<div class="div_text1">标签</div>
 				<div id="labels"></div>
 				<div id="flip"></div>
-				<div class="div_text2">Overlay</div>
+				<div class="div_text2">角标</div>
 				<span class="dropdown"><a id="overlay_dropdown" class="dropbtn" href="#" onclick="toggle('overlay');"></a>
 				<span id="overlay" class="dropdown-content"></span>
 				</span>
-				<div class="div_text1">Follow selection</div>
+				<div class="div_text1">跟随选择</div>
 				<div id="followCurrent"></div>
-				<div class="div_text2">Disk cache</div>
+				<div class="div_text2">磁盘缓存</div>
 				<div id="useCache"></div>
-				<button id="help_button" name="help_button" style="margin:2em 0 0;" type="button">Show Album Art Help</button>
+				<button id="help_button" name="help_button" style="margin:2em 0 0;" type="button">显示帮助</button>
 			</div>
 
 			<div class="column33">
-				<div class="div_text3">Style</div>
+				<div class="div_text3">样式</div>
 				<table id="imageFormat" class="table77">
 					<colgroup>
 						<col span="5" style="width:15%">
@@ -368,26 +368,26 @@ Selected items will be displayed in the menu.
 				</table>
 				<div class="row">
 				<div class="column50">
-				<div class="div_text7">Thumbnail padding</div>
+				<div class="div_text7">封面间距</div>
 				<div id="gap"></div>
-				<div style="padding:1.01em 0 0.31em;" class="div_text2">Flow mode</div>
+				<div style="padding:1.01em 0 0.31em;" class="div_text2">流动封面模式</div>
 				<div id="flowMode"></div>
 				</div>
 				<div class="column50">
-				<div id="thumbNailSize" class="div_text7">Thumbnail Size</div>
+				<div id="thumbNailSize" class="div_text7">封面大小</div>
 				<span class="dropdown"><a id="thumbSize_dropdown" class="dropbtn" href="#" onclick="toggle('thumbSize');"></a>
 				<span id="thumbSize" class="dropdown-content"></span>
 				</span>
-				<div class="div_text2">View</div>
+				<div class="div_text2">查看方式</div>
 				<div id="sameAsTree"></div>
 			</div>
 			</div>
-				<div class="div_text2">Index</div>
+				<div class="div_text2">索引</div>
 				<div id="indexLetter"></div>
 			</div>
 
 			<div class="column41">
-				<div class="div_text1">Stub</div>
+				<div class="div_text1">默认图像</div>
 				<span style="margin:0 0 0.31em;" class="dropdown"><a id="rootStub_dropdown" class="dropbtnLight" href="#" onclick="toggle('rootStub');"></a>
 				<span id="rootStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
 				</span>
@@ -397,57 +397,57 @@ Selected items will be displayed in the menu.
 				<span style="margin:1em 0 0.31em 0;" class="dropdown"><a id="noArtistStub_dropdown" class="dropbtnLight" href="#" onclick="toggle('noArtistStub');"></a>
 				<span id="noArtistStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
 				</span>
-				<div class="info5"><i>Click dropdown items for full preview (provided visible in panel).</i></div>
+				<div class="info5"><i>单击下拉项目进行完整预览（在面板中显示）。</i></div>
 			</div>
 		</div>
 			<div id="help_text" style="display: none;">
-			<div class="info5"><b>Cache</b></div>
+			<div class="info5"><b>缓存</b></div>
 			<div class="info5">
-Enable the disk cache for best performance. It contains resized images that facilitate faster loading and is built as images are initially loaded. Optimum performance will be achieved when the cache is fully built. If new images are obtained or images replaced, the cache copy can be refreshed from the refresh context menu item.
+启用磁盘缓存以获得最佳性能。它包含调整过的图像，便于更快地加载，并在图像最初加载时建立。当缓存完全建成后，将达到最佳性能。如果获得了新的图像或更换了图像，可以通过刷新上下文菜单项来刷新缓存副本。
 
-Optionally cached images can be preloaded in the background. Preloading completes shortly after initialisation. After that images should always show immediately on scrolling, subject to memory available.</div>
-			<div class="info5"><b>Image and text size</b></div><div class="info5"><ul><li>Image size: hold Ctrl+Alt+<i>Shift</i> & rotate the mouse wheel</li><li>Text and image size: hold Ctrl+Alt & rotate the mouse wheel</li><li>List style: set labels right and reduce image size as required (Quick Setup uses small size)</li><li>Flow mode operates in a single column or row (labels right & size options not available)</li></ul></div>
-			<div class="info5"><b>Image sources</b></div>
-			<div class="info5">Album art is loaded from the file sources defined at Preferences: Display, and embedded images. Stub images are set above.
-Artist photos: if biography is used to obtain photos, the pattern below can be entered. To get ...*YOUR PATH*..., use biography > sources > open file location > image. Copy the part required from the windows explorer address bar.</div>
+可以选择在后台预加载缓存的图像。预加载在初始化后不久完成。在此之后，根据可用内存，图像应始终在滚动时立即显示。</div>
+			<div class="info5"><b>图像和文本大小</b></div><div class="info5"><ul><li>图像大小：按住 Ctrl+Alt+Shift 并滚动鼠标滚轮</li><li>文本和图像大小：按住 Ctrl+Alt 并滚动鼠标滚轮</li><li>流动封面模式在单列或单行中运行（标签右侧和尺寸选项不可用）</li></ul></div>
+			<div class="info5"><b>图像来源</b></div>
+			<div class="info5">专辑封面从 “参数选项>显示” 中定义的文件来源和 “内嵌封面” 加载。默认图像设置在上面。
+艺术家图像：如果使用简介(biography)来获取照片，可以输入以下模版。要获取...*你的文件路径*...，请使用 简介(biography) > 来源(sources) > 打开文件位置(open file location) > 图像(image)。从 Windows 资源管理器地址栏中复制所需的部分。</div>
 			<div id="photoPath"></div>
-			<div class="info5"><b>Views</b></div>
-			<div class="info5">Any view can be used. The image loaded is that of the <i>first item in the group</i>, according to the type set (front cover, artist etc). Views starting with something like <i>%artist%|%album%... or %album artist%|%album%...</i> work well. Always use a full pattern so tracks etc sort properly. By default the number of group levels is automatically determined. Use of the same view for the tree and album art makes toggling between the two more straightforward. Since only one copy of the library is kept in memory, a library reload is also avoided.</div>
-			<div class="info5"><b>Follow selection</b></div>
-			<div class="info5">If enabled, the &quot;File>Preferences>Display>Selection viewers&quot; setting is used.</div>
-			<div class="info5"><b>Tree only mode</b></div>
-			<div class="info5">Switch off 'Show Album Art Options' on the display tab while in tree view. Album art loading, disk caching plus the album art tab and menu options are disabled. Switch the option back on to allow album art mode.</div>
+			<div class="info5"><b>查看</b></div>
+			<div class="info5">可以使用任何查看方式。根据设定的类型（封面、艺术家等），加载的图像是 <i>该组中第一个项目的图像</i>。查看方式模版以类似 <i>%artist%|%album%... 或 %album artist%|%album%...</i> 开始也可以。始终使用完整的模版，以便曲目等正确排序。默认情况下，分组的级别数是自动确定的。对树型视图和专辑封面视图使用相同的查看方式，使得在两者之间的切换更加直接。由于在内存中只保留一个媒体库的副本，因此也避免了媒体库的重新加载。</div>
+			<div class="info5"><b>跟随选择</b></div>
+			<div class="info5">如果启用，将使用 “文件>参数选项>显示>选择查看器” 设置。</div>
+			<div class="info5"><b>仅树型视图</b></div>
+			<div class="info5">在树型视图时，关闭 “面板设置>显示>显示>专辑封面选项”。专辑封面加载、磁盘缓存以及专辑封面标签页和菜单选项被禁用。重新打开该选项以允许专辑封面模式。</div>
 		</div>
 	</div>
 
 		<div id="custom" class="tabcontent">
 		<div class="row">
-			<div class="div_text1">Colours and fonts</div>
+			<div class="div_text1">颜色和字体</div>
 			<div class="info5">
-User interface or theme settings are used by default. Enable & configure custom items if required.
-Ctrl+alt+wheel over most items can also be used to change their size (album art additionally requires shift) [reset zoom: menu\refresh].</div>
+默认情况下使用用户界面或主题设置。如果需要，启用和配置自定义项目。
+Ctrl+Alt+滚轮 可用于更改大多数项目的大小（专辑封面另外需要 Shift 键）[重置缩放：菜单>刷新]。</div>
 			<div class="column50">
-				<div class="info2"><b>Fonts</b></div>
-				<div class="info5" style="margin-left:8.5%">Name,Size,Style(0-4)</div>
+				<div class="info2"><b>字体</b></div>
+				<div class="info5" style="margin-left:8.5%">名称，大小，字形(0-4)</div>
 				<div id="fonts"></div>
-				<div class="info5" style="margin-left:8.5%">Name,Style(0-4)</div>
+				<div class="info5" style="margin-left:8.5%">名称，字形(0-4)</div>
 				<div id="albumArtFonts"></div>
-				<div class="info6"><b>Colours (R,G,B):</b></div>
+				<div class="info6"><b>颜色 (R,G,B)：</b></div>
 				<div id="colours1"></div>
-				<p "><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool#ColorPicker_tool" target=\"_blank\">Colour picker</a></p>
+				<p "><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool#ColorPicker_tool" target=\"_blank\">颜色选择器</a></p>
 				<div class="info3">
-Selected colours and fonts will be used.
-Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
+将使用选定的颜色和字体。
+字体样式代码：0 常规、1 粗体、2 斜体、3 粗斜体、4 下划线
 		</div>
 			</div>
 			
 			<div class="column50">
-				<div class="info6"><b>Colours (R,G,B or R,G,B,A):</b></div>
+				<div class="info6"><b>颜色 (R,G,B 或 R,G,B,A)：</b></div>
 				<div id="colours2"></div>
 				<div class="info1">
-<i>Colours</i>: flexible entry, e.g. 255,0,0 or 0-255-0 or rgba(255,0,0,64)
-<i>Alpha</i>: 0-255 or 0-1 scale
-<i>Transparent</i>: main background N/A; transparent fill can be used
+颜色：灵活输入，例如 255,0,0 或 0-255-0 或 rgba(255,0,0,64)
+透明度： 0-255 或 0-1 范围内
+透明：主背景不适用；可以使用透明填充
 				</div>
 			</div>
 
@@ -457,30 +457,30 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 		<div id="advanced" class="tabcontent">
 		<div class="row">
 			<div class="column50">
-				<div class="div_text1">Scroll</div>
+				<div class="div_text1">滚动</div>
 				<div id="cusScroll"></div>
-				<div class="div_text1">Scrollbar</div>
+				<div class="div_text1">滚动条</div>
 				<div id="scrollbar"></div>
-				<div class="info5" style="padding-right:20%;"><i>Select custom scrollbar icon in 'Behaviour Tab' under 'Scroll: Arrows' (N/A if windows scrollbar set). Set custom node icon in 'Display Tab' under 'Node style'. Ensure icons are supported by fonts.</i></div>
+				<div class="info5" style="padding-right:20%;"><i>在 “面板设置>行为>滚动>箭头” 下选择自定义滚动条图标（如果设置了 Windows 滚动条，则不适用）。在 “面板设置>显示>节点样式” 下设置自定义节点图标。确保字体支持图标。</i></div>
 			</div>
 					
 			<div class="column50">
-				<div class="div_text1">Node</div>
+				<div class="div_text1">节点</div>
 				<div id="cusNode"></div>
-				<div class="info5" style="padding-right:10%;"><i>Windows nodes do not support colours or hover effects.</i></div>
-				<div class="div_text1">Theme blur</div>
+				<div class="info5" style="padding-right:10%;"><i>Windows 节点不支持颜色或悬停效果。</i></div>
+				<div class="div_text1">主题模糊</div>
 				<div id="themeBlur"></div>
-				<div class="div_text1">Library</div>
+				<div class="div_text1">媒体库</div>
 				<div id="load"></div>
 				<div id="prefixes"></div>
-				<div class="div_text1">Minimise on root collapse</div>
+				<div class="div_text1">根节点折叠时最小化</div>
 				<div id="mode"></div>
 				<div id="modeInput"></div>
-				<div class="info5"><i>Requires a panel above or below library tree. N/A with panel stack splitter or if root node displayed in line.</i></div>
+				<div class="info5"><i>需要在 Library Tree 的上方或下方有一个面板。不适用于 面板栈分离器 或 根节点与子节点同列显示。</i></div>
 		</div>
 
 		</div>
-		</div>	
+		</div>
 	</div>
 	<div id="div" style="height:0; width:0;outline:none; border:none; padding:none; margin:none; box-sizing:content-box;"></div>
 		<script>
@@ -502,7 +502,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				top = (screen.height - window_h) / 2;
 				window.resizeTo(window_w, window_h);
 				window.moveTo(left, top);
-				height = document.documentElement.clientHeight || document.body.clientHeight;	
+				height = document.documentElement.clientHeight || document.body.clientHeight;
 			}
 
 			function openPage(pageName,elmnt,color) {
@@ -684,7 +684,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 
 			if (parsed_args) {
 				cur = JSON.parse(parsed_args[2]);
-				document.title = 'Panel Settings';
+				document.title = '面板设置';
 				cfg = JSON.parse(parsed_args[0]);
 				ppt = JSON.parse(parsed_args[1]);
 				cbox_h = Math.round(Math.max(em, 13));
@@ -695,7 +695,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				if (cur.w == cur.def_w) window_w = Math.min(window_w, screen.width * 0.67);
 				if (cur.h == cur.def_h) window_h = Math.min(window_h, screen.height * 0.85);
 				left = (screen.width - window_w) / 2;
-				top = (screen.height - window_h) / 2;		
+				top = (screen.height - window_h) / 2;
 				window.resizeTo(window_w, window_h);
 				window.moveTo(left, top);
 				height = document.documentElement.clientHeight || document.body.clientHeight;
@@ -704,50 +704,50 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				checkWindowDefaultSize();
 				document.getElementById(cur.page + 'Cfg').click();
 
-				var albumArtGapLabels = ['Normal (0 = auto)', 'Compact'];
-				var albumArtLabels = ['None', 'Bottom', 'Right', 'Blend', 'Dark', 'Flip'];
-				var albumArtOverlayLabels = ['None', 'Track Count', 'Year'];
-				var barLabels = ['Search', 'Filter Button', 'Settings button*'];
-				var clickLabels = ['Select', 'Send to playlist', 'Send to playlist & play', 'Send to playlist & play [add if playing]'];
-				var colourLabels = ['Text', 'Text highlight', 'Text selection', 'Text nowplaying highlight', 'Text search', 'Buttons', 'Background', 'Background accent', 'Background selection', 'Frame hover', 'Frame selection', 'Item counts', 'Node collapse', 'Node expand', 'Node hover', 'Node lines', 'Separators', 'Side marker', 'Transparent fill'];
-				var coverFormatLabels = ['Cover auto-fill', 'Cover opacity (%)'];
-				var cusNodeLabels = ['Custom icon expand|collapse', 'Custom icon font name', 'Custom icon padding (+/-)', 'Square nodes: use windows'];
-				var cusScrollLabels = ['Step (0 = page)', 'Smooth duration max (ms)', 'Touch duration max (ms)', 'Touch sensitivity 0-10'];
-				var dblClickLabels = ['Send to playlist', 'Send to playlist & play', 'Expand / collapse (tree)'];
-				var diskCacheLabels = ['Enable', 'Preload cached images']
-				var followCurrentLabels = ['Standard mode', 'Flow mode'];
-				var fontLabels = ['Main', 'Album art line 1', 'Album art line 2'];
-				var highLightLabels = ['None', 'Side marker', 'Accent', 'Frame', 'Always pointer (no hand)', 'Highlight nodes', 'Highlight text'];
-				var indexLetterLabels = ['Show on scrollbar drag', 'Default number of characters', 'Show 4 digits if leading %date% detected'];
-				var keystrokeLabels = ['Select', 'Send to playlist']
-				var itemCountsLabels = ['Hide', '# Tracks', '# Sub-items', 'Align right'];
-				var metricsLabels = ['Margin', 'Tree indent', 'Line padding tree', 'Line padding album art', 'Side marker width (0 = auto)'];
-				var nodeLabels = ['Squares', 'Arrows', 'Angles', 'Triangles', 'Signs', 'Custom'];
-				var playlistLabels = ['Default', 'Activate when changed'];
-				var playlistSortLabels = ['Playlist sort order (empty = default)'];				
-				var rememberLabels = ['On exit', 'All views'];
-				var rootLabels = ['Hide', 'All Music', 'View name', 'Summary item', 'Display in line (tree)', 'Show source'];
-				var sbarColLabels = ['Grey', 'Blend'];
-				var sbarIconLabels = ['Arrows', 'Triangles', 'Custom'];
-				var sbarShowLabels = ['Hide', 'Auto', 'Show'];
-				var sbarTypeLabels = ['Default', 'Styled', 'Windows'];
-				var scrollbarLabels = ['Bar Width', 'Narrow bar width (0 = auto)', 'Arrow width', 'Arrow padding (+/-)', 'Grip min height', 'Custom icon', 'Custom icon font name', 'Custom icon offset (%)', 'Prefer full height scrollbar'];								
-				var scrollLabels = ['Use windows metrics', 'Smooth scroll', 'Touch control'];
-				var selectionLabels = ['Full line', 'Play on enter or send from menu'];
-				var searchLabels = ['Search only', 'Send results to playlist on enter','Auto-send results to playlist', 'Require enter to search'];
-				var showLabels = ['Row stripes', 'Nowplaying in highlight', 'Album art options', 'List view (tree)', 'Tracks (tree)'];				
-				var tfInput = ['Library View'];
-				var themeLabels = ['User interface', 'Dark', 'Blend', 'Light', 'Random', 'Cover', 'Swap colours'];
-				var themeBlurLabels = ['Auto-fill', 'Level (%)', 'Opacity (%)', '%'];
+				var albumArtGapLabels = ['正常 (0 = 自动)', '紧凑'];
+				var albumArtLabels = ['无', '底部', '右侧', '叠加', '深色', '翻转'];
+				var albumArtOverlayLabels = ['无', '音轨计数', '年份'];
+				var barLabels = ['搜索', '过滤按钮', '设置按钮*'];
+				var clickLabels = ['选择', '发送到播放列表', '发送到播放列表并播放', '发送到播放列表并播放 [添加，如果正在播放]'];
+				var colourLabels = ['文本', '高亮文本', '选定文本', '正在播放项高亮文本', '搜索文本', '按钮', '背景', '突出背景', '选定背景', '悬停边框', '选定边框', '项目计数', '折叠节点', '展开节点', '悬停节点', '节点线', '分隔符', '侧标', '透明填充'];
+				var coverFormatLabels = ['封面自动填充', '封面不透明度 (%)'];
+				var cusNodeLabels = ['自定义展开|折叠图标', '自定义图标字体名称', '自定义图标填充 (+/-)', '方形节点：使用 Windows']
+				var cusScrollLabels = ['行数 (0 = 页面)', '最大平滑持续时间（毫秒）', '最大触摸持续时间（毫秒）', '触摸灵敏度 0-10'];
+				var dblClickLabels = ['发送到播放列表', '发送到播放列表并播放', '展开/折叠（树型视图）'];
+				var diskCacheLabels = ['启用', '预加载缓存的图像']
+				var followCurrentLabels = ['标准模式', '流动封面模式'];
+				var fontLabels = ['主要', '专辑封面分组第1行', '专辑封面分组第2行', '专辑封面分组持续时间行'];
+				var highLightLabels = ['无', '侧标', '突出', '边框', '始终指针（无手形形状）', '高亮节点', '高亮文本'];
+				// var indexLetterLabels = ['拖动滚动条时显示', '默认字符数', '如果查看模版前端检测到 %date%，则显示 4 位数字'];
+				var keystrokeLabels = ['选择', '发送到播放列表']
+				var itemCountsLabels = ['隐藏', '# 音轨', '# 子项', '右对齐（树型视图）', '显示持续时间'];
+				var metricsLabels = ['边距', '树型缩进', '树型视图行填充', '专辑封面视图行填充', '侧标宽度（0 = 自动）'];
+				var nodeLabels = ['方形', '箭头', '箭头（细）', '三角', '三角（细）', '加减', '自定义'];
+				var playlistLabels = ['默认', '改变时激活'];
+				var playlistSortLabels = ['播放列表的排序顺序（空 = 默认）'];
+				var rememberLabels = ['退出时', '所有视图'];
+				var rootLabels = ['隐藏', '所有音乐', '查看方式', '摘要项目', '与子节点同列显示（树型视图）', '显示来源名称'];
+				var sbarColLabels = ['灰色', '混合'];
+				var sbarIconLabels = ['箭头', '三角', '自定义'];
+				var sbarShowLabels = ['隐藏', '自动', '显示'];
+				var sbarTypeLabels = ['默认', '风格', 'Windows'];
+				var scrollbarLabels = ['滑块宽度', '滑道宽度（0 = 自动）', '箭头宽度', '箭头填充 (+/-)', '滑块最小高度', '自定义图标', '自定义图标字体名称', '自定义图标偏移 (%)', '首选全高滚动条'];
+				var scrollLabels = ['使用 Windows 指标', '平滑滚动', '触摸控制'];
+				var selectionLabels = ['整行', '按 Enter 键或右键菜单发送到列表后自动播放'];
+				var searchLabels = ['仅搜索', '按 Enter 键将结果发送到播放列表','自动将结果发送到播放列表', '按 Enter 键开始搜索'];
+				var showLabels = ['条纹背景', '高亮正在播放项', '专辑封面选项', '列表视图（树型）', '音轨（树型）'];
+				var tfInput = ['媒体库查看'];
+				var themeLabels = ['用户界面', '深色', '混合', '浅色', '随机', '封面', '交换颜色'];
+				var themeBlurLabels = ['自动填充', '级别 (%)', '不透明度 (%)', '%'];
 				var thumbNailGapLabels = ['Thumbnail gap'];
-				var thumbnailSizeLabels = ['Small', 'Regular', 'Medium', 'Large'];
-				var treeLabels = ['Auto-collapse', 'Expand single items', 'Expand if # tracks less than:'];	
-				var loadLabels = ['Auto-sync with library changes', 'Prefixes to strip or swap (| separator)']
-				var modeLabels = ['Max height', 'Min height', 'Limit menu expand: 10-6000'];
+				var thumbnailSizeLabels = ['迷你', '小', '常规', '中', '大'];
+				var treeLabels = ['自动折叠', '展开单个项目', '展开，如果音轨计数小于：'];
+				var loadLabels = ['自动同步媒体库变化', '删除或后移的前缀（| 分隔符）']
+				var modeLabels = ['最大高度', '最小高度', 'Limit menu expand: 10-6000'];
 				
 				function setNodeLabels() {
-					nodeLabels[0] = !ppt['winNode_internal'].value ? 'Squares' : 'Squares (windows)';
-					if (ppt['nodeStyle_internal'].value == 0 || ppt['nodeStyle_internal'].value == 6) window.node_dropdown.innerHTML = nodeLabels[0];
+					nodeLabels[0] = !ppt['winNode_internal'].value ? '方形' : '方形 (Windows)';
+					if (ppt['nodeStyle_internal'].value == 0 || ppt['nodeStyle_internal'].value == 7) window.node_dropdown.innerHTML = nodeLabels[0];
 					window.nodeNo0.innerHTML = nodeLabels[0];
 				}
 
@@ -762,12 +762,12 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 						
 					},
 					albumArt: {
-						name: ['thumbNailGapStnd', 'thumbNailGapCompact', 'albumArtLetterNo'],
-						type: ['int', 'int', 'int']
+						name: ['thumbNailGapStnd', 'thumbNailGapCompact'],
+						type: ['int', 'int']
 					},
 					custom: {
-						name: ['custFont', 'custAlbumArtGrpFont', 'custAlbumArtLotFont', 'text', 'text_h', 'textSel', 'nowp', 'search', 'txt_box', 'bg', 'bg_h', 'bgSel', 'frame', 'bgSelframe', 'counts', 'icon_c', 'icon_e', 'icon_h', 'line', 's_line', 'sideMarker', 'bgTrans'],
-						type : ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']
+						name: ['custFont', 'custAlbumArtGrpFont', 'custAlbumArtLotFont', 'custAlbumArtDurFont', 'text', 'text_h', 'textSel', 'nowp', 'search', 'txt_box', 'bg', 'bg_h', 'bgSel', 'frame', 'bgSelframe', 'counts', 'icon_c', 'icon_e', 'icon_h', 'line', 's_line', 'sideMarker', 'bgTrans'],
+						type : ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']
 					},
 					advanced: {
 						name: ['scrollStep', 'durationScroll', 'durationTouchFlick', 'flickDistance', 'sbarWidth', 'narrowSbarWidth', 'sbarArrowWidth', 'sbarPad', 'sbarGripHeight', 'arrowSymbol', 'butCustIconFont', 'sbarButPad', 'iconCustom', 'custIconFont', 'iconVerticalPad', 'blurTemp', 'blurAlpha','prefix', 'pn_h_max', 'pn_h_min', 'treeExpandLimit'],
@@ -779,9 +779,9 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				input.all.type = input.behaviour.type.concat(input.display.type, input.albumArt.type, input.custom.type, input.advanced.type);
 				var box = {
 					behaviour: ['fullLineSelection', 'autoPlay', 'sbarWinMetrics', 'smooth', 'touchControl', 'searchEnter', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'activateOnChange'],
-					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'inlineRoot', 'showSource', 'nodeLines', 'countsRight', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'albumArtOptionsShow', 'treeListView', 'showTracks'],
-					albumArt: ['albumArtFlipLabels', 'stndModeFollowSelection', 'flowModeFollowSelection', 'albumArtDiskCache', 'albumArtPreLoad', 'albumArtFlowMode', 'artTreeSameView', 'albumArtLetter', 'albumArtYearAuto'],
-					custom: ['custFontUse', 'custAlbumArtGrpFontUse', 'custAlbumArtLotFontUse', 'textUse', 'text_hUse', 'textSelUse', 'nowpUse', 'searchUse', 'txt_boxUse', 'bgUse', 'bg_hUse', 'bgSelUse', 'frameUse', 'bgSelframeUse', 'countsUse', 'icon_cUse', 'icon_eUse', 'icon_hUse', 'lineUse', 's_lineUse', 'sideMarkerUse', 'bgTransUse'],
+					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'inlineRoot', 'showSource', 'nodeLines', 'countsRight', 'itemShowDuration', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'albumArtOptionsShow', 'treeListView', 'showTracks'],
+					albumArt: ['albumArtFlipLabels', 'stndModeFollowSelection', 'flowModeFollowSelection', 'albumArtDiskCache', 'albumArtPreLoad', 'albumArtFlowMode', 'artTreeSameView', 'albumArtLetter'],
+					custom: ['custFontUse', 'custAlbumArtGrpFontUse', 'custAlbumArtLotFontUse', 'custAlbumArtDurFontUse', 'textUse', 'text_hUse', 'textSelUse', 'nowpUse', 'searchUse', 'txt_boxUse', 'bgUse', 'bg_hUse', 'bgSelUse', 'frameUse', 'bgSelframeUse', 'countsUse', 'icon_cUse', 'icon_eUse', 'icon_hUse', 'lineUse', 's_lineUse', 'sideMarkerUse', 'bgTransUse'],
 					advanced: ['sbarFullHeight', 'winNode', 'blurAutofill', 'libAutoSync', 'pn_h_auto']
 				}
 				box.all = box.behaviour.concat(box.display, box.albumArt, box.custom, box.advanced);
@@ -795,7 +795,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					custom: [],
 					advanced: []
 				}
-				radio.all = radio.behaviour.concat(radio.behaviour, radio.display, radio.albumArt);
+				radio.all = radio.behaviour.concat(radio.behaviour, radio.albumArt);
 				callback = parsed_args[3];
 				props_callback = parsed_args[4];
 
@@ -826,21 +826,21 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				}
 				
 				function setRootImage(n) {
-					window.rootStub_dropdown.innerHTML = '<b>Root:</b> <img src="'+rootStubLabels[n].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+rootStubLabels[n].name+'<';
+					window.rootStub_dropdown.innerHTML = '<b>所有音乐:</b> <img src="'+rootStubLabels[n].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+rootStubLabels[n].name+'<';
 					ppt.curRootImg_internal.value = n;
 					btn_apply.onclick();
 					window.rootStub.style.display = 'none';
 				}
 				
 				function setNoArtistImage(n) {
-					window.noArtistStub_dropdown.innerHTML = '<b>No artist:</b> <img src="'+noArtistStubLabels[n].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noArtistStubLabels[n].name+'<';
+					window.noArtistStub_dropdown.innerHTML = '<b>无艺术家:</b> <img src="'+noArtistStubLabels[n].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noArtistStubLabels[n].name+'<';
 					ppt.curNoArtistImg_internal.value = n;
 					btn_apply.onclick();
 					window.noArtistStub.style.display = 'none';
 				}
 
 				function setNoCoverImage(n) {
-					window.noCoverStub_dropdown.innerHTML = '<b>No cover:</b> <img src="'+noCoverStubLabels[n].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noCoverStubLabels[n].name+'<';
+					window.noCoverStub_dropdown.innerHTML = '<b>无封面:</b> <img src="'+noCoverStubLabels[n].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noCoverStubLabels[n].name+'<';
 					ppt.curNoCoverImg_internal.value = n;
 					btn_apply.onclick();
 					window.noCoverStub.style.display = 'none';
@@ -922,9 +922,9 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					var columnCount = 0;
 					switch (id) {
 						case 'imageFormat':
-							var headers = ['Front', 'Back', 'Disc', 'Icon', 'Artist', ''];
+							var headers = ['封面', '封底', '碟片', '图标', '艺术家', ''];
 							cells.push(headers);
-							var radioLabels = ['Regular', 'Auto-Fill', 'Circular'];
+							var radioLabels = ['常规', '自动填充', '圆形'];
 							var items = [];
 							for (j = 0; j < 3; j++) {
 								items[j] = [];
@@ -941,17 +941,17 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 							columnCount = 6;
 						break;
 						case 'syntax':
-							var headers = ['Syntax', 'Use\u00A0In\u00A0\u00A0\u00A0', 'Description'];
+							var headers = ['语法', '用于', '解释'];
 							cells.push(headers);
 							var labels = [
-							['%&ltfield&gt%', 'Views', 'Split multiple values into separate items, e.g. use %&ltartist&gt%'],
-							['$stripbranchprefix{%&ltfield&gt%}', 'Views', 'Same as above, additionally removes prefixes (like leading "The" or "A") from each value, e.g. use $stripbranchprefix{%&ltartist&gt%}'],
-							['$swapbranchprefix{%&ltfield&gt%}', 'Views', 'Same as above, additionally moves prefixes (like leading "The" or "A") to end of each value, e.g. use $swapbranchprefix{%&ltartist&gt%}'],
-							['%field1%&#166%field2%&#166...', 'Views', '&#166 combines different fields into the same branch level, e.g. use %album artist%&#166%artist% or %&ltalbum artist&gt%&#166%&ltartist&gt%.'],
-							['$nodisplay{X}', 'Views', "Sorts & groups by X without display of X, e.g. the following sorts latest albums first & displays the date.<br><input class='input75' style='font:1em Segoe UI; border:none; background:none;' value='%artist%|$nodisplay{$sub(99999,%date%)}%album%[ &#39[&#39%date%&#39]&#39]|%tracknumber%. %title%'/>"],
-							['$nowplaying{X}', 'Filters', 'Returns value of X for the playing track, e.g. artist IS $nowplaying{$meta(artist,0)} Tree displays tracks by nowplaying artist.'],
-							['$searchtext', 'Filters', 'Returns search text, e.g. query "genre HAS $searchtext" with search text "rock" yields filter "genre HAS rock"'],
-							['$colour{normal,hover,selected}', 'Views', 'Set different colours for parts of a line of text, see below for more info.']				
+							['%&ltfield&gt%', '查看', '将多个值拆分为单独的项目，例如：使用 %&ltartist&gt%'],
+							['$stripbranchprefix{%&ltfield&gt%}', '查看', '与上述相同，还会从每个值中删除前缀（如 "The" 或 "A"），例如：使用 $stripbranchprefix{%&ltartist&gt%}'],
+							['$swapbranchprefix{%&ltfield&gt%}', '查看', '与上述相同，还会将前缀（如 "The" 或 "A"）移动到每个值的末尾，例如：使用 $swapbranchprefix{%&ltartist&gt%}'],
+							['%field1%&#166%field2%&#166...', '查看', '&#166 将不同的字段合并到同一个分支级别，例如：使用 %album artist%&#166%artist% 或 %&ltalbum artist&gt%&#166%&ltartist&gt%'],
+							['$nodisplay{X}', '查看', "按 X 排序和分组而不显示 X，例如：以下排序最新专辑优先并显示日期。<br><input class='input75' style='font:1em Segoe UI; border:none; background:none;' value='%artist%|$nodisplay{$sub(99999,%date%)}%album%[ &#39[&#39%date%&#39]&#39]|%tracknumber%. %title%'/>"],
+							['$nowplaying{X}', '过滤', '返回正在播放项的 X 的值，例如：artist IS $nowplaying{$meta(artist,0)} 树按正在播放项的艺术家显示曲目。'],
+							['$searchtext', '过滤', '返回搜索文本，例如：过滤器输入："genre HAS $searchtext"，然后在搜索框中输入 "rock"，生成查询 "genre HAS rock"'],
+							['$colour{normal,hover,selected}', '查看', '为一行文本的不同内容设置不同的颜色，更多信息见下文。']
 							];
 							var items = [];
 							for (j = 0; j < 7; j++) {
@@ -985,9 +985,9 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 							columnCount = 5;
 							break;
 						case 'targetPlaylist':
-							headers = ['Send', 'Add<br>Alt+Click</br>', 'Add<br>Middle&nbspClick</br>', ''];
+							headers = ['发送', '添加<br>Alt + 左键</br>', '添加<br>单击中键</br>', ''];
 							cells.push(headers);
-							var labels = ['Default', 'Current', ''];
+							var labels = ['默认列表', '当前列表', ''];
 							var items = [];
 							for (j = 0; j < 2; j++) {
 								items[j] = [];
@@ -996,7 +996,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 									var id = n + j; 
 									items[j].push('<input id="'+id+'" name="'+n+'" style="'+cbox+'" type="radio" />');
 									if (i == 2) {
-										items[j].push('<div style="padding-left:0.46em; text-align:left">'+labels[j]+'</div>');
+										items[j].push('<div style="padding-left:0.46em; padding-right:0.46em; text-align:center; white-space:nowrap">'+labels[j]+'</div>');
 										cells.push(items[j]);
 									}
 								}
@@ -1106,16 +1106,17 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					i = 4; window.rootStyle.insertAdjacentHTML('beforeend', '<div><input id="root_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="root_checkbox'+i+'" class="checkbox_label">'+rootLabels[i]+'</label></div>');
 					i = 5; window.rootStyle.insertAdjacentHTML('beforeend', '<div><input id="root_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="root_checkbox'+i+'" class="checkbox_label">'+rootLabels[i]+'</label></div>');
 
-					window.node_dropdown.innerHTML = ppt['nodeStyle_internal'].value != 6 ? nodeLabels[ppt['nodeStyle_internal'].value] : 'Squares (windows)';
-					for (i = 0; i < 6; i++) {window.node.insertAdjacentHTML('beforeend', '<a id="nodeNo'+i+'" onclick="setNode(' + i + ');">'+nodeLabels[i]+'</a>');}
-					i = 6; window.nodeLines.insertAdjacentHTML('beforeend', '<div><input id="node_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="node_checkbox'+i+'" class="checkbox_label">Show lines (squares only)</label></div>');
+					window.node_dropdown.innerHTML = ppt['nodeStyle_internal'].value != 7 ? nodeLabels[ppt['nodeStyle_internal'].value] : '方形 (Windows)';
+					for (i = 0; i < 7; i++) {window.node.insertAdjacentHTML('beforeend', '<a id="nodeNo'+i+'" onclick="setNode(' + i + ');">'+nodeLabels[i]+'</a>');}
+					i = 7; window.nodeLines.insertAdjacentHTML('beforeend', '<div><input id="node_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="node_checkbox'+i+'" class="checkbox_label">显示线条（仅限方形）</label></div>');
 
 					window.itemCounts_dropdown.innerHTML = itemCountsLabels[ppt['nodeCounts_internal'].value];
 					for (i = 0; i < 3; i++) {window.itemCounts.insertAdjacentHTML('beforeend', '<a onclick="setItemCounts(' + i + ');">'+itemCountsLabels[i]+'</a>');}
-					i = 3; window.countsRight.insertAdjacentHTML('beforeend', '<div><input id="itemCounts_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="itemCounts_checkbox'+i+'" class="checkbox_label">'+itemCountsLabels[i]+'</label></div>');
+					for (i = 3; i < 5; i++) {window.countsRight.insertAdjacentHTML('beforeend', '<div><input id="itemCounts_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="itemCounts_checkbox'+i+'" class="checkbox_label">'+itemCountsLabels[i]+'</label></div>');}
 					
 					window.showHl_dropdown.innerHTML = highLightLabels[ppt['highLightRow_internal'].value];
 					for (i = 0; i < 4; i++) {window.showHl.insertAdjacentHTML('beforeend', '<a onclick="setHoverBg(' + i + ');">'+highLightLabels[i]+'</a>');}
+					i = 0; window.frameStyle.insertAdjacentHTML('beforeend', '<div><input id="frame_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="frame_checkbox'+i+'" class="checkbox_label">边框样式（专辑封面）：图像边框</label></div>');
 					for (i = 4; i < 7; i++) {window.showH2.insertAdjacentHTML('beforeend', '<div><input id="showH2_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="showH2_checkbox'+i+'" class="checkbox_label">'+highLightLabels[i]+'</label></div>');}
 					for (i = 0; i < 5; i++) {window.show.insertAdjacentHTML('beforeend', '<div><input id="show_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="show_checkbox'+i+'" class="checkbox_label">'+showLabels[i]+'</label></div>');}
 				}
@@ -1138,28 +1139,28 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 
 					for (i = 0; i < 2; i++) {window.followCurrent.insertAdjacentHTML('beforeend', '<div><input id="selection_checkbox'+i+'" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="selection_checkbox'+i+'" class="checkbox_label">'+followCurrentLabels[i]+'</label></div>');}
 					for (i = 0; i < 2; i++) {window.useCache.insertAdjacentHTML('beforeend', '<div><input id="cache_checkbox" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="cache_checkbox" class="checkbox_label">'+diskCacheLabels[i]+'</label></div>');}
-					var pth = '...*YOUR PATH*...\\art_img\\$cut(%artist%,1)\\%artist%\\*    [CHANGE ...*YOUR PATH*... as required; pattern assumes biography is saving to default folder]';
+					var pth = '...*你的文件路径*...\\art_img\\$cut(%artist%,1)\\%artist%\\*    [根据需要改变 *你的文件路径*；模版假设简介(biography)保存在默认位置]';
 					window.photoPath.insertAdjacentHTML('beforeend', '<div class="input_cnt1" id="view_cnt_photoPath"><input name="photoPath_view" class="input98" readonly value="'+pth+'" /></div>')
 
-					window.rootStub_dropdown.innerHTML = '<b>Root:</b> <img src="'+rootStubLabels[root_ix].path +'" alt="'+rootStubLabels[root_ix].name+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+rootStubLabels[root_ix].name+'<';
+					window.rootStub_dropdown.innerHTML = '<b>所有音乐:</b> <img src="'+rootStubLabels[root_ix].path +'" alt="'+rootStubLabels[root_ix].name+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+rootStubLabels[root_ix].name+'<';
 					for (i = 0; i < rootStubLabels.length; i++) {window.rootStub.insertAdjacentHTML('beforeend', '<a onclick="setRootImage(' + i + ');"> <img src="'+rootStubLabels[i].path+'" alt="'+rootStubLabels[i].name+'" width="'+ em +'" height="'+ em +'" style="vertical-align:middle;"/> '+rootStubLabels[i].name+'</a>');}
 					
-					window.noArtistStub_dropdown.innerHTML = '<b>No artist:</b> <img src="'+noArtistStubLabels[noart_ix].path +'" alt="'+noArtistStubLabels[noart_ix].name+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noArtistStubLabels[noart_ix].name+'<';
+					window.noArtistStub_dropdown.innerHTML = '<b>无艺术家:</b> <img src="'+noArtistStubLabels[noart_ix].path +'" alt="'+noArtistStubLabels[noart_ix].name+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noArtistStubLabels[noart_ix].name+'<';
 					for (i = 0; i < noArtistStubLabels.length; i++) {window.noArtistStub.insertAdjacentHTML('beforeend', '<a onclick="setNoArtistImage(' + i + ');"> <img src="'+noArtistStubLabels[i].path+'" alt="'+noArtistStubLabels[i].name+'" width="'+ em +'" height="'+ em +'" style="vertical-align:middle;"/> '+noArtistStubLabels[i].name+'</a>');}
 
-					window.noCoverStub_dropdown.innerHTML = '<b>No cover:</b> <img src="'+noCoverStubLabels[nocov_ix].path +'" alt="'+noCoverStubLabels[nocov_ix].name+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noCoverStubLabels[nocov_ix].name+'<';
+					window.noCoverStub_dropdown.innerHTML = '<b>无封面:</b> <img src="'+noCoverStubLabels[nocov_ix].path +'" alt="'+noCoverStubLabels[nocov_ix].name+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noCoverStubLabels[nocov_ix].name+'<';
 					for (i = 0; i < noCoverStubLabels.length; i++) {window.noCoverStub.insertAdjacentHTML('beforeend', '<a onclick="setNoCoverImage(' + i + ');"> <img src="'+noCoverStubLabels[i].path+'" alt="'+noCoverStubLabels[i].name+'" width="'+ em +'" height="'+ em +'" style="vertical-align:middle;"/> '+noCoverStubLabels[i].name+'</a>');}
 					generateTable('imageFormat');
 					for (i = 0; i < 2; i++) {window.gap.insertAdjacentHTML('beforeend', '<div class="input_cnt3"><input id="gap_container'+i+'" name="albumart_input" style="padding:0; margin:0;" class="input15" /><label for="gap_container'+i+'" class="inp_label2">'+albumArtGapLabels[i]+'</label></div>');}
-					window.flowMode.insertAdjacentHTML('beforeend', '<div><input id="flowMode_checkbox" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="flowMode_checkbox" class="checkbox_label">Enable</label></div>');
-					window.sameAsTree.insertAdjacentHTML('beforeend', '<div><input id="sameAsTree_checkbox" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="sameAsTree_checkbox" class="checkbox_label">Same As Tree</label></div>');
+					window.flowMode.insertAdjacentHTML('beforeend', '<div><input id="flowMode_checkbox" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="flowMode_checkbox" class="checkbox_label">启用</label></div>');
+					window.sameAsTree.insertAdjacentHTML('beforeend', '<div><input id="sameAsTree_checkbox" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="sameAsTree_checkbox" class="checkbox_label">与树型视图相同</label></div>');
 					
 					window.thumbSize_dropdown.innerHTML = thumbnailSizeLabels[ppt['thumbNailSize_internal'].value];
-					for (i = 0; i < 4; i++) {window.thumbSize.insertAdjacentHTML('beforeend', '<a onclick="setthumbSize(' + i + ');">'+thumbnailSizeLabels[i]+'</a>');}
+					for (i = 0; i < 5; i++) {window.thumbSize.insertAdjacentHTML('beforeend', '<a onclick="setthumbSize(' + i + ');">'+thumbnailSizeLabels[i]+'</a>');}
 					
-					i = 0; window.indexLetter.insertAdjacentHTML('beforeend', '<div><input id="indexLetter_checkbox'+i+'" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="indexLetter_checkbox'+i+'" class="checkbox_label">'+indexLetterLabels[i]+'</label></div>');
-					i = 1; window.indexLetter.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="indexLetter_container'+i+'" name="albumart_input" class="input7" /><label for="indexLetter_container'+i+'" class="inp_label2">'+indexLetterLabels[i]+'</label></div>');
-					i = 2; window.indexLetter.insertAdjacentHTML('beforeend', '<div><input id="indexLetter_checkbox'+i+'" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="indexLetter_checkbox'+i+'" class="checkbox_label">'+indexLetterLabels[i]+'</label></div>');
+					i = 0; window.indexLetter.insertAdjacentHTML('beforeend', '<div><input id="indexLetter_checkbox'+i+'" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="indexLetter_checkbox'+i+'" class="checkbox_label">拖动滚动条时显示</label></div>');
+					//i = 1; window.indexLetter.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="indexLetter_container'+i+'" name="albumart_input" class="input7" /><label for="indexLetter_container'+i+'" class="inp_label2">'+indexLetterLabels[i]+'</label></div>');
+					//i = 2; window.indexLetter.insertAdjacentHTML('beforeend', '<div><input id="indexLetter_checkbox'+i+'" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="indexLetter_checkbox'+i+'" class="checkbox_label">'+indexLetterLabels[i]+'</label></div>');
 				}
 
 				var bg = [];
@@ -1178,7 +1179,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 
 				function setCustom() {
 					i = 0; window.fonts.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="font_checkbox'+i+'" name="custom_checkbox" style="'+cbox+'" type="checkbox" /><input id="font_container'+i+'" name="custom_input" class="input40" /><label for="font_container'+i+'" class="inp_label2">'+fontLabels[i]+'</label></div>');
-					for (i = 1; i < 3; i++) {window.albumArtFonts.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="font_checkbox'+i+'" name="custom_checkbox" style="'+cbox+'" type="checkbox" /><input id="font_container'+i+'" name="custom_input" class="input40" /><label for="font_container'+i+'" class="inp_label2">'+fontLabels[i]+'</label></div>');}
+					for (i = 1; i < 4; i++) {window.albumArtFonts.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="font_checkbox'+i+'" name="custom_checkbox" style="'+cbox+'" type="checkbox" /><input id="font_container'+i+'" name="custom_input" class="input40" /><label for="font_container'+i+'" class="inp_label2">'+fontLabels[i]+'</label></div>');}
 					for (i = 0; i < 6; i++) {window.colours1.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="colour_checkbox'+i+'" name="custom_checkbox" style="'+cbox+'" type="checkbox" /><input id="colour_container'+i+'" name="custom_input" class="input40" /><label for="colour_container'+i+'" class="inp_label2">'+colourLabels[i]+'</label></div>');}
 					for (i = 6; i < 19; i++) {window.colours2.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="colour_checkbox'+i+'" name="custom_checkbox" style="'+cbox+'" type="checkbox" /><input id="colour_container'+i+'" name="custom_input" class="input40" /><label for="colour_container'+i+'" class="inp_label2">'+colourLabels[i]+'</label></div>');}
 				}
@@ -1244,7 +1245,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					window.show_checkbox2.parentNode.disabled = true;
 				}
 				if (window.remember_checkbox1.checked) window.remember_checkbox0.checked = true;
-				window.remember_checkbox0.parentNode.disabled = window.remember_checkbox1.checked;				
+				window.remember_checkbox0.parentNode.disabled = window.remember_checkbox1.checked;
 				window.thumbSize_dropdown.style.visibility = window.flowMode_checkbox.checked ? 'hidden' : 'visible';
 				window.thumbNailSize.style.visibility = window.flowMode_checkbox.checked ? 'hidden' : 'visible';
 				window.checkbox_folderView.disabled = true;
@@ -1259,9 +1260,11 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				window.theme_checkbox6.parentNode.disabled = ppt['theme_internal'].value == 1 || ppt['theme_internal'].value == 4;
 				window.coverFormat_checkbox0.parentNode.disabled = ppt['theme_internal'].value != 5;
 				window.coverFormat_container1.parentNode.disabled = ppt['theme_internal'].value != 5;
-				window.node_checkbox6.parentNode.disabled = ppt['nodeStyle_internal'].value != 0 && ppt['nodeStyle_internal'].value != 6;
+				window.frame_checkbox0.parentNode.disabled = ppt['highLightRow_internal'].value != 3;
+				window.node_checkbox7.parentNode.disabled = ppt['nodeStyle_internal'].value != 0 && ppt['nodeStyle_internal'].value != 7;
+				window.itemCounts_checkbox3.parentNode.disabled = window.itemCounts_checkbox4.checked;
 				setNodeLabels();
-				window.showH2_checkbox5.parentNode.disabled = window.cusNode_checkbox3.checked && (ppt['nodeStyle_internal'].value == 0 || ppt['nodeStyle_internal'].value == 6);
+				window.showH2_checkbox5.parentNode.disabled = window.cusNode_checkbox3.checked && (ppt['nodeStyle_internal'].value == 0 || ppt['nodeStyle_internal'].value == 7);
 				document.getElementById("albumArtCfg").style.display = window.show_checkbox2.checked ? "block" : "none";
 				window.albumArtLabelType2.parentNode.disabled = window.flowMode_checkbox.checked;
 				window.thumbSize_dropdown.style.visibility = window.flowMode_checkbox.checked ? 'hidden' : 'visible';
@@ -1277,7 +1280,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				var radios = radio[page];
 				for (i = 0; i < radios.length; i++) {
 					var radioBtns = document.getElementsByName(radios[i]);
-					var new_value = radios[i] == 'nodeStyle' && ppt[radios[i] + '_internal'][value] == 6 ? 0 : ppt[radios[i] + '_internal'][value];
+					var new_value = radios[i] == 'nodeStyle' && ppt[radios[i] + '_internal'][value] == 7 ? 0 : ppt[radios[i] + '_internal'][value];
 					for (j = 0; j < radioBtns.length; j++) {
 						if (j == new_value) {
 							radioBtns[j].checked = true;
@@ -1288,9 +1291,8 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				window.theme_checkbox6.parentNode.disabled = ppt['theme_internal'].value == 1 || ppt['theme_internal'].value == 4;
 				window.coverFormat_checkbox0.parentNode.disabled = ppt['theme_internal'].value != 5;
 				window.coverFormat_container1.parentNode.disabled = ppt['theme_internal'].value != 5;
-				
-				window.node_checkbox6.parentNode.disabled = ppt['nodeStyle_internal'].value != 0 && ppt['nodeStyle_internal'].value != 6;
-				window.showH2_checkbox5.parentNode.disabled = window.cusNode_checkbox3.checked && (ppt['nodeStyle_internal'].value == 0 || ppt['nodeStyle_internal'].value == 6);
+				window.node_checkbox7.parentNode.disabled = ppt['nodeStyle_internal'].value != 0 && ppt['nodeStyle_internal'].value != 7;
+				window.showH2_checkbox5.parentNode.disabled = window.cusNode_checkbox3.checked && (ppt['nodeStyle_internal'].value == 0 || ppt['nodeStyle_internal'].value == 7);
 				
 				window.albumArtLabelType2.parentNode.disabled = window.flowMode_checkbox.checked;
 			}
@@ -1543,11 +1545,11 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					setTheme(ppt['theme_internal'].default_value);
 				}
 				if (cur.page == 'albumArt') {
-					window.rootStub_dropdown.innerHTML = '<b>Root:</b> ' + ppt.curRootImg_internal.default_value;
+					window.rootStub_dropdown.innerHTML = '<b>所有音乐:</b> ' + ppt.curRootImg_internal.default_value;
 					ppt.curRootImg_internal.value = ppt.curRootImg_internal.default_value;
-					window.noArtistStub_dropdown.innerHTML = '<b>No artist:</b> ' + ppt.curNoArtistImg_internal.default_value;
+					window.noArtistStub_dropdown.innerHTML = '<b>无艺术家:</b> ' + ppt.curNoArtistImg_internal.default_value;
 					ppt.curNoArtistImg_internal.value = ppt.curNoArtistImg_internal.default_value;
-					window.noCoverStub_dropdown.innerHTML = '<b>No cover:</b> ' + ppt.curNoCoverImg_internal.default_value;
+					window.noCoverStub_dropdown.innerHTML = '<b>无封面:</b> ' + ppt.curNoCoverImg_internal.default_value;
 					ppt.curNoCoverImg_internal.value = ppt.curNoCoverImg_internal.default_value;
 					setOverlay(ppt['itemOverlayType_internal'].default_value);
 					setthumbSize(ppt['thumbNailSize_internal'].default_value);
@@ -1556,7 +1558,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 			}
 			
 			window.btn_reset.onclick = function () {
-				var msg = 'This will reset all library tree settings to default; all your settings including \'Views\' and \Filters\' will be lost.\\n\\nSettings are stored in panel properties, which has back-up options, and which can be opened by shift+right click of library tree.\\n\\nContinue with reset?';
+				var msg = '这将重置 Library Tree 的所有设置为默认值；包括“查看”和“筛选”在内的所有设置都将丢失。\\n\\n设置存储在面板属性中，它有备份选项，可以通过 Shift + 右键点击面板打开。\\n\\n继续重置？';
 				var r = window.confirm(msg);
 				if (r == true) {
 					var new_cur = JSON.stringify(cur);
@@ -1627,10 +1629,10 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 			help_btn.onclick = function() {
 				if (divToggleVis.style.display === 'none') {
 					divToggleVis.style.display = 'block';
-					help_btn.innerHTML = 'Hide Album Art Help';
+					help_btn.innerHTML = '隐藏帮助';
 				} else {
 					divToggleVis.style.display = 'none';
-					help_btn.innerHTML = 'Show Album Art Help';
+					help_btn.innerHTML = '显示帮助';
 				}
 			}
 
@@ -1640,10 +1642,10 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 			syntax_btn.onclick = function() {
 				if (divToggleSyn.style.display === 'none') {
 					divToggleSyn.style.display = 'block';
-					syntax_btn.innerHTML = 'Hide Extended Syntax Help';
+					syntax_btn.innerHTML = '隐藏扩展语法帮助';
 				} else {
 					divToggleSyn.style.display = 'none';
-					syntax_btn.innerHTML = 'Show Extended Syntax Help';
+					syntax_btn.innerHTML = '显示扩展语法帮助';
 				}
 			}
 
@@ -1656,13 +1658,13 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				['click_dropdown', 'click'],
 				['dblClick_dropdown', 'dblClick'],
 				['itemCounts_dropdown', 'itemCounts'],
-				['keystroke_dropdown', 'keystroke'],			
+				['keystroke_dropdown', 'keystroke'],
 				['noArtistStub_dropdown', 'noArtistStub'],
 				['noCoverStub_dropdown', 'noCoverStub'],
 				['node_dropdown', 'node'],
 				['overlay_dropdown', 'overlay'],
 				['root_dropdown', 'root'],
-				['rootStub_dropdown', 'rootStub'],				
+				['rootStub_dropdown', 'rootStub'],
 				['sbarShow_dropdown', 'sbarShow'],
 				['sbarType_dropdown', 'sbarType'],
 				['sbarCol_dropdown', 'sbarCol'],

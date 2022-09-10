@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 	<html>
 	<head>
 		<meta http-equiv="x-ua-compatible" content="IE=8" />
@@ -10,35 +10,35 @@
 		input[type="checkbox"]:hover {border:1px solid #000000; padding:1px 0;}
 		.input_checkbox {position:relative; top:-1px; margin-right:1px;}
 		.cnt {padding:0.63em; word-wrap:break-word; white-space:pre-wrap;}
-		.bold {font:bold 1em Segoe UI; padding:0.63em 0.63em 0px 0.63em; word-wrap:break-word; white-space:pre-wrap;}
-		.boldItalic {font:italic bold 1em Segoe UI; padding:0.63em 0.63em 0px 0.63em; word-wrap:break-word; white-space:pre-wrap;}
+		.bold {font:bold 1em Microsoft Yahei UI; padding:0.63em 0.63em 0px 0.63em; word-wrap:break-word; white-space:pre-wrap;}
+		.boldItalic {font:italic bold 1em Microsoft Yahei UI; padding:0.63em 0.63em 0px 0.63em; word-wrap:break-word; white-space:pre-wrap;}
 		.input_cnt {position:absolute; left:0.88em; bottom:0.94em;}
 		#btn_cnt {padding:0.7em 1em; position:absolute;bottom:0; right:0; left:0; text-align:right;}
 		</style>
-		<title>Panel and Playlist Sources</title>
+		<title>来源：面板和播放列表</title>
 	</head>
 	<body>
-		<div id="usage" class="bold">Panel source</div>
-		<div id="div_text1" class="cnt">Receives a selection sent from another library tree panel.</div>
-		<div id="example" class="boldItalic">Example</div>
-		<div id="div_text2" class="cnt"><i>Panel 1:</i>
-Use tree view OR list view + artist photos (Quick Setup can be used).
-Set source to library and behaviour\single-click to select, so items aren't sent to playlist.
+		<div id="usage" class="bold">来源：面板</div>
+		<div id="div_text1" class="cnt">接收从另一个 Library Tree 面板发送的选择项。</div>
+		<div id="example" class="boldItalic">示例</div>
+		<div id="div_text2" class="cnt"><i>面板 1：</i>
+使用树型视图或列表视图 + 艺术家图像（可以使用快速设置菜单）。
+将 “来源” 设置为 “媒体库” 和 “面板设置>行为>操作>单击：” 设置为 “选择”，这样项目就不会被发送到播放列表。
 
-<i>Panel 2:</i>
-Use album art view (Quick Setup: Album covers can be used).
-Set source to panel.
+<i>面板 2：</i>
+使用专辑封面视图（可以使用快速设置>专辑封面菜单）。
+将来源设置为面板。
 
-<i>Note that panels set to panel source don't send out selections.</i>
+<i>请注意，设置为面板来源的面板不会发送选择项。</i>
 </div>
-		<div id="playlist" class="bold">Playlist source</div>
-		<div id="div_text3" class="cnt"><i>Active playlist</i>
-The sort order of the playlist is used, except for multi-value tag or soft splitter views where sorting is necessary. Items are highlighted in the playlist, not sent.
+		<div id="playlist" class="bold">来源：播放列表</div>
+		<div id="div_text3" class="cnt"><i>活动列表</i>
+使用播放列表的排序顺序，但需要排序的 多值标签 或 "&#166"合并字段（详见：面板设置>查看>扩展语法）除外。项目在播放列表中高亮显示，而不是发送。
 
-<i>Other playlists</i>
-These behave the same as the library source.</div>
+<i>其它列表</i>
+这些行为与媒体库来源的行为相同。</div>
 		<div id="input_cnt" class="input_cnt"></div>
-		<div id="btn_cnt"><button id="btn_ok">OK</button></div>
+		<div id="btn_cnt"><button id="btn_ok">确定</button></div>
 		<div id="div" style="height:0; width:0;outline:none; border:none; padding:none; margin:none; box-sizing:content-box;"></div>
 		<script>
 			var em;
@@ -72,7 +72,7 @@ These behave the same as the library source.</div>
 				var cboxMargin = "width:" + cbox_w + "px; height:" + cbox_h + "px; margin-right:5px;"
 			}
 
-			window.input_cnt.insertAdjacentHTML('beforeend', '<input id="input_checkbox" style="'+cboxMargin+'" type="checkbox" /><label id="label_for_checkbox">Do not show this message again</label>')
+			window.input_cnt.insertAdjacentHTML('beforeend', '<input id="input_checkbox" style="'+cboxMargin+'" type="checkbox" /><label id="label_for_checkbox">不再显示此消息</label>')
 			var window_w = 600;
 
 			setTimeout(function() {
