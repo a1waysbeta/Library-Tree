@@ -53,8 +53,12 @@
 ```
 $cut(%artist%,1)|%artist%|$if2(%album%,εXtra)|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%
 ```
-#### 树型模式，带有专辑封面背景 + 跳转搜索
-<kbd> <img src="https://user-images.githubusercontent.com/35600752/118255885-b5a41e00-b4a4-11eb-8f19-7a24e5215463.png"> </kbd>
+#### 深色模式（左和右）+专辑封面背景（中）
+<kbd> <img src="https://user-images.githubusercontent.com/35600752/188288519-e8056889-9dd0-409d-bbfc-feb6026d0eac.png"> </kbd>
+- 左侧面板：快速设置：封面 [右侧标签]
+- 中间面板：以跳转搜索和封面为背景的树型视图。设置：显示选项卡 > 主题 > 封面，并自行调整封面不透明度
+- 右侧面板：包含项目持续时间、项目计数和排序菜单的树型视图。快速设置：超现代
+- 可以为显示选项卡上的任何树型或专辑封面视图启用持续时间显示
 
 ### 致谢
 - Original Jscript library search (2013): thanhdat1710
