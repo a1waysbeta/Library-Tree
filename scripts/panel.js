@@ -349,15 +349,23 @@ class Panel {
 	getFilters() {
 		let pt = [
 			['Filter 01: Name // Query', 'Filter // Button Name'],
-			['Filter 02: Name // Query', 'Lossless // "$info(encoding)" IS lossless'],
-			['Filter 03: Name // Query', 'Lossy // "$info(encoding)" IS lossy'],
-			['Filter 04: Name // Query', 'Missing Replaygain // %replaygain_track_gain% MISSING'],
-			['Filter 05: Name // Query', 'Never Played // %play_count% MISSING'],
-			['Filter 06: Name // Query', 'Played Often // %play_count% GREATER 9'],
-			['Filter 07: Name // Query', 'Recently Added // %added% DURING LAST 2 WEEKS'],
-			['Filter 08: Name // Query', 'Recently Played // %last_played% DURING LAST 2 WEEKS'],
-			['Filter 09: Name // Query', 'Top Rated // %rating% IS 5'],
-			['Filter 10: Name // Query', 'Nowplaying Artist // artist IS $nowplaying{$meta(artist,0)}']
+			// Regorxxx <- Default TF for compatibility with all stats components
+			['Filter 02: Name // Query', 'Lossless // "$info(ENCODING)" IS lossless'],
+			['Filter 03: Name // Query', 'Lossy // "$info(ENCODING)" IS lossy'],
+			['Filter 04: Name // Query', 'Missing Replaygain // %REPLAYGAIN_TRACK_GAIN% MISSING AND %TRUEPEAK_SCANNER_TRACK_GAIN% MISSING'],
+			['Filter 05: Name // Query', 'separator // .'],
+			['Filter 06: Name // Query', 'Never Played // %PLAY_COUNT% MISSING AND %LASTFM_PLAY_COUNT% MISSING AND %2003_PLAYCOUNT% MISSING'],
+			['Filter 07: Name // Query', 'Played Often // "$max(%PLAY_COUNT%,%LASTFM_PLAY_COUNT%,%2003_PLAYCOUNT%,0)" GREATER 9'],
+			['Filter 08: Name // Query', 'Recently Added // (%ADDED_ENHANCED% PRESENT AND %ADDED_ENHANCED% DURING LAST 2 WEEKS) OR (%2003_ADDED% PRESENT AND %2003_ADDED% DURING LAST 2 WEEKS) OR (%2003_ADDED% MISSING AND %ADDED% DURING LAST 2 WEEKS)'],
+			['Filter 09: Name // Query', 'Recently Played // (%FIRST_PLAYED_ENHANCED% PRESENT AND %FIRST_PLAYED_ENHANCED% DURING LAST 2 WEEKS) OR (%2003_FIRST_PLAYED% PRESENT AND %2003_FIRST_PLAYED% DURING LAST 2 WEEKS) OR (%2003_FIRST_PLAYED% MISSING AND %FIRST_PLAYED% DURING LAST 2 WEEKS)'],
+			['Filter 10: Name // Query', 'Top Rated // %RATING% EQUAL 5 OR %2003_RATING% EQUAL 10'],
+			['Filter 11: Name // Query', 'separator // .'],
+			['Filter 12: Name // Query', 'Nowplaying Artist // ARTIST IS $nowplaying{$if2($meta(ARTIST,0),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(ARTIST,1),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(ARTIST,2),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(ARTIST,3),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(ARTIST,4),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(ARTIST,5),DUMMY)}'],
+			['Filter 13: Name // Query', 'Selected Artist // ARTIST IS $selected{$if2($meta(ARTIST,0),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,1),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,2),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,3),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,4),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,5),DUMMY)}'],
+			['Filter 14: Name // Query', 'Nowplaying Similar Artists // ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,0),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,1),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,2),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,3),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,4),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,5),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,6),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,7),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,8),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,9),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,0),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,1),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,2),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,3),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,4),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,5),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,6),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,7),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,8),DUMMY)} OR ARTIST IS $nowplaying{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,9),DUMMY)}'],
+			['Filter 15: Name // Query', 'Nowplaying Genre // GENRE IS $nowplaying{$if2($meta(GENRE,0),DUMMY)} OR GENRE IS $nowplaying{$if2($meta(GENRE,1),DUMMY)} OR GENRE IS $nowplaying{$if2($meta(GENRE,2),DUMMY)} OR GENRE IS $nowplaying{$if2($meta(GENRE,3),DUMMY)} OR GENRE IS $nowplaying{$if2($meta(GENRE,4),DUMMY)} OR GENRE IS $nowplaying{$if2($meta(GENRE,5),DUMMY)}'],
+			['Filter 16: Name // Query', 'Nowplaying Style // STYLE IS $nowplaying{$if2($meta(STYLE,0),DUMMY)} OR STYLE IS $nowplaying{$if2($meta(STYLE,1),DUMMY)} OR STYLE IS $nowplaying{$if2($meta(STYLE,2),DUMMY)} OR STYLE IS $nowplaying{$if2($meta(STYLE,3),DUMMY)} OR STYLE IS $nowplaying{$if2($meta(STYLE,4),DUMMY)} OR STYLE IS $nowplaying{$if2($meta(STYLE,5),DUMMY)}'],
+			// Regorxxx ->
 		];
 
 		let grps = [];

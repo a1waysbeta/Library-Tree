@@ -330,13 +330,24 @@ class MenuItems {
 
 	filterMenu() {
 		fMenu.newMenu({});
-		for (let i = 0; i < panel.filter.menu.length + 1; i++) fMenu.newItem({
-			str: i != panel.filter.menu.length ? (!i ? 'No filter' : panel.filter.menu[i]) : 'Auto-manage scroll',
-			func: () => panel.set('Filter', i),
-			checkItem: i == panel.filter.menu.length && !ppt.reset,
-			checkRadio: i == ppt.filterBy && i < panel.filter.menu.length,
-			separator: !i || i == panel.filter.menu.length - 1 || i == panel.filter.menu.length
-		});
+		// Regorxxx <- Allow separators on filters
+		for (let i = 0; i < panel.filter.menu.length + 1; i++) {
+			const bSeparator = (panel.filter.menu[i] || '').toLowerCase() === 'separator';
+			if (bSeparator) {
+				fMenu.newItem({
+					separator: true
+				});
+			} else {
+				fMenu.newItem({
+					str: i != panel.filter.menu.length ? (!i ? 'No filter' : panel.filter.menu[i]) : 'Auto-manage scroll',
+					func: () => panel.set('Filter', i),
+					checkItem: i == panel.filter.menu.length && !ppt.reset,
+					checkRadio: i == ppt.filterBy && i < panel.filter.menu.length,
+					separator: !i || i == panel.filter.menu.length - 1 || i == panel.filter.menu.length
+				});
+			}
+		}
+		// Regorxxx ->
 		fMenu.newItem({
 			str: 'Configure filters...',
 			func: () => panel.open('filters'),

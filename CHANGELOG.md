@@ -1,3 +1,15 @@
+# v2.4.0.mod.5
+### Added
+	- Added separators support at filter menu. To insert one, a filter named 'separator' must be created (the query must be anything but empty, like a '.').
+	- Added new default filter query expressions like: 'Nowplaying Similar Artists' (*), 'Nowplaying Genre', 'Nowplaying Style', 'Selected Artist'. (*) Needs previous tagging with other scripts like [Listenbrainz-SMP](https://hydrogenaudio.org/index.php/topic,124384.0.html) or [Search-By-Distance-SMP](https://hydrogenaudio.org/index.php/topic,120982.0.html).
+### Changed
+	- Changed default filter query expressions to be compatible with foo_playcount, foo_enhanced_playcount and foo_playcount_2003.
+	- Changed default filter query expressions to be compatible with foo_truepeak.
+	- Changed default filter query expressions to be compatible with multi-valued tags (like Nowplaying Artist).
+### Fixed
+
+<br />
+
 # v2.4.0.mod.2
 ### Added
 	- Added profiling logging for library loading (properties panel). Enabled by default.
