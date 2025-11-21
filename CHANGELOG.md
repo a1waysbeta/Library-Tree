@@ -1,3 +1,11 @@
+# v2.4.0.mod.16
+### Added
+	- New contextual menu entry to show previously played track.
+### Changed
+	- Internal changes (for future development).
+
+<br />
+
 # v2.4.0.mod.15
 ### Fixed
 	- Fixed Drag n' drop queries for tags with no values.

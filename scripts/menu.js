@@ -160,14 +160,28 @@ class MenuItems {
 				flags: this.getPaylistFlag(i),
 				separator: i == 2
 			}));
+			// Regorxxx <- Show previously playing. Check if item is tracked
+			{
+				const prevPlaying = fb.GetPrevPlaying();
+				const handle = prevPlaying ? prevPlaying.handle : null;
+				const item = handle ? panel.list.Find(handle) : -1;
+				menu.newItem({
+					str: 'Show prev. played' + (handle && item === -1 ? '\tnot found' : ''),
+					func: () => pop.selShow(item),
+					flags:item !== -1 ? MF_STRING : MF_GRAYED
+				});
+			}
+			// Regorxxx ->
 			// Regorxxx <- Show selection. Check if item is tracked
-			const handle = fb.GetFocusItem(true);
-			const item = handle ? panel.list.Find(handle) : -1;
-			menu.newItem({
-				str: 'Show selection' + (item === -1 ? '\tnot found' : ''),
-				func: () => pop.selShow(item),
-				flags:item !== -1 ? MF_STRING : MF_GRAYED
-			});
+			{			
+				const handle = fb.GetFocusItem(true);
+				const item = handle ? panel.list.Find(handle) : -1;
+				menu.newItem({
+					str: 'Show selection' + (handle && item === -1 ? '\tnot found' : ''),
+					func: () => pop.selShow(item),
+					flags:item !== -1 ? MF_STRING : MF_GRAYED
+				});
+			}
 			// Regorxxx ->
 		}
 
