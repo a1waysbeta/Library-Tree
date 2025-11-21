@@ -1389,6 +1389,7 @@ class Populate {
 		let ix;
 		if (panel.imgView) {
 			if (y > img.panel.y && y < img.panel.y + img.panel.h && x > img.panel.x && x < img.panel.x + img.panel.w) {
+				if (img.style.vertical && !img.row.h || (!img.style.vertical || !img.labels.right && !ppt.albumArtFlowMode) && !img.columnWidth) { return -1; } // Regorxxx <- Fix NaN index crashes ->
 				const row_ix = img.style.vertical ? Math.ceil((y + sbar.delta - img.panel.y) / img.row.h) - 1 : 0;
 				const column_ix = img.style.vertical ? (!img.labels.right && !ppt.albumArtFlowMode ? Math.ceil((x - img.panel.x) / img.columnWidth) - 1 : 0) : Math.ceil((x + sbar.delta - img.panel.x) / img.columnWidth) - 1;
 				ix = (row_ix * img.columns) + column_ix;

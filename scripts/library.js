@@ -372,14 +372,17 @@ class Library {
 
 	checkLines(arr, arrExpanded) {
 		if (ppt.albumArtGrpLevel) return; // user set
-		const defaultView = !panel.folderView ? panel.defaultViews.indexOf(panel.grp[ppt.viewBy].type.trim()) : 6;
-		if (defaultView != -1) {
-			panel.lines = [
-				[2, 2, 2, 1, 1][ppt.artId],
-				[2, 2, 2, 1, 1][ppt.artId], 1, 1, 1, 1, 1
-			][defaultView];
+		// Regorxxx <- Improve view patterns. Fixed multiple bugs on automatic group handling for default view patterns and cases where a default group was not found.
+		const view = panel.grp[ppt.viewBy].type.trim();
+		const defaultView = !panel.folderView 
+			? panel.defaultViews.includes(view) 
+			: panel.defaultViews.length - 1;
+		if (defaultView) {
+			const lines = (panel.defViewPatterns.find((v) => v.type === view) || { lines: 1 }).lines;
+			panel.lines = Array.isArray(lines) ? lines[ppt.artId] : lines;
 			return;
 		}
+		// Regorxxx ->
 		const lengths = arr.map(v => v.length);
 		const avg = $.average(lengths);
 		if (avg < (!arrExpanded ? 3 : 2)) panel.lines = 1;

@@ -1,3 +1,27 @@
+# v2.4.0.mod.11
+### Added
+	- Added Drag n' Drop support into search box. Dropping any selection will now perform a search based on file tags (or filenames), according to your settings. 2 new properties have been added to tweak the behavior:
+		* Search Drag n' Drop Method (Auto=0, Tags=1, Disabled=-1)': 0 to use filenames on view by Folder Structure (with RegExp) and tags (with queries) otherwise. 1 will force tags usage on any view.
+		* Search Drag n' Drop Tags: accepts an array of tags or TF expressions. By default it's set to use 'ALBUM ARTIST'.
+	- Added external integration via window.NotifyOthers(callback, arg) with other scripts. Window arg property should be an array with desired target panel names. All panels execute the action if it is not provided, otherwise only the matching panels. Note panel notifications only work within the same JS host component (i.e. no SMP <-> JSplitter). Currently available callbacks (name -> arg):
+		* 'Library Tree: Show now playing'	-> { window: [string] }
+		* 'Library Tree: Show handle'		-> { window: [string], handle: FbMetadbHandle }
+		* 'Library Tree: Switch show art'	-> { window: [string] }
+		* 'Library Tree: Show art'		-> { window: [string] }
+		* 'Library Tree: Show tree'		-> { window: [string] }
+		* 'Library Tree: Switch show artists / albums'	-> { window: [string], forceShowArt: boolean }
+		* 'Library Tree: Show artists'		-> { window: [string], forceShowArt: boolean }
+		* 'Library Tree: Show albums'		-> { window: [string], forceShowArt: boolean }
+		* 'Library Tree: Collapse all'		-> { window: [string] }
+		* 'Library Tree: Quicksearch'		-> { window: [string], search: string }
+		* 'Library Tree: Search'		-> { window: [string], search: string }
+		* 'Library Tree: Clear'			-> { window: [string] }
+### Fixed
+	- Fixed crashes due to division by zero and NaN indexes at some points of the code. For ex. clicking on panel with no items being shown on album art mode. See [here](https://hydrogenaudio.org/index.php/topic,111060.msg1072121.html#msg1072121).
+	- Fixed multiple bugs on automatic group handling for default view patterns and cases where a default group was not found. See [here](https://hydrogenaudio.org/index.php/topic,111060.msg1072121.html#msg1072121).
+
+<br />
+
 # v2.4.0.mod.10
 ### Changed
 	- Simplified background grid settings (see v2.4.0.mod.9 ) with a new menu entry at quick setup which allows to easily set every panel via input popups.

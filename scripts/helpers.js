@@ -429,6 +429,108 @@ class Helpers {
 		)];
 	}
 	// Regorxxx ->
+
+	// Regorxxx <- Drag n' drop to search box
+	escapeRegExp(s) { // https://github.com/lodash/lodash/blob/4.1.2-npm-packages/lodash.escaperegexp/index.js
+		const reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+		const reHasRegExpChar = RegExp(reRegExpChar.source);
+		s = s.toString();
+		return (s && reHasRegExpChar.test(s) ? s.replace(reRegExpChar, '\\$&') : s);
+	}
+
+	_q(value, bSpace) {
+		return (bSpace ? ' ' : '') + '"' + value + '"';
+	}
+
+	_qCond(tag, bUnquote = false) {
+		return bUnquote //NOSONAR
+			? tag.replace(/(^")(.*\$+.*)("$)/g, '$2')
+			: tag.includes('$')
+				? $._q(tag)
+				: tag;
+	}
+
+	sanitizeQueryVal(val) {
+		return (val.match(/[()]/g) ? _q(val) : val);
+	}
+
+	queryCombinations(tagsArray, queryKey, tagsArrayLogic /*AND, OR [NOT]*/, subTagsArrayLogic /*AND, OR [NOT]*/, match = 'IS' /*IS, HAS, EQUAL*/) {
+		// Wrong tagsArray
+		if (tagsArray === null || Object.prototype.toString.call(tagsArray) !== '[object Array]' || tagsArray.length === null || tagsArray.length === 0) { return; }
+		if (typeof queryKey === 'undefined' || queryKey === null || !queryKey) { return; }
+		tagsArrayLogic = (tagsArrayLogic || '').toUpperCase();
+		subTagsArrayLogic = (subTagsArrayLogic || '').toUpperCase();
+		match = (match || '').toUpperCase();
+		if (this.isArrayStrings(queryKey)) {
+			let queryKeyLength = queryKey.length;
+			let i = 0;
+			let queryArray = [];
+			while (i < queryKeyLength) {
+				queryArray.push(/** @type {string} */(this.queryCombinations(tagsArray, queryKey[i], tagsArrayLogic, subTagsArrayLogic, match)));
+				i++;
+			}
+			return queryArray;
+		}
+		let tagsArrayLength = tagsArray.length;
+		/** @type {string|string[]} */
+		let query = '';
+		if (!Array.isArray(tagsArray[0])) { //no subTagsArrays
+			if (!['AND', 'OR', 'AND NOT', 'OR NOT'].includes(tagsArrayLogic)) {	return; }
+			let i = 0;
+			while (i < tagsArrayLength) {
+				if (i === 0) {
+					query += queryKey + ' ' + match + ' ' + this.sanitizeQueryVal(/** @type {string} */(tagsArray[0]));
+				} else {
+					query += ' ' + tagsArrayLogic + ' ' + queryKey + ' ' + match + ' ' + this.sanitizeQueryVal(/** @type {string} */(tagsArray[i]));
+				}
+				i++;
+			}
+		} else {
+			if (!['AND', 'OR', 'AND NOT', 'OR NOT'].includes(tagsArrayLogic) || !['AND', 'OR', 'AND NOT', 'OR NOT'].includes(subTagsArrayLogic)) { return; }
+			let k = tagsArray[0].length; // subTagsArrays length
+			let i = 0;
+			while (i < tagsArrayLength) {
+				if (i !== 0) {
+					query += ' ' + tagsArrayLogic + ' ';
+				}
+				let j = 0;
+				while (j < k) {
+					if (j === 0) {
+						query += (k > 1 ? '(' : '') + queryKey + ' ' + match + ' ' + this.sanitizeQueryVal(tagsArray[i][0]); // only adds parenthesis when more than one subTag! Esthetic fix...
+					} else {
+						query += ' ' + subTagsArrayLogic + ' ' + queryKey + ' ' + match + ' ' + this.sanitizeQueryVal(tagsArray[i][j]);
+					}
+					j++;
+				}
+				query += (k > 1 ? ')' : '');
+				i++;
+			}
+		}
+		return query;
+	}
+
+	queryJoin(queryArray, setLogic = 'AND') {
+		setLogic = (setLogic || '').toUpperCase();
+		if (!['AND', 'OR', 'AND NOT', 'OR NOT'].includes(setLogic)) {	return; }
+		let arrayLength = queryArray.length;
+		// Wrong array
+		if (!Array.isArray(queryArray) || typeof queryArray === 'undefined' || queryArray === null || arrayLength === null || arrayLength === 0) { return; }
+		const allRegex = /ALL/;
+		const copy = [...queryArray].filter((q) => q && !allRegex.test(q));
+		arrayLength = copy.length;
+		let query = '';
+		let i = 0;
+		while (i < arrayLength) {
+			if (i === 0) {
+				query += (arrayLength > 1 ? '(' : '') + copy[i] + (arrayLength > 1 ? ')' : '');
+			} else {
+				query += ' ' + setLogic + ' (' + copy[i] + ')';
+			}
+			i++;
+		}
+		return query;
+	}
+	// Regorxxx ->
 }
 
 const $ = new Helpers;

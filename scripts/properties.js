@@ -330,7 +330,11 @@ let properties = [
 	['Logging library profiler', true, 'logLibProfiler'], // Regorxxx <- Library profiling
 	['Statistics Rating/Popularity Decimals', 1, 'ratingDecimals'], // Regorxxx <- Rating decimals
 	['Playlist: Prefer internal cache (if supported)', true, 'panelInternalCache'], // Regorxxx <- Don't create cache playlists if possible
-	['Library Source: Chained source notifications', true, 'libSourceChained'], // Regorxxx <- Chained facets updates.
+	['Library Source: Chained source notifications', true, 'libSourceChained'], // Regorxxx <- Chained facets updates
+	// Regorxxx <- Drag n' drop to search box
+	['Search Drag n\' Drop Method (Auto=0, Tags=1, Disabled=-1)', 0, 'searchDragMethod'],
+	['Search Drag n\' Drop Tags', JSON.stringify(['ALBUM ARTIST']), 'searchDragTags'],
+	// Regorxxx ->
 ];
 
 const ppt = new PanelProperties;

@@ -291,6 +291,57 @@ function on_notify_data(name, info) {
 			pop.notifySelection();
 			break;
 		// Regorxxx ->
+		// Regorxxx <- External integration
+		case 'Library Tree: Show now playing':
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			pop.nowPlayingShow();
+			break;
+		case 'Library Tree: Show handle':
+			if (!info || !info.handle) { break; }
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			const item = panel.list.Find(info.handle);
+			if (item !== -1) { pop.selShow(item); }
+			break;
+		case 'Library Tree: Switch show art':
+		case 'Library Tree: Show art':
+		case 'Library Tree: Show tree':
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			if (name === 'Library Tree: Show album art' && panel.imgView) { break; }
+			if (name === 'Library Tree: Show tree' && !panel.imgView) { break; }
+			men.setPlaylist(4);
+			break;
+		case 'Library Tree: Switch art type':
+		case 'Library Tree: Show artists':
+		case 'Library Tree: Show albums':
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			if (!panel.imgView && info && info.forceShowArt) { men.setPlaylist(4); }
+			if (name === 'Library Tree: Show albums' && ppt.artId != 4) { break; }
+			if (name === 'Library Tree: Show artists' && ppt.artId === 4) { break; }
+			ppt.artId = ppt.artId === 4 ? 0 : 4; 
+			men.setPlaylist(5);
+			break;
+		case 'Library Tree: Collapse all':
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			men.setTreeState(0)
+			break;
+		case 'Library Tree: Quicksearch':
+			if (!info || !info.search || !info.search.length) { break; }
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			info.search.split('').forEach((s) => on_char(s.charCodeAt(0)));
+			break;
+		case 'Library Tree: Search':
+			if (!ppt.searchShow) { break; }
+			if (!info || !info.search || !info.search.length) { break; }
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			info.search.split('').forEach((s) => search.on_char(s.charCodeAt(0), true));
+			search.on_char(vk.enter);
+			break;
+		case 'Library Tree: Clear':
+			if (!ppt.searchShow) { break; }
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			search.clear();
+			break;
+		// Regorxxx ->
 	}
 	if (ui.id.local && name.startsWith('opt_')) {
 		const clone = typeof info === 'string' ? String(info) : info;
@@ -477,4 +528,92 @@ function on_locations_added(taskId, handleList) {
 		if (ppt.libSource === 2) { lib.initialise(lib.cache); }
 	}
 }
+// Regorxxx ->
+
+// Regorxxx <- Drag n' drop to search box
+// Mask for mouse callbacks
+var MK_LBUTTON  = 0x0001;
+var MK_SHIFT    = 0x0004; // The SHIFT key is down.
+var MK_CONTROL  = 0x0008; // The CTRL key is down.
+const dropEffect = {
+	none: 0,
+	copy: 1,
+	move: 2,
+	link: 4,
+	scroll: 0x80000000
+};
+const dropMask = { // on_drag_over, on_drag_leave, on_drag_over, on_drag_enter
+	ctrl: MK_LBUTTON + MK_CONTROL,
+	shift: MK_LBUTTON + MK_SHIFT,
+	shiftCtrl: MK_LBUTTON + MK_CONTROL + MK_SHIFT
+};
+
+// Drag n drop to copy/move tracks to playlists (only files from foobar2000)
+function on_drag_enter(action, x, y, mask) {
+	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
+	// Avoid things outside foobar2000
+	if (action.Effect === dropEffect.none || (action.Effect & dropEffect.link) === dropEffect.link) { action.Effect = dropEffect.none; }
+};
+
+function on_drag_leave(action, x, y, mask) {
+	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
+	on_mouse_leave(x, y, mask);
+};
+
+function on_drag_over(action, x, y, mask) {
+	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
+	// Avoid things outside foobar2000
+	if (action.Effect === dropEffect.none || (action.Effect & dropEffect.link) === dropEffect.link) { action.Effect = dropEffect.none; return; }
+	// Move playlist index only while not pressing alt
+	on_mouse_move(x, y, mask);
+	// Set effects
+	action.Effect = dropEffect.copy;
+	action.Text = 'Add paths to search box';
+};
+
+function on_drag_drop(action, x, y, mask) {
+	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
+	// Avoid things outside foobar2000
+	if (action.Effect === dropEffect.none) { return; }
+	action.Effect = dropEffect.none; // Forces not sending things to a playlist
+	const selItems = fb.GetSelections(1);
+	if (selItems && selItems.Count) {
+		let input = '';
+		const trackSearch = (method) => {
+			if (method === 0 && panel.folderView) { // Auto: tags or path
+				const paths = selItems.GetLibraryRelativePaths()
+					.map((path) => path.split('\\').slice(-1)[0])
+					.filter(Boolean)
+					.map((s) => $.escapeRegExp(s));
+				input = '/' + paths.join('|') + '/i';
+				return true;
+			} else if (method === 0 && !panel.folderView || method === 1) { // Tags
+				const searchTags = $.jsonParse(ppt.searchDragTags);
+				const tags = $.getHandleListTags(selItems, searchTags);
+				const trackQueries = tags.map((trackTags) => {
+					return $.queryJoin(
+						searchTags.map((tag, i) => {
+							const values = [...new Set(trackTags[i].map(s => s.toLowerCase()))];
+							return tag.toUpperCase() === 'ALBUM ARTIST' 
+								? $.queryJoin([
+									$.queryCombinations(values, 'ALBUM ARTIST', 'AND'),
+									$.queryCombinations(values, 'ARTIST', 'AND'),
+								], 'OR')
+								:  $.queryCombinations(values, tag, 'AND')
+						}),
+						 'AND'
+					);
+				});
+				input = $.queryJoin([...new Set(trackQueries)], 'OR');
+				return true;
+			}
+			return false;
+		};
+		trackSearch(ppt.searchDragMethod);
+		if (input.length) { 
+			input.split('').forEach((s) => search.on_char(s.charCodeAt(0), true));
+			search.on_char(vk.enter);
+		}
+	}
+};
 // Regorxxx ->

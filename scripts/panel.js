@@ -445,45 +445,48 @@ class Panel {
 	}
 
 	getViews() {
-		// Regorxxx <- Improve view patterns
+		// Regorxxx <- Improve view patterns. Fixed multiple bugs on automatic group handling for default view patterns and cases where a default group was not found.
 		let pt = [
-			['View 01: Name // Pattern', 'View by Folder Structure // Pattern Not Configurable'],
-			['View XX: Name // Pattern', 'View by Artist // $swapbranchprefix{%<ARTIST>%}|%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%'],
-			['View XX: Name // Pattern', 'View by Album Artist // $swapbranchprefix{$if2(%<ALBUM ARTIST>%,%<ARTIST>%)}|%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%'],
-			['View XX: Name // Pattern', "View by Album Artist - Album // [$swapprefix(%ALBUM ARTIST%,A,The,La,El,Los,Las,Le,Les) - ]['['%date%']' ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%"],
-			['View XX: Name // Pattern', "View by Artist initial // $puts(initial,$upper($cut($replace($swapprefix(%ARTIST%,A,The,La,El,Los,Las,Le,Les),$char(33),,$char(34),,$char(35),,$char(36),,$char(37),,$char(38),,$char(39)$char(39),,$char(39),,,$char(40),,$char(41),,$char(42),,$char(43),,$char(44),,$char(45),,$char(46),,$char(47),),1)))$if($stricmp($ascii($get(initial)),?),$get(initial),$ascii($get(initial)))|%ARTIST%|$if2(%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%},εXtra)|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%"],
-			['View XX: Name // Pattern', "View by Album // %ALBUM%[ '['%ALBUM ARTIST%']']$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%"],
-			['View XX: Name // Pattern', "View by Album (year) // $year(%DATE%) - %ALBUM%[ '['%ALBUM ARTIST%']']$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%"],
-			['View XX: Name // Pattern', "View by Album (facets) // $nodisplay{$year(%DATE%)}%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%} '['$year(%DATE%)']'|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%"],
+			['View 01: Name // Pattern', 'View by Folder Structure // Pattern Not Configurable', void(0), void(0), 1],
+			['View XX: Name // Pattern', 'View by Artist // $swapbranchprefix{%<ARTIST>%}|%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', 'Artist', 'Album', [2, 2, 2, 1, 1]],
+			['View XX: Name // Pattern', 'View by Album Artist // $swapbranchprefix{$if2(%<ALBUM ARTIST>%,%<ARTIST>%)}|%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', 'Album Artist', 'Album', [2, 2, 2, 1, 1]],
+			['View XX: Name // Pattern', "View by Album Artist - Album // [$swapprefix(%ALBUM ARTIST%,A,The,La,El,Los,Las,Le,Les) - ]['['%date%']' ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%", 'Album', 'Track', 1],
+			['View XX: Name // Pattern', "View by Artist initial // $puts(initial,$upper($cut($replace($swapprefix(%ARTIST%,A,The,La,El,Los,Las,Le,Les),$char(33),,$char(34),,$char(35),,$char(36),,$char(37),,$char(38),,$char(39)$char(39),,$char(39),,,$char(40),,$char(41),,$char(42),,$char(43),,$char(44),,$char(45),,$char(46),,$char(47),),1)))$if($stricmp($ascii($get(initial)),?),$get(initial),$ascii($get(initial)))|%ARTIST%|$if2(%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%},εXtra)|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%", 'Artist Initial', 'Artist', [2, 2, 2, 1, 1]],
+			['View XX: Name // Pattern', "View by Album // %ALBUM%[ '['%ALBUM ARTIST%']']$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%", 'Album', 'Track', 'Track', 1],
+			['View XX: Name // Pattern', "View by Album (year) // $year(%DATE%) - %ALBUM%[ '['%ALBUM ARTIST%']']$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%", 'Album', 'Track', 1],
+			['View XX: Name // Pattern', "View by Album (facets) // $nodisplay{$year(%DATE%)}%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%} '['$year(%DATE%)']'|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%", 'Album', 'Track', 1],
 			['View XX: Name // Pattern', 'separator // .'],
-			['View XX: Name // Pattern', 'View by Genre // %<GENRE>%|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%'],
-			['View XX: Name // Pattern', 'View by Style // %<STYLE>%|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%'],
-			['View XX: Name // Pattern', 'View by Genre tree // %<GENRE>%|%<STYLE>%|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%'],
+			['View XX: Name // Pattern', 'View by Genre // %<GENRE>%|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', 'Genre', 'Album', 1],
+			['View XX: Name // Pattern', 'View by Style // %<STYLE>%|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', 'Style', 'Album', 1],
+			['View XX: Name // Pattern', 'View by Genre tree // %<GENRE>%|%<STYLE>%|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', 'Genre', 'Style', 1],
 			['View XX: Name // Pattern', 'separator // .'],
-			['View XX: Name // Pattern', 'View by Year // $year(%DATE%)|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%'],
-			['View XX: Name // Pattern', 'View by Decade // $div($year(%DATE%),10)0s|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%'],
-		].filter(Boolean).map((entry, i) => [entry[0].replace('View XX', 'View ' + (i + 1).toString().padStart(2, '0')), entry[1]]);
-		// Regorxxx ->
+			['View XX: Name // Pattern', 'View by Year // $year(%DATE%)|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', 'Year', 'Album', 1],
+			['View XX: Name // Pattern', 'View by Decade // $div($year(%DATE%),10)0s|[%ALBUM ARTIST% - ]%ALBUM%$nodisplay{%COMMENT%-%MUSICBRAINZ_ALBUMID%}|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', 'Decade', 'Album', 1],
+		].filter(Boolean).map((entry, i) => [entry[0].replace('View XX', 'View ' + (i + 1).toString().padStart(2, '0')), ...entry.slice(1)]);
 		let grps = [];
 		this.defViewPatterns = pt.map(v => {
 			grps = v[1].split('//');
 			return {
 				name: grps[0].trim(),
 				type: grps[1].trimStart(),
+				level1: v[2],
+				level2: v[3],
+				lines: v[4],
 				menu: true
 			}
 		});
 
-		this.defaultViews = this.defViewPatterns.map(v => v.type);
+		this.defaultViews = this.defViewPatterns.filter((v) => v.name !== 'separator').map(v => v.type);
 		this.defaultViews.shift();
 
-		const names1 = ['Artist', 'Album Artist', 'Album', 'Album', 'Genre', 'Year'];
-		const names2 = ['Album', 'Album', 'Track', 'Track', 'Album', 'Album'];
 		const albumArtGrpNames = $.jsonParse(ppt.albumArtGrpNames, {});
-		this.defaultViews.forEach((v, i) => {
-			if (!albumArtGrpNames[`${v}1`]) albumArtGrpNames[`${v}1`] = names1[i];
-			if (!albumArtGrpNames[`${v}2`]) albumArtGrpNames[`${v}2`] = names2[i];
-		});
+		this.defViewPatterns.filter((v) => !v.name.startsWith('separator')).forEach((v, i) => {
+			if (i === 0) { return; }
+			if (!v.name || !v.type || !v.level1 || !v.level2) { console.log('Library Tree: error on default view pattern\n\t ' + JSON.stringify(v)); }
+			if (!albumArtGrpNames[`${v.type}1`]) albumArtGrpNames[`${v.type}1`] = v.level1;
+			if (!albumArtGrpNames[`${v.type}2`]) albumArtGrpNames[`${v.type}2`] = v.level2;
+		})
+		// Regorxxx ->
 
 		const dialogViews = [];
 		this.view_ppt = [];
