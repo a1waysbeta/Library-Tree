@@ -1,3 +1,13 @@
+# v2.4.0.mod.22
+### Added
+	- Added R. click on links, within HTML options panel, to copy the URL. As a workaround for links always opening within IE.
+	- Added tooltips to links within HTML options panel.
+### Fixed
+	- Fixed bug on original script within HTML options panel on dropdown layout when opening help boxes. Now they are placed relative to the buttons which open them.
+	- Fixed bug on original script related to throttle helper.
+
+<br />
+
 # v2.4.0.mod.21
 ### Changed
 	- Search expressions using $selected{}, etc. are now updated on playback or selection changes, instead of only being evaluated the first time (requiring pressing Enter to update). With this change they behave exactly the same than 'Filters', but being directly editable on the UI (and applied on top of them). Note this feature has a great performance impact if used (compared to filters); is preferable to directly use a Filter pattern than permanently using the search box with a dynamic expression, since its much faster. Obviously this warning only applies to $selected{} and $nowplayingorselected{} expressions during normal usage (since selection will change a lot), and it can be ignored for any other expression. It will not have any performance impact if you don't use the extended TF expressions at all. The behaviour can be switched at 'Search' tab (HTML options panel) or 'Search Auto-refresh TF Expressions' (properties panel).

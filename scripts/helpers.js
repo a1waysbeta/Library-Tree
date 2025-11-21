@@ -247,7 +247,7 @@ class Helpers {
 	}
 
 	throttle(e,i,t) {
-		var n=!0,r=!0;if('function'!=typeof e)throw new TypeError('throttle: invalid function');return this.isObject(t)&&(n='leading'in t?!!txt.leading:n,r='trailing'in t?!!txt.trailing:r),this.debounce(e,i,{leading:n,maxWait:i,trailing:r});
+		var n=!0,r=!0;if('function'!=typeof e)throw new TypeError('throttle: invalid function');return this.isObject(t)&&(n='leading'in t?!!t.leading:n,r='trailing'in t?!!t.trailing:r),this.debounce(e,i,{leading:n,maxWait:i,trailing:r});
 	}
 
 	titlecase(n) {
@@ -319,7 +319,7 @@ class Helpers {
 	RGB(r, g, b) {
 		return 0xff000000 | r << 16 | g << 8 | b;
 	}
-	
+
 	RGBA(r, g, b, a) {
 		return a << 24 | r << 16 | g << 8 | b;
 	}

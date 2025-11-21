@@ -86,7 +86,7 @@
 	.dropbtn:after {font-family: FontAwesome; content: "\f107"; padding-left:0.5em; padding-right:0.19em;}
 	.dropbtnLight:after {font-family: FontAwesome; content: "\f107"; padding-left:0.5em; padding-right:0.19em;}
 	.dropdown {margin-top: 10px; position:static; display:inline-block;}
-	.dropdown-content {display:none; position:absolute; background-color:#f9f9f9; min-width:10em; white-space:nowrap; box-shadow:0 8px 1.01em 0 rgba(0,0,0,0.2); z-index:1;}
+	.dropdown-content {display:none; position:relative; background-color:#f9f9f9; min-width:10em; white-space:nowrap; box-shadow:0 8px 1.01em 0 rgba(0,0,0,0.2); z-index:1;}
 	.dropdown-content a {padding:0.13em 5px; color:black; text-decoration:none; display:block;}
 	.dropdown-content a:hover {background-color:#f1f1f1;}
 	.dropdown .dropdown-content {display:none;}
@@ -122,6 +122,45 @@
 
 	.row:after {content:""; display:table; clear:both;}
 
+	.tooltip {
+		position: relative;
+		display: inline-block;
+		border-bottom: 1px dotted rgb(0, 0, 0);
+	}
+
+	.tooltip .tooltiptext {
+		visibility: hidden;
+		width: 120px;
+		background-color: #555;
+		color: #fff;
+		text-align: center;
+		border-radius: 6px;
+		padding: 5px 0;
+		position: absolute;
+		z-index: 1;
+		bottom: 125%;
+		left: 0%;
+		opacity: 0;
+		transition: opacity 0.3s;
+	}
+
+	.tooltip .tooltiptext::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		margin-left: -5px;
+		border-width: 5px;
+		border-style: solid;
+		border-color: #555 transparent transparent transparent;
+	}
+
+	.tooltip:hover .tooltiptext {
+		visibility: visible;
+		filter: alpha(opacity=85);
+		opacity: 0.85;
+	}
+
 	ul {margin-top:0; margin-bottom:0;}
 						
 	</style>
@@ -150,7 +189,7 @@
 				<div style="clear:both;"></div>
 				<div id="view"></div>
 				<div class="info1">Selected items will be displayed in the menu. A separator may be added by setting name to 'separator' and pattern to any non-empty string.</div>
-				<p "><a href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target=\"_blank\">Title format reference</a></p>
+				<p "><a class="tooltip" id="tfReference" href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target="_blank" oncontextmenu="copyToClipboardId('tfReference')">Title format reference<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a></p>
 				<!-- Regorxxx Text cleanup -->
 				<button id="syntax_button" name="syntax_button" style="margin-left:0px;" type="button">Show Multi-Panel Mode (Facets) & Extended Syntax Help</button><div id="syntax_help" style="display: none;">
 				<!-- Regorxxx -->
@@ -183,7 +222,7 @@
 			<div id="filter"></div>
 			<div class="info1">Selected items will be displayed in the menu. A separator may be added by setting name to 'separator' and query to any non-empty string.	</div>
 			<!-- Regorxxx Add help to filter tab -->
-			<p "><a href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target=\"_blank\">Title format reference</a></p>
+			<p "><a class="tooltip" id="tfReference2" href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target="_blank" oncontextmenu="copyToClipboardId('tfReference2')">Title format reference<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a></p>
 			<button id="syntaxFilter_button" name="syntaxFilter_button" style="margin-left:0px;" type="button">Extended Syntax Help</button>
 			<div id="syntaxFilter_help" style="display: none;">
 				<div class="info5"><b>Extended syntax</b></div>
@@ -384,7 +423,7 @@
 					<div id="searchEnter" style="padding-top:0.5em;"></div>	
 					<div style="display:inline-block; padding-top:0.7em;"><a id="searcg_help" href="#" onclick="showHelp('search_text');return false;">Search help</a></div>
 					<div id="search_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
-						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a href="https://regexr.com/" target=\"_blank\>RegExp reference</a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup<br><br><br>Queries usage:<br><br>&#x2022; Supports $nowplaying{}, $nowplayingorselected{} and $selected{}<br>&#x2022; If auto-refresh is disabled, search results will not be updated when using above syntax on playback/selection changes<br>&#x2022; Auto-refresh may have a performance impact with $selected{} (or similar) on selection changes, use filters instead whenever possible</div>
+						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a class="tooltip" id="regexpReference" href="https://regexr.com/" target="_blank" oncontextmenu="copyToClipboardId('regexpReference')">RegExp reference<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup<br><br><br>Queries usage:<br><br>&#x2022; Supports $nowplaying{}, $nowplayingorselected{} and $selected{}<br>&#x2022; If auto-refresh is disabled, search results will not be updated when using above syntax on playback/selection changes<br>&#x2022; Auto-refresh may have a performance impact with $selected{} (or similar) on selection changes, use filters instead whenever possible</div>
 					</div>
 				</div>
 			</div>
@@ -571,7 +610,7 @@
 					<div id="albumArtFonts"></div>
 					<div class="info6"><b>Colours (R,G,B):</b></div>
 					<div id="colours1"></div>
-					<p "><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool#ColorPicker_tool" target=\"_blank\">Colour picker</a></p>
+					<p "><a class="tooltip" id="colorPicker" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool#ColorPicker_tool" target="_blank" oncontextmenu="copyToClipboardId('colorPicker')">Colour picker<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a></p>
 					<div class="info3">Selected colours and fonts will be used.<br>Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline</div>
 				</div>
 			
@@ -2187,6 +2226,21 @@
 					if (id != h[i][0]) window[h[i][1]].style.display = 'none';
 				}
 			}
+
+			// Regorxxx <- Copy links to clipboard ->
+			function copyToClipboard(s) {
+				if (navigator.clipboard) { //Chrome
+					navigator.clipboard.writeText(s);
+				} else if (window.clipboardData) { // Internet Explorer
+					window.clipboardData.setData("Text", s);
+				}
+			}
+
+			function copyToClipboardId(id) {
+				var element = document.getElementById(id);
+				copyToClipboard(element.href || element.innerHTML);
+			}
+			// Regorxxx ->
 
 			window.onunload = function () {
 				if (!is_closed_manually) {
