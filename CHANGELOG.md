@@ -1,3 +1,11 @@
+# v2.4.0.mod.1
+### Changed
+	- Changed how built-in icons paths are handled, using relative paths.
+### Fixed
+	- Fix sorting under View By Folder Structure by jimmywan https://github.com/Wil-B/Library-Tree/pull/3
+
+<br />
+
 # v2.4.0
 
 ### Added

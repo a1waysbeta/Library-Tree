@@ -1290,8 +1290,8 @@ class Images {
 		ppt.curNoArtistImg = $.clamp($.value(ppt.curNoArtistImg, 0, 0), 0, this.artist_images.length - 1);
 		const artistImages = this.artist_images.map(v => ({
 			name: utils.SplitFilePath(v)[1],
-			path: 'file://' + v.replace('noArtist', 'noArtist/small')
-		}))
+			path: v.replace('noArtist', 'noArtist/small').replace(my_utils.packageInfo.Directories.Root + '\\', './')
+		}));
 		this.no_artist_img = gdi.Image(this.artist_images[ppt.curNoArtistImg]);
 		ppt.noArtistImages = JSON.stringify(artistImages);
 	}
@@ -1301,7 +1301,7 @@ class Images {
 		ppt.curNoCoverImg = $.clamp($.value(ppt.curNoCoverImg, 0, 0), 0, this.cover_images.length - 1);
 		const coverImages = this.cover_images.map(v => ({
 			name: utils.SplitFilePath(v)[1],
-			path: 'file://' + v.replace('noCover', 'noCover/small')
+			path: v.replace('noCover', 'noCover/small').replace(my_utils.packageInfo.Directories.Root + '\\', './')
 		}));
 		this.no_cover_img = gdi.Image(this.cover_images[ppt.curNoCoverImg]);
 		ppt.noCoverImages = JSON.stringify(coverImages);
@@ -1312,7 +1312,7 @@ class Images {
 		ppt.curRootImg = $.clamp($.value(ppt.curRootImg, 0, 0), 0, this.root_images.length - 1);
 		const rootImages = this.root_images.map(v => ({
 			name: utils.SplitFilePath(v)[1],
-			path: 'file://' + v.replace('root', 'root/small')
+			path: v.replace('root', 'root/small').replace(my_utils.packageInfo.Directories.Root + '\\', './')
 		}));
 		if (ppt.rootNode && ppt.curRootImg == 3) {
 			this.style.rootComposite = true;

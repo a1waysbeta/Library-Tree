@@ -658,7 +658,9 @@ class Panel {
 		cfgWindow.version = `v${window.ScriptInfo.Version}`;
 		cfgWindow = JSON.stringify(cfgWindow);
 		ppt.set('Library Tree Dialog Box', cfgWindow);
-		if (popUpBox.isHtmlDialogSupported()) popUpBox.config(JSON.stringify([this.dialogGrps, this.dialogFiltGrps, this.defViewPatterns, this.defFilterPatterns]), JSON.stringify(ppt), cfgWindow, ok_callback);
+		const pptStr = JSON.stringify(ppt)
+			.replace(/:\\"\.\//gi,':\\"' + my_utils.packageInfo.Directories.Root.replace(/\\/gi, '/') + '/'); // Adjust relative paths
+		if (popUpBox.isHtmlDialogSupported()) popUpBox.config(JSON.stringify([this.dialogGrps, this.dialogFiltGrps, this.defViewPatterns, this.defFilterPatterns]), pptStr, cfgWindow, ok_callback);
 		else {
 			popUpBox.ok = false;
 			$.trace('options dialog isn\'t available with current operating system. All settings in options are available in panel properties. Common settings are on the menu.');	
