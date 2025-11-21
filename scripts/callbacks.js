@@ -116,7 +116,7 @@ function on_main_menu(index) {
 
 function on_metadb_changed(handleList, isDatabase) {
 	if (isDatabase && !panel.statistics || lib.list.Count != lib.libNode.length) return;
-	if (ppt.fixedPlaylist || !ppt.libSource) {	
+	if (ppt.fixedPlaylist || !ppt.libSource) {
 		handleList.Convert().some(h => {
 			const i = lib.full_list.Find(h);
 			if (i != -1) {
@@ -204,15 +204,22 @@ function on_mouse_wheel(step) {
 function on_notify_data(name, info) {
 	if (ppt.libSource == 2 && name != 'bio_imgChange') {
 		const panelSelectionPlaylists = ppt.panelSelectionPlaylist.split(/\s*\|\s*/);
-		panelSelectionPlaylists.some(v=> {
+		panelSelectionPlaylists.some(v => {
 			if (name == v) {
 				lib.list = new FbMetadbHandleList(info);
 				if ($.equalHandles(lib.list.Convert(), lib.full_list.Convert())) return;
 				lib.full_list = lib.list.Clone();
 				ppt.lastPanelSelectionPlaylist = `${v} Cache`;
-				const pln = plman.FindOrCreatePlaylist(`${v} Cache`, false);
-				plman.ClearPlaylist(pln);
-				plman.InsertPlaylistItems(pln, 0, lib.list);
+				// Regorxxx <- Don't create cache playlists if possible
+				if (lib.list.SaveAs && ppt.panelInternalCache) {
+					$.buildPth(my_utils.packageInfo.Directories.Storage + '\\');
+					lib.list.SaveAs(my_utils.packageInfo.Directories.Storage + '\\' + ppt.lastPanelSelectionPlaylist + '.fpl');
+				} else {
+					const pln = plman.FindOrCreatePlaylist(ppt.lastPanelSelectionPlaylist, false);
+					plman.ClearPlaylist(pln);
+					plman.InsertPlaylistItems(pln, 0, lib.list);
+				}
+				// Regorxxx ->
 				lib.searchCache = {};
 				pop.clearTree();
 				pop.cache = {
@@ -224,7 +231,7 @@ function on_notify_data(name, info) {
 				ui.expandHandle = lib.list.Count ? lib.list[0] : null;
 				ui.on_playback_new_track();
 				lib.treeState(false, ppt.rememberTree);
-				return;		
+				return;
 			}
 		});
 	}
@@ -239,7 +246,7 @@ function on_notify_data(name, info) {
 			ppt.themeBgImage = info.themeBgImage;
 			ppt.themeColour = info.themeColour;
 			on_colours_changed(true);
-			break;	
+			break;
 		case 'Sync col': {
 			if (!ppt.themed) break;
 			const themeLight = ppt.themeLight;
@@ -261,9 +268,16 @@ function on_notify_data(name, info) {
 }
 
 function on_paint(gr) {
+	// Regorxxx <- Don't create cache playlists if possible
 	if (!lib.initialised) {
-		lib.initialise();
+		const cache = my_utils.packageInfo.Directories.Storage + '\\' + ppt.lastPanelSelectionPlaylist + '.fpl';
+		if (ppt.libSource === 2 && ppt.panelInternalCache && utils.IsFile(cache)) {
+			lib.cacheId = fb.AddLocationsAsync([cache]);
+		} else {
+			lib.initialise();
+		}
 	}
+	// Regorxxx ->
 	ui.draw(gr);
 	lib.checkTree();
 	img.draw(gr);
@@ -362,8 +376,8 @@ const on_queue_changed = $.debounce(() => {
 		'filter': {}
 	}
 	panel.treePaint();
-	}, 250, {
-	leading:  true,
+}, 250, {
+	leading: true,
 	trailing: true
 });
 
@@ -389,7 +403,7 @@ function on_size() {
 	ui.calcText(true)
 
 	if (ppt.themed && ppt.theme) {
-		const themed_image = `${fb.ProfilePath}settings\\themed\\themed_image.bmp`;	
+		const themed_image = `${fb.ProfilePath}settings\\themed\\themed_image.bmp`;
 		if ($.file(themed_image)) sync.image(gdi.Image(themed_image));
 	}
 
@@ -419,3 +433,12 @@ function setSelection(handle) {
 		else pop.showItem(idx, 'focus');
 	}
 }
+
+// Regorxxx <- Don't create cache playlists if possible
+function on_locations_added(taskId, handleList) {
+	if (taskId === lib.cacheId) {
+		lib.cache = handleList.Clone();
+		if (ppt.libSource === 2) { lib.initialise(lib.cache); }
+	}
+}
+// Regorxxx ->

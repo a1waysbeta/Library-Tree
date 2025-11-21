@@ -325,6 +325,7 @@ let properties = [
 	
 	['Logging library profiler', true, 'logLibProfiler'], // Regorxxx <- Library profiling
 	['Statistics Rating/Popularity Decimals', 1, 'ratingDecimals'], // Regorxxx <- Rating decimals
+	['Playlist: prefer internal cache (if supported)', true, 'panelInternalCache'], // Regorxxx <- Don't create cache playlists if possible
 ];
 
 const ppt = new PanelProperties;

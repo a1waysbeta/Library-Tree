@@ -13,6 +13,10 @@ class Library {
 		this.initialised = false;
 		this.libNode = [];
 		this.list = new FbMetadbHandleList();
+		// Regorxxx <- Don't create cache playlists if possible
+		this.cacheId = null;
+		this.cache = null;
+		// Regorxxx ->
 		this.noListUpd = false;
 		this.none = '';
 		this.node = [];
@@ -497,7 +501,13 @@ class Library {
 			}
 		}
 		if (!items) {
-			this.list = [plman.GetPlaylistItems($.pl_active), !ppt.fixedPlaylist ? fb.GetLibraryItems() : plman.GetPlaylistItems(fixedPlaylistIndex), plman.GetPlaylistItems(plman.FindPlaylist(ppt.lastPanelSelectionPlaylist))][ppt.libSource];
+			// Regorxxx <- Optimize library loading. Previously all items were retrieved and then source chosen! Don't create cache playlists if possible
+			switch (ppt.libSource) {
+				case 0: this.list = plman.GetPlaylistItems($.pl_active); break;
+				case 1: this.list = !ppt.fixedPlaylist ? fb.GetLibraryItems() : plman.GetPlaylistItems(fixedPlaylistIndex); break;
+				case 2: this.list = this.cache || plman.GetPlaylistItems(plman.FindPlaylist(ppt.lastPanelSelectionPlaylist)); break;
+			}
+			// Regorxxx ->
 			if (ppt.recItemImage && ppt.libSource == 2) ui.expandHandle = this.list.Count ? this.list[0] : null;
 			if (ppt.libSource != 2) this.full_list = this.list.Clone();
 		}
@@ -608,7 +618,13 @@ class Library {
 				ppt.libSource = 0;
 			}
 		}
-		this.list = [plman.GetPlaylistItems($.pl_active), !ppt.fixedPlaylist ? (handleList ? handleList : fb.GetLibraryItems()) : plman.GetPlaylistItems(fixedPlaylistIndex), plman.GetPlaylistItems(plman.FindPlaylist(ppt.lastPanelSelectionPlaylist))][ppt.libSource];
+		// Regorxxx <- Optimize library loading. Previously all items were retrieved and then source chosen! Don't create cache playlists if possible
+		switch (ppt.libSource) {
+			case 0: this.list = plman.GetPlaylistItems($.pl_active); break;
+			case 1: this.list = !ppt.fixedPlaylist ? (handleList ? handleList : fb.GetLibraryItems()) : plman.GetPlaylistItems(fixedPlaylistIndex); break;
+			case 2: this.list = handleList || this.cache || plman.GetPlaylistItems(plman.FindPlaylist(ppt.lastPanelSelectionPlaylist)); break;
+		}
+		// Regorxxx ->
 		if (ppt.recItemImage && ppt.libSource == 2) ui.expandHandle = this.list.Count ? this.list[0] : null;
 		this.full_list = this.list.Clone();
 		if (this.list.Count) this.v2_init = false;

@@ -752,7 +752,9 @@ class MenuItems {
 		}
 		const caption = 'Panel source name';
 		const def = ppt.panelSelectionPlaylist;
-		const prompt = 'Enter source panel name\n\n• To get the name, go to the library tree panel to be used as source\n• Press shift + windows key and choose configure\n• Paste the panel name or id at the top into here\n• Name is also used for a cache playlist that remembers last open state\n• Edit source panel name if required\n• For more than one source panel, use pipe separator, e.g. Genre|Artist'
+		// Regorxxx <- Better info. Don't create cache playlists if possible.
+		const prompt = 'Enter source panel name:\n\n• To get the name, go to the library tree panel to be used as source\n• Press Shift + Windows + R. Click and choose \'configure panel\'\n• Paste the panel name or ID, at the top, into here\n• Edit source panel name if required\n• Name is also used for a cache playlist that remembers last open state\n• The cache will be hidden, unless not supported by JS host component\n• For more than one source panel, use pipe separator, e.g. Genre|Artist'
+		// Regorxxx ->
 		const fallback = popUpBox.isHtmlDialogSupported() ? popUpBox.input(caption, prompt, ok_callback, '', def) : true;
 		if (fallback) {
 			let ns = '';

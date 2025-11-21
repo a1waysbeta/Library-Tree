@@ -1,3 +1,10 @@
+# v2.4.0.mod.7
+### Changed
+	- Removed unnecessary usage of cache playlists while using Facets mode (panel source) on newest JSplitter and SMP versions. Selection is now sent to other panels on real time and saved to a playlist file at package data folder for loading on startup, without the need of cluttering the UI with a visible playlist. On non supported JS host components, the previous behavior will be used as fallback. A new property has been added to disable it, if desired ('Playlist: Prefer internal cache (if supported)').
+	- Performance improvements retrieving items from library, playlist or panel source. Previously it always retrieved all and then the selected one was chosen, now only the selected one is computed. In most cases the library is the biggest one, so it may only be noticeable when using the other sources on huge libraries. It should also reduce peak memory usage.
+
+<br />
+
 # v2.4.0.mod.6
 ### Added
 	- Added double click action to scrollbar buttons to jump to top/bottom of the list.
@@ -5,6 +12,7 @@
 	- Added new menu entry at contextual menu to show the currently focused item.
 ### Changed
 	- Changed default view pattern 'Artist initial' to be compatible with Japanese/Chinese chars along some minor improvements.
+
 <br />
 
 # v2.4.0.mod.5
