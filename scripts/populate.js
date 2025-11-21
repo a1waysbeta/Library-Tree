@@ -124,7 +124,7 @@ class Populate {
 				this.clearSelected();
 				this.tree[ix].sel = true;
 				this.getTreeSel();
-				this.load(this.sel_items, true, true, false, pl, false);
+				this.load({ bAddToPls: true, bAutoPlay: false, bUseDefaultPls: pl, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 				lib.treeState(false, ppt.rememberTree);
 			}
 	}
@@ -1658,29 +1658,30 @@ class Populate {
 		lib.treeState(false, ppt.rememberTree);
 	}
 
-	load(list, isArray, add, autoPlay, def_pl, insert) {
+	// Regorxxx <- Code cleanup. Add extra arguments.
+	load({ handleList, bAddToPls = false, bAutoPlay = false, bUseDefaultPls = false, bInsertToPls = false, bApplySort = true } = {}) {
 		let np_item = -1;
 		let pid = -1;
 		const pl_stnd = ppt.libPlaylist.replace(/%view_name%/i, panel.viewName);
 		let pl_stnd_idx = plman.FindOrCreatePlaylist(pl_stnd, true);
 
-		if (!def_pl && plman.ActivePlaylist != -1) pl_stnd_idx = plman.ActivePlaylist;
+		if (!bUseDefaultPls && plman.ActivePlaylist != -1) pl_stnd_idx = plman.ActivePlaylist;
 		else if (ppt.activateOnChange) plman.ActivePlaylist = pl_stnd_idx;
 		
 		
-		if (autoPlay == 4 && plman.PlaylistItemCount(pl_stnd_idx) || autoPlay == 3 && fb.IsPlaying) {
-			autoPlay = false;
-			add = true;
+		if (bAutoPlay == 4 && plman.PlaylistItemCount(pl_stnd_idx) || bAutoPlay == 3 && fb.IsPlaying) {
+			bAutoPlay = false;
+			bAddToPls = true;
 		}
-		const items = isArray ? this.getHandleList() : list.Clone();
+		const items = !handleList || Array.isArray(handleList) ? this.getHandleList() : handleList.Clone();
 
-		this.sortIfNeeded(items);
+		if (bApplySort) { this.sortIfNeeded(items); }
 		this.selList = items.Clone();
-		this.selection_holder.SetSelection(this.selList);
+		this.selection_holder.SetSelection(this.selList, 6); // Regorxxx <- Set selection type to media library viewer ->
 		const plnIsValid = pl_stnd_idx != -1 && pl_stnd_idx < plman.PlaylistCount;
 		const pllockRemoveOrAdd = plnIsValid ? plman.GetPlaylistLockedActions(pl_stnd_idx).includes('RemoveItems') || plman.GetPlaylistLockedActions(pl_stnd_idx).includes('ReplaceItems') || plman.GetPlaylistLockedActions(pl_stnd_idx).includes('AddItems') : false;
-		if (!add && pllockRemoveOrAdd) return;
-		if (fb.IsPlaying && !add) {
+		if (!bAddToPls && pllockRemoveOrAdd) return;
+		if (fb.IsPlaying && !bAddToPls) {
 			if (ppt.actionMode == 1) {
 				const pl_playing = `${ppt.libPlaylist} (playing)`;
 				const pl_playing_idx = plman.FindOrCreatePlaylist(pl_playing, false);
@@ -1740,7 +1741,7 @@ class Populate {
 					if (ppt.selectAdded) { plman.SetPlaylistSelection(pl_stnd_idx, $.range(0, items.Count - 1), true) } // Regorxxx <- Send to playlist & select ->
 				}
 			}
-		} else if (!add) {
+		} else if (!bAddToPls) {
 			if (plman.PlaylistItemCount(pl_stnd_idx) < 5000) plman.UndoBackup(pl_stnd_idx);
 			plman.ClearPlaylist(pl_stnd_idx);
 			plman.InsertPlaylistItems(pl_stnd_idx, 0, items);
@@ -1748,17 +1749,18 @@ class Populate {
 			if (ppt.selectAdded) { plman.SetPlaylistSelection(pl_stnd_idx, $.range(0, items.Count - 1), true) } // Regorxxx <- Send to playlist & select ->
 		} else {
 			if (plman.PlaylistItemCount(pl_stnd_idx) < 5000) plman.UndoBackup(pl_stnd_idx);
-			plman.InsertPlaylistItems(pl_stnd_idx, !insert ? plman.PlaylistItemCount(pl_stnd_idx) : plman.GetPlaylistFocusItemIndex(pl_stnd_idx), items, true);
-			const f_ix = !insert || plman.GetPlaylistFocusItemIndex(pl_stnd_idx) == -1 ? plman.PlaylistItemCount(pl_stnd_idx) - items.Count : plman.GetPlaylistFocusItemIndex(pl_stnd_idx) - items.Count;
+			plman.InsertPlaylistItems(pl_stnd_idx, !bInsertToPls ? plman.PlaylistItemCount(pl_stnd_idx) : plman.GetPlaylistFocusItemIndex(pl_stnd_idx), items, true);
+			const f_ix = !bInsertToPls || plman.GetPlaylistFocusItemIndex(pl_stnd_idx) == -1 ? plman.PlaylistItemCount(pl_stnd_idx) - items.Count : plman.GetPlaylistFocusItemIndex(pl_stnd_idx) - items.Count;
 			plman.SetPlaylistFocusItem(pl_stnd_idx, f_ix);
 			plman.EnsurePlaylistItemVisible(pl_stnd_idx, f_ix);
 			if (ppt.selectAdded) { plman.SetPlaylistSelection(pl_stnd_idx, $.range(f_ix, items.Count - 1), true) } // Regorxxx <- Send to playlist & select ->
 		}
-		if (autoPlay) {
+		if (bAutoPlay) {
 			const c = (plman.PlaybackOrder == 3 || plman.PlaybackOrder == 4) ? Math.ceil(plman.PlaylistItemCount(pl_stnd_idx) * Math.random() - 1) : 0;
 			plman.ExecutePlaylistDefaultAction(pl_stnd_idx, c);
 		}
 	}
+	// Regorxxx ->
 
 	mbtn_dn() { 
 		this.mbtn_dbl_clicked = false
@@ -1942,7 +1944,7 @@ class Populate {
 			case vk.insert:
 				this.getTreeSel();
 				if (!this.sel_items.length) return;
-				this.load(this.sel_items, true, true, false, false, true);
+				this.load({ bAddToPls: true, bAutoPlay: false, bUseDefaultPls: false, bInsertToPls: true }); // Regorxxx <- Code cleanup ->
 				break;
 		}
 	}
@@ -1954,7 +1956,7 @@ class Populate {
 
 	setPlaylist(ix, item) {
 		if (ppt.libSource) {
-			if (this.autoFill.key) this.load(this.sel_items, true, false, false, !ppt.sendToCur, false);
+			if (this.autoFill.key) this.load({ bAddToPls: false, bAutoPlay: false, bUseDefaultPls: !ppt.sendToCur, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 			this.track(true);
 		} else if (this.autoFill.key) this.setPlaylistSelection(ix, item);
 	}
@@ -1978,11 +1980,11 @@ class Populate {
 			}
 			switch (true) {
 				case vk.k('shift'):
-					return this.load(this.sel_items, true, true, false, false, false);
+					return this.load({ bAddToPls: true, bAutoPlay: false, bUseDefaultPls: false, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 				case vk.k('ctrl'):
 					return this.sendToNewPlaylist();
 				default:
-					return this.load(this.sel_items, true, false, this.autoPlay.send, false, false);
+					return this.load({ bAddToPls: false, bAutoPlay: this.autoPlay.send, bUseDefaultPls: false, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 			}
 		}
 		let item = -1;
@@ -2137,13 +2139,13 @@ class Populate {
 		if (index == this.getMainMenuIndex.add) {
 			this.getTreeSel();
 			if (!this.sel_items.length) return;
-			this.load(this.sel_items, true, true, false, false, false);
+			this.load({ bAddToPls: true, bAutoPlay: false, bUseDefaultPls: false, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 		}
 		if (index == this.getMainMenuIndex.collapseAll) this.collapseAll();
 		if (index == this.getMainMenuIndex.insert) {
 			this.getTreeSel();
 			if (!this.sel_items.length) return;
-			this.load(this.sel_items, true, true, false, false, true);
+			this.load({ bAddToPls: true, bAutoPlay: false, bUseDefaultPls: false, bInsertToPls: true }); // Regorxxx <- Code cleanup ->
 		}
 		if (index == this.getMainMenuIndex.new) {
 			this.getTreeSel();
@@ -2169,14 +2171,16 @@ class Populate {
 
 	send(item, x, y) {
 		if (!this.check_ix(item, x, y, false)) return;
-		if (vk.k('ctrl') || vk.k('shift')) this.load(this.sel_items, true, false, false, !ppt.sendToCur, false);
-		else this.load(this.sel_items, true, false, this.autoPlay.click, !ppt.sendToCur, false);
+		// Regorxxx <- Code cleanup
+		if (vk.k('ctrl') || vk.k('shift')) this.load({ bAddToPls: false, bAutoPlay: false, bUseDefaultPls: !ppt.sendToCur, bInsertToPls: false });
+		else this.load({ bAddToPls: false, bAutoPlay: this.autoPlay.click, bUseDefaultPls: !ppt.sendToCur, bInsertToPls: false });
+		// Regorxxx ->
 	}
 
 	sendToNewPlaylist() {
 		const names = this.tree.filter(v => v.sel).map(v => v.name);
 		plman.ActivePlaylist = plman.CreatePlaylist(plman.PlaylistCount, [...new Set(names)].join('; '));
-		this.load(this.sel_items, true, false, this.autoPlay.send, false, false);
+		this.load({ bAddToPls: false, bAutoPlay: this.autoPlay.send, bUseDefaultPls: false, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 	}
 
 	setActions() {

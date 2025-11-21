@@ -327,7 +327,7 @@ class Search {
 					this.logHistory();
 					searchDone = true;
 				}
-				if (ppt.searchSend == 1 || ppt.searchEnter && ppt.searchSend == 2) pop.load(panel.list, false, false, pop.autoPlay.send, !ppt.sendToCur, false);
+				if (ppt.searchSend == 1 || ppt.searchEnter && ppt.searchSend == 2) pop.load({ handleList: panel.list, bAddToPls: false, bAutoPlay: pop.autoPlay.send, bUseDefaultPls: !ppt.sendToCur, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 				break;
 			case vk.escape:
 				this.clear();
@@ -692,7 +692,8 @@ class Find {
 						if (sbar.rows_drawn - row < 3 || row < 0) sbar.checkScroll((panel.pos + 3) * ui.row.h - sbar.rows_drawn * ui.row.h);
 					}
 					if (ppt.libSource) {
-						if (pop.autoFill.key) pop.load(pop.sel_items, true, false, false, !ppt.sendToCur, false);
+						// if (pop.autoFill.key) pop.load(pop.sel_items, true, false, false, !ppt.sendToCur, false);
+						if (pop.autoFill.key) pop.load({ bAddToPls: false, bAutoPlay: false, bUseDefaultPls: !ppt.sendToCur, bInsertToPls: false });
 						pop.track(pop.autoFill.key); 
 					} else if (panel.pos >= 0 && panel.pos < pop.tree.length) pop.setPlaylistSelection(panel.pos, pop.tree[panel.pos]);
 				} else {
@@ -752,7 +753,8 @@ class Find {
 				timer.jsearch2.id = setTimeout(() => {
 					if (found) {
 						if (ppt.libSource) {
-							if (pop.autoFill.key) pop.load(pop.sel_items, true, false, false, !ppt.sendToCur, false);
+							// if (pop.autoFill.key) pop.load(pop.sel_items, true, false, false, !ppt.sendToCur, false);
+							if (pop.autoFill.key) pop.load({ bAddToPls: false, bAutoPlay: false, bUseDefaultPls: !ppt.sendToCur, bInsertToPls: false });
 							pop.track(pop.autoFill.key);
 						} else if (pos >= 0 && pos < pop.tree.length) pop.setPlaylistSelection(pos, pop.tree[pos]);
 					}

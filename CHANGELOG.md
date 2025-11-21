@@ -1,3 +1,18 @@
+# v2.4.0.mod.18
+### Added
+	- New 'Send top tracks' and 'Add top tracks' contextual menu entries which filter and sort the current selection on panel with customizable expressions. Note this custom filter is totally independent to the view/filter patterns being used on the panel, and is applied on top of them.
+		* Target playlist follows the 'Target playlist for send to playlist' setting (HTML options panel)  or 'Playlist: Send to Current' (properties panel).
+		* Send entry replaces all tracks on destination, while Add entry inserts them at the end.
+		* Customizable query and TF expressions can be found at 'Behaviour\Top tracks selection' (HTML options panel) or 'Playlist: Top tracks filter' and 'Playlist: Top tracks sorting' (properties panel). 
+		* Support for $nowplaying{}, $nowplayingorselected{} and $selected{}.
+		* By default it uses '%RATING% GREATER 3 OR %FEEDBACK% IS 1 OR %2003_LOVED% IS 1' as filter and '$rand()' as sorting.
+### Changed
+	- Changed panel selection type at FbUiSelectionHolder so it properly identifies as 'media_library_viewer'.
+	- Minor improvements and cleanup at HTML options panel.
+	- Internal changes (for future development).
+
+<br />
+
 # v2.4.0.mod.17
 ### Changed
 	- New behavior when sending items to playlist: now items are also selected on the destination playlist. This ensures other panels/scripts tracking selection changes work properly with Library Tree. A new setting has been added in case the legacy behavior is desired at 'Behaviour\Playlist selection behaviour' (HTML options panel) or 'Playlist: Select added items' (properties panel).

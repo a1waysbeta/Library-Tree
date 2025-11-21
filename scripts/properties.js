@@ -253,6 +253,10 @@ let properties = [
 	['Playlist: Last Panel Selection', 'Library Tree Panel Selection', 'lastPanelSelectionPlaylist'],
 	['Playlist: Send to Current', false, 'sendToCur'],
 	['Playlist: Select added items', true, 'selectAdded'], // Regorxxx <- Send to playlist & select ->
+	// Regorxxx <- Top tracks
+	['Playlist: Top tracks filter', '%RATING% GREATER 3 OR %FEEDBACK% IS 1 OR %2003_LOVED% IS 1', 'topTracksFilter'],
+	['Playlist: Top tracks sorting', '$rand()', 'topTracksSorting'],
+	// Regorxxx ->
 	['Prefixes to Strip or Swap (| Separator)', 'A|The', 'prefix'],
 	['Preset: Load Current View', false, 'presetLoadCurView'],
 	['Remember.PreSearch', true, 'rememberPreSearch'],

@@ -62,7 +62,7 @@ class Library {
 			if (panel.search.txt.length > 2) window.NotifyOthers(window.Name, !lib.list.Count ? lib.list : panel.list);
 			else if (!panel.search.txt.length) pop.notifySelection();
 			if (ppt.searchSend != 2) return;
-			if (panel.search.txt) pop.load(panel.list, false, false, false, true, false);
+			if (panel.search.txt) pop.load({ handleList: panel.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 			else plman.ClearPlaylist(plman.FindOrCreatePlaylist(ppt.libPlaylist.replace(/%view_name%/i, panel.viewName), false));
 		}, 333);
 
@@ -75,7 +75,7 @@ class Library {
 			if (panel.search.txt.length > 2) window.NotifyOthers(window.Name, !lib.list.Count ? lib.list : panel.list);
 			else if (!panel.search.txt.length) pop.notifySelection();
 			if (ppt.searchSend != 2) return;
-			pop.load(panel.list, false, false, false, true, false);
+			pop.load({ handleList: panel.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 		}, 500);
 
 		this.checkView();
@@ -350,7 +350,7 @@ class Library {
 						const list = !panel.search.txt.length || !lib.list.Count ? lib.list : panel.list;
 						window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
 					}
-					if (ppt.searchSend == 2 && panel.search.txt.length) pop.load(panel.list, false, false, false, true, false);
+					if (ppt.searchSend == 2 && panel.search.txt.length) pop.load({ handleList: panel.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 					pop.checkAutoHeight();
 				}
 			}
@@ -475,23 +475,29 @@ class Library {
 		node.splice(i, 0, item);
 	}
 
+	// Regorxxx <- Code cleanup. Expose TF formatting for arbitrary input
 	getFilterQuery() {
-		this.filterQuery = panel.filter.mode[ppt.filterBy].type;
-		while (this.filterQuery.includes('$nowplaying{')) {
-			const q = this.filterQuery.match(/\$nowplaying{(.+?)}/);
-			this.filterQuery = this.filterQuery.replace(q[0], this.eval(q[1], 'nowplaying') || `~#No Value For Item#~`);
+		this.filterQuery = this.processCustomTf(panel.filter.mode[ppt.filterBy].type);
+	}
+
+	processCustomTf(s) {
+		while (s.includes('$nowplaying{')) {
+			const q = s.match(/\$nowplaying{(.+?)}/);
+			s = s.replace(q[0], this.eval(q[1], 'nowplaying') || `~#No Value For Item#~`);
 		}
-		while (this.filterQuery.includes('$selected{')) {
-			const q = this.filterQuery.match(/\$selected{(.+?)}/);
-			this.filterQuery = this.filterQuery.replace(q[0], this.eval(q[1], 'selected') || `~#No Value For Item#~`);
+		while (s.includes('$selected{')) {
+			const q = s.match(/\$selected{(.+?)}/);
+			s = s.replace(q[0], this.eval(q[1], 'selected') || `~#No Value For Item#~`);
 		}
 		// Regorxxx <- Merge now playing and selected as fallback
-		while (this.filterQuery.includes('$nowplayingorselected{')) {
-			const q = this.filterQuery.match(/\$nowplayingorselected{(.+?)}/);
-			this.filterQuery = this.filterQuery.replace(q[0], this.eval(q[1], 'nowplayingorselected') || `~#No Value For Item#~`);
+		while (s.includes('$nowplayingorselected{')) {
+			const q = s.match(/\$nowplayingorselected{(.+?)}/);
+			s = s.replace(q[0], this.eval(q[1], 'nowplayingorselected') || `~#No Value For Item#~`);
 		}
 		// Regorxxx ->
+		return s;
 	}
+	// Regorxxx ->
 
 	getLibrary(items) {
 		this.empty = '';

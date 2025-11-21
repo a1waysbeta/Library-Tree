@@ -360,8 +360,6 @@ class Panel {
 			['Filter XX: Name // Query', 'Recently Played // (%FIRST_PLAYED_ENHANCED% PRESENT AND %FIRST_PLAYED_ENHANCED% DURING LAST 4 WEEKS) OR (%2003_FIRST_PLAYED% PRESENT AND %2003_FIRST_PLAYED% DURING LAST 4 WEEKS) OR (%2003_FIRST_PLAYED% MISSING AND %FIRST_PLAYED% DURING LAST 4 WEEKS)'],
 			['Filter XX: Name // Query', 'Top Rated // %RATING% EQUAL 5 OR %2003_RATING% EQUAL 10'],
 			['Filter XX: Name // Query', 'separator // .'],
-			['Filter XX: Name // Query', 'Selected Artist // ARTIST IS $selected{$if2($meta(ARTIST,0),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,1),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,2),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,3),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,4),DUMMY)} OR ARTIST IS $selected{$if2($meta(ARTIST,5),DUMMY)}'],
-			['Filter XX: Name // Query', 'separator // .'],
 			['Filter XX: Name // Query', 'Nowplaying Artist // ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,0),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,1),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,2),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,3),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,4),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,5),DUMMY)}'],
 			['Filter XX: Name // Query', 'Nowplaying Genre // (GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,0)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,1)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,2)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,3)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,4)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,5)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)}) AND NOT ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,0),DUMMY)}'],
 			['Filter XX: Name // Query', 'Nowplaying Style // (STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,0)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,1)),female vocal,,live,,hi-fi,,instrumental,)),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,2)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,3)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,4)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,5)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)}) AND NOT ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,0),DUMMY)}'],
@@ -1074,7 +1072,7 @@ class Panel {
 							const list = !this.search.txt.length || !lib.list.Count ? lib.list : this.list;
 							window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
 						}
-						if (ppt.searchSend == 2 && this.search.txt.length) pop.load(this.list, false, false, false, true, false);
+						if (ppt.searchSend == 2 && this.search.txt.length) pop.load({ handleList: this.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 						break;
 				}
 				pop.checkAutoHeight();
@@ -1106,7 +1104,7 @@ class Panel {
 					}
 				}
 				this.draw = true;
-				if (ppt.searchSend == 2 && this.search.txt.length) pop.load(this.list, false, false, false, true, false);
+				if (ppt.searchSend == 2 && this.search.txt.length) pop.load({ handleList: this.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 				pop.checkAutoHeight();
 				break;
 			}

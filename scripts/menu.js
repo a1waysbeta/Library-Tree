@@ -154,12 +154,35 @@ class MenuItems {
 		menu.newMenu({hide: !this.settingsBtnDn && ppt.settingsShow && this.validItem});
 
 		if (this.validItem) {
-			['Send to current playlist' + '\tEnter', 'Add to current playlist' + '\tShift+enter', 'Send to new playlist' + '\tCtrl+enter', 'Show nowplaying'].forEach((v, i) => menu.newItem({
+			// Regorxxx <- Code cleanup
+			['Send to current playlist' + '\tEnter', 'Add to current playlist' + '\tShift+enter', 'Send to new playlist' + '\tCtrl+enter'].forEach((v, i) => menu.newItem({
 				str: v,
 				func: () => this.setPlaylist(i),
 				flags: this.getPaylistFlag(i),
 				separator: i == 2
 			}));
+			// Regorxxx ->
+			// Regorxxx <- Top tracks
+			{
+				const target = ' (' + (ppt.sendToCur ? 'current' : 'default') +  ' playlist)';
+				menu.newItem({
+					str: 'Send top track' + target,
+					func: () => this.setPlaylist(6),
+				});
+				menu.newItem({
+					str: 'Add top tracks' + target,
+					func: () => this.setPlaylist(7),
+					separator: true
+				});
+			}
+			// Regorxxx ->
+			// Regorxxx <- Code cleanup
+			menu.newItem({
+				str: 'Show nowplaying',
+				func: () => this.setPlaylist(3),
+				flags: this.getPaylistFlag(3),
+			});
+			// Regorxxx ->
 			// Regorxxx <- Show previously playing. Check if item is tracked
 			{
 				const prevPlaying = fb.GetPrevPlaying();
@@ -168,22 +191,23 @@ class MenuItems {
 				menu.newItem({
 					str: 'Show prev. played' + (handle && item === -1 ? '\tnot found' : ''),
 					func: () => pop.selShow(item),
-					flags:item !== -1 ? MF_STRING : MF_GRAYED
+					flags: item !== -1 ? MF_STRING : MF_GRAYED
 				});
 			}
 			// Regorxxx ->
 			// Regorxxx <- Show selection. Check if item is tracked
-			{			
+			{
 				const handle = fb.GetFocusItem(true);
 				const item = handle ? panel.list.Find(handle) : -1;
 				menu.newItem({
 					str: 'Show selection' + (handle && item === -1 ? '\tnot found' : ''),
 					func: () => pop.selShow(item),
-					flags:item !== -1 ? MF_STRING : MF_GRAYED
+					flags: item !== -1 ? MF_STRING : MF_GRAYED
 				});
 			}
 			// Regorxxx ->
 		}
+		menu.newItem({ separator: true }); // Regorxxx <- Menu cleanup ->
 
 		if (this.validItem && ppt.albumArtOptionsShow) {
 			menu.newItem({
@@ -702,12 +726,12 @@ class MenuItems {
 	setPlaylist(i) {
 		switch (i) {
 			case 0:
-				pop.load(pop.sel_items, true, false, pop.autoPlay.send, false, false);
+				pop.load({ bAddToPls: false, bAutoPlay: pop.autoPlay.send, bUseDefaultPls: false, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 				panel.treePaint();
 				lib.treeState(false, ppt.rememberTree);
 				break;
 			case 1:
-				pop.load(pop.sel_items, true, true, false, false, false);
+				pop.load({ bAddToPls: true, bAutoPlay: false, bUseDefaultPls: false, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 				lib.treeState(false, ppt.rememberTree);
 				break;
 			case 2:
@@ -730,6 +754,17 @@ class MenuItems {
 				pop.clearTree();
 				this.loadView(false, !panel.imgView ? (ppt.artTreeSameView ? ppt.viewBy : ppt.treeViewBy) : (ppt.artTreeSameView ? ppt.viewBy : ppt.albumArtViewBy), pop.sel_items[0]);
 				break;
+			// Regorxxx <- Top tracks
+			case 6:
+			case 7:
+				const items = fb.GetQueryItems(pop.getHandleList(), lib.processCustomTf(ppt.topTracksFilter));
+				const bCustomSort = ppt.topTracksSorting.length;
+				if (bCustomSort) { items.OrderByFormat(fb.TitleFormat(lib.processCustomTf(ppt.topTracksSorting)), 1); }
+				pop.load({ handleList: items, bAddToPls: i === 7, bAutoPlay: false, bUseDefaultPls: !ppt.sendToCur, bInsertToPls: false, bApplySort: !bCustomSort });
+				panel.treePaint();
+				lib.treeState(false, ppt.rememberTree);
+				break;
+			// Regorxxx ->
 		}
 	}
 
