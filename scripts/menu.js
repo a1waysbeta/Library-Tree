@@ -160,11 +160,13 @@ class MenuItems {
 				flags: this.getPaylistFlag(i),
 				separator: i == 2
 			}));
-			// Regorxxx <- Show selection
+			// Regorxxx <- Show selection. Check if item is tracked
+			const handle = fb.GetFocusItem(true);
+			const item = handle ? panel.list.Find(handle) : -1;
 			menu.newItem({
-				str: 'Show selection',
-				func: () => pop.selShow(),
-				flags: fb.GetFocusItem(true) !== null ? MF_STRING : MF_GRAYED
+				str: 'Show selection' + (item === -1 ? '\tnot found' : ''),
+				func: () => pop.selShow(item),
+				flags:item !== -1 ? MF_STRING : MF_GRAYED
 			});
 			// Regorxxx ->
 		}
@@ -752,8 +754,8 @@ class MenuItems {
 		}
 		const caption = 'Panel source name';
 		const def = ppt.panelSelectionPlaylist;
-		// Regorxxx <- Better info. Don't create cache playlists if possible.
-		const prompt = 'Enter source panel name:\n\n• To get the name, go to the library tree panel to be used as source\n• Press Shift + Windows + R. Click and choose \'configure panel\'\n• Paste the panel name or ID, at the top, into here\n• Edit source panel name if required\n• Name is also used for a cache playlist that remembers last open state\n• The cache will be hidden, unless not supported by JS host component\n• For more than one source panel, use pipe separator, e.g. Genre|Artist'
+		// Regorxxx <- Better info. Don't create cache playlists if possible. Chained facets updates.
+		const prompt = 'Enter source panel name:\n\n• To get the name, go to the library tree panel to be used as source\n• Press Shift + Windows + R. Click and choose \'configure panel\'\n• Paste the panel name or ID, at the top, into here\n• Edit source panel name if required\n• Name is also used for a cache playlist that remembers last open state\n• The cache will be hidden, unless not supported by JS host component\n• For more than one source panel, use pipe separator, e.g. Genre|Artist\n• For chained panels only the immediate parent\'s name is needed'
 		// Regorxxx ->
 		const fallback = popUpBox.isHtmlDialogSupported() ? popUpBox.input(caption, prompt, ok_callback, '', def) : true;
 		if (fallback) {

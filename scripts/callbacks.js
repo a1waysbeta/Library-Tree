@@ -81,7 +81,7 @@ function on_library_items_added(handleList) {
 	if (lib.v2_init) {
 		lib.v2_init = false;
 		if (ui.w < 1 || !window.IsVisible) return;
-		lib.initialise(handleList);
+		lib.initialise(handleList, true); // Regorxxx <- Don't create cache playlists if possible
 		return;
 	}
 	if (!ppt.libAutoSync || ppt.fixedPlaylist || !ppt.libSource) return;
@@ -211,26 +211,32 @@ function on_notify_data(name, info) {
 				lib.full_list = lib.list.Clone();
 				ppt.lastPanelSelectionPlaylist = `${v} Cache`;
 				// Regorxxx <- Don't create cache playlists if possible
-				if (lib.list.SaveAs && ppt.panelInternalCache) {
-					$.buildPth(my_utils.packageInfo.Directories.Storage + '\\');
-					lib.list.SaveAs(my_utils.packageInfo.Directories.Storage + '\\' + ppt.lastPanelSelectionPlaylist + '.fpl');
+				if (ppt.panelInternalCache) {
+					if (lib.list.SaveAs) {
+						$.buildPth(my_utils.packageInfo.Directories.Storage + '\\');
+						lib.list.SaveAs(my_utils.packageInfo.Directories.Storage + '\\' + ppt.lastPanelSelectionPlaylist + '.fpl');
+					}
 				} else {
 					const pln = plman.FindOrCreatePlaylist(ppt.lastPanelSelectionPlaylist, false);
 					plman.ClearPlaylist(pln);
 					plman.InsertPlaylistItems(pln, 0, lib.list);
 				}
-				// Regorxxx ->
-				lib.searchCache = {};
-				pop.clearTree();
-				pop.cache = {
-					'standard': {},
-					'search': {},
-					'filter': {}
+				if (!lib.initialised && ppt.panelInternalCache) { lib.initialise(lib.full_list); }
+				else {
+					lib.searchCache = {};
+					pop.clearTree();
+					pop.cache = {
+						'standard': {},
+						'search': {},
+						'filter': {}
+					}
+					lib.treeState(false, 2, null, 3);
+					ui.expandHandle = lib.list.Count ? lib.list[0] : null;
+					ui.on_playback_new_track();
+					lib.treeState(false, ppt.rememberTree);
+					if (ppt.libSourceChained) { pop.notifySelection(lib.list); } // Regorxxx <- Chained facets updates.
 				}
-				lib.treeState(false, 2, null, 3);
-				ui.expandHandle = lib.list.Count ? lib.list[0] : null;
-				ui.on_playback_new_track();
-				lib.treeState(false, ppt.rememberTree);
+				// Regorxxx ->
 				return;
 			}
 		});
@@ -260,6 +266,12 @@ function on_notify_data(name, info) {
 			if (!ppt.themed) break;
 			sync.image(new GdiBitmap(info.image), info.id);
 			break;
+		// Regorxxx <- Don't create cache playlists if possible
+		case 'Library Tree: ask selection':
+			if (!info.some((v) => v === window.Name)) { break; }
+			pop.notifySelection();
+			break;
+		// Regorxxx ->
 	}
 	if (ui.id.local && name.startsWith('opt_')) {
 		const clone = typeof info === 'string' ? String(info) : info;
@@ -270,11 +282,16 @@ function on_notify_data(name, info) {
 function on_paint(gr) {
 	// Regorxxx <- Don't create cache playlists if possible
 	if (!lib.initialised) {
-		const cache = my_utils.packageInfo.Directories.Storage + '\\' + ppt.lastPanelSelectionPlaylist + '.fpl';
-		if (ppt.libSource === 2 && ppt.panelInternalCache && utils.IsFile(cache)) {
-			lib.cacheId = fb.AddLocationsAsync([cache]);
+		if (ppt.libSource === 2 && ppt.panelInternalCache) {
+			const cache = my_utils.packageInfo.Directories.Storage + '\\' + ppt.lastPanelSelectionPlaylist + '.fpl';
+			if (utils.IsFile(cache)) {
+				lib.cacheId = fb.AddLocationsAsync([cache]);
+			} else {
+				const panelSelectionPlaylists = ppt.panelSelectionPlaylist.split(/\s*\|\s*/);
+				window.NotifyOthers('Library Tree: ask selection', panelSelectionPlaylists);
+			}
 		} else {
-			lib.initialise();
+			lib.initialise(void (0), true);
 		}
 	}
 	// Regorxxx ->

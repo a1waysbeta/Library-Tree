@@ -1,3 +1,14 @@
+# v2.4.0.mod.8
+### Added
+	- Added new default view patterns: Album (year) and Album (facets).
+### Changed
+	- Expanded previous feature of hidden cached playlists to use panel notifications as fallback if saving handle lists is not supported on JS host component. It should now work with any SMP version, one way or another. Users with newest SMP/JSplitter should experience no changes compared to previous package version. Remember there is a property to restore original behavior if desired ('Playlist: Prefer internal cache (if supported)').
+	- For facets mode (panel source), now every panel sends updates to other panels when being refreshed. i.e. there is no need to set multiple sources, only the most immediate parent's name, since the entire chain will be updated if needed; for ex. for a Genre|Artist|Album 3-panel layout (Album would use Artist as source, and Artist uses Genre). Multiple sources should only be needed if they are fully independent sources; for ex. 2 Artists trees with different filter views in an Artist1|Artist2|Album layout (Album would use Artist1|Artist2 as sources). A new property has been added to disable this behavior, if desired ('Library Source: Chained source notifications'), thus requiring an active selection on a panel to send it to immediate child panels (instead of automatic refreshing the entire chain).
+	- Show selection action is now disabled if the focused item is not tracked by the panel. Menu entry will be grayed out and a 'not found' tip added.
+	- The default associated playlist to panel selection is now named 'Library Viewer Selection' to match DUI and CUI album list panels default setting. Note it can be changed at the options panel if desired.
+
+<br />
+
 # v2.4.0.mod.7
 ### Changed
 	- Removed unnecessary usage of cache playlists while using Facets mode (panel source) on newest JSplitter and SMP versions. Selection is now sent to other panels on real time and saved to a playlist file at package data folder for loading on startup, without the need of cluttering the UI with a visible playlist. On non supported JS host components, the previous behavior will be used as fallback. A new property has been added to disable it, if desired ('Playlist: Prefer internal cache (if supported)').

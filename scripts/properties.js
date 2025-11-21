@@ -243,7 +243,7 @@ let properties = [
 
 	['Play on Enter or Send from Menu', false, 'autoPlay'],
 	['Playlist: Custom Sort', '', 'customSort'],
-	['Playlist: Default', 'Library View', 'libPlaylist'],
+	['Playlist: Default', 'Library Viewer Selection', 'libPlaylist'], // Regorxxx <- Default CUI/DUI playlist
 	['Playlist: Default Activate on Change', true, 'activateOnChange'],
 	['Playlist: Panel Selection', 'Library Tree Panel Selection', 'panelSelectionPlaylist'],
 	['Playlist: Last Panel Selection', 'Library Tree Panel Selection', 'lastPanelSelectionPlaylist'],
@@ -325,7 +325,8 @@ let properties = [
 	
 	['Logging library profiler', true, 'logLibProfiler'], // Regorxxx <- Library profiling
 	['Statistics Rating/Popularity Decimals', 1, 'ratingDecimals'], // Regorxxx <- Rating decimals
-	['Playlist: prefer internal cache (if supported)', true, 'panelInternalCache'], // Regorxxx <- Don't create cache playlists if possible
+	['Playlist: Prefer internal cache (if supported)', true, 'panelInternalCache'], // Regorxxx <- Don't create cache playlists if possible
+	['Library Source: Chained source notifications', true, 'libSourceChained'], // Regorxxx <- Chained facets updates.
 ];
 
 const ppt = new PanelProperties;

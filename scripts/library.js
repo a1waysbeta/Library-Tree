@@ -551,12 +551,13 @@ class Library {
 		return false;
 	}
 
-	initialise(handleList) {
+	initialise(handleList, bNotify) { // Regorxxx <- Don't create cache playlists if possible
 		const profiler = ppt.logLibProfiler ? new FbProfiler('Library Tree: Load library') : null; // Regorxxx <- Library profiling
 		lib.initialised = true;
 		this.load(handleList);
 		this.getLibrary(true);
 		this.rootNodes(ppt.rememberTree, ppt.process);
+		if (bNotify && ppt.panelInternalCache) { setTimeout(() => pop.notifySelection(), 1000); } // Regorxxx <- Don't create cache playlists if possible
 		if (profiler) { profiler.Print(this.list.Count + ' tracks ->'); } // Regorxxx <- Library profiling
 	}
 

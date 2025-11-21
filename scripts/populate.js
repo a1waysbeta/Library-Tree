@@ -1839,10 +1839,12 @@ class Populate {
 		}
 	}
 	// Regorxxx <- Double click scrollbar
-	selShow() {
-		const handle = fb.GetFocusItem(true);
-		if (handle) {
-			const item = panel.list.Find(handle);
+	selShow(item = -1) {
+		if (item === -1 || typeof item === 'undefined') {
+			const handle = fb.GetFocusItem(true);
+			if (handle) { item = panel.list.Find(handle); }
+		}
+		if (item !== -1) { // Check if item is tracked
 			let idx = -1;
 			for (let i = 0; i < this.tree.length; i++) {
 				const v = this.tree[i];
