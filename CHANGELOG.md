@@ -1,3 +1,15 @@
+# v2.4.0.mod.5
+### Added
+	- Added new default view patterns: Decade, Genre, Style, Genre tree, Artist initial (asciified values).
+### Changed
+
+	- Changed default view patterns to create branches for multi-value artist tags and also swap prefixes. i.e. The Rolling Stones -> Rolling Stones, The
+	- Changed default view patterns to split/sort albums with different %COMMENT% or %MUSICBRAINZ_ALBUMID% (if the first doesn't exist). Previously multiple versions of the same album were just joined together, which was undesirable. Now proper tagging may fix it.
+	- Changed default view Date pattern to only use the year part of the tag (intended usage). This should only affect people who put full dates on %DATE% tag.
+	- Cleanup of default view/filter pattern, so they are now auto-numbered, which makes it much easier to reorder them or add new ones.
+
+<br />
+
 # v2.4.0.mod.4
 ### Added
 	- Added separators support at views menu. To insert one, a view named 'separator' must be created (the pattern must be anything but empty, like a '.').
