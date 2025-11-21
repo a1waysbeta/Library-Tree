@@ -258,6 +258,12 @@ class Scrollbar {
 				if (y < this.bar.y) dir = 1; // above bar
 				else if (y > this.bar.y + this.bar.h) dir = -1; // below bar
 				if (y < this.bar.y || y > this.bar.y + this.bar.h) this.shiftPage(dir, this.nearestY(y));
+				// Regorxxx <- Double click scrollbar
+				else { // on bar
+					if (fb.IsPlaying && this.nowp !== -1) { pop.nowPlayingShow(); }
+					else { pop.selShow(); }
+				}
+				// Regorxxx ->
 				break;
 			case !this.vertical:
 				if (y < 0 || y > this.h || x < 0 || x > this.w || this.row.count <= this.rows_drawn) return;
@@ -265,6 +271,12 @@ class Scrollbar {
 				if (x < this.bar.x) dir = 1; // above bar
 				else if (x > this.bar.x + this.bar.h) dir = -1; // below bar
 				if (x < this.bar.x || x > this.bar.x + this.bar.h) this.shiftPage(dir, this.nearestX(x));
+				// Regorxxx <- Double click scrollbar
+				else { // on bar
+					if (fb.IsPlaying && this.nowp !== -1) { pop.nowPlayingShow(); }
+					else { pop.selShow(); }
+				}
+				// Regorxxx ->
 				break;
 		}
 	}

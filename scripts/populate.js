@@ -1838,6 +1838,30 @@ class Populate {
 			if (np_i != -1) this.showItem(np_i, 'np');
 		}
 	}
+	// Regorxxx <- Double click scrollbar
+	selShow() {
+		const handle = fb.GetFocusItem(true);
+		if (handle) {
+			const item = panel.list.Find(handle);
+			let idx = -1;
+			for (let i = 0; i < this.tree.length; i++) {
+				const v = this.tree[i];
+				if (this.inRange(item, v.item)) {
+					idx = i;
+					if (!v.root) {
+						if (panel.imgView) i = this.tree.length;
+						else if (!v.track) this.branch(this.tree[idx]);
+					}
+				}
+			}
+			if (!panel.imgView && !this.tree[idx].root) {
+				this.clearSelected();
+				this.tree[idx].sel = true;
+			}
+			if (idx != -1) this.showItem(idx, 'focus');
+		}
+	}
+	// Regorxxx ->
 
 	numSort(a, b) {
 		return a - b;

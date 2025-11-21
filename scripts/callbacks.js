@@ -133,6 +133,7 @@ function on_mouse_lbtn_dblclk(x, y) {
 	but.lbtn_dn(x, y);
 	if (ppt.searchShow) search.lbtn_dblclk(x, y);
 	pop.lbtn_dblclk(x, y);
+	but.lbtn_dblclk(x, y); // Regorxxx <- Double click scrollbar
 	sbar.lbtn_dblclk(x, y);
 }
 

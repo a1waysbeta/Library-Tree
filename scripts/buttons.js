@@ -159,6 +159,18 @@ class Buttons {
 		return true;
 	}
 
+	// Regorxxx <- Double click scrollbar
+	lbtn_dblclk(x, y) {
+		this.move(x, y);
+		if (!this.cur || this.cur.hide) {
+			this.Dn = false;
+			return false
+		} else this.Dn = this.cur.name;
+		this.cur.lbtn_dblclk(x, y);
+		return true;
+	}
+	// Regorxxx ->
+
 	leave() {
 		if (this.cur) {
 			this.cur.cs('normal');
@@ -313,36 +325,36 @@ class Buttons {
 								normal: 1,
 								hover: 2,
 								down: 3
-							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp');
+							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp', () => sbar.but(Infinity)); // Regorxxx <- Double click scrollbar
 							this.btns.scrollDn = new Btn(this.scr.x1, this.scr.yDn1, ui.sbar.but_h, ui.sbar.but_h, 3, '', '', '', {
 								normal: 5,
 								hover: 6,
 								down: 7
-							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn');
+							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn', () => sbar.but(-Infinity)); // Regorxxx <- Double click scrollbar
 							break;
 						case !this.vertical:
 							this.btns.scrollUp = new Btn(this.scr.xLeft1, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h, 3, '', '', '', {
 								normal: 9,
 								hover: 10,
 								down: 11
-							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp');
+							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp', () => sbar.but(Infinity)); // Regorxxx <- Double click scrollbar
 							this.btns.scrollDn = new Btn(this.scr.xRight1, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h, 3, '', '', '', {
 								normal: 13,
 								hover: 14,
 								down: 15
-							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn');
+							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn', () => sbar.but(-Infinity)); // Regorxxx <- Double click scrollbar
 							break;
 					}
 					break;
 				default:
 					switch (true) {
 						case this.vertical:
-							this.btns.scrollUp = new Btn(this.scr.x1, this.scr.yUp1 - this.scr.hotOffset, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 1, this.scr.x2, this.scr.yUp2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp');
-							this.btns.scrollDn = new Btn(this.scr.x1, this.scr.yDn1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 2, this.scr.x2, this.scr.yDn2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn');
+							this.btns.scrollUp = new Btn(this.scr.x1, this.scr.yUp1 - this.scr.hotOffset, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 1, this.scr.x2, this.scr.yUp2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp', () => sbar.but(Infinity)); // Regorxxx <- Double click scrollbar
+							this.btns.scrollDn = new Btn(this.scr.x1, this.scr.yDn1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 2, this.scr.x2, this.scr.yDn2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn', () => sbar.but(-Infinity)); // Regorxxx <- Double click scrollbar
 							break;
 						case !this.vertical:
-							this.btns.scrollUp = new Btn(this.scr.xLeft1 - this.scr.hotOffset, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 1, this.scr.y2, this.scr.xLeft2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp');
-							this.btns.scrollDn = new Btn(this.scr.xRight1, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 2, this.scr.y2, this.scr.xRight2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn');
+							this.btns.scrollUp = new Btn(this.scr.xLeft1 - this.scr.hotOffset, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 1, this.scr.y2, this.scr.xLeft2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp', () => sbar.but(Infinity)); // Regorxxx <- Double click scrollbar
+							this.btns.scrollDn = new Btn(this.scr.xRight1, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 2, this.scr.y2, this.scr.xRight2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn', () => sbar.but(-Infinity)); // Regorxxx <- Double click scrollbar
 							break;
 					}
 					break;
@@ -388,7 +400,7 @@ class Buttons {
 }
 
 class Btn {
-	constructor(x, y, w, h, type, p1, p2, p3, item, hide, l_dn, l_up, tiptext, hand, name) {
+	constructor(x, y, w, h, type, p1, p2, p3, item, hide, l_dn, l_up, tiptext, hand, name, l_dbclk) { // Regorxxx <- Double click scrollbar
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -401,6 +413,7 @@ class Btn {
 		this.hide = hide;
 		this.l_dn = l_dn;
 		this.l_up = l_up;
+		this.l_dbclk = l_dbclk; // Regorxxx <- Double click scrollbar
 		this.tt = new Tooltip;
 		this.tiptext = tiptext;
 		this.hand = hand;
@@ -515,6 +528,12 @@ class Btn {
 	lbtn_up() {
 		if (this.l_up) this.l_up();
 	}
+
+	// Regorxxx <- Double click scrollbar
+	lbtn_dblclk(x, y) {
+		if (this.l_dbclk) this.l_dbclk(x, y);
+	}
+	// Regorxxx ->
 
 	repaint() {
 		const expXY = 2;

@@ -160,6 +160,13 @@ class MenuItems {
 				flags: this.getPaylistFlag(i),
 				separator: i == 2
 			}));
+			// Regorxxx <- Show selection
+			menu.newItem({
+				str: 'Show selection',
+				func: () => pop.selShow(),
+				flags: fb.GetFocusItem(true) !== null ? MF_STRING : MF_GRAYED
+			});
+			// Regorxxx ->
 		}
 
 		if (this.validItem && ppt.albumArtOptionsShow) {

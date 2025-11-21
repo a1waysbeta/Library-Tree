@@ -1,8 +1,16 @@
+# v2.4.0.mod.6
+### Added
+	- Added double click action to scrollbar buttons to jump to top/bottom of the list.
+	- Added double click action to scrollbar current bar position to show now playing item (while playing) or focused item (while stopped).
+	- Added new menu entry at contextual menu to show the currently focused item.
+### Changed
+	- Changed default view pattern 'Artist initial' to be compatible with Japanese/Chinese chars along some minor improvements.
+<br />
+
 # v2.4.0.mod.5
 ### Added
 	- Added new default view patterns: Decade, Genre, Style, Genre tree, Artist initial (asciified values).
 ### Changed
-
 	- Changed default view patterns to create branches for multi-value artist tags and also swap prefixes. i.e. The Rolling Stones -> Rolling Stones, The
 	- Changed default view patterns to split/sort albums with different %COMMENT% or %MUSICBRAINZ_ALBUMID% (if the first doesn't exist). Previously multiple versions of the same album were just joined together, which was undesirable. Now proper tagging may fix it.
 	- Changed default view Date pattern to only use the year part of the tag (intended usage). This should only affect people who put full dates on %DATE% tag.
