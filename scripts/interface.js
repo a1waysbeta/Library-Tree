@@ -288,21 +288,31 @@ class UserInterface {
 		if (!this.img.isBlur && ppt.autoFill || this.img.isBlur && ppt.blurAutofill) {
 			const s1 = image.Width / this.w;
 			const s2 = image.Height / this.h;
+			// Regorxxx <- Background image position
+			const offsetX = ppt.xOffsetBg >= 0
+				? Math.min(ppt.xOffsetBg / 100, 1)
+				: Math.max(ppt.xOffsetBg / 100, -1);
+			const offsetW = ppt.wOffsetBg >= 0
+				? Math.min(ppt.wOffsetBg / 100, 1)
+				: Math.max(ppt.wOffsetBg / 100, -1);
+			const wScale = Math.max(1 - Math.abs(offsetX) - Math.abs(offsetW), 0);
+			if (!wScale) { return; }
+			// Regorxxx ->
 			if (!this.img.isBlur && ppt.autoFill && Math.abs(s1 / s2 - 1) < 0.05) {
-				imgx = 0;
+				imgx = offsetX > 0 ? image.Width * offsetX : 0; // Regorxxx <- Background image position
 				imgy = 0;
-				imgw = image.Width;
+				imgw = image.Width * wScale; // Regorxxx <- Background image position
 				imgh = image.Height;
 			} else {
 				if (s1 > s2) {
-					imgw = Math.round(this.w * s2);
+					imgw = Math.round(this.w * s2 * wScale); // Regorxxx <- Background image position
 					imgh = image.Height;
-					imgx = Math.round((image.Width - imgw) / 2);
+					imgx = Math.round((image.Width - imgw + (image.Width * offsetX)) / 2); // Regorxxx <-  Background image position
 					imgy = 0;
 				} else {
-					imgw = image.Width;
+					imgw = image.Width * wScale; // Regorxxx <- Background image position
 					imgh = Math.round(this.h * s1);
-					imgx = 0;
+					imgx = offsetX > 0 ? image.Width * offsetX : 0; // Regorxxx <- Background image position
 					imgy = Math.round((image.Height - imgh) / 8);
 				}
 			}

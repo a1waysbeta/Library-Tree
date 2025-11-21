@@ -166,6 +166,10 @@ let properties = [
 	['Image Blur Background Auto-Fill', false, 'blurAutofill'],
 	['Image Blur Background Level (%)', 90, 'blurTemp'],
 	['Image Blur Background Opacity (%)', 30, 'blurAlpha'],
+	 // Regorxxx <-  Background image position
+	['Image Background x-offset (%)', 0, 'xOffsetBg'],
+	['Image Background w-offset (%)', 0, 'wOffsetBg'],
+	 // Regorxxx ->
 	['Image Current Root', 17, 'curRootImg'],
 	['Image Current No Artist', 2, 'curNoArtistImg'],
 	['Image Current No Cover', 6, 'curNoCoverImg'],

@@ -204,9 +204,28 @@ function on_mouse_wheel(step) {
 function on_notify_data(name, info) {
 	if (ppt.libSource == 2 && name != 'bio_imgChange') {
 		const panelSelectionPlaylists = ppt.panelSelectionPlaylist.split(/\s*\|\s*/);
+		// Regorxxx <- Merge multiple panel sources
+		if (ppt.libSourceChained && panelSelectionPlaylists.length > 1) {
+			// Note this doesn't survive after panel reload, so source selections must be re-sent
+			if (!lib.listPerSource) { lib.listPerSource = {}; }
+			panelSelectionPlaylists.forEach(v => {
+				if (name == v) {
+					lib.listPerSource[v] = new FbMetadbHandleList(info);
+					lib.listPerSource[v].Sort();
+				}
+			});
+		}
+		// Regorxxx ->
 		panelSelectionPlaylists.some(v => {
 			if (name == v) {
-				lib.list = new FbMetadbHandleList(info);
+				// Regorxxx <- Merge multiple panel sources
+				if (ppt.libSourceChained && panelSelectionPlaylists.length > 1) {
+					lib.list = new FbMetadbHandleList();
+					Object.values(lib.listPerSource).forEach((handleList) => lib.list.MakeUnion(handleList));
+				} else {
+					lib.list = new FbMetadbHandleList(info);
+				}
+				// Regorxxx ->
 				if ($.equalHandles(lib.list.Convert(), lib.full_list.Convert())) return;
 				lib.full_list = lib.list.Clone();
 				ppt.lastPanelSelectionPlaylist = `${v} Cache`;

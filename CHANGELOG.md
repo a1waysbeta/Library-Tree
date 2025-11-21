@@ -1,3 +1,11 @@
+# v2.4.0.mod.9
+### Added
+	- Added new settings to adjust the portion of the art used (x and width) to draw the background. These 2 settings may be used to split the image and draw an art grid. They can be found as properties ('Image Background x-offset (%)', 'Image Background w-offset (%)'). It will probably look much better using blur, minimizing minor offset errors due to layout differences. As example, to set a 3-panel grid with artwork filling, they must be set as: x: -66%, w: 0% | x: 34%, w: 34% | x: 66%, w: 0%
+### Changed
+	 - For facets mode (panel source), if chained source notifications (see v2.4.0.mod.8 ) is enabled and more than one source is set, the different sources are merged and deduplicated, instead of replaced by the last one selected. This way is now possible to merge selections from different panels, even with total different views, for ex. selecting one artist in one panel and all Rock tracks at other panel. The destination panel will sort and display the selection according to the panel settings (not following any source sorting).
+
+<br />
+
 # v2.4.0.mod.8
 ### Added
 	- Added new default view patterns: Album (year) and Album (facets).
