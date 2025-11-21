@@ -581,11 +581,11 @@ class Scrollbar {
 			case 0:
 				switch (ui.sbar.col) {
 					case 0:
-						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i);
-						this.col.max = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, 192), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, 192);
+						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i);
+						this.col.max = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, 192), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, 192);
 						break;
 					case 1:
-						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(ui.col.text & RGBA(255, 255, 255, this.alpha + i), ui.col.bg) : ui.col.text & RGBA(255, 255, 255, this.alpha + i);
+						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(ui.col.text & $.RGBA(255, 255, 255, this.alpha + i), ui.col.bg) : ui.col.text & $.RGBA(255, 255, 255, this.alpha + i);
 						this.col.max = opaque ? $.RGBAtoRGB(ui.col.text & 0x99ffffff, ui.col.bg) : ui.col.text & 0x99ffffff;
 						break;
 				}
@@ -593,13 +593,13 @@ class Scrollbar {
 			case 1:
 				switch (ui.sbar.col) {
 					case 0:
-						this.col.bg = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, 15), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, 15);
-						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i);
-						this.col.max = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, 192), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, 192);
+						this.col.bg = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, 15), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, 15);
+						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i);
+						this.col.max = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, 192), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, 192);
 						break;
 					case 1:
 						this.col.bg = opaque ? $.RGBAtoRGB(ui.col.text & 0x15ffffff, ui.col.bg) : ui.col.text & 0x15ffffff;
-						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(ui.col.text & RGBA(255, 255, 255, this.alpha + i), ui.col.bg) : ui.col.text & RGBA(255, 255, 255, this.alpha + i);
+						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(ui.col.text & $.RGBA(255, 255, 255, this.alpha + i), ui.col.bg) : ui.col.text & $.RGBA(255, 255, 255, this.alpha + i);
 						this.col.max = opaque ? $.RGBAtoRGB(ui.col.text & 0x99ffffff, ui.col.bg) : ui.col.text & 0x99ffffff;
 						break;
 				}

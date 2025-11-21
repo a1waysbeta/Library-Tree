@@ -229,13 +229,15 @@ class MenuItems {
 		});
 		
 		menu.newMenu({menuName: 'Statistics', appendTo: mainMenu(), separator: true});
-		[pop.countsRight && !panel.imgView ? ['None', '# Tracks', '# Items'][pop.nodeCounts] : 'None', 'Bitrate', 'Duration', 'Total size', 'Rating', 'Popularity', 'Date', 'Playback queue', 'Playcount', 'First played', 'Last played', 'Added', 'Configure statistics...'].forEach((v, i) => menu.newItem({
+		// Regorxxx <- New statistics
+		[pop.countsRight && !panel.imgView ? ['None', '# Tracks', '# Items'][pop.nodeCounts] : 'None', 'Bitrate', 'Duration', 'Total size', 'Rating', 'Popularity', 'Date', 'Playback queue', 'Playcount', 'First played', 'Last played', 'Added', 'Loved','Hated','Feedback (loved - hated)', 'Configure statistics...'].forEach((v, i) => menu.newItem({
 			menuName: 'Statistics',
 			str: v,
 			func: () => this.setStatistics(i),
 			checkRadio: i == ppt.itemShowStatistics,
-			separator: !i || i == 7 || i == 11
+			separator: !i || i == 7 || i == 11 || i == 14
 		}));
+		// Regorxxx ->
 
 		menu.newMenu({menuName: 'Album art', appendTo: mainMenu(), hide: !panel.imgView});
 		['Front', 'Back', 'Disc', 'Icon', 'Artist', 'Group: auto', 'Group: top level', 'Group: two levels', 'Change group name...', 'Configure album art...'].forEach((v, i) => menu.newItem({
@@ -343,12 +345,37 @@ class MenuItems {
 
 	searchHistoryMenu() {
 		sMenu.newMenu({});
-		for (let i = 0; i < search.menu.length + 2; i++) sMenu.newItem({
-			str: !i ? 'Query syntax help' : i < search.menu.length + 1 ? search.menu[i - 1].search : 'Clear history',
-			func: () => this.setSearchHistory(i),
-			flags: i != 1 || search.menu.length ? MF_STRING : MF_GRAYED,
-			separator: !i || search.menu.length && i == search.menu.length
-		});
+		// Regorxxx <- RegExp library search and menu cleanup
+		if (!search.menu.length) {
+			sMenu.newItem({
+				str: '- no search history -',
+				flags: MF_GRAYED,
+				separator: true
+			});
+		}
+		if (search.menu.length) {
+			for (let i = 1; i < search.menu.length + 2; i++) {
+				sMenu.newItem({
+					str: i < search.menu.length + 1 ? search.menu[i - 1].search : 'Clear history',
+					func: () => this.setSearchHistory(i),
+					flags: i != 1 || search.menu.length ? MF_STRING : MF_GRAYED,
+					separator: search.menu.length && i == search.menu.length
+				});
+			}
+			sMenu.newItem({ separator: true });
+		}
+		sMenu.newMenu({ menuName: 'Help' });
+		sMenu.newItem({
+			menuName: 'Help',
+			str: 'Query syntax',
+			func: () => this.setSearchHistory(0),
+		})
+		sMenu.newItem({
+			menuName: 'Help',
+			str: 'RegExp reference',
+			func: () => this.setSearchHistory(-1)
+		})
+		// Regorxxx ->
 	}
 
 	searchMenu() {
@@ -641,6 +668,13 @@ class MenuItems {
 			$.browser('"' + fn);
 			break;
 		}
+		// Regorxxx <- RegExp library search
+		case i === -1: {
+			let fn = 'https://regexr.com/';
+			$.browser(fn);
+			break;
+		}
+		// Regorxxx ->
 		case i < search.menu.length + 1:
 			panel.search.txt = search.menu[i - 1].search;
 			search.menu[i - 1].accessed = Date.now();
@@ -703,7 +737,7 @@ class MenuItems {
 	}
 
 	setStatistics(i) {
-		if (i < 12) {
+		if (i < 15) { // Regorxxx <- New statistics
 			const curStatisticsShown = ppt.itemShowStatistics > 0;
 			ppt.itemShowStatistics = i;
 			ppt.itemShowStatisticsLast = ppt.itemShowStatistics;

@@ -290,12 +290,15 @@ let properties = [
 	['Statistics Show', 0, 'itemShowStatistics'],
 	['Statistics Show Last', 0, 'itemShowStatisticsLast'],
 	['Statistics Label Show', true, 'labelStatistics'],
-	['Statistics Titleformat Added', '[$date(%added%)]', 'tfAdded'],
+	// Regorxxx <- Default TF for compatibility with all stats components
+	['Statistics Titleformat Added', '[$date($if3(%ADDED_ENHANCED%,%ADDED%,%2003_ADDED%))]', 'tfAdded'],
 	['Statistics Titleformat Date', '[$year(%date%)]', 'tfDate'],
-	['Statistics Titleformat First Played', '[$date(%first_played%)]', 'tfFirstPlayed'],
-	['Statistics Titleformat Last Played', '[$date(%last_played%)]', 'tfLastPlayed'],
-	['Statistics Titleformat Playcount DataPinningScheme|Field', '%artist%%album%%discnumber%%tracknumber%%title%|%play_count%', 'tfPc'],
-	['Statistics Titleformat Rating', '[%rating%]', 'tfRating'],
+	['Statistics Titleformat First Played', '[$date($if3(%FIRST_PLAYED_ENHANCED%,%2003_FIRST_PLAYED%,%FIRST_PLAYED%))]', 'tfFirstPlayed'],
+	['Statistics Titleformat Last Played', '[$date($if3(%LAST_PLAYED_ENHANCED%,%2003_LAST_PLAYED%,%LAST_PLAYED%))]', 'tfLastPlayed'],
+	['Statistics Titleformat Playcount DataPinningScheme|Field', '%artist%%album%%discnumber%%tracknumber%%title%|$max(%PLAY_COUNT%,%LASTFM_PLAY_COUNT%,%2003_PLAYCOUNT%,0)', 'tfPc'],
+	['Statistics Titleformat Rating', '[$if2(%rating%,%2003_rating%)]', 'tfRating'],
+	['Statistics Titleformat Loved', '[$if2(%feedback%,%2003_LOVED%)]', 'tfLoved'],
+	// Regorxxx ->
 	['Statistics Titleformat Popularity', '[$meta(Track Statistics Last.fm,5[score])]', 'tfPopularity'],
 	['Statistics Tooltips Show', true, 'tooltipStatistics'],
 
@@ -317,7 +320,11 @@ let properties = [
 	['Zoom Font Size (%)', 100, 'zoomFont'],
 	['Zoom Node Size (%)', 100, 'zoomNode'],
 	['Zoom Image Size (%)', 100, 'zoomImg'],
-	['Zoom Tooltip [Button] (%)', 100, 'zoomTooltipBut']
+	['Zoom Tooltip [Button] (%)', 100, 'zoomTooltipBut'],
+
+	
+	['Logging library profiler', true, 'logLibProfiler'], // Regorxxx <- Library profiling
+	['Statistics Rating/Popularity Decimals', 1, 'ratingDecimals'], // Regorxxx <- Rating decimals
 ];
 
 const ppt = new PanelProperties;

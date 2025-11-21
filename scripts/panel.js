@@ -35,7 +35,7 @@ class Panel {
 		this.pos = -1;
 		this.rc = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX | DT_END_ELLIPSIS;
 		this.rootName = '';
-		this.s_lc = StringFormat(0, 1);
+		this.s_lc = $.stringFormat(0, 1);
 		this.samePattern = true;
 		this.sbar_x = 0;
 		this.softSplitter = '\u00ac';
@@ -314,7 +314,7 @@ class Panel {
 				colView.forEach((v, i, arr) => {
 					if (i % 2 === 1) {
 						const colSplit = v.split(',');
-						arr[i] = '@!#' + (ui.setMarkerCol(colSplit[0]) || (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.text : RGB(240, 240, 240))) + '`' + (ui.setMarkerCol(colSplit[1]) || (ppt.highLightText ? ui.col.text_h : (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.text : RGB(240, 240, 240)))) + '`' + (ui.setMarkerCol(colSplit[2]) || (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.textSel : ui.col.text)) + '@!#';
+						arr[i] = '@!#' + (ui.setMarkerCol(colSplit[0]) || (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.text : $.RGB(240, 240, 240))) + '`' + (ui.setMarkerCol(colSplit[1]) || (ppt.highLightText ? ui.col.text_h : (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.text : $.RGB(240, 240, 240)))) + '`' + (ui.setMarkerCol(colSplit[2]) || (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.textSel : ui.col.text)) + '@!#';
 					}
 				});
 				this.view = colView.join('');

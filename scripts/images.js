@@ -361,13 +361,13 @@ class Images {
 
 	createImages() {
 		this.mask.circular = $.gr(500, 500, true, g => {
-			g.FillSolidRect(0, 0, 500, 500, RGB(255, 255, 255));
+			g.FillSolidRect(0, 0, 500, 500, $.RGB(255, 255, 255));
 			g.SetSmoothingMode(2);
-			g.FillEllipse(1, 1, 498, 498, RGBA(0, 0, 0, 255));
+			g.FillEllipse(1, 1, 498, 498, $.RGBA(0, 0, 0, 255));
 			g.SetSmoothingMode(0);
 		});
 		this.mask.fade = $.gr(500, 500, true, g => {
-			g.FillSolidRect(0, 0, 500, 500, RGB(175, 175, 175));
+			g.FillSolidRect(0, 0, 500, 500, $.RGB(175, 175, 175));
 		});
 	}
 
@@ -413,17 +413,17 @@ class Images {
 						gr.DrawImage(this.shadow, x1, y1, Math.ceil(w * 1.15), Math.ceil(h * 1.15), 0, 0, this.shadow.Width, this.shadow.Height); // disabled for blend: not suitable
 					} else if (this.style.dropGrad) {
 						if (this.style.image != 2) {
-							gr.FillGradRect(x1 + w, y1, 4 * $.scale, h,  0, RGBA(0, 0, 0, 56), 0);
-							gr.FillGradRect(x1, y1 + h, w, 4 * $.scale, 90, RGBA(0, 0, 0, 56), 0);
+							gr.FillGradRect(x1 + w, y1, 4 * $.scale, h,  0, $.RGBA(0, 0, 0, 56), 0);
+							gr.FillGradRect(x1, y1 + h, w, 4 * $.scale, 90, $.RGBA(0, 0, 0, 56), 0);
 						} else {
 							gr.SetSmoothingMode(4);
-							gr.DrawEllipse(x1, y1, iw, ih, 4 * $.scale, RGBA(0, 0, 0, 32));
+							gr.DrawEllipse(x1, y1, iw, ih, 4 * $.scale, $.RGBA(0, 0, 0, 32));
 							gr.SetSmoothingMode(0);
 						}
 					}
 					gr.DrawImage(cur_img, x1, y1, w, h, 0, 0, iw, ih);
 					if (this.labels.overlayDark) {
-						if (item.sel || nowp) gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, RGBA(150, 150, 150, 150));
+						if (item.sel || nowp) gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, $.RGBA(150, 150, 150, 150));
 						gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, this.getSelBgCol(item, nowp));
 					}
 					if (!item.sel || !this.labels.overlay || this.style.image != 2) {
@@ -444,11 +444,11 @@ class Images {
 							gr.DrawImage(this.shadowStub, x1, y1, this.shadowStub.Width, this.shadowStub.Height, 0, 0, this.shadowStub.Width, this.shadowStub.Height);
 						} else if (this.style.dropGradStub) {
 							if (this.style.image != 2) {
-								gr.FillGradRect(x1 + iw - 2 * $.scale, y1, 6 * $.scale, ih,  0, RGBA(0, 0, 0, 56), 0);
-								gr.FillGradRect(x1, y1 + ih - 2 * $.scale, iw, 6 * $.scale, 90, RGBA(0, 0, 0, 56), 0);
+								gr.FillGradRect(x1 + iw - 2 * $.scale, y1, 6 * $.scale, ih,  0, $.RGBA(0, 0, 0, 56), 0);
+								gr.FillGradRect(x1, y1 + ih - 2 * $.scale, iw, 6 * $.scale, 90, $.RGBA(0, 0, 0, 56), 0);
 							} else {
 								gr.SetSmoothingMode(2);
-								gr.DrawEllipse(x1, y1, iw, ih, 4 * $.scale, RGBA(0, 0, 0, 32));
+								gr.DrawEllipse(x1, y1, iw, ih, 4 * $.scale, $.RGBA(0, 0, 0, 32));
 								gr.SetSmoothingMode(0);
 							}	
 						}
@@ -457,11 +457,11 @@ class Images {
 					else if (!this.style.rootComposite && this.stub.root) gr.DrawImage(this.stub.root, x1, y1, iw, ih, 0, 0, iw, ih);
 
 					if (this.labels.overlay) {
-						gr.FillGradRect(x1, y2 - 1, iw / 2, ui.l.w, 1, RGBA(0, 0, 0, 0), ui.col.imgBor);
-						gr.FillGradRect(x1 + iw / 2, y2 - 1, iw / 2, ui.l.w, 1, ui.col.imgBor, RGBA(0, 0, 0, 0));
+						gr.FillGradRect(x1, y2 - 1, iw / 2, ui.l.w, 1, $.RGBA(0, 0, 0, 0), ui.col.imgBor);
+						gr.FillGradRect(x1 + iw / 2, y2 - 1, iw / 2, ui.l.w, 1, ui.col.imgBor, $.RGBA(0, 0, 0, 0));
 					}
 					if (this.labels.overlayDark) {
-						if (item.sel || nowp) gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, RGBA(150, 150, 150, 150));
+						if (item.sel || nowp) gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, $.RGBA(150, 150, 150, 150));
 						gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, this.getSelBgCol(item, nowp));
 					}
 				}
@@ -563,14 +563,14 @@ class Images {
 					count_w = Math.max(gr.CalcTextWidth(count[0], ui.font.tracks), gr.CalcTextWidth(count[1], ui.font.tracks));
 					count_x = x + (this.style.image != 2 ? w - count_w - 3 : (w - count_w - 2) / 2);
 					gr.SetSmoothingMode(2);
-					gr.FillSolidRect(count_x, count_y, count_w + 2, count_h2, RGBA(0, 0, 0, 115));
-					gr.GdiDrawText(count[0], ui.font.tracks, RGB(255, 255, 255), count_x + 1, count_y, count_w, count_h, this.style.image != 2 ? panel.rc : panel.cc);
-					gr.GdiDrawText(count[1], ui.font.tracks, RGB(255, 255, 255), count_x + 1, count_y + count_h, count_w, count_h, this.style.image != 2 ? panel.rc : panel.cc);
+					gr.FillSolidRect(count_x, count_y, count_w + 2, count_h2, $.RGBA(0, 0, 0, 115));
+					gr.GdiDrawText(count[0], ui.font.tracks, $.RGB(255, 255, 255), count_x + 1, count_y, count_w, count_h, this.style.image != 2 ? panel.rc : panel.cc);
+					gr.GdiDrawText(count[1], ui.font.tracks, $.RGB(255, 255, 255), count_x + 1, count_y + count_h, count_w, count_h, this.style.image != 2 ? panel.rc : panel.cc);
 					gr.SetSmoothingMode(0);
 				} else {
 					gr.SetSmoothingMode(2);
-					gr.FillSolidRect(count_x, count_y, count_w + 2, count_h2, RGBA(0, 0, 0, 115));
-					gr.GdiDrawText(count, ui.font.tracks, RGB(255, 255, 255), count_x + 1, count_y, count_w, count_h, panel.cc);
+					gr.FillSolidRect(count_x, count_y, count_w + 2, count_h2, $.RGBA(0, 0, 0, 115));
+					gr.GdiDrawText(count, ui.font.tracks, $.RGB(255, 255, 255), count_x + 1, count_y, count_w, count_h, panel.cc);
 					gr.SetSmoothingMode(0);
 				}
 				break;
@@ -582,8 +582,8 @@ class Images {
 				let year_x = x + (this.style.image != 2 ? 0 : (w - year_w - 2) / 2);
 				const year_y = y + (this.style.image != 2 ? 0 : year_h / 1.67);
 				gr.SetSmoothingMode(2);
-				gr.FillSolidRect(year_x, year_y, year_w + 2, year_h, RGBA(0, 0, 0, 115));
-				gr.GdiDrawText(item.year, ui.font.tracks, RGB(255, 255, 255), year_x + 1, year_y, year_w, year_h, panel.cc);
+				gr.FillSolidRect(year_x, year_y, year_w + 2, year_h, $.RGBA(0, 0, 0, 115));
+				gr.GdiDrawText(item.year, ui.font.tracks, $.RGB(255, 255, 255), year_x + 1, year_y, year_w, year_h, panel.cc);
 				gr.SetSmoothingMode(0);
 				break;
 			}
@@ -716,7 +716,7 @@ class Images {
 	}
 
 	getGrpCol(item, nowp, hover) {
-		return nowp ? ui.col.nowp : hover ? (panel.textDiffHighlight ? ui.col.nowp : ui.col.text_h) : item.sel ? !this.labels.overlayDark ? ui.col.textSel : ui.col.text : !this.labels.overlayDark ? ui.col.text : RGB(240, 240, 240);
+		return nowp ? ui.col.nowp : hover ? (panel.textDiffHighlight ? ui.col.nowp : ui.col.text_h) : item.sel ? !this.labels.overlayDark ? ui.col.textSel : ui.col.text : !this.labels.overlayDark ? ui.col.text : $.RGB(240, 240, 240);
 	}
 
 	getImages() {
@@ -837,7 +837,7 @@ class Images {
 	}
 
 	getLotCol(item, nowp, hover) {
-		return nowp ? ui.col.nowp : hover ? (panel.textDiffHighlight ? ui.col.nowp : ui.col.text_h) : item.sel ? !this.labels.overlayDark ? ui.col.selBlend : ui.col.lotBlend : !this.labels.overlayDark ? ui.col.lotBlend : RGB(220, 220, 220);
+		return nowp ? ui.col.nowp : hover ? (panel.textDiffHighlight ? ui.col.nowp : ui.col.text_h) : item.sel ? !this.labels.overlayDark ? ui.col.selBlend : ui.col.lotBlend : !this.labels.overlayDark ? ui.col.lotBlend : $.RGB(220, 220, 220);
 	}
 
 	getMostFrequentField(arr) {
@@ -855,25 +855,25 @@ class Images {
 		let wh = this.style.image ? this.im.w * 0.985 : this.im.w; // draw at actual size if possible as faster; regular have to be resized during draw
 		const sz = this.im.w * 1.17;
 		if (this.style.image != 2) {
-			this.shadow = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+			this.shadow = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 			this.shadow.StackBlur(5);
 		} else {
-			this.shadow = $.gr(sz, sz, true, g => g.FillEllipse(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+			this.shadow = $.gr(sz, sz, true, g => g.FillEllipse(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 			this.shadow.StackBlur(4);
 		}
 		wh = this.im.w * 0.985; // always drawn at actual size
 		if (ppt.artId == 4) {
 			if (ppt.curNoArtistImg == 0 || ppt.curNoArtistImg == 2 || this.style.image == 2) {
-				this.shadowStub = $.gr(sz, sz, true, g => g.FillEllipse(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+				this.shadowStub = $.gr(sz, sz, true, g => g.FillEllipse(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 				this.shadowStub.StackBlur(4);
 			} else if (ppt.curNoArtistImg != 4) {
-				this.shadowStub = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+				this.shadowStub = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 				this.shadowStub.StackBlur(5);
 			} else {
 				this.shadowStub = null;
 			}
 		} else if (ppt.curNoCoverImg > 2) {
-			this.shadowStub = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+			this.shadowStub = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 			this.shadowStub.StackBlur(5);
 		} else {
 			this.shadowStub = null;
@@ -888,7 +888,7 @@ class Images {
 	}
 
 	getSelBgCol(item, nowp) {
-		return nowp || item.sel ? this.albumArtShowLabels ? ui.col.imgBgSel : ui.col.imgOverlaySel : RGBA(0, 0, 0, 175);
+		return nowp || item.sel ? this.albumArtShowLabels ? ui.col.imgBgSel : ui.col.imgOverlaySel : $.RGBA(0, 0, 0, 175);
 	}
 
 	getStyle() {

@@ -157,15 +157,15 @@ class UserInterface {
 			}
 			switch (t) {
 				case 0:
-					cc = RGB(c[0], c[1], c[2]);
+					cc = $.RGB(c[0], c[1], c[2]);
 					break;
 				case 1:
 					switch (c.length) {
 						case 3:
-							cc = RGB(c[0], c[1], c[2]);
+							cc = $.RGB(c[0], c[1], c[2]);
 							break;
 						case 4:
-							cc = RGBA(c[0], c[1], c[2], c[3]);
+							cc = $.RGBA(c[0], c[1], c[2], c[3]);
 							break;
 					}
 					break;
@@ -234,7 +234,7 @@ class UserInterface {
 	}
 
 	createImages() {
-		const cc = StringFormat(1, 1);
+		const cc = $.stringFormat(1, 1);
 		const font1 = gdi.Font('Segoe UI', 270, 1);
 		const font2 = gdi.Font('Segoe UI', 120, 1);
 		const font3 = gdi.Font('Segoe UI', 200, 1);
@@ -271,8 +271,8 @@ class UserInterface {
 		if (!ppt.searchShow || !ppt.filterShow) return;
 		const l_x = panel.filter.x - this.l.wc;
 		const l_h = Math.round(panel.search.sp / 2);
-		gr.FillGradRect(l_x, 0, this.l.w, l_h, 91, RGBA(0, 0, 0, 0), this.col.s_line);
-		gr.FillGradRect(l_x, l_h, this.l.w, l_h, 91, this.col.s_line, RGBA(0, 0, 0, 0));
+		gr.FillGradRect(l_x, 0, this.l.w, l_h, 91, $.RGBA(0, 0, 0, 0), this.col.s_line);
+		gr.FillGradRect(l_x, l_h, this.l.w, l_h, 91, this.col.s_line, $.RGBA(0, 0, 0, 0));
 	}
 
 	drawTopBarUnderlay(gr) {
@@ -360,7 +360,7 @@ class UserInterface {
 				r = c1[0] * f + c2[0] * nf;
 				g = c1[1] * f + c2[1] * nf;
 				b = c1[2] * f + c2[2] * nf;
-				return RGB(Math.round(r), Math.round(g), Math.round(b));
+				return $.RGB(Math.round(r), Math.round(g), Math.round(b));
 			case alpha:
 				c1 = $.toRGBA(c1);
 				c2 = $.toRGBA(c2);
@@ -368,7 +368,7 @@ class UserInterface {
 				g = c1[1] * f + c2[1] * nf;
 				b = c1[2] * f + c2[2] * nf;
 				a = c1[3] * f + c2[3] * nf;
-				return RGBA(Math.round(r), Math.round(g), Math.round(b), Math.round(a));
+				return $.RGBA(Math.round(r), Math.round(g), Math.round(b), Math.round(a));
 		}
 	}
 
@@ -386,12 +386,12 @@ class UserInterface {
 				this.img.blurLight = ppt.theme == 3;
 				this.img.covAlpha = $.clamp(ppt.covAlpha * 2.55, 0, 255);
 				if (this.img.blurDark) {
-					this.col.bg_light = RGBA(0, 0, 0, Math.min(160 / this.img.blurAlpha, 255));
-					this.col.bg_dark = RGBA(0, 0, 0, Math.min(80 / this.img.blurAlpha, 255));
+					this.col.bg_light = $.RGBA(0, 0, 0, Math.min(160 / this.img.blurAlpha, 255));
+					this.col.bg_dark = $.RGBA(0, 0, 0, Math.min(80 / this.img.blurAlpha, 255));
 				}
 				if (this.img.blurLight) {
-					this.col.bg_light = RGBA(255, 255, 255, Math.min(160 / this.img.blurAlpha, 255));
-					this.col.bg_dark = RGBA(255, 255, 255, Math.min(205 / this.img.blurAlpha, 255));
+					this.col.bg_light = $.RGBA(255, 255, 255, Math.min(160 / this.img.blurAlpha, 255));
+					this.col.bg_dark = $.RGBA(255, 255, 255, Math.min(205 / this.img.blurAlpha, 255));
 				}
 				break;
 			case ppt.themed:
@@ -423,7 +423,7 @@ class UserInterface {
 					background: this.col.bg,
 					selection: this.col.bgSel,
 					highlight: this.col.text_h,
-					bar: RGBA(0, 0, 0, 63)
+					bar: $.RGBA(0, 0, 0, 63)
 				}
 			}
 		}
@@ -532,7 +532,7 @@ class UserInterface {
 
 	getGradient(c, f1, f2) {
 		c = $.toRGB(c);
-		return [RGB(Math.min(c[0] + f1, 255), Math.min(c[1] + f1, 255), Math.min(c[2] + f1, 255)), RGB(Math.max(c[0] + f2, 0), Math.max(c[1] + f2, 0), Math.max(c[2] + f2, 0))];
+		return [$.RGB(Math.min(c[0] + f1, 255), Math.min(c[1] + f1, 255), Math.min(c[2] + f1, 255)), $.RGB(Math.max(c[0] + f2, 0), Math.max(c[1] + f2, 0), Math.max(c[2] + f2, 0))];
 	}
 
 	getImgAlpha(image) {
@@ -562,28 +562,28 @@ class UserInterface {
 		const lightBg = this.isLightBackground();
 
 		if (this.img.blurDark) {
-			this.col.txt = RGB(255, 255, 255);
-			this.col.txt_h = RGB(255, 255, 255);
+			this.col.txt = $.RGB(255, 255, 255);
+			this.col.txt_h = $.RGB(255, 255, 255);
 		}
 		if (this.img.blurLight) {
-			this.col.txt = RGB(50, 50, 50);
-			this.col.txt_h = ppt.themed && (ppt.theme == 1 || ppt.theme == 2) ? RGB(25, 25, 25) : RGB(71, 129, 183);
+			this.col.txt = $.RGB(50, 50, 50);
+			this.col.txt_h = ppt.themed && (ppt.theme == 1 || ppt.theme == 2) ? $.RGB(25, 25, 25) : $.RGB(71, 129, 183);
 		}
 
 		if (this.col.text === '') this.col.text = this.img.blurBlend ? this.setBrightness(this.col.txt, lightBg ? -10 : 10) : this.col.txt;
-		if (this.col.text_h === '') this.col.text_h = ppt.themed && ppt.theme == 9 ? RGB(104, 225, 255) : this.img.blurBlend ? this.setBrightness(this.col.txt_h, lightBg ? -10 : 10) : this.col.txt_h;
+		if (this.col.text_h === '') this.col.text_h = ppt.themed && ppt.theme == 9 ? $.RGB(104, 225, 255) : this.img.blurBlend ? this.setBrightness(this.col.txt_h, lightBg ? -10 : 10) : this.col.txt_h;
 
 		this.col.bg3 = lightBg ? 0x10000000 : 0x10ffffff;
 		this.col.bg4 = lightBg ? 0x1f000000 : 0x1fffffff;
 		this.col.bg5 = lightBg ? 0x00000000 : 0x00ffffff;
-		this.col.bg6 = this.img.blurDark ? RGB(64, 64, 64) : this.img.blurLight ? RGB(245, 245, 245) : this.col.bg == 0 ? 0xff000000 : this.col.bg
+		this.col.bg6 = this.img.blurDark ? $.RGB(64, 64, 64) : this.img.blurLight ? $.RGB(245, 245, 245) : this.col.bg == 0 ? 0xff000000 : this.col.bg
 
 		if (ppt.swapCol && (!ppt.albumArtShow || ppt.albumArtLabelType != 4)) {
 			const colH = this.col.text_h;
 			this.col.text_h = this.col.text;
 			this.col.text = colH;
 		}
-		if (this.col.nowp === '') this.col.nowp = !this.img.blurDark ? this.col.text_h : ppt.themed && ppt.theme == 9 ? RGB(104, 225, 255) : RGB(128, 228, 27);
+		if (this.col.nowp === '') this.col.nowp = !this.img.blurDark ? this.col.text_h : ppt.themed && ppt.theme == 9 ? $.RGB(104, 225, 255) : $.RGB(128, 228, 27);
 
 		if (this.col.bg_h === '') {
 			this.col.bg_h = ppt.highLightRow > 2 ? (this.img.blurDark ? 0x24000000 : 0x1E30AFED) : this.img.blurDark ? 0x19ffffff : this.img.blurLight || lightBg ? 0x19000000 : 0x19ffffff;
@@ -595,7 +595,7 @@ class UserInterface {
 		} else this.col.bgSel_h = this.col.bg_h;
 
 		if (this.col.bgSelframe === '') {
-			const bgSelOpaque = $.RGBAtoRGB(this.col.bgSel, this.img.blurDark ? RGB(50, 50, 50) : this.img.blurLight ? RGB(232, 232, 232) : this.col.bg);
+			const bgSelOpaque = $.RGBAtoRGB(this.col.bgSel, this.img.blurDark ? $.RGB(50, 50, 50) : this.img.blurLight ? $.RGB(232, 232, 232) : this.col.bg);
 			this.col.bgSelframe = this.setBrightness(bgSelOpaque, this.isLightCol(bgSelOpaque == 0 ? 0xff000000 : bgSelOpaque) ? -7 : 7);
 			this.col.frameImgSel = this.col.bgSel & 0xb0ffffff;
 		} else {
@@ -615,7 +615,7 @@ class UserInterface {
 		if (this.col.sideMarker === '') this.col.sideMarker = ppt.highLightNode ? this.col.text_h : this.col.text;
 		this.col.count = this.setBrightness(this.col.text, this.isLightCol(this.col.text) ? -30 : 30);
 
-		if (this.col.line === '') this.col.line = ppt.nodeLines && !ppt.facetView ? RGBA(136, 136, 136, 85) : 0;
+		if (this.col.line === '') this.col.line = ppt.nodeLines && !ppt.facetView ? $.RGBA(136, 136, 136, 85) : 0;
 		if (this.col.search === '') this.col.search = this.col.text;
 		if (!this.dui && this.col.textSel === '') {
 			const colours = Object.keys(colourSelector);
@@ -626,7 +626,7 @@ class UserInterface {
 
 		this.col.imgBor = this.col.text & 0x25ffffff;
 		this.col.lotBlend = !this.img.blurDark && !this.img.blurLight ? this.getBlend(this.col.text, this.col.bg == 0 ? 0xff000000 : this.col.bg, 0.75) : this.col.text;
-		this.col.rootBlend = !this.img.blurDark && !this.img.blurLight ? this.getBlend(this.col.text, this.col.bg == 0 ? 0xff000000 : this.col.bg, 0.2) : RGBA(128, 128, 128, 128);
+		this.col.rootBlend = !this.img.blurDark && !this.img.blurLight ? this.getBlend(this.col.text, this.col.bg == 0 ? 0xff000000 : this.col.bg, 0.2) : $.RGBA(128, 128, 128, 128);
 		this.col.selBlend = this.getBlend(this.col.textSel, this.col.bgSel == 0 ? 0xff000000 : this.col.bgSel, 0.85);
 
 
@@ -637,7 +637,7 @@ class UserInterface {
 			this.col.txt_box_h = this.setBrightness(this.col.txt_box, 33);
 		}
 		if (this.col.s_line === '') {
-			if (!ppt.colLineDark) this.col.s_line = !this.img.blurDark ? RGBA(136, 136, 136, 85) : $.RGBtoRGBA(this.col.text, 36);
+			if (!ppt.colLineDark) this.col.s_line = !this.img.blurDark ? $.RGBA(136, 136, 136, 85) : $.RGBtoRGBA(this.col.text, 36);
 			else {
 				const lightBg = this.isLightBackground();
 				const nearBlack = ((ppt.theme == 1 || ppt.theme == 2) && !this.col.themeLight || (ppt.theme == 0 || ppt.theme == 6 || ppt.theme == 7) && !lightBg) && this.getColSat(this.col.bg) < 45;
@@ -657,9 +657,9 @@ class UserInterface {
 		this.col.topBarUnderlay = this.col.bg;
 
 		if (this.id.local) {
-			this.col.topBarUnderlay = this.getAlpha(c_b1) != 255 ? RGB(25, 28, 30) : c_b1;
-			this.col.text = this.col.lotBlend = this.img.blurBlend ? this.setBrightness(c_textcol, this.isLightCol(this.col.bg == 0 ? 0xff000000 : this.col.bg) ? -10 : 10) : this.img.blurDark ? RGB(255, 255, 255) : this.img.blurLight ? RGB(50, 50, 50) : c_textcol;
-			this.col.text_h = this.img.blurBlend ? this.setBrightness(c_textcol_h, this.isLightCol(this.col.bg == 0 ? 0xff000000 : this.col.bg) ? -10 : 10) : this.img.blurDark ? RGB(255, 255, 255) : this.img.blurLight ? RGB(50, 50, 50) : c_textcol_h;
+			this.col.topBarUnderlay = this.getAlpha(c_b1) != 255 ? $.RGB(25, 28, 30) : c_b1;
+			this.col.text = this.col.lotBlend = this.img.blurBlend ? this.setBrightness(c_textcol, this.isLightCol(this.col.bg == 0 ? 0xff000000 : this.col.bg) ? -10 : 10) : this.img.blurDark ? $.RGB(255, 255, 255) : this.img.blurLight ? $.RGB(50, 50, 50) : c_textcol;
+			this.col.text_h = this.img.blurBlend ? this.setBrightness(c_textcol_h, this.isLightCol(this.col.bg == 0 ? 0xff000000 : this.col.bg) ? -10 : 10) : this.img.blurDark ? $.RGB(255, 255, 255) : this.img.blurLight ? $.RGB(50, 50, 50) : c_textcol_h;
 			this.col.textSel = this.col.selBlend = c_textselcol;
 			this.col.bgSel = c_backcolsel;
 			ppt.rowStripes = c_alternate;
@@ -707,10 +707,10 @@ class UserInterface {
 		};
 		let c = [rc(), rc(), rc()];
 		while (!this.isColOk(c)) c = [rc(), rc(), rc()];
-		return $.RGBAtoRGB(RGBA(c[0], c[1], c[2], Math.min(80 / this.img.blurAlpha, 255)), RGB(0, 0, 0));
+		return $.RGBAtoRGB($.RGBA(c[0], c[1], c[2], Math.min(80 / this.img.blurAlpha, 255)), $.RGB(0, 0, 0));
 	}
 	getSelTextCol(c, bypass) {
-		return this.getLuminance(c, bypass) > 0.35 ? RGB(0, 0, 0) : RGB(255, 255, 255);
+		return this.getLuminance(c, bypass) > 0.35 ? $.RGB(0, 0, 0) : $.RGB(255, 255, 255);
 	}
 
 	getTxtBoxCol(c, highLight) {
@@ -725,19 +725,19 @@ class UserInterface {
 		if (ppt.themed && (ppt.theme == 0 || ppt.theme == 6 || ppt.theme == 7) && this.themeColour && ppt.themeColour) {
 			this.col.txt = this.themeColour.text;
 			if (this.col.bg === '') this.col.bg = this.themeColour.background;
-			if (this.col.bgSel === '') this.col.bgSel = this.img.blurDark ? RGBA(255, 255, 255, 36) : this.img.blurLight ? RGBA(50, 50, 50, 36) : this.themeColour.selection;
+			if (this.col.bgSel === '') this.col.bgSel = this.img.blurDark ? $.RGBA(255, 255, 255, 36) : this.img.blurLight ? $.RGBA(50, 50, 50, 36) : this.themeColour.selection;
 			this.col.txt_h = this.themeColour.highlight;
 		} else {
 			switch (this.dui) {
 				case 0:
-					if (this.col.bg === '') this.col.bg = this.img.blurLight ? RGB(245, 247, 255) : window.GetColourCUI(3);
-					if (this.col.bgSel === '') this.col.bgSel = this.img.blurDark ? RGBA(255, 255, 255, 36) : this.img.blurLight ? RGBA(50, 50, 50, 36) : window.GetColourCUI(4);
+					if (this.col.bg === '') this.col.bg = this.img.blurLight ? $.RGB(245, 247, 255) : window.GetColourCUI(3);
+					if (this.col.bgSel === '') this.col.bgSel = this.img.blurDark ? $.RGBA(255, 255, 255, 36) : this.img.blurLight ? $.RGBA(50, 50, 50, 36) : window.GetColourCUI(4);
 					this.col.txt = window.GetColourCUI(0);
 					this.col.txt_h = window.GetColourCUI(2);
 					break;
 				case 1:
-					if (this.col.bg === '') this.col.bg = this.img.blurLight ? RGB(245, 247, 255) : window.GetColourDUI(1);
-					if (this.col.bgSel === '') this.col.bgSel = this.img.blurDark ? RGBA(255, 255, 255, 36) : this.img.blurLight ? RGBA(50, 50, 50, 36) : window.GetColourDUI(3);
+					if (this.col.bg === '') this.col.bg = this.img.blurLight ? $.RGB(245, 247, 255) : window.GetColourDUI(1);
+					if (this.col.bgSel === '') this.col.bgSel = this.img.blurDark ? $.RGBA(255, 255, 255, 36) : this.img.blurLight ? $.RGBA(50, 50, 50, 36) : window.GetColourDUI(3);
 					this.col.txt = window.GetColourDUI(0);
 					this.col.txt_h = window.GetColourDUI(2);
 					break;
@@ -819,13 +819,13 @@ class UserInterface {
 
 	setBrightness(c, percent) {
 		c = $.toRGB(c);
-		return RGB($.clamp(c[0] + (256 - c[0]) * percent / 100, 0, 255), $.clamp(c[1] + (256 - c[1]) * percent / 100, 0, 255), $.clamp(c[2] + (256 - c[2]) * percent / 100, 0, 255));
+		return $.RGB($.clamp(c[0] + (256 - c[0]) * percent / 100, 0, 255), $.clamp(c[1] + (256 - c[1]) * percent / 100, 0, 255), $.clamp(c[2] + (256 - c[2]) * percent / 100, 0, 255));
 	}
 
 	setIconCol() {
-		const colBg = this.img.blurDark ? RGB(0, 0, 0) : this.img.blurLight ? RGB(255, 255, 255) : this.col.bg == 0 ? 0xff000000 : this.col.bg
+		const colBg = this.img.blurDark ? $.RGB(0, 0, 0) : this.img.blurLight ? $.RGB(255, 255, 255) : this.col.bg == 0 ? 0xff000000 : this.col.bg
 		if (this.icon.col_c === '') {
-			this.col.icon_c = this.style.squareNode ? [RGB(252, 252, 252), RGB(223, 223, 223)] : (ppt.nodeStyle == 1 || ppt.nodeStyle == 3 ? (this.img.blurDark || this.img.blurBlend || this.img.blurLight ? $.RGBtoRGBA(this.col.text, 72) : this.getBlend(colBg, this.col.text, 0.5)) : this.col.text);
+			this.col.icon_c = this.style.squareNode ? [$.RGB(252, 252, 252), $.RGB(223, 223, 223)] : (ppt.nodeStyle == 1 || ppt.nodeStyle == 3 ? (this.img.blurDark || this.img.blurBlend || this.img.blurLight ? $.RGBtoRGBA(this.col.text, 72) : this.getBlend(colBg, this.col.text, 0.5)) : this.col.text);
 		} else if (this.style.squareNode) {
 			if (this.getAlpha(this.icon.col_c) != 255) {
 				this.col.icon_c = $.RGBAtoRGB(this.icon.col_c, this.col.bg);
@@ -833,20 +833,20 @@ class UserInterface {
 			this.col.icon_c = this.getGradient(this.col.icon_c, 15, -14);
 		}
 		if (this.icon.col_e === '') {
-			this.col.icon_e = this.style.squareNode ? [RGB(252, 252, 252), RGB(223, 223, 223)] : (ppt.nodeStyle == 1 || ppt.nodeStyle == 3 ? (this.img.blurDark || this.img.blurBlend ? this.col.text : this.getBlend(colBg, this.col.text, 0.1)) : this.col.text);
+			this.col.icon_e = this.style.squareNode ? [$.RGB(252, 252, 252), $.RGB(223, 223, 223)] : (ppt.nodeStyle == 1 || ppt.nodeStyle == 3 ? (this.img.blurDark || this.img.blurBlend ? this.col.text : this.getBlend(colBg, this.col.text, 0.1)) : this.col.text);
 		} else if (this.style.squareNode) {
 			if (this.getAlpha(this.icon.col_e) != 255) {
 				this.col.icon_e = $.RGBAtoRGB(this.icon.col_e, this.col.bg);
 			} else this.col.icon_e = this.icon.col_e;
 			this.col.icon_e = this.getGradient(this.col.icon_e, 15, -14);
 		}
-		this.col.iconPlus = this.isLightCol(this.col.icon_e[0]) ? RGB(41, 66, 114) : RGB(225, 225, 245);
-		this.col.iconMinus_c = this.isLightCol(this.col.icon_c[0]) ? RGB(75, 99, 167) : RGB(225, 225, 245);
-		this.col.iconMinus_e = this.isLightCol(this.col.icon_e[0]) ? RGB(75, 99, 167) : RGB(225, 225, 245);
+		this.col.iconPlus = this.isLightCol(this.col.icon_e[0]) ? $.RGB(41, 66, 114) : $.RGB(225, 225, 245);
+		this.col.iconMinus_c = this.isLightCol(this.col.icon_c[0]) ? $.RGB(75, 99, 167) : $.RGB(225, 225, 245);
+		this.col.iconMinus_e = this.isLightCol(this.col.icon_e[0]) ? $.RGB(75, 99, 167) : $.RGB(225, 225, 245);
 		if (!ppt.highLightNode) return;
 		if (this.icon.col_h === '') {
 			const nodeDiffHighlight = this.img.blurDark && !ppt.highLightRow && ppt.highLightNode;
-			this.col.icon_h = this.style.squareNode ? !this.img.blurDark && !this.img.blurLight ? !this.id.local ? (this.getColSat(this.col.text_h) < 650 ? this.col.text_h : this.col.text) : (this.getColSat(c_iconcol_h) < 650 ? c_iconcol_h : c_textcol) : RGB(50, 50, 50) : (nodeDiffHighlight ? this.col.nowp : this.col.text_h);
+			this.col.icon_h = this.style.squareNode ? !this.img.blurDark && !this.img.blurLight ? !this.id.local ? (this.getColSat(this.col.text_h) < 650 ? this.col.text_h : this.col.text) : (this.getColSat(c_iconcol_h) < 650 ? c_iconcol_h : c_textcol) : $.RGB(50, 50, 50) : (nodeDiffHighlight ? this.col.nowp : this.col.text_h);
 			this.icon.col_h = this.col.icon_h;
 		}
 		if (this.style.squareNode) {
@@ -855,8 +855,8 @@ class UserInterface {
 			} else if (this.icon.col_h !== '') this.col.icon_h = this.icon.col_h;
 			this.col.icon_h = this.getGradient(this.col.icon_h, 15, -14);
 		}
-		this.col.iconPlus_h = this.isLightCol(this.col.icon_h[0]) ? RGB(41, 66, 114) : RGB(225, 225, 245);
-		this.col.iconMinus_h = this.isLightCol(this.col.icon_h[0]) ? RGB(75, 99, 167) : RGB(225, 225, 245);
+		this.col.iconPlus_h = this.isLightCol(this.col.icon_h[0]) ? $.RGB(41, 66, 114) : $.RGB(225, 225, 245);
+		this.col.iconMinus_h = this.isLightCol(this.col.icon_h[0]) ? $.RGB(75, 99, 167) : $.RGB(225, 225, 245);
 	}
 
 	setMarkerCol(c) {
@@ -878,7 +878,7 @@ class UserInterface {
 				c = c.split('-');
 				let cc = '';
 				if (c.length != 3 && c.length != 4) return '';
-				cc = RGB(c[0], c[1], c[2]);
+				cc = $.RGB(c[0], c[1], c[2]);
 				return cc;
 			}
 		}

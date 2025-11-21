@@ -490,6 +490,7 @@ class Find {
 		this.jSearch = '';
 		this.jump_search = true;
 		this.initials = null;
+		this.prevChar = null; // Regorxxx <- Fixed quick-search on same letter
 	}
 
 	// Methods
@@ -501,7 +502,7 @@ class Find {
 			gr.FillRoundRect(this.j.x - this.j.w / 2, this.j.y, this.j.w, this.j.h, this.arc1, this.arc1, 0x96000000);
 			gr.DrawRoundRect(this.j.x - this.j.w / 2, this.j.y, this.j.w, this.j.h, this.arc1, this.arc1, 1, 0x64000000);
 			gr.DrawRoundRect(this.j.x - this.j.w / 2 + 1, this.j.y + 1, this.j.w - 2, this.j.h - 2, this.arc2, this.arc2, 1, 0x28ffffff);
-			gr.GdiDrawText(this.jSearch, ui.font.find, RGB(0, 0, 0), this.j.x - this.j.w / 2 + 1, this.j.y + 1, this.j.w, this.j.h, panel.cc);
+			gr.GdiDrawText(this.jSearch, ui.font.find, $.RGB(0, 0, 0), this.j.x - this.j.w / 2 + 1, this.j.y + 1, this.j.w, this.j.h, panel.cc);
 			gr.GdiDrawText(this.jSearch, ui.font.find, this.jump_search ? 0xfffafafa : 0xffff4646, this.j.x - this.j.w / 2, this.j.y, this.j.w, this.j.h, panel.cc);
 			gr.SetSmoothingMode(0);
 		}
@@ -512,7 +513,15 @@ class Find {
 		let advance = false;
 		if (panel.pos >= 0 && panel.pos < pop.tree.length) {
 			const char = pop.tree[panel.pos].name.replace(/@!#.*?@!#/g, '').charAt(0).toLowerCase();
-			if (pop.tree[panel.pos].sel && char == text) advance = true;
+			// Regorxxx <- Fixed quick-search on same letter
+			if (pop.tree[panel.pos].sel && char == text && this.prevChar == text) { advance = true; }
+			this.prevChar = text;
+			timer.clear(timer.jsearch3);
+			timer.jsearch3.id = setTimeout(() => {
+				this.prevChar = null;
+				timer.jsearch3.id = null;
+			}, 1200);
+			// Regorxxx ->
 		}
 		switch (true) {
 			case advance:

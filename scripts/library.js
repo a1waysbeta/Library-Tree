@@ -94,7 +94,22 @@ class Library {
 					let newSearchItems = new FbMetadbHandleList();
 					this.validSearch = true;
 					try {
-						newSearchItems = fb.GetQueryItems(handleList, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
+						// Regorxxx <- RegExp library search
+						const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+						const tags = isRegExp
+							? panel.folderView 
+								? ['%PATH%']
+								: $.getTagsFromTf(panel.view)
+							: null;
+						newSearchItems = isRegExp
+							? $.applyRegExp(panel.search.txt, handleList, tags)
+							: fb.GetQueryItems(
+								handleList, 
+								!this.filterQuery.includes('$searchtext') 
+									? panel.search.txt 
+									: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+							);
+						// Regorxxx ->
 					} catch (e) {
 						this.validSearch = false;
 					}
@@ -143,7 +158,22 @@ class Library {
 					let newSearchItems = new FbMetadbHandleList();
 					this.validSearch = true;
 					try {
-						newSearchItems = fb.GetQueryItems(handleList, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
+						// Regorxxx <- RegExp library search
+						const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+						const tags = isRegExp
+							? panel.folderView 
+								? ['%PATH%']
+								: $.getTagsFromTf(panel.view)
+							: null;
+						newSearchItems = isRegExp
+							? $.applyRegExp(panel.search.txt, handleList, tags)
+							: fb.GetQueryItems(
+								handleList, 
+								!this.filterQuery.includes('$searchtext') 
+									? panel.search.txt 
+									: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+							);
+						// Regorxxx ->
 					} catch (e) {
 						this.validSearch = false;
 					}
@@ -478,7 +508,6 @@ class Library {
 			panel.treePaint();
 			return;
 		}
-
 		pop.libItems = true;
 		panel.forcePaint();
 		if (ppt.filterBy) {
@@ -513,10 +542,12 @@ class Library {
 	}
 
 	initialise(handleList) {
+		const profiler = ppt.logLibProfiler ? new FbProfiler('Library Tree: Load library') : null; // Regorxxx <- Library profiling
 		lib.initialised = true;
 		this.load(handleList);
 		this.getLibrary(true);
 		this.rootNodes(ppt.rememberTree, ppt.process);
+		if (profiler) { profiler.Print(this.list.Count + ' tracks ->'); } // Regorxxx <- Library profiling
 	}
 
 	isMainChanged(handleList) {
@@ -850,7 +881,22 @@ class Library {
 			this.validSearch = true;
 			this.none = '';
 			try {
-				panel.list = fb.GetQueryItems(this.getSearchList(panel.search.txt) || this.list, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
+				// Regorxxx <- RegExp library search
+				const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+				const tags = isRegExp
+					? panel.folderView 
+						? ['%PATH%']
+						: $.getTagsFromTf(panel.view)
+					: null;
+				panel.list = isRegExp
+					? $.applyRegExp(panel.search.txt, this.list, tags)
+					: fb.GetQueryItems(
+						this.getSearchList(panel.search.txt) || this.list, 
+						!this.filterQuery.includes('$searchtext') 
+							? panel.search.txt 
+							: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+					);
+				// Regorxxx ->
 				this.searchCache[panel.search.txt] = panel.list;
 			} catch (e) {
 				this.list = this.list.Clone();
@@ -1101,7 +1147,22 @@ class Library {
 					// addns
 					this.validSearch = true;
 					try {
-						newSearchItems = fb.GetQueryItems(handleList, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
+						// Regorxxx <- RegExp library search
+						const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+						const tags = isRegExp
+							? panel.folderView 
+								? ['%PATH%']
+								: $.getTagsFromTf(panel.view)
+							: null;
+						newSearchItems = isRegExp
+							? $.applyRegExp(panel.search.txt, handleList, tags)
+							: fb.GetQueryItems(
+								handleList,
+								!this.filterQuery.includes('$searchtext') 
+									? panel.search.txt 
+									: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+							);
+						// Regorxxx ->
 					} catch (e) {
 						this.validSearch = false;
 					}
@@ -1120,7 +1181,22 @@ class Library {
 					removeSearchItems.MakeIntersection(origSearch); // handles in origSearch (present in any filter)	
 					this.validSearch = true;
 					try {
-						handlesInSearch = fb.GetQueryItems(removeSearchItems, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
+						// Regorxxx <- RegExp library search
+						const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+						const tags = isRegExp
+							? panel.folderView 
+								? ['%PATH%']
+								: $.getTagsFromTf(panel.view)
+							: null;
+						handlesInSearch = isRegExp
+							? $.applyRegExp(panel.search.txt, removeSearchItems, tags)
+							: fb.GetQueryItems(
+								removeSearchItems, 
+								!this.filterQuery.includes('$searchtext') 
+									? panel.search.txt 
+									: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+							);
+						// Regorxxx ->
 					} catch (e) {
 						this.validSearch = false;
 					}

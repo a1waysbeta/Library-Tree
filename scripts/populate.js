@@ -75,7 +75,8 @@ class Populate {
 			lastPlayed: FbTitleFormat(ppt.tfLastPlayed),
 			pc: FbTitleFormat(ppt.tfPc),
 			popularity: FbTitleFormat(ppt.tfPopularity),
-			rating: FbTitleFormat(ppt.tfRating)
+			rating: FbTitleFormat(ppt.tfRating),
+			loved: FbTitleFormat(ppt.tfLoved), // Regorxxx <- New statistics
 		}
 
 		this.triangle = {
@@ -450,13 +451,36 @@ class Populate {
 				ln = values.length;
 				if (!ln) return '';
 				values = values.map(v => parseFloat(v)).reduce((a, b) => a + b, 0);
-				value = Math.ceil(values / ln);
+				value = $.round(values / ln, ppt.ratingDecimals).toFixed(ppt.ratingDecimals); // Regorxxx <- Rating decimals
 				if (panel.imgView && this.label) value = (ppt.itemShowStatistics == 4 ? 'Rating ' : 'Popularity ') + value;
 				this.cache[type][key] = {
 					value: value,
 					items: items
 				}
 				return value;
+			// Regorxxx <- New statistics
+			case 12: // loved
+			case 13: // Hated
+			case 14: // Feedback
+				tf = this.tf.loved;
+				values = tf.EvalWithMetadbs(handleList);
+				values = this.getNumbers(values);
+				values = ppt.itemShowStatistics == 14 
+					? values.filter(Boolean)
+					: ppt.itemShowStatistics == 12 
+						? values.filter((v) => v > 0)
+						: values.filter((v) => v < 0);
+				ln = values.length;
+				if (!ln) return '';
+				values = Math.abs(values.map(v => parseFloat(v)).reduce((a, b) => a + b, 0));
+				value = values;
+				if (panel.imgView && this.label) value = (ppt.itemShowStatistics == 14 ? 'Feedback ' : (ppt.itemShowStatistics == 13 ? 'Hated ' : 'Loved ')) + value;
+				this.cache[type][key] = {
+					value: value,
+					items: items
+				}
+				return value;
+			// Regorxxx ->
 			case 6: // date (first release)
 			case 9: // firstPlayed
 			case 10: // lastPlayed
@@ -736,12 +760,12 @@ class Populate {
 				this.nd[j] = $.gr(sz, sz, true, g => {
 					hot = j > 1 ? true : false;
 					plus = !j || j == 2 ? true : false;
-					g.FillSolidRect(x, y, sz, sz, RGB(145, 145, 145));
+					g.FillSolidRect(x, y, sz, sz, $.RGB(145, 145, 145));
 					if (!hot) g.FillGradRect(x + ln_w, y + ln_w, sz - ln_w * 2, sz - ln_w * 2, 91, plus ? ui.col.icon_e[0] : ui.col.icon_c[0], plus ? ui.col.icon_e[1] : ui.col.icon_c[1], 1.0);
 					else g.FillGradRect(x + ln_w, y + ln_w, sz - ln_w * 2, sz - ln_w * 2, 91, ui.col.icon_h[0], ui.col.icon_h[1], 1.0);
 					let x_o = [x, x + sz - ln_w, x, x + sz - ln_w];
 					let y_o = [y, y, y + sz - ln_w, y + sz - ln_w];
-					for (let i = 0; i < 4; i++) g.FillSolidRect(x_o[i], y_o[i], ln_w, ln_w, RGB(186, 187, 188));
+					for (let i = 0; i < 4; i++) g.FillSolidRect(x_o[i], y_o[i], ln_w, ln_w, $.RGB(186, 187, 188));
 					if (plus) g.FillSolidRect(Math.floor(x + (sz - sy_w) / 2), y + ln_w + Math.min(ln_w, sy_w), sy_w, sz - ln_w * 2 - Math.min(ln_w, sy_w) * 2, !hot ? ui.col.iconPlus : ui.col.iconPlus_h);
 					g.FillSolidRect(x + ln_w + Math.min(ln_w, sy_w), Math.floor(y + (sz - sy_w) / 2), sz - ln_w * 2 - Math.min(ln_w, sy_w) * 2, sy_w, !hot ? (plus ? ui.col.iconMinus_e : ui.col.iconMinus_c) : ui.col.iconMinus_h);
 				});
@@ -824,7 +848,7 @@ class Populate {
 						text[i + 2] = '';
 						ellipsis_corr = ellipsisSpace;
 					}
-					col[i] = i > 0 ? (text[i - 1]).split('`') : (!panel.imgView || !img.labels.overlayDark ? ui.col.txtArr : [RGB(240, 240, 240), ui.col.text_h, ui.col.text]);
+					col[i] = i > 0 ? (text[i - 1]).split('`') : (!panel.imgView || !img.labels.overlayDark ? ui.col.txtArr : [$.RGB(240, 240, 240), ui.col.text_h, ui.col.text]);
 					col_x[i] = x;
 					col_w[i] = w - x - ellipsis_corr > ellipsis_corr ? w - x - ellipsis_corr : w - x;
 					x += w_arr[i];
@@ -2170,7 +2194,7 @@ class Populate {
 		this.rowStripes = ppt.rowStripes;
 		this.sbarShow = ppt.sbarShow;
 		this.showTracks = !ppt.facetView ? ppt.showTracks : false;
-		this.statistics = ['', 'Bitrate', 'Duration', 'Total size', 'Rating', 'Popularity', 'Date', 'Queue', 'Playcount', 'First played', 'Last played', 'Added'];
+		this.statistics = ['', 'Bitrate', 'Duration', 'Total size', 'Rating', 'Popularity', 'Date', 'Queue', 'Playcount', 'First played', 'Last played', 'Added', 'Loved', 'Hated', 'Feedback']; // Regorxxx <- New statistics
 		this.statisticsShow = ppt.itemShowStatistics;
 		this.label = !ppt.labelStatistics ? '' : this.statisticsShow ? this.statistics[this.statisticsShow] : '';
 		this.tooltipStatistics = ppt.tooltipStatistics;
@@ -2216,15 +2240,36 @@ class Populate {
 	sort(data) {
 		if (!ppt.libSource && !panel.multiProcess) return;
 		this.specialCharSort(data);
-		// View By Folder Structure is already sorted
-		if (ppt.folderView) return;
-		data.sort((a, b) => this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0));
+		// Regorxxx <- By TT: Fixed Library's "View by Folder Structure" to match Windows Explorer. https://github.com/TT-ReBORN/Georgia-ReBORN/commit/819284002e133bb4d9406ad55e233e7bb18d39b8
+		if (ppt.folderView) { // Handle sorting for View By Folder Structure
+			this.sortViewByFolder(data);
+		} else { // Default sorting for other views
+			data.sort((a, b) => this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0));
+		}
+		// Regorxxx ->
+
 	}
 
 	sortIfNeeded(items) {
 		if (panel.multiProcess && !ppt.customSort.length) items.OrderByFormat(panel.playlistSort, 1);
 		else if (ppt.customSort.length) items.OrderByFormat(this.customSort, 1);
 	}
+
+	// Regorxxx <- By TT: Fixed Library's "View by Folder Structure" to match Windows Explorer. https://github.com/TT-ReBORN/Georgia-ReBORN/commit/819284002e133bb4d9406ad55e233e7bb18d39b8
+	sortViewByFolder(data) {
+		// Use Intl.Collator with numeric: true to sort file/folder names (srt[0]) naturally,
+		// matching Windows Explorer's alphanumeric order (e.g., "2.01" < "2.15", "1985a" < "1986 -").
+		// This fixes incorrect track and folder sorting in View by Folder Structure.
+		const naturalCollator = new Intl.Collator(undefined, { numeric: true });
+
+		data.sort((a, b) => {
+			const nameCompare = naturalCollator.compare(a.srt[0], b.srt[0]);
+			if (nameCompare !== 0) return nameCompare;
+			// Fallback to metadata sorting (srt[2], srt[3]) for identical file/folder names.
+			return this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0);
+		});
+	}
+	// Regorxxx ->
 
 	specialCharHas(name) {
 		return RegExp(this.specialChar).test(name);

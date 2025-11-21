@@ -76,7 +76,7 @@ class Buttons {
 		const iconFont = gdi.Font(this.scr.iconFontName, sz, this.scr.iconFontStyle);
 		this.alpha = !ui.sbar.col ? [75, 192, 228] : [68, 153, 255];
 		const hovAlpha = (!ui.sbar.col ? 75 : (!ui.sbar.type ? 68 : 51)) * 0.4;
-		this.scr.hover = !ui.sbar.col ? RGBA(ui.col.t, ui.col.t, ui.col.t, hovAlpha) : ui.col.text & RGBA(255, 255, 255, hovAlpha);
+		this.scr.hover = !ui.sbar.col ? $.RGBA(ui.col.t, ui.col.t, ui.col.t, hovAlpha) : ui.col.text & $.RGBA(255, 255, 255, hovAlpha);
 		this.q.s_img = $.gr(100, 100, true, g => {
 			g.SetSmoothingMode(2);
 			g.DrawLine(59, 59, 90, 90, 10, !ui.id.local ? ui.col.txt_box_h : ui.col.txt_box);
@@ -89,10 +89,10 @@ class Buttons {
 			g.SetTextRenderingHint(3);
 			g.SetSmoothingMode(2);
 			if (ui.sbar.col) {
-				this.scr.arrow == 0 ? g.FillPolygon(ui.col.text, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) : g.DrawString(this.scr.arrow, iconFont, ui.col.text, 0, sz * this.scr.pad, sz, sz, StringFormat(1, 1));
+				this.scr.arrow == 0 ? g.FillPolygon(ui.col.text, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) : g.DrawString(this.scr.arrow, iconFont, ui.col.text, 0, sz * this.scr.pad, sz, sz, $.stringFormat(1, 1));
 			} else {
-				this.scr.arrow == 0 ? g.FillPolygon(RGBA(ui.col.t, ui.col.t, ui.col.t, 255), 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) :
-					g.DrawString(this.scr.arrow, iconFont, RGBA(ui.col.t, ui.col.t, ui.col.t, 255), 0, sz * this.scr.pad, sz, sz, StringFormat(1, 1));
+				this.scr.arrow == 0 ? g.FillPolygon($.RGBA(ui.col.t, ui.col.t, ui.col.t, 255), 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) :
+					g.DrawString(this.scr.arrow, iconFont, $.RGBA(ui.col.t, ui.col.t, ui.col.t, 255), 0, sz * this.scr.pad, sz, sz, $.stringFormat(1, 1));
 			}
 			g.SetSmoothingMode(0);
 		});
@@ -100,10 +100,10 @@ class Buttons {
 			g.SetTextRenderingHint(3);
 			g.SetSmoothingMode(2);
 			if (ui.sbar.col) {
-				this.scr.arrow == 0 ? g.FillPolygon(ui.col.bg, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) : g.DrawString(this.scr.arrow, iconFont, ui.col.bg, 0, sz * this.scr.pad, sz, sz, StringFormat(1, 1));
+				this.scr.arrow == 0 ? g.FillPolygon(ui.col.bg, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) : g.DrawString(this.scr.arrow, iconFont, ui.col.bg, 0, sz * this.scr.pad, sz, sz, $.stringFormat(1, 1));
 			} else {
 				this.scr.arrow == 0 ? g.FillPolygon(ui.col.bg, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) :
-					g.DrawString(this.scr.arrow, iconFont, ui.col.bg, 0, sz * this.scr.pad, sz, sz, StringFormat(1, 1));
+					g.DrawString(this.scr.arrow, iconFont, ui.col.bg, 0, sz * this.scr.pad, sz, sz, $.stringFormat(1, 1));
 			}
 			g.SetSmoothingMode(0);
 		});
@@ -463,7 +463,7 @@ class Btn {
 		if (!ui.img.blurDark) gr.GdiDrawText(panel.filter.mode[ppt.filterBy].name, panel.filter.font, colText, this.p1, this.y, this.p3, this.h, this.p2);
 		else {
 			gr.SetTextRenderingHint(5);
-			gr.DrawString(panel.filter.mode[ppt.filterBy].name, panel.filter.font, colText, this.p1 - 1, this.y - 1, this.p3, this.h, StringFormat(1, 1));
+			gr.DrawString(panel.filter.mode[ppt.filterBy].name, panel.filter.font, colText, this.p1 - 1, this.y - 1, this.p3, this.h, $.stringFormat(1, 1));
 		}
 	}
 
@@ -503,7 +503,7 @@ class Btn {
 		if (!ui.img.blurDark) gr.GdiDrawText(panel.settings.icon, panel.settings.font, colText, 0, this.y, this.p1, this.p2, panel.rc);
 		else {
 			gr.SetTextRenderingHint(5);
-			gr.DrawString(panel.settings.icon, panel.settings.font, colText, 0, this.y - 1, this.p1, this.p2, StringFormat(2, 1));		
+			gr.DrawString(panel.settings.icon, panel.settings.font, colText, 0, this.y - 1, this.p1, this.p2, $.stringFormat(2, 1));		
 		}
 	}
 

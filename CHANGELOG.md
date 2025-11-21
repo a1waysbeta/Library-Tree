@@ -1,3 +1,19 @@
+# v2.4.0.mod.2
+### Added
+	- Added profiling logging for library loading (properties panel). Enabled by default.
+	- Added number of decimals setting for popularity/rating statistics (can be changed at the properties panel). 1 by default.
+	- Added Loved, Hated and Feedback (loved - hated) statistics. Nodes show the sum of loved/hated tracks within its subnodes.
+	- RegExp support at search input box. They must be written in /[expression]/[flags] form. Tags used for lookup are those present on the current View TF expression, ignoring those related to track and disc number; on folder view, paths are used instead. RegExps and queries can not be mixed.
+### Changed
+	- Changed default TF expressions to be compatible with foo_playcount, foo_enhanced_playcount and foo_playcount_2003.
+	- Cleanup of search history menu. Added RegExp reference.
+	- Helpers code cleanup.
+### Fixed
+	- Fixed quick-search not working when looking for a word whose first letter is the same than currently focused one. i.e. can't look for "bad ..." when you are at "b". Now advancing works only when you press the key on rapid succession, otherwise does quick-search.
+	- Fix sorting under View By Folder Structure for all levels, by TT.
+
+<br />
+
 # v2.4.0.mod.1
 ### Changed
 	- Changed how built-in icons paths are handled, using relative paths.
