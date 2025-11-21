@@ -247,11 +247,12 @@ let properties = [
 
 	['Play on Enter or Send from Menu', false, 'autoPlay'],
 	['Playlist: Custom Sort', '', 'customSort'],
-	['Playlist: Default', 'Library Viewer Selection', 'libPlaylist'], // Regorxxx <- Default CUI/DUI playlist
+	['Playlist: Default', 'Library Viewer Selection', 'libPlaylist'], // Regorxxx <- Default CUI/DUI playlist ->
 	['Playlist: Default Activate on Change', true, 'activateOnChange'],
 	['Playlist: Panel Selection', 'Library Tree Panel Selection', 'panelSelectionPlaylist'],
 	['Playlist: Last Panel Selection', 'Library Tree Panel Selection', 'lastPanelSelectionPlaylist'],
 	['Playlist: Send to Current', false, 'sendToCur'],
+	['Playlist: Select added items', true, 'selectAdded'], // Regorxxx <- Send to playlist & select ->
 	['Prefixes to Strip or Swap (| Separator)', 'A|The', 'prefix'],
 	['Preset: Load Current View', false, 'presetLoadCurView'],
 	['Remember.PreSearch', true, 'rememberPreSearch'],

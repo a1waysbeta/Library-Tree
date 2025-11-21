@@ -349,6 +349,11 @@ Use $colour{0-255-0}$swapbranchprefix{%&ltartist&gt%}. Don't use $swapbranchpref
 				<div id="playlistSort"></div>
 				<div class="div_text4">Target playlist for send to playlist:</div>
 				<div id="targetPlaylist"></div>
+				<!-- Regorxxx Send to playlist & select -->
+				<div class="div_text4">Playlist selection behaviour:</div>
+				<div id="selectAddedToPls"></div>
+				<div class="info9">By default the selection is sent and items are selected at playlist (other panels or components tracking selection changes are updated automatically).<br><br>Disable it to restore legacy behaviour where items were sent without actually selecting them.</div>
+				<!-- Regorxxx -->
 			</div>
 		</div>
 		</div>
@@ -911,6 +916,9 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				// Regorxxx <- New statistics
 				var statisticsLabels = ['Rating', 'Popularity', 'Date', 'Custom-1 (sum)', 'Custom-2 (sum)', 'Custom-3 (sum)', 'Custom-1 (avg)', 'Custom-2 (avg)', 'Custom-3 (avg)', '', 'Auto show labels', 'Auto show tooltips'];
 				// Regorxxx ->
+				// Regorxxx <- Send to playlist & select 
+				var selectAddedToPlsLabels = ['Send to playlist and select items'];
+				// Regorxxx ->
 				var targetPlaylistLabels = ['Default', 'Current'];
 				var tfInput = ['Library View'];
 				var themeLabels = !ppt['themed_internal'].value ? ['User interface', 'Dark', 'Blend', 'Light', 'Random', 'Cover', 'Swap colours', 'Panel source: use received item image'] : ['N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set'];
@@ -980,7 +988,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				// Regorxxx ->
 				// Regorxxx ->
 				var box = {
-					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'activateOnChange'],
+					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'activateOnChange', 'selectAdded'], // Regorxxx <- Send to playlist & select ->
 					search: ['searchEnter'], // Regorxxx <- New search tab ->
 					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'recItemImage', 'labelStatistics', 'tooltipStatistics', 'inlineRoot', 'showSource', 'nodeLines', 'countsRight', 'colLineDark', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'nowPlayingSidemarker', 'nowPlayingIndicator', 'albumArtOptionsShow', 'facetView', 'showTracks'],
 					albumArt: ['albumArtFlipLabels', 'albumArtDiskCache', 'albumArtPreLoad', 'albumArtFlowMode', 'albumArtDropShadow', 'artTreeSameView', 'albumArtLetter', 'albumArtYearAuto'],
@@ -1368,6 +1376,9 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					for (i = 0; i < 2; i++) {
 						window.targetPlaylist.insertAdjacentHTML('beforeend', '<div><input id="sendToCur'+i+'" name="sendToCur" style="'+cbox+'" type="radio" /><label for="sendToCur'+i+'" class="checkbox_label">'+targetPlaylistLabels[i]+'</label></div>');
 					}
+					// Regorxxx <- Send to playlist & select 
+					i = 0; window.selectAddedToPls.insertAdjacentHTML('beforeend', '<div><input id="selectAdded_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="selectAdded_checkbox'+i+'" class="checkbox_label">'+selectAddedToPlsLabels[i]+'</label></div>');
+					// Regorxxx ->
 				}
 
 				// Regorxxx <- Drag n' drop to search box

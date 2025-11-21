@@ -1,3 +1,9 @@
+# v2.4.0.mod.17
+### Added
+	- New behavior when sending items to playlist: now items are also selected on the destination playlist. This ensures other panels/scripts tracking selection changes work properly with Library Tree. A new setting has been added in case the legacy behavior is desired at 'Behaviour\Playlist selection behaviour' (HTML options panel) or 'Playlist: Select added items' (properties panel).
+
+<br />
+
 # v2.4.0.mod.16
 ### Added
 	- New contextual menu entry to show previously played track.

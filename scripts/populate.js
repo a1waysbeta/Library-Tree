@@ -1732,10 +1732,12 @@ class Populate {
 					if (plman.PlaylistItemCount(pl_stnd_idx) < 5000) plman.UndoBackup(pl_stnd_idx);
 					plman.InsertPlaylistItems(pl_stnd_idx, 0, items);
 					plman.InsertPlaylistItems(pl_stnd_idx, plman.PlaylistItemCount(pl_stnd_idx), it);
+					if (ppt.selectAdded) { plman.SetPlaylistSelection(pl_stnd_idx, $.range(0, items.Count + it.Count), true) } // Regorxxx <- Send to playlist & select ->
 				} else {
 					if (plman.PlaylistItemCount(pl_stnd_idx) < 5000) plman.UndoBackup(pl_stnd_idx);
 					plman.ClearPlaylist(pl_stnd_idx);
 					plman.InsertPlaylistItems(pl_stnd_idx, 0, items);
+					if (ppt.selectAdded) { plman.SetPlaylistSelection(pl_stnd_idx, $.range(0, items.Count - 1), true) } // Regorxxx <- Send to playlist & select ->
 				}
 			}
 		} else if (!add) {
@@ -1743,12 +1745,14 @@ class Populate {
 			plman.ClearPlaylist(pl_stnd_idx);
 			plman.InsertPlaylistItems(pl_stnd_idx, 0, items);
 			plman.SetPlaylistFocusItem(pl_stnd_idx, 0);
+			if (ppt.selectAdded) { plman.SetPlaylistSelection(pl_stnd_idx, $.range(0, items.Count - 1), true) } // Regorxxx <- Send to playlist & select ->
 		} else {
 			if (plman.PlaylistItemCount(pl_stnd_idx) < 5000) plman.UndoBackup(pl_stnd_idx);
 			plman.InsertPlaylistItems(pl_stnd_idx, !insert ? plman.PlaylistItemCount(pl_stnd_idx) : plman.GetPlaylistFocusItemIndex(pl_stnd_idx), items, true);
 			const f_ix = !insert || plman.GetPlaylistFocusItemIndex(pl_stnd_idx) == -1 ? plman.PlaylistItemCount(pl_stnd_idx) - items.Count : plman.GetPlaylistFocusItemIndex(pl_stnd_idx) - items.Count;
 			plman.SetPlaylistFocusItem(pl_stnd_idx, f_ix);
 			plman.EnsurePlaylistItemVisible(pl_stnd_idx, f_ix);
+			if (ppt.selectAdded) { plman.SetPlaylistSelection(pl_stnd_idx, $.range(f_ix, items.Count - 1), true) } // Regorxxx <- Send to playlist & select ->
 		}
 		if (autoPlay) {
 			const c = (plman.PlaybackOrder == 3 || plman.PlaybackOrder == 4) ? Math.ceil(plman.PlaylistItemCount(pl_stnd_idx) * Math.random() - 1) : 0;
