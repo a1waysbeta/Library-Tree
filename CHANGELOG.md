@@ -1,3 +1,21 @@
+# v2.4.0.mod.12
+### Added
+	- Added tooltip over search input box which displays the entire search string (useful for long queries) along the found tracks count.
+	- Added 6 slots for custom statistics, 3 for averaged values and 3 for summed ones. it uses the decimals setting found at 'Statistics Rating/Popularity Decimals' property. Slots can be modified at 'Statistics Titleformat Custom-X (sum)' and 'Statistics Titleformat Custom-X (avg)' properties, and their labels at 'Statistics Titleformat Custom labels' property. By default the panel includes custom expressions as example.
+	- Added new external integration callbacks (name -> arg):
+		* 'Library Tree: Switch view'		-> { window: [string], viewName: string, viewIdx: number }, viewIdx = -1 for folder view, names follow menu names
+		* 'Library Tree: Switch filter'		-> { window: [string], filterName: string, filterIdx: number }, filterIdx = -1 or 0 for no filter, names follow menu names
+		* 'Library Tree: Switch source'		-> { window: [string], sourceName: string, sourceIdx: number, sourcePlaylistName: string, sourcePlaylistIdx: number, sourcePanel: string }, sourceIdx = -1 or 0 for library, sourcePlaylistIdx = -1 for active playlist, names follow menu names
+		* 'Library Tree: Switch art type'	-> { window: [string], artName: string, artIdx: number }, artIdx = -1 or 0 for front art, names follow menu names
+		* 'Library Tree: Switch statistics'	-> { window: [string], statisticsName: string, statisticsIdx: number }, statisticsIdx = -1 or 0 for default stats (usually # tracks), names follow menu names and can be matched by entire label (all), user label only or 'custom-X (...)' labels (custom entries only)
+### Changed
+	- Simplified and unified code at multiple places, replacing hardcoding with easier to maintain alternatives (and less prone to bugs). Multiple console warnings have also been set when errors are found.
+### Fixed
+	- Track count is now shown on album art mode for loved, hated and feedback statistics. i.e. the 'X tracks' label at the top right of the image.
+	- Fixed crash editing any value at display options tab while using loved, hated and feedback statistics.
+
+<br />
+
 # v2.4.0.mod.11
 ### Added
 	- Added Drag n' Drop support into search box. Dropping any selection will now perform a search based on file tags (or filenames), according to your settings. 2 new properties have been added to tweak the behavior:

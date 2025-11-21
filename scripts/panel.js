@@ -1218,17 +1218,7 @@ class Panel {
 			'filter': {}
 		};
 	
-		pop.tf = {
-			added: FbTitleFormat(ppt.tfAdded),
-			bitrate: FbTitleFormat('%bitrate%'),
-			bytes: FbTitleFormat('%path%|%filesize%'),
-			date: FbTitleFormat(ppt.tfDate),
-			firstPlayed: FbTitleFormat(ppt.tfFirstPlayed),
-			lastPlayed: FbTitleFormat(ppt.tfLastPlayed),
-			pc: FbTitleFormat(ppt.tfPc),
-			popularity: FbTitleFormat(ppt.tfPopularity),
-			rating: FbTitleFormat(ppt.tfRating)
-		}
+		pop.setTf(); // Regorxxx <- New statistics ->
 		
 		pop.tree.forEach(v => {
 			v.id = '';

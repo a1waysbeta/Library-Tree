@@ -251,17 +251,17 @@ class MenuItems {
 		
 		menu.newMenu({menuName: 'Statistics', appendTo: mainMenu(), separator: true});
 		// Regorxxx <- New statistics
-		[pop.countsRight && !panel.imgView ? ['None', '# Tracks', '# Items'][pop.nodeCounts] : 'None', 'Bitrate', 'Duration', 'Total size', 'Rating', 'Popularity', 'Date', 'Playback queue', 'Playcount', 'First played', 'Last played', 'Added', 'Loved','Hated','Feedback (loved - hated)', 'Configure statistics...'].forEach((v, i) => menu.newItem({
+		[...this.statisticsTypes(), 'Configure statistics...'].forEach((v, i) => menu.newItem({
 			menuName: 'Statistics',
 			str: v,
 			func: () => this.setStatistics(i),
 			checkRadio: i == ppt.itemShowStatistics,
-			separator: !i || i == 7 || i == 11 || i == 14
+			separator: !i || i == 7 || i == 11 || i == 14 || i === 17 || i === 20
 		}));
 		// Regorxxx ->
 
 		menu.newMenu({menuName: 'Album art', appendTo: mainMenu(), hide: !panel.imgView});
-		['Front', 'Back', 'Disc', 'Icon', 'Artist', 'Group: auto', 'Group: top level', 'Group: two levels', 'Change group name...', 'Configure album art...'].forEach((v, i) => menu.newItem({
+		[...this.artTypes(), 'Group: auto', 'Group: top level', 'Group: two levels', 'Change group name...', 'Configure album art...'].forEach((v, i) => menu.newItem({ // Regorxxx <- External integration ->
 			menuName: 'Album art',
 			str: v,
 			func: () => this.setAlbumart(i),
@@ -317,7 +317,7 @@ class MenuItems {
 		// Regorxxx ->
 
 		menu.newMenu({menuName: 'Source', appendTo: mainMenu(), separator: true});
-		['Library', 'Panel', 'Playlist'].forEach((v, i) => menu.newItem({
+		this.sourceTypes().forEach((v, i) => menu.newItem({ // Regorxxx <- External integration ->
 			menuName: 'Source',
 			str: v,
 			func: () => this.setSource(i),
@@ -798,7 +798,7 @@ class MenuItems {
 	}
 
 	setStatistics(i) {
-		if (i < 15) { // Regorxxx <- New statistics
+		if (i < pop.statistics.length) { // Regorxxx <- New statistics
 			const curStatisticsShown = ppt.itemShowStatistics > 0;
 			ppt.itemShowStatistics = i;
 			ppt.itemShowStatisticsLast = ppt.itemShowStatistics;
@@ -910,4 +910,26 @@ class MenuItems {
 			sbar.checkScroll(scrollPos, 'full', true);
 		}
 	}
+
+	// Regorxxx <- External integration
+	artTypes() {
+		return ['Front', 'Back', 'Disc', 'Icon', 'Artist'];
+	}
+
+	statisticsTypes() {
+		const userCustomTypes = ppt.tfCustomLabels.split('|');
+		['Custom-1 (sum)', 'Custom-2 (sum)', 'Custom-3 (sum)', 'Custom-1 (avg)', 'Custom-2 (avg)', 'Custom-3 (avg)']
+			.forEach((t, i) => {
+				if (!userCustomTypes[i] || !userCustomTypes[i].length) { userCustomTypes[i] = t; }
+				else { userCustomTypes[i] += ' [' + t + ']'; }
+			});
+		const types = [pop.countsRight && !panel.imgView ? ['None', '# Tracks', '# Items'][pop.nodeCounts] : 'None', 'Bitrate', 'Duration', 'Total size', 'Rating', 'Popularity', 'Date', 'Playback queue', 'Playcount', 'First played', 'Last played', 'Added', 'Loved', 'Hated', 'Feedback (loved - hated)', ...userCustomTypes];
+		if (pop.statistics.length !== types.length) { console.log('Library Tree: error on default statistics. Missmatch between menu entries and available stats.'); }
+		return types;
+	}
+
+	sourceTypes() {
+		return ['Library', 'Panel', 'Playlist'];
+	}
+	// Regorxxx ->
 }

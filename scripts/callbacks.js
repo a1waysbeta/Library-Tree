@@ -286,61 +286,149 @@ function on_notify_data(name, info) {
 			sync.image(new GdiBitmap(info.image), info.id);
 			break;
 		// Regorxxx <- Don't create cache playlists if possible
-		case 'Library Tree: ask selection':
+		case 'Library Tree: ask selection': {
 			if (!info.some((v) => v === window.Name)) { break; }
 			pop.notifySelection();
 			break;
+		}
 		// Regorxxx ->
 		// Regorxxx <- External integration
-		case 'Library Tree: Show now playing':
+		case 'Library Tree: Show now playing': {
 			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
 			pop.nowPlayingShow();
 			break;
-		case 'Library Tree: Show handle':
+		}
+		case 'Library Tree: Show handle': {
 			if (!info || !info.handle) { break; }
 			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
 			const item = panel.list.Find(info.handle);
 			if (item !== -1) { pop.selShow(item); }
 			break;
+		}
 		case 'Library Tree: Switch show art':
 		case 'Library Tree: Show art':
-		case 'Library Tree: Show tree':
+		case 'Library Tree: Show tree': {
 			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
 			if (name === 'Library Tree: Show album art' && panel.imgView) { break; }
 			if (name === 'Library Tree: Show tree' && !panel.imgView) { break; }
 			men.setPlaylist(4);
 			break;
-		case 'Library Tree: Switch art type':
+		}
+		case 'Library Tree: Switch show artists / albums':
 		case 'Library Tree: Show artists':
-		case 'Library Tree: Show albums':
+		case 'Library Tree: Show albums': {
 			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
 			if (!panel.imgView && info && info.forceShowArt) { men.setPlaylist(4); }
 			if (name === 'Library Tree: Show albums' && ppt.artId != 4) { break; }
 			if (name === 'Library Tree: Show artists' && ppt.artId === 4) { break; }
-			ppt.artId = ppt.artId === 4 ? 0 : 4; 
+			ppt.artId = ppt.artId === 4 ? 0 : 4;
 			men.setPlaylist(5);
 			break;
-		case 'Library Tree: Collapse all':
+		}
+		case 'Library Tree: Switch art type': {
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			if (!panel.imgView && info && info.forceShowArt) { men.setPlaylist(4); }
+			let idx = -1;
+			const types = men.artTypes();
+			if (typeof info.artType !== 'undefined') { idx = types.findIndex((t) => t.toLowerCase() === info.artType.toLowerCase()); }
+			else if (typeof info.artIdx !== 'undefined' && info.artIdx >= -1 && info.artIdx < types.length) {
+				if (info.artIdx === -1) { idx = 0 }
+				else { idx = info.artIdx; }
+			}
+			if (idx !== -1) { men.setAlbumart(idx) }
+			break;
+		}
+		case 'Library Tree: Collapse all': {
 			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
 			men.setTreeState(0)
 			break;
-		case 'Library Tree: Quicksearch':
-			if (!info || !info.search || !info.search.length) { break; }
+		}
+		case 'Library Tree: Quicksearch': {
+			if (!info || typeof info.viewName === 'undefined' || !info.search.length) { break; }
 			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
 			info.search.split('').forEach((s) => on_char(s.charCodeAt(0)));
 			break;
-		case 'Library Tree: Search':
+		}
+		case 'Library Tree: Search': {
 			if (!ppt.searchShow) { break; }
-			if (!info || !info.search || !info.search.length) { break; }
+			if (!info || typeof info.viewName === 'undefined' || !info.search.length) { break; }
 			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
 			info.search.split('').forEach((s) => search.on_char(s.charCodeAt(0), true));
 			search.on_char(vk.enter);
 			break;
-		case 'Library Tree: Clear':
+		}
+		case 'Library Tree: Clear': {
 			if (!ppt.searchShow) { break; }
 			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
 			search.clear();
 			break;
+		}
+		case 'Library Tree: Switch view': {
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			let idx = -1;
+			if (typeof info.viewName !== 'undefined') { idx = panel.grp.findIndex(v => v.name.trim().toLowerCase() === info.viewName.toLowerCase()); }
+			else if (typeof info.viewIdx !== 'undefined' && info.viewIdx >= -1 && info.viewIdx < panel.grp.length) {
+				if (info.viewIdx === -1) { idx = panel.grp.length - 1; }
+				else if (panel.grp[info.viewIdx].name.trim() !== 'separator') { idx = info.viewIdx; }
+			}
+			if (idx !== -1) { men.setView(idx); }
+			break;
+		}
+		case 'Library Tree: Switch filter': {
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			let idx = -1;
+			if (typeof info.filterName !== 'undefined') { idx = panel.dialogFiltGrps.findIndex(v => v.name.trim().toLowerCase() === info.filterName.toLowerCase()); }
+			else if (typeof info.filterIdx !== 'undefined' && info.filterIdx >= -1 && info.filterIdx < panel.dialogFiltGrps.length) {
+				if (info.filterIdx === -1) { idx = 0 }
+				else if (panel.dialogFiltGrps[info.filterIdx].name.trim() !== 'separator') { idx = info.filterIdx; }
+			}
+			if (idx !== -1) { panel.set('Filter', idx); }
+			break;
+		}
+		case 'Library Tree: Switch source': {
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			let idx = -1;
+			let plsIdx = -1;
+			// Source type
+			const types = men.sourceTypes();
+			if (typeof info.sourceName !== 'undefined') { idx = types.findIndex((t) => t.toLowerCase() === info.sourceName.toLowerCase()); }
+			else if (typeof info.sourceIdx !== 'undefined' && info.sourceIdx >= -1 && info.sourceIdx < types.length) {
+				if (info.sourceIdx === -1) { idx = 0 }
+				else { idx = info.sourceIdx; }
+			}
+			// Playlists
+			if (typeof info.sourcePlaylistName !== 'undefined') { plsIdx = plman.FindOrCreatePlaylist(info.sourcePlaylistName); }
+			else if (typeof info.sourcePlaylistIdx !== 'undefined' && info.sourcePlaylistIdx >= -1 && info.sourcePlaylistIdx > plman.PlaylistCount) {
+				if (info.sourcePlaylistIdx === -1) { plsIdx = plman.ActivePlaylist; }
+				else { plsIdx = info.sourcePlaylistIdx; }
+			}
+			// Panels
+			if (typeof info.sourcePanel !== 'undefined') {
+				ppt.panelSelectionPlaylist = info.sourcePanel;
+			}
+			// Set all
+			if (plsIdx !== -1) { men.setFixedPlaylist(plsIdx); }
+			if (idx !== -1) { men.setSource(idx); }
+			break;
+		}
+		case 'Library Tree: Switch statistics': {
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			let idx = -1;
+			const types = men.statisticsTypes();
+			const customRe = / \[custom-\d \(avg\)\]/i;
+			if (typeof info.statisticsName !== 'undefined') { 
+				const statsName = info.statisticsName.toLowerCase();
+				idx = types.findIndex((t) => {
+					t = t.toLowerCase(); // Match entire name, user label or Custom-X (avg) labels
+					return t === statsName || t.replace(customRe, '') === statsName || t === t.replace(customRe, '') + ' [' + statsName + ']';
+				}); 
+			} else if (typeof info.statisticsIdx !== 'undefined' && info.statisticsIdx >= -1 && info.statisticsIdx < types.length) {
+				if (info.statisticsIdx === -1) { idx = 0 }
+				else { idx = info.statisticsIdx; }
+			}
+			if (idx !== -1) { men.setSource(idx); }
+			break;
+		}
 		// Regorxxx ->
 	}
 	if (ui.id.local && name.startsWith('opt_')) {
@@ -470,6 +558,7 @@ const on_queue_changed = $.debounce(() => {
 
 function on_script_unload() {
 	but.on_script_unload();
+	if (ppt.searchShow) { search.on_script_unload(); } // Regorxxx <- Tooltip over search input box
 	pop.deactivateTooltip();
 }
 
@@ -532,9 +621,9 @@ function on_locations_added(taskId, handleList) {
 
 // Regorxxx <- Drag n' drop to search box
 // Mask for mouse callbacks
-var MK_LBUTTON  = 0x0001;
-var MK_SHIFT    = 0x0004; // The SHIFT key is down.
-var MK_CONTROL  = 0x0008; // The CTRL key is down.
+var MK_LBUTTON = 0x0001;
+var MK_SHIFT = 0x0004; // The SHIFT key is down.
+var MK_CONTROL = 0x0008; // The CTRL key is down.
 const dropEffect = {
 	none: 0,
 	copy: 1,
@@ -589,19 +678,18 @@ function on_drag_drop(action, x, y, mask) {
 				return true;
 			} else if (method === 0 && !panel.folderView || method === 1) { // Tags
 				const searchTags = $.jsonParse(ppt.searchDragTags);
-				const tags = $.getHandleListTags(selItems, searchTags);
-				const trackQueries = tags.map((trackTags) => {
+				const trackQueries = $.getHandleListTags(selItems, searchTags).map((trackTags) => {
 					return $.queryJoin(
-						searchTags.map((tag, i) => {
+						searchTags.map((searchTag, i) => {
 							const values = [...new Set(trackTags[i].map(s => s.toLowerCase()))];
-							return tag.toUpperCase() === 'ALBUM ARTIST' 
+							return searchTag.toUpperCase() === 'ALBUM ARTIST'
 								? $.queryJoin([
 									$.queryCombinations(values, 'ALBUM ARTIST', 'AND'),
 									$.queryCombinations(values, 'ARTIST', 'AND'),
 								], 'OR')
-								:  $.queryCombinations(values, tag, 'AND')
+								: $.queryCombinations(values, searchTag, 'AND');
 						}),
-						 'AND'
+						'AND'
 					);
 				});
 				input = $.queryJoin([...new Set(trackQueries)], 'OR');
@@ -610,7 +698,7 @@ function on_drag_drop(action, x, y, mask) {
 			return false;
 		};
 		trackSearch(ppt.searchDragMethod);
-		if (input.length) { 
+		if (input.length) {
 			input.split('').forEach((s) => search.on_char(s.charCodeAt(0), true));
 			search.on_char(vk.enter);
 		}

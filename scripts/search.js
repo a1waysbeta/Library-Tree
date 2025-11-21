@@ -14,6 +14,29 @@ class Search {
 		this.shift = false;
 		this.shift_x = 0;
 		this.txt_w = 0;
+		// Regorxxx <- Tooltip over search input box
+		this.tt = new Tooltip;
+
+		this.tt = (n, force) => {
+			if (tooltip.Text === n && !force) return;
+			pop.checkTooltipFont('btn');
+			tooltip.Text = n;
+			tooltip.Activate();
+		};
+
+		this.searchTooltipText = () => {
+			if (!panel.search.txt || !panel.search.txt.length) { return ''; }
+			let tooltipText = panel.search.txt;
+			tooltipText += '\n----------------------------------------------';
+			const count = pop.tree[0] && pop.tree[0].root && pop.tree[0].tracksCount ? pop.tree[0].tracksCount : panel.list.Count;
+			tooltipText += '\nFound ' + panel.list.Count + ' tracks';
+			return tooltipText;
+		};
+
+		this.on_script_unload = () => {
+			this.tt('');
+		};
+		// Regorxxx ->
 
 		this.logHistory = $.debounce(() => {
 			let item = -1;
@@ -155,6 +178,11 @@ class Search {
 	}
 
 	move(x, y) {
+		// Regorxxx <- Tooltip over search input box
+		if (y < panel.search.h && x > panel.search.x && x < (panel.search.w + panel.search.x)) {
+			this.tt(this.searchTooltipText());
+		}
+		// Regorxxx ->
 		if (y > panel.search.h || !this.lbtnDn) return;
 		const cursorChrPos = this.getCursorChrPos(x);
 		const c_x = this.get_cursor_x(cursorChrPos);

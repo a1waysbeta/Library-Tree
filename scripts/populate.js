@@ -30,6 +30,7 @@ class Populate {
 		this.specialChar = '[\\u0027\\u002D\\u00AD\\u058A\\u2010\\u2011\\u2012\\u2013\\u2014\\uFE58]';
 		this.sy_sz = 8;
 		this.tree = [];
+		this.tf = {}; // Regorxxx <- New statistics ->
 
 		this.cache = {
 			'standard': {},
@@ -66,19 +67,6 @@ class Populate {
 			note_w: 0
 		}
 
-		this.tf = {
-			added: FbTitleFormat(ppt.tfAdded),
-			bitrate: FbTitleFormat('%bitrate%'),
-			bytes: FbTitleFormat('%path%|%filesize%'),
-			date: FbTitleFormat(ppt.tfDate),
-			firstPlayed: FbTitleFormat(ppt.tfFirstPlayed),
-			lastPlayed: FbTitleFormat(ppt.tfLastPlayed),
-			pc: FbTitleFormat(ppt.tfPc),
-			popularity: FbTitleFormat(ppt.tfPopularity),
-			rating: FbTitleFormat(ppt.tfRating),
-			loved: FbTitleFormat(ppt.tfLoved), // Regorxxx <- New statistics
-		}
-
 		this.triangle = {
 			expand: null,
 			highlight: null,
@@ -90,11 +78,35 @@ class Populate {
 			numeric: true
 		});
 
+		this.setTf(); // Regorxxx <- New statistics ->
 		this.setActions();
 		this.setValues();
 	}
 
 	// Methods
+
+	// Regorxxx <- New statistics. Check also panel.updateProp()
+	setTf() {
+		this.tf = {
+			added: FbTitleFormat(ppt.tfAdded),
+			bitrate: FbTitleFormat('%bitrate%'),
+			bytes: FbTitleFormat('%path%|%filesize%'),
+			date: FbTitleFormat(ppt.tfDate),
+			firstPlayed: FbTitleFormat(ppt.tfFirstPlayed),
+			lastPlayed: FbTitleFormat(ppt.tfLastPlayed),
+			pc: FbTitleFormat(ppt.tfPc),
+			popularity: FbTitleFormat(ppt.tfPopularity),
+			rating: FbTitleFormat(ppt.tfRating),
+			loved: FbTitleFormat(ppt.tfLoved),
+			custom1Sum: FbTitleFormat(ppt.tfCustom1Sum),
+			custom2Sum: FbTitleFormat(ppt.tfCustom2Sum),
+			custom3Sum: FbTitleFormat(ppt.tfCustom3Sum),
+			custom1Avg: FbTitleFormat(ppt.tfCustom1Avg),
+			custom2Avg: FbTitleFormat(ppt.tfCustom2Avg),
+			custom3Avg: FbTitleFormat(ppt.tfCustom3Avg)
+		}
+	}
+	// Regorxxx ->
 
 	activateTooltip(value) {
 		if (tooltip.Text == value) return;
@@ -458,29 +470,6 @@ class Populate {
 					items: items
 				}
 				return value;
-			// Regorxxx <- New statistics
-			case 12: // loved
-			case 13: // Hated
-			case 14: // Feedback
-				tf = this.tf.loved;
-				values = tf.EvalWithMetadbs(handleList);
-				values = this.getNumbers(values);
-				values = ppt.itemShowStatistics == 14 
-					? values.filter(Boolean)
-					: ppt.itemShowStatistics == 12 
-						? values.filter((v) => v > 0)
-						: values.filter((v) => v < 0);
-				ln = values.length;
-				if (!ln) return '';
-				values = Math.abs(values.map(v => parseFloat(v)).reduce((a, b) => a + b, 0));
-				value = values;
-				if (panel.imgView && this.label) value = (ppt.itemShowStatistics == 14 ? 'Feedback ' : (ppt.itemShowStatistics == 13 ? 'Hated ' : 'Loved ')) + value;
-				this.cache[type][key] = {
-					value: value,
-					items: items
-				}
-				return value;
-			// Regorxxx ->
 			case 6: // date (first release)
 			case 9: // firstPlayed
 			case 10: // lastPlayed
@@ -550,6 +539,61 @@ class Populate {
 				}
 				return playcount;
 			}
+			// Regorxxx <- New statistics
+			case 12: // loved
+			case 13: // Hated
+			case 14: // Feedback
+				tf = this.tf.loved;
+				values = tf.EvalWithMetadbs(handleList);
+				values = this.getNumbers(values);
+				values = ppt.itemShowStatistics == 14 
+					? values.filter(Boolean)
+					: ppt.itemShowStatistics == 12 
+						? values.filter((v) => v > 0)
+						: values.filter((v) => v < 0);
+				ln = values.length;
+				if (!ln) { return ''; }
+				values = Math.abs(values.map(v => parseFloat(v)).reduce((a, b) => a + b, 0));
+				value = values;
+				if (panel.imgView && this.label) {
+					value = (ppt.itemShowStatistics == 14 ? 'Feedback ' : (ppt.itemShowStatistics == 13 ? 'Hated ' : 'Loved ')) + value;
+				}
+				this.cache[type][key] = {
+					value: value,
+					items: items
+				}
+				return value;
+			case 15: 
+			case 16: 
+			case 17:
+			case 18: 
+			case 19:
+			case 20: {
+				switch (ppt.itemShowStatistics) {
+					case 15: tf = this.tf.custom1Sum; break;
+					case 16: tf = this.tf.custom2Sum; break;
+					case 17: tf = this.tf.custom3Sum; break;
+					case 18: tf = this.tf.custom1Avg; break;
+					case 19: tf = this.tf.custom2Avg; break;
+					case 20: tf = this.tf.custom3Avg; break;
+				}
+				values = tf.EvalWithMetadbs(handleList).filter((v) => v !== '');
+				ln = values.length;
+				if (!ln) { return ''; }
+				values = values.map(v => parseFloat(v)).reduce((a, b) => a + b, 0);
+				value = ppt.itemShowStatistics >= 15 && ppt.itemShowStatistics <= 17
+					? values
+					: $.round(values / ln, ppt.ratingDecimals).toFixed(ppt.ratingDecimals) // Regorxxx <- Rating decimals;
+				if (panel.imgView && this.label) {
+					value = this.label + ' ' + value;
+				}
+				this.cache[type][key] = {
+					value: value,
+					items: items
+				}
+				return value;
+			}
+			// Regorxxx ->
 		}
 	}
 
@@ -655,7 +699,7 @@ class Populate {
 			w: w
 		}
 		item.stats_tt = {
-			needed: !this.tooltipStatistics || !this.statisticsShow || item.root ? false : [false, true, false, true, true, true, true, true, true, true, true, true][this.statisticsShow] && item.statistics !== undefined,
+			needed: !this.tooltipStatistics || !this.statisticsShow || item.root ? false : this.statisticsTooltip[this.statisticsShow] && item.statistics !== undefined, // Regorxxx <- New statistics
 			x: x,
 			y: y + ui.row.h * 0.1,
 			w: w
@@ -1360,11 +1404,12 @@ class Populate {
 					if (this.countsRight && !this.statisticsShow) v.count = v.count.replace(/[()]/g, '');
 				}
 			} else {
-				const getTracks = [true, true, true, true, false, false, true, false, false, false, false][ppt.itemShowStatistics];
-				if (getTracks) {
+				// Regorxxx <- New statistics
+				if (this.statisticsGetTracks[ppt.itemShowStatistics]) {
 					v.count = this.trackCount(v.item);
 					v.count += v.count > 1 ? ' tracks' : ' track';
 				}
+				// Regorxxx ->
 				const getItemCount = !v.root && ppt.itemOverlayType != 1 && ppt.albumArtLabelType == 2 && !ppt.itemShowStatistics && (pop.nodeCounts == 1 || pop.nodeCounts == 2);;
 				if (getItemCount) {
 					const count = v.count.replace(/\D/g, '');
@@ -2221,7 +2266,19 @@ class Populate {
 		this.rowStripes = ppt.rowStripes;
 		this.sbarShow = ppt.sbarShow;
 		this.showTracks = !ppt.facetView ? ppt.showTracks : false;
-		this.statistics = ['', 'Bitrate', 'Duration', 'Total size', 'Rating', 'Popularity', 'Date', 'Queue', 'Playcount', 'First played', 'Last played', 'Added', 'Loved', 'Hated', 'Feedback']; // Regorxxx <- New statistics
+		// Regorxxx <- New statistics
+		this.statistics = ['', 'Bitrate', 'Duration', 'Total size', 'Rating', 'Popularity', 'Date', 'Queue', 'Playcount', 'First played', 'Last played', 'Added', 'Loved', 'Hated', 'Feedback'];
+		{
+			const userCustomTypes = ppt.tfCustomLabels.split('|');
+			['Custom-1 (sum)', 'Custom-2 (sum)', 'Custom-3 (sum)', 'Custom-1 (avg)', 'Custom-2 (avg)', 'Custom-3 (avg)']
+				.forEach((t, i) => {
+					this.statistics.push(!userCustomTypes[i] || !userCustomTypes[i].length ? t : userCustomTypes[i]);
+				});
+		}
+		this.statisticsGetTracks = [true, true, true, true, false, false, true, false, false, false, false, false, true, true, true, true, true, true, true, true];
+		this.statisticsTooltip = [false, true, false, true, true, true, true, true, true, true, true, true, true, true, true,
+		true, true, true, true, true, true];
+		// Regorxxx ->
 		this.statisticsShow = ppt.itemShowStatistics;
 		this.label = !ppt.labelStatistics ? '' : this.statisticsShow ? this.statistics[this.statisticsShow] : '';
 		this.tooltipStatistics = ppt.tooltipStatistics;

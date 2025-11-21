@@ -296,12 +296,21 @@ let properties = [
 	['Statistics Label Show', true, 'labelStatistics'],
 	// Regorxxx <- Default TF for compatibility with all stats components
 	['Statistics Titleformat Added', '[$date($if3(%ADDED_ENHANCED%,%ADDED%,%2003_ADDED%))]', 'tfAdded'],
-	['Statistics Titleformat Date', '[$year(%date%)]', 'tfDate'],
+	['Statistics Titleformat Date', '[$year(%DATE%)]', 'tfDate'],
 	['Statistics Titleformat First Played', '[$date($if3(%FIRST_PLAYED_ENHANCED%,%2003_FIRST_PLAYED%,%FIRST_PLAYED%))]', 'tfFirstPlayed'],
 	['Statistics Titleformat Last Played', '[$date($if3(%LAST_PLAYED_ENHANCED%,%2003_LAST_PLAYED%,%LAST_PLAYED%))]', 'tfLastPlayed'],
-	['Statistics Titleformat Playcount DataPinningScheme|Field', '%artist%%album%%discnumber%%tracknumber%%title%|$max(%PLAY_COUNT%,%LASTFM_PLAY_COUNT%,%2003_PLAYCOUNT%,0)', 'tfPc'],
-	['Statistics Titleformat Rating', '[$if2(%rating%,%2003_rating%)]', 'tfRating'],
-	['Statistics Titleformat Loved', '[$if2(%feedback%,%2003_LOVED%)]', 'tfLoved'],
+	['Statistics Titleformat Playcount DataPinningScheme|Field', '%ARTIST%%ALBUM%%DISCNUMBER%%TRACKNUMBER%%TITLE%|$max(%PLAY_COUNT%,%LASTFM_PLAY_COUNT%,%2003_PLAYCOUNT%,0)', 'tfPc'],
+	['Statistics Titleformat Rating', '[$if2(%RATING%,%2003_RATING%)]', 'tfRating'],
+	['Statistics Titleformat Loved', '[$if2(%FEEDBACK%,%2003_LOVED%)]', 'tfLoved'],
+	// Regorxxx ->
+	// Regorxxx <- New statistics
+	['Statistics Titleformat Custom-1 (sum)', '$if($or($meta_test(LYRICS),$meta_test(UNSYNCEDLYRICS)),1,0)', 'tfCustom1Sum'],
+	['Statistics Titleformat Custom-2 (sum)', '$ifequal(%RATING%,5,1,0)', 'tfCustom2Sum'],
+	['Statistics Titleformat Custom-3 (sum)', '$ifgreater($if2($strstr($lower(%GENRE%\', \'%STYLE%\', \'%FOLKSONOMY%),instrumental),$strstr($lower(%LANGUAGE%),zxx)),0,1,0)', 'tfCustom3Sum'],
+	['Statistics Titleformat Custom-1 (avg)', '[%DYNAMIC RANGE%]', 'tfCustom1Avg'],
+	['Statistics Titleformat Custom-2 (avg)', '[%BPM%]', 'tfCustom2Avg'],
+	['Statistics Titleformat Custom-3 (avg)', '$min($add($select($add(%FEEDBACK%,%2003_LOVED%,2),-10,0,10),$select(%RATING%,0,2,5,7,10)),10)', 'tfCustom3Avg'],
+	['Statistics Titleformat Custom labels', 'Lyrics|Top Rated|Instrumental tracks|Avg. Dynamic Range|Avg. BPM|Avg. Score', 'tfCustomLabels'],
 	// Regorxxx ->
 	['Statistics Titleformat Popularity', '[$meta(Track Statistics Last.fm,5[score])]', 'tfPopularity'],
 	['Statistics Tooltips Show', true, 'tooltipStatistics'],
