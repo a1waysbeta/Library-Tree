@@ -289,6 +289,7 @@ let properties = [
 	['Search Enter', false, 'searchEnter'],
 	['Search History', JSON.stringify([]), 'searchHistory'],
 	['Search Send', 1, 'searchSend'],
+	['Search Auto-refresh TF Expressions', true, 'searchRefreshTf'], // Regorxxx <- Search text also triggers updates to filtering ->
 
 	['Show Filter', true, 'filterShow'],
 	['Show Panel Source Message', true, 'panelSourceMsg'],

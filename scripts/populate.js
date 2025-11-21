@@ -421,7 +421,7 @@ class Populate {
 	}
 
 	butTooltipFont() {
-		return ['Segoe UI', 15 * $.scale * ppt.zoomTooltipBut / 100, 0];
+		return ['Segoe UI', 14 * $.scale * ppt.zoomTooltipBut / 100, 0];
 	}
 
 	calcStatistics(v) {

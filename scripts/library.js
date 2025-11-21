@@ -8,6 +8,7 @@ class Library {
 		this.expand = [];
 		this.filterQuery = '';
 		this.filterQueryID = 'N/A';
+		this.searchQueryID = 'N/A' // Regorxxx <- Don't update search if possible ->
 		this.full_list = new FbMetadbHandleList();
 		this.full_list_need_sort = false;
 		this.initialised = false;
@@ -108,6 +109,9 @@ class Library {
 						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
 							? this.processCustomTf(panel.search.txt) 
 							: panel.search.txt;
+						this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? searchText
+							: 'N/A'
 						newSearchItems = isRegExp
 							? $.applyRegExp(searchText, handleList, tags)
 							: fb.GetQueryItems(
@@ -128,7 +132,10 @@ class Library {
 						panel.treePaint();
 						this.noListUpd = true;
 					}
-				} else panel.list = this.list;
+				} else {
+					panel.list = this.list;
+					this.searchQueryID = 'N/A'; // Regorxxx <- Don't update search if possible ->
+				}
 				break;
 			}
 			default:
@@ -175,6 +182,9 @@ class Library {
 						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
 							? this.processCustomTf(panel.search.txt) 
 							: panel.search.txt;
+						this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? searchText
+							: 'N/A'
 						newSearchItems = isRegExp
 							? $.applyRegExp(searchText, handleList, tags)
 							: fb.GetQueryItems(
@@ -215,7 +225,10 @@ class Library {
 						panel.treePaint();
 						this.noListUpd = true;
 					}
-				} else panel.list = this.list;
+				} else {
+					panel.list = this.list;
+					this.searchQueryID = 'N/A'; // Regorxxx <- Don't update search if possible ->
+				}
 				break;
 		}
 	}
@@ -338,15 +351,24 @@ class Library {
 		return true;
 	}
 
-	checkFilter() {
+	// Regorxxx <- Improve filter checking based on events. Search text also triggers updates to filtering.
+	checkFilter(type) { 
 		pop.cache.filter = {};
 		pop.cache.search = {};
 		this.searchCache = {};
-		// Regorxxx <- Merge now playing and selected as fallback
-		[/\$nowplaying{(.+?)}/, /\$selected{(.+?)}/, /\$nowplayingorselected{(.+?)}/].forEach((re) => {
-			if (panel.filter.mode[ppt.filterBy].type.match(re)) {
-				this.getFilterQuery();
-				if (this.filterQuery != this.filterQueryID) {
+		// Regorxxx <- Merge now playing and selected as fallback.
+		[
+			...(type === 'playback' || !type ? [/\$nowplaying{(.+?)}/] : []), 
+			...(type === 'selection' || !type ? [/\$selected{(.+?)}/] : []),
+			/\$nowplayingorselected{(.+?)}/
+		].filter(Boolean).some((re) => {
+			const bSearchMatch = ppt.searchRefreshTf && panel.search.txt.match(re);
+			const bFilterMatch = panel.filter.mode[ppt.filterBy].type.match(re);
+			if (bFilterMatch || bSearchMatch) {
+				if (bFilterMatch) { this.getFilterQuery(); }
+				const bFilterChanged = bFilterMatch && this.filterQuery !== this.filterQueryID;
+				const bSearchChanged = bSearchMatch && this.processCustomTf(panel.search.txt) !== this.searchQueryID;
+				if (bFilterChanged || bSearchChanged) {
 					if (!ppt.rememberTree && !ppt.reset) this.logTree();
 					else if (ppt.rememberTree) this.logFilter();
 					if (panel.search.txt) lib.upd_search = true;
@@ -358,8 +380,10 @@ class Library {
 					}
 					if (ppt.searchSend == 2 && panel.search.txt.length) pop.load({ handleList: panel.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 					pop.checkAutoHeight();
+					return true;
 				}
 			}
+			return false;
 		})
 		// Regorxxx ->
 	}
@@ -925,6 +949,9 @@ class Library {
 				const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
 					? this.processCustomTf(panel.search.txt) 
 					: panel.search.txt;
+				this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+					? searchText
+					: 'N/A'
 				panel.list = isRegExp
 					? $.applyRegExp(searchText, this.list, tags)
 					: fb.GetQueryItems(
@@ -951,6 +978,7 @@ class Library {
 			this.node = this.searchNode;
 			this.upd_search = false;
 		} else if (!panel.search.txt) {
+			this.searchQueryID = 'N/A'; // Regorxxx <- Don't update search if possible ->
 			panel.list = this.list;
 			this.node = this.libNode;
 			this.searchNode = [];
@@ -1194,6 +1222,9 @@ class Library {
 						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
 							? this.processCustomTf(panel.search.txt) 
 							: panel.search.txt;
+						this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? searchText
+							: 'N/A'
 						newSearchItems = isRegExp
 							? $.applyRegExp(searchText, handleList, tags)
 							: fb.GetQueryItems(
@@ -1231,6 +1262,9 @@ class Library {
 						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
 							? this.processCustomTf(panel.search.txt) 
 							: panel.search.txt;
+						this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? searchText
+							: 'N/A'
 						handlesInSearch = isRegExp
 							? $.applyRegExp(searchText, removeSearchItems, tags)
 							: fb.GetQueryItems(
@@ -1257,7 +1291,7 @@ class Library {
 						if (ui.w < 1 || !window.IsVisible) this.upd = 2;
 						else this.lib_update();
 					}
-				}
+				} else { this.searchQueryID = 'N/A'; } // Regorxxx <- Don't update search if possible ->
 				break;
 			}
 			case 2:

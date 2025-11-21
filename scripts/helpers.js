@@ -103,7 +103,7 @@ class Helpers {
 	}
 
 	getDpi() {
-		let dpi = 120;
+		let dpi = typeof window.DPI !== 'number' ? window.DPI : 120; // Regorxxx <- Use exposed SMP dpi ->
 		try {
 			dpi = WshShell.RegRead('HKCU\\Control Panel\\Desktop\\WindowMetrics\\AppliedDPI');
 		} catch (e) {}

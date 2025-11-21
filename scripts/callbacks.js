@@ -54,7 +54,7 @@ addEventListener('on_get_album_art_done', (handle, art_id, image, image_path) =>
 });
 
 addEventListener('on_item_focus_change', (playlistIndex) => {
-	lib.checkFilter();
+	lib.checkFilter('selection'); // Regorxxx <- Improve filter checking based on events. Search text also triggers updates to filtering ->
 	if (!pop.setFocus) {
 		if (ppt.followPlaylistFocus && playlistIndex == $.pl_active && !ppt.libSource) {
 			setSelection(fb.GetFocusItem());
@@ -465,7 +465,7 @@ addEventListener('on_paint', (gr) => {
 });
 
 addEventListener('on_playback_new_track', (handle) => {
-	lib.checkFilter();
+	lib.checkFilter('playback'); // Regorxxx <- Improve filter checking based on events. Search text also triggers updates to filtering ->
 	pop.getNowplaying(handle);
 	if (!ppt.recItemImage || ppt.libSource != 2) ui.on_playback_new_track(handle);
 });

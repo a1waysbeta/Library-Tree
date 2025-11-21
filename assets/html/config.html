@@ -384,7 +384,7 @@
 					<div id="searchEnter" style="padding-top:0.5em;"></div>	
 					<div style="display:inline-block; padding-top:0.7em;"><a id="searcg_help" href="#" onclick="showHelp('search_text');return false;">Search help</a></div>
 					<div id="search_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
-						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a href="https://regexr.com/" target=\"_blank\>RegExp reference</a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup</div>
+						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a href="https://regexr.com/" target=\"_blank\>RegExp reference</a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup<br><br><br>Queries usage:<br><br>&#x2022; Supports $nowplaying{}, $nowplayingorselected{} and $selected{}<br>&#x2022; If auto-refresh is disabled, search results will not be updated when using above syntax on playback/selection changes<br>&#x2022; Auto-refresh may have a performance impact with $selected{} (or similar) on selection changes, use filters instead whenever possible</div>
 					</div>
 				</div>
 			</div>
@@ -928,7 +928,7 @@
 				var loggingLabels = ['Library loading profiling']; // Regorxxx <- Library profiling ->
 				var scrollLabels = ['Use windows metrics', 'Smooth scroll', 'Touch control'];
 				var selectionLabels = ['Full line', 'Play on enter or send from menu'];
-				var searchLabels = ['Search only', 'Send results to playlist on enter','Auto-send results to playlist', 'Require enter to search'];
+				var searchLabels = ['Search only', 'Send results to playlist on enter','Auto-send results to playlist', 'Require enter to search', 'Auto-refresh when using $selected{}, ...'];
 				var showLabels = ['Row stripes', 'Nowplaying in highlight', 'Nowplaying sidemarker (tree / text)', 'Nowplaying indicator (tree / text)', 'Album art options', 'Facet view', 'Tracks (tree)'];				
 				// Regorxxx <- New statistics
 				var statisticsLabels = ['Rating', 'Popularity', 'Date', 'Custom-1 (sum)', 'Custom-2 (sum)', 'Custom-3 (sum)', 'Custom-1 (avg)', 'Custom-2 (avg)', 'Custom-3 (avg)', '', 'Auto show labels', 'Auto show tooltips'];
@@ -1011,7 +1011,7 @@
 				// Regorxxx ->
 				var box = {
 					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'activateOnChange', 'selectAdded'], // Regorxxx <- Send to playlist & select ->
-					search: ['searchEnter'], // Regorxxx <- New search tab ->
+					search: ['searchEnter', 'searchRefreshTf'], // Regorxxx <- New search tab ->
 					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'recItemImage', 'inlineRoot', 'showSource', 'nodeLines', 'colLineDark', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'nowPlayingSidemarker', 'nowPlayingIndicator', 'albumArtOptionsShow', 'facetView'], // Regorxxx <- New statistics tab ->
 					statistics: ['labelStatistics', 'tooltipStatistics', 'showTracks', 'countsRight'], // Regorxxx <- New statistics tab ->
 					albumArt: ['albumArtFlipLabels', 'albumArtDiskCache', 'albumArtPreLoad', 'albumArtFlowMode', 'albumArtDropShadow', 'artTreeSameView', 'albumArtLetter', 'albumArtYearAuto'],
@@ -1418,6 +1418,7 @@
 					window.searchSend_dropdown.innerHTML = searchLabels[ppt['searchSend_internal'].value];
 					for (i = 0; i < 3; i++) {window.searchSend.insertAdjacentHTML('beforeend', '<a onclick="setSearchSend(' + i + ');">'+searchLabels[i]+'</a>');}
 					i = 3; window.searchEnter.insertAdjacentHTML('beforeend', '<div><input id="search_checkbox'+i+'" name="search_checkbox" style="'+cbox+'" type="checkbox" /><label for="search_checkbox'+i+'" class="checkbox_label">'+searchLabels[i]+'</label></div>');
+					i = 4; window.searchEnter.insertAdjacentHTML('beforeend', '<div><input id="search_checkbox'+i+'" name="search_checkbox" style="'+cbox+'" type="checkbox" /><label for="search_checkbox'+i+'" class="checkbox_label">'+searchLabels[i]+'</label></div>');
 					
 					window.searchDragValOpDefault_dropdown.innerHTML = dragValOpDefaultLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragValOp_internal'].value.toUpperCase())];
 					for (i = 0; i < 3; i++) {window.searchDragValOpDefault.insertAdjacentHTML('beforeend', '<a onclick="setDragValOpDefault(' + i + ');">'+dragValOpDefaultLabels[i]+'</a>');}
