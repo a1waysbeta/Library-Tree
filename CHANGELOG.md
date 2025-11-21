@@ -1,3 +1,15 @@
+# v2.4.0.mod.4
+### Added
+	- Added separators support at views menu. To insert one, a view named 'separator' must be created (the pattern must be anything but empty, like a '.').
+	- Added tips about separators at options panel.
+	- Added 'Nowplaying Similar' filter which can be used like Spotify similar artists recommendations (*). Tries to match at least a genre, an style, within a range of 10 years and not the same artist. (*) For ex. with 'Album art/Artist' in flow mode.
+	- Added 'Nowplaying Decade' filter which displays results within a range of 10 years.
+### Changed
+	- Revamped 'Played often' filter to take into consideration play rate since a track was added and being played on last year. Previously it was just a simple check of playcount over 9 times (which was not adjusted to user listen habits).
+	- Revamped 'Nowplaying Genre' and 'Nowplaying Style' filter to ommit other matches with live, instrumental, ... tags. It also ommits currently playing artist, so it shows only other similar artists.
+
+<br />
+
 # v2.4.0.mod.3
 ### Added
 	- Added separators support at filter menu. To insert one, a filter named 'separator' must be created (the query must be anything but empty, like a '.').

@@ -193,13 +193,25 @@ class MenuItems {
 		const mainMenu = () => this.show_context ? 'Settings' : 'baseMenu';
 
 		menu.newMenu({menuName: 'Views', appendTo: mainMenu(), separator: true});
-		panel.menu.forEach((v, i) => menu.newItem({
-			menuName: 'Views',
-			str: v,
-			func: () => this.setView(i),
-			checkRadio: i == ppt.viewBy,
-			separator: i > panel.menu.length - 3
-		}));
+		// Regorxxx <- Allow separators on views
+		panel.menu.forEach((v, i) => {
+			const bSeparator = (v || '').toLowerCase() === 'separator';
+			if (bSeparator) {
+				menu.newItem({
+					menuName: 'Views',
+					separator: true
+				});
+			} else {
+				menu.newItem({
+					menuName: 'Views',
+					str: v,
+					func: () => this.setView(i),
+					checkRadio: i == ppt.viewBy,
+					separator: i > panel.menu.length - 3
+				})
+			}
+		});
+		// Regorxxx ->
 		
 		const d = {}
 		this.getSortData(d);
