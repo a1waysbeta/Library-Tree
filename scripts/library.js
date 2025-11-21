@@ -98,20 +98,23 @@ class Library {
 					let newSearchItems = new FbMetadbHandleList();
 					this.validSearch = true;
 					try {
-						// Regorxxx <- RegExp library search
+						// Regorxxx <- RegExp library search. Support for custom TF expression
 						const isRegExp = search.isSearchRegExp();
 						const tags = isRegExp
 							? panel.folderView 
 								? ['%PATH%']
 								: $.getTagsFromTf(panel.view)
 							: null;
+						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? this.processCustomTf(panel.search.txt) 
+							: panel.search.txt;
 						newSearchItems = isRegExp
-							? $.applyRegExp(panel.search.txt, handleList, tags)
+							? $.applyRegExp(searchText, handleList, tags)
 							: fb.GetQueryItems(
 								handleList, 
 								!this.filterQuery.includes('$searchtext') 
-									? panel.search.txt 
-									: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+									? searchText 
+									: this.filterQuery.replace(/\$searchtext/g, searchText)
 							);
 						// Regorxxx ->
 					} catch (e) {
@@ -162,20 +165,23 @@ class Library {
 					let newSearchItems = new FbMetadbHandleList();
 					this.validSearch = true;
 					try {
-						// Regorxxx <- RegExp library search
+						// Regorxxx <- RegExp library search. Support for custom TF expression
 						const isRegExp = search.isSearchRegExp();
 						const tags = isRegExp
 							? panel.folderView 
 								? ['%PATH%']
 								: $.getTagsFromTf(panel.view)
 							: null;
+						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? this.processCustomTf(panel.search.txt) 
+							: panel.search.txt;
 						newSearchItems = isRegExp
-							? $.applyRegExp(panel.search.txt, handleList, tags)
+							? $.applyRegExp(searchText, handleList, tags)
 							: fb.GetQueryItems(
 								handleList, 
 								!this.filterQuery.includes('$searchtext') 
-									? panel.search.txt 
-									: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+									? searchText
+									: this.filterQuery.replace(/\$searchtext/g, searchText)
 							);
 						// Regorxxx ->
 					} catch (e) {
@@ -909,23 +915,26 @@ class Library {
 			this.validSearch = true;
 			this.none = '';
 			try {
-				// Regorxxx <- RegExp library search
+				// Regorxxx <- RegExp library search. Support for custom TF expression
 				const isRegExp = search.isSearchRegExp();
 				const tags = isRegExp
 					? panel.folderView 
 						? ['%PATH%']
 						: $.getTagsFromTf(panel.view)
 					: null;
+				const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+					? this.processCustomTf(panel.search.txt) 
+					: panel.search.txt;
 				panel.list = isRegExp
-					? $.applyRegExp(panel.search.txt, this.list, tags)
+					? $.applyRegExp(searchText, this.list, tags)
 					: fb.GetQueryItems(
-						this.getSearchList(panel.search.txt) || this.list, 
+						this.getSearchList(searchText) || this.list, 
 						!this.filterQuery.includes('$searchtext') 
-							? panel.search.txt 
-							: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+							? searchText
+							: this.filterQuery.replace(/\$searchtext/g, searchText)
 					);
+				this.searchCache[searchText] = panel.list;
 				// Regorxxx ->
-				this.searchCache[panel.search.txt] = panel.list;
 			} catch (e) {
 				this.list = this.list.Clone();
 				panel.list.RemoveAll();
@@ -1175,20 +1184,23 @@ class Library {
 					// addns
 					this.validSearch = true;
 					try {
-						// Regorxxx <- RegExp library search
+						// Regorxxx <- RegExp library search. Support for custom TF expression
 						const isRegExp = search.isSearchRegExp();
 						const tags = isRegExp
 							? panel.folderView 
 								? ['%PATH%']
 								: $.getTagsFromTf(panel.view)
 							: null;
+						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? this.processCustomTf(panel.search.txt) 
+							: panel.search.txt;
 						newSearchItems = isRegExp
-							? $.applyRegExp(panel.search.txt, handleList, tags)
+							? $.applyRegExp(searchText, handleList, tags)
 							: fb.GetQueryItems(
 								handleList,
 								!this.filterQuery.includes('$searchtext') 
-									? panel.search.txt 
-									: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+									? searchText
+									: this.filterQuery.replace(/\$searchtext/g, searchText)
 							);
 						// Regorxxx ->
 					} catch (e) {
@@ -1209,20 +1221,23 @@ class Library {
 					removeSearchItems.MakeIntersection(origSearch); // handles in origSearch (present in any filter)	
 					this.validSearch = true;
 					try {
-						// Regorxxx <- RegExp library search
+						// Regorxxx <- RegExp library search. Support for custom TF expression
 						const isRegExp = search.isSearchRegExp();
 						const tags = isRegExp
 							? panel.folderView 
 								? ['%PATH%']
 								: $.getTagsFromTf(panel.view)
 							: null;
+						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? this.processCustomTf(panel.search.txt) 
+							: panel.search.txt;
 						handlesInSearch = isRegExp
-							? $.applyRegExp(panel.search.txt, removeSearchItems, tags)
+							? $.applyRegExp(searchText, removeSearchItems, tags)
 							: fb.GetQueryItems(
 								removeSearchItems, 
 								!this.filterQuery.includes('$searchtext') 
-									? panel.search.txt 
-									: this.filterQuery.replace(/\$searchtext/g, panel.search.txt)
+									? searchText 
+									: this.filterQuery.replace(/\$searchtext/g, searchText)
 							);
 						// Regorxxx ->
 					} catch (e) {

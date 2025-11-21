@@ -868,7 +868,7 @@ class MenuItems {
 				panel.set('view', ppt.viewBy);
 			}
 			panel.treePaint();
-		} else panel.open('display');
+		} else panel.open('statistics'); // Regorxxx <- New statistics ->
 	}
 
 	setTreeState(i) {

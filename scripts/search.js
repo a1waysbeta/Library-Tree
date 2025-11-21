@@ -134,7 +134,8 @@ class Search {
 		}
 		// Regorxxx ->
 
-		this.logHistory = $.debounce(() => {
+		// Regorxxx <- Fix search history on enter
+		this.logHistoryAdd = () => {
 			let item = -1;
 			const itemPresent = this.menu.some((v, i) => {
 				item = i;
@@ -152,7 +153,14 @@ class Search {
 			}
 			this.menu.sort((a, b) => pop.collator.compare(a.search, b.search));
 			ppt.searchHistory = JSON.stringify(this.menu);
-		}, 3000);
+		};
+
+		this.logHistoryAddDelayed = $.debounce(this.logHistoryAdd, 3000);
+
+		this.logHistory = (bImmediate) => {
+			return bImmediate ? this.logHistoryAdd() : this.logHistoryAddDelayed();
+		};
+		// Regorxxx ->
 	}
 
 	// Methods
@@ -324,7 +332,7 @@ class Search {
 					if (panel.search.txt.length > 2) window.NotifyOthers(window.Name, !lib.list.Count ? lib.list : panel.list);
 					else if (!panel.search.txt.length) pop.notifySelection();
 					lib.search.cancel();
-					this.logHistory();
+					this.logHistory(true); // Regorxxx <- Fix search history on enter ->
 					searchDone = true;
 				}
 				if (ppt.searchSend == 1 || ppt.searchEnter && ppt.searchSend == 2) pop.load({ handleList: panel.list, bAddToPls: false, bAutoPlay: pop.autoPlay.send, bUseDefaultPls: !ppt.sendToCur, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
@@ -637,8 +645,9 @@ class Find {
 		let advance = false;
 		if (panel.pos >= 0 && panel.pos < pop.tree.length) {
 			const char = pop.tree[panel.pos].name.replace(/@!#.*?@!#/g, '').charAt(0).toLowerCase();
-			// Regorxxx <- Fixed quick-search on same letter
-			if (pop.tree[panel.pos].sel && char == text && this.prevChar == text) { advance = true; }
+			// Regorxxx <- Fixed quick-search on same letter. Fix quick-searck for non ascii first char, greek and cyrilic
+			const normChar =  $.asciify($.transliterate(char));
+			if (pop.tree[panel.pos].sel && (char === text || normChar === text) && this.prevChar == text) { advance = true; }
 			this.prevChar = text;
 			timer.clear(timer.jsearch3);
 			timer.jsearch3.id = setTimeout(() => {
@@ -658,7 +667,7 @@ class Find {
 					pop.tree.forEach((v, i) => {
 						if (!v.root) {
 							const nm = v.name.replace(/@!#.*?@!#/g, '');
-							init = nm.charAt().toLowerCase();
+							init = $.asciify($.transliterate(nm.charAt().toLowerCase())); // Regorxxx <- Fix quick-searck for non ascii first char, greek and cyrilic ->
 							if (cur != init && !this.initials[init]) {
 								this.initials[init] = [i];
 								cur = init;
@@ -732,7 +741,7 @@ class Find {
 				timer.clear(timer.jsearch1);
 				timer.jsearch1.id = setTimeout(() => {
 					pop.tree.some((v, i) => {
-						const name = v.name.replace(/@!#.*?@!#/g, '');
+						const name = $.asciify($.transliterate(v.name.replace(/@!#.*?@!#/g, ''))); // Regorxxx <- Fix quick-searck for non ascii first char, greek and cyrilic ->
 						if (name != panel.rootName && name.substring(0, this.jSearch.length).toLowerCase() == this.jSearch.toLowerCase()) {
 							found = true;
 							pos = i;

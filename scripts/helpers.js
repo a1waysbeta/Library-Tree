@@ -531,6 +531,18 @@ class Helpers {
 		return query;
 	}
 	// Regorxxx ->
+	// Regorxxx <- Fix quick-searck for non ascii first char, greek and cyrilic. Mimics $ascii() Title Format function
+	asciify(value) {
+		return (typeof value === 'string' ? value : String(value)).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\u0142/g, 'l');
+	}
+
+	transliterate(value) {
+		const greek = { 'Α': 'A', 'Χ': 'C', 'Δ': 'D', 'Ε': 'E', 'Φ': 'F', 'Γ': 'G', 'Η': 'h', 'Ι': 'I', 'Κ': 'K', 'Λ': 'L', 'Μ': 'M', 'Ν': 'N', 'Ο': 'O', 'Ω': 'o', 'Π': 'P', 'Ρ': 'R', 'Σ': 'S', 'Τ': 'T', 'Υ': 'U', 'Ξ': 'X', 'Ζ': 'Z', 'α': 'a', 'β': 'b', 'χ': 'c', 'δ': 'd', 'ε': 'e', 'φ': 'f', 'γ': 'g', 'η': 'h', 'ι': 'i', 'κ': 'k', 'λ': 'l', 'μ': 'm', 'ν': 'n', 'ο': 'o', 'ω': 'o', 'π': 'p', 'ρ': 'r', 'σ': 's', 'τ': 't', 'θ': 't', 'υ': 'u', 'ξ': 'x', 'ζ': 'z' };
+		const russian = { "Ё": "YO", "Й": "I", "Ц": "TS", "У": "U", "К": "K", "Е": "E", "Н": "N", "Г": "G", "Ш": "SH", "Щ": "SCH", "З": "Z", "Х": "H", "Ъ": "'", "ё": "yo", "й": "i", "ц": "ts", "у": "u", "к": "k", "е": "e", "н": "n", "г": "g", "ш": "sh", "щ": "sch", "з": "z", "х": "h", "ъ": "'", "Ф": "F", "Ы": "I", "В": "V", "А": "A", "П": "P", "Р": "R", "О": "O", "Л": "L", "Д": "D", "Ж": "ZH", "Э": "E", "ф": "f", "ы": "i", "в": "v", "а": "a", "п": "p", "р": "r", "о": "o", "л": "l", "д": "d", "ж": "zh", "э": "e", "Я": "Ya", "Ч": "CH", "С": "S", "М": "M", "И": "I", "Т": "T", "Ь": "'", "Б": "B", "Ю": "YU", "я": "ya", "ч": "ch", "с": "s", "м": "m", "и": "i", "т": "t", "ь": "'", "б": "b", "ю": "yu" };
+		return value.replace(/./gui, a => greek[a] || russian[a] || a);
+	}
+
+	// Regorxxx ->
 }
 
 const $ = new Helpers;

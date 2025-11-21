@@ -135,6 +135,7 @@
 			 <!-- Regorxxx New Tabs. New statistics -->
 			<a onclick="openPage('search', this, 'blue')" id="searchCfg">Search</a>
 			<a onclick="openPage('display', this, 'red')" id="displayCfg">Display</a>
+			<a onclick="openPage('statistics', this, 'red')" id="statisticsCfg">Statistics</a>
 			<a onclick="openPage('albumArt', this, 'green')" id="albumArtCfg">Album Art</a>
 			<a onclick="openPage('custom', this, 'orange')" id="customCfg">Custom</a>
 			<a onclick="openPage('advanced', this, 'blue')" id="advancedCfg">Advanced</a>
@@ -151,11 +152,11 @@
 				<div class="info1">Selected items will be displayed in the menu. A separator may be added by setting name to 'separator' and pattern to any non-empty string.</div>
 				<p "><a href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target=\"_blank\">Title format reference</a></p>
 				<!-- Regorxxx Text cleanup -->
-				<button id="syntax_button" name="syntax_button" style="margin-left:0px;" type="button">Show New Facets, Multiple Panel Mode & Extended Syntax Help</button><div id="syntax_help" style="display: none;">
+				<button id="syntax_button" name="syntax_button" style="margin-left:0px;" type="button">Show Multi-Panel Mode (Facets) & Extended Syntax Help</button><div id="syntax_help" style="display: none;">
 				<!-- Regorxxx -->
-				<div class="info5"><b>New Facets / Multiple Panel Mode </b></div>
-				<div class="info5">Each panel can contain either a tree, album art or facet view. Panels needn't be contiguous. The example describes how to set-up New Facets with 3 facet panels: Genre, Artist & Album.</div>
-				<div class="info5"><i>Set up</i><ul><li>Insert 3 Spider Monkey/JSplitter panels into the layout and add library tree to each</li><li>For each panel, use quicksetup and select 'Facet'</li><li>Set the view of the first panel to Genre, the second to Artist and the third to Album*</li><li>For each panel press shift + windows key, choose configure & on the scripts tab set the panel name of the first panel to Genre, the second to Artist and the third to Album</li><li><input class="input99" value="For the SECOND panel set menu > source to panel, then choose select panel source and enter Genre (it's case sensitive)"/></li><li><input class="input99" value="For the THIRD panel set the source to panel, then choose select panel source and enter Genre|Artist (it's case sensitive)"/></li></ul><i>Options</i><ul><li>Optionally change the second panel to show albumart if preferred and set the type to artist & may be circular style images</li><li>Optionally change the third panel to show albumart if preferred and set the type to front</li><li>Adjust albumart > group level if required</li><li>Optionally hide the top bar search, filter button & settings button for the second and third panels</li><li>It's recommended to leave enabled: remember state on exit and before search; filters auto-manage scroll</li></ul><br>* The default album view works best as a tree view; for a facet view, the following is better:<input class="input99" value="View by Albums // $if2(%album%,εXtra)|%album artist%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><br><br><b><i>Extra view patterns, compatible with both facet and tree styles</i></b><br><br><input class="input99" value="Track // [%tracknumber%. ]%title%"/><input class="input99" value="Title // %title%"/><input class="input99" value="Folder // $directory(%path%)"/><input class="input99" value="Filename // %filename%"/><input class="input99" value="Filename.ext // %filename_ext%"/><input class="input99" value="Artist Initial // $cut(%artist%,1)|%artist%|$if2(%album%,εXtra)|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><input class="input99" value="Album Artist Initial // $cut(%album artist%,1)|%album artist%|$if2(%album%,εXtra)|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><input class="input99" value="Year - Album // [$year(%date%) - ]$if2(%album%,εXtra)|%album artist%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><br><br><b><i>Sorting</i></b><br>Facets works by using the top level of normal tree views. The remainder of the view is used for sorting, which should be sufficient. If extra sorting is required, a playlist sort can be used, for ex:<br><br><input class="input99" value="%album artist%  $if2(%album%,εXtra)  [[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><input class="input99" value="%artist%  $if2(%album%,εXtra)  [[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"></div>
+				<div class="info5"><b>Multi-Panel Mode (facets)</b></div>
+				<div class="info5">Each panel can contain either a tree, album art or facet view and don't need to be contiguous. Example to set-up Facets with 3-panel layout: Genre|Artist|Album.</div>
+				<div class="info5"><i>Set up</i><ul><li>Insert 3 Spider Monkey/JSplitter panels into the layout and add library tree to each</li><li>For each panel, use quicksetup and select 'Facet'</li><li>Set the view of the first panel to Genre, the second to Artist and the third to Album*</li><li>For each panel press Shift + Windows key, choose 'Configure panel...'.At 'Script' tab set the panel name of the first panel to 'Genre', second to 'Artist' and  third to 'Album'</li><li>For the second panel set Settings > Source to Panel, then choose select panel source and enter 'Genre' (it's case sensitive)</li><li>For the third panel set the source to panel, then choose select panel source and enter 'Artist' (it's case sensitive)"</li><li>Check 'Advanced' tab for more info about chained source notifications. If using legacy behaviour, then third panel should use 'Genre|Artist' instead</li></ul><i>Options</i><ul><li>Optionally change the second panel at Context menu > Show album art if preferred and set the type to artist & may be circular style images</li><li>Optionally change the third panel at Context menu > Show album art if preferred and set the type to front</li><li>Adjust Settings > Album art > Group level if required</li><li>Optionally hide the top bar search, filter button & settings button for the second and third panels</li><li>It's recommended to leave enabled: remember state on exit and before search; filters auto-manage scroll</li></ul><br>* The default album view works best as a tree view; for a facet view, the following is better:<input class="input99" value="View by Albums // $if2(%album%,εXtra)|%album artist%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><br><br><b><i>Extra view patterns, compatible with both facet and tree styles</i></b><br><br><input class="input99" value="Track // [%tracknumber%. ]%title%"/><input class="input99" value="Title // %title%"/><input class="input99" value="Folder // $directory(%path%)"/><input class="input99" value="Filename // %filename%"/><input class="input99" value="Filename.ext // %filename_ext%"/><input class="input99" value="Artist Initial // $cut(%artist%,1)|%artist%|$if2(%album%,εXtra)|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><input class="input99" value="Album Artist Initial // $cut(%album artist%,1)|%album artist%|$if2(%album%,εXtra)|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><input class="input99" value="Year - Album // [$year(%date%) - ]$if2(%album%,εXtra)|%album artist%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><br><br><b><i>Sorting</i></b><br>Facets works by using the top level of normal tree views. The remainder of the view is used for sorting, which should be sufficient. If extra sorting is required, a playlist sort can be used, for ex:<br><br><input class="input99" value="%album artist%  $if2(%album%,εXtra)  [[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"/><input class="input99" value="%artist%  $if2(%album%,εXtra)  [[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"></div>
 				<div class="info5"><b>Extended syntax</b></div>
 				<table id="syntax" class="table98">
 					<br>
@@ -292,7 +293,7 @@
 					<div id="selectAddedToPls"></div>
 					<div style="display:inline-block; padding-top:0.7em;"><a id="mode_help" href="#" onclick="showHelp('plsSel_text');return false;">Playlist selection help</a></div>
 					<div id="plsSel_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
-						<div class="info4">By default the selection is sent and items are selected at playlist (other panels or components tracking selection changes are updated automatically).<br><br>Disable it to restore legacy behaviour where items were sent without actually selecting them.</div>
+						<div class="info4">By default the selection is sent and items are selected at playlist (other panels or components tracking selection changes are updated automatically)<br><br>Disable it to restore legacy behaviour where items were sent without actually selecting them</div>
 					</div>
 					<!-- Regorxxx -->
 					<!-- Regorxxx Top tracks -->
@@ -301,7 +302,7 @@
 					<div id="topTracksSorting"></div>
 					<div style="display:inline-block; padding-top:0.7em;"><a id="mode_help" href="#" onclick="showHelp('topTracks_text');return false;">Top tracks help</a></div>
 					<div id="topTracks_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
-						<div class="info4">Uses an additional query filter and sorting for current selection on top of the current view/filter.<br><br>&#x2022; Found at the contextual menu.<br>&#x2022; Target playlist follows global settings above.<br>&#x2022; Supports $nowplaying{}, $selected{}, ...<br>&#x2022; Use '$rand()' as sorting to shuffle.<br>&#x2022; Leave sorting empty to follow panel sorting.</div>
+						<div class="info4">Uses an additional query filter and sorting for current selection on top of the current view/filter.<br><br>&#x2022; Found at the Context menu<br>&#x2022; Target playlist follows global settings above<br>&#x2022; Supports $nowplaying{}, $selected{}, ...<br>&#x2022; Use '$rand()' as sorting to shuffle<br>&#x2022; Leave sorting empty to follow panel sorting</div>
 					</div>
 					<!-- Regorxxx -->
 				</div>
@@ -371,7 +372,7 @@
 					<div id="dragTags"></div>
 					<div style="display:inline-block; padding-top:0.7em;"><a id="mode_help" href="#" onclick="showHelp('drag_text');return false;">Drag n' drop help</a></div>
 					<div id="drag_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
-						<div class="info4">&#x2022; Default is used without any key pressed<br><br>&#x2022; Behaviour is affected by Ctrl, Alt and Shift keys<br><br>&#x2022; Multi-value tag operator is used between different values on same tag:<br>&emsp; 'ARTIST IS A OR ARTIST IS B'<br><br>&#x2022; Inter-tag operator is used between different tags:<br>&emsp; 'ARTIST IS Nina Simone OR GENRE IS Rock'<br><br>&#x2022; Inter-track operator is used between queries for different tracks (on multiple selection)<br><br>&#x2022; Inter-query operator is used if there is already an expression at the search box, to join or replace them</div>
+						<div class="info4">Usage:<br><br>&#x2022; Tracks can be drag n' dropped to search box<br>&#x2022; Search expression is adjusted to View mode<br>&#x2022; View by Folder structure: filenames (RegExp)<br>&#x2022; Any other View: tags (Queries)<br>&#x2022; Tags used and how they are joined can be customized<br><br>Keyboard modifiers:<br><br>&#x2022; Default is used without any key pressed<br>&#x2022; Behaviour is affected by Ctrl, Alt and Shift keys<br>&#x2022; Multi-value tag operator is used between different values on same tag:<br>&emsp; 'ARTIST IS A OR ARTIST IS B'<br><br>&#x2022; Inter-tag operator is used between different tags:<br>&emsp; 'ARTIST IS Nina Simone OR GENRE IS Rock'<br><br>&#x2022; Inter-track operator is used between queries for different tracks (on multiple selection)<br><br>&#x2022; Inter-query operator is used if there is already an expression at the search box, to join or replace them</div>
 					</div>
 				</div>
 
@@ -381,6 +382,10 @@
 					<span id="searchSend" class="dropdown-content"></span>
 					</span>
 					<div id="searchEnter" style="padding-top:0.5em;"></div>	
+					<div style="display:inline-block; padding-top:0.7em;"><a id="searcg_help" href="#" onclick="showHelp('search_text');return false;">Search help</a></div>
+					<div id="search_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
+						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a href="https://regexr.com/" target=\"_blank\>RegExp reference</a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -400,10 +405,6 @@
 					<div id="themeStyle" style="padding-top:0.5em;"></div>
 					<div id="coverFormat"></div>
 					<div id="panelStyle"></div>
-					<div class="div_text2">Statistics</div>
-					<div id="labelStatistics"></div>
-					<div class="info5"><i>Title format for some can be set below</i></div>
-					<div id="statistics2"></div>
 				</div>				
 
 				<!-- Regorxxx New Statistics. Adjust column width -->
@@ -418,11 +419,6 @@
 					<span id="node" class="dropdown-content"></span>
 					</span>
 					<div id="nodeLines" style="padding-top:0.5em;"></div>
-					<div class="div_text2">Item counts</div>
-					<span class="dropdown"><a id="itemCounts_dropdown" class="dropbtn" href="#" onclick="toggle('itemCounts');"></a>
-					<span id="itemCounts" class="dropdown-content"></span>
-					</span>
-					<div id="countsRight" style="padding-top:0.5em;"></div>
 					<div class="div_text2">Line style</div>
 					<div id="lines"></div>
 				</div>
@@ -452,10 +448,43 @@
 			</div>
 			<!-- Regorxxx -->
 		</div>
+
+		<!-- Regorxxx New statistics tab -->
+		<div id="statistics" class="tabcontent">
+			<div class="row">
+				<div class="column50">		
+					<div class="div_text2">Title format</div>
+					<div class="info5"><i>Title format for some can be set below</i></div>
+					<div id="statisticsTf"></div>
+					<div class="div_text2">Custom labels</div>
+					<div class="info5"><i>Custom-X slots names are shown at the menus. Separated by |</i></div>
+					<div id="statisticsNames"></div>
+					<div style="display:inline-block; padding-top:0.7em;"><a id="stats_help" href="#" onclick="showHelp('stats_text');return false;">Statistics help</a></div>
+					<div id="stats_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
+						<div class="info4">There are some hardcoded statistics (like duration, ...), partially customizable ones (rating, ...) and fully customizable slots. The latter can use your own TF expressions and names, which will be shown at the menu entries and labels used by the panel.<br><br>&#x2022; Average: for every node, averaged value from all their children<br>&#x2022; Sum: for every node, sum of values from all their children<br>&#x2022; Decimals setting applies to rating, popularity and custom slots</div>
+					</div>
+				</div>
+
+				<div class="column50">
+					<div class="div_text2">Display</div>
+					<div id="labelStatistics"></div>
+					<div class="div_text2">Item counts</div>
+					<span class="dropdown"><a id="itemCounts_dropdown" class="dropbtn" href="#" onclick="toggle('itemCounts');"></a>
+					<span id="itemCounts" class="dropdown-content"></span>
+					</span>
+					<div id="countsRight" style="padding-top:0.5em;"></div>
+					<div style="display:inline-block; padding-top:0.7em;"><a id="counts_help" href="#" onclick="showHelp('counts_text');return false;">Item counts help</a></div>
+					<div id="counts_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
+						<div class="info4">The first available entry at Settings > Statistics will follow the option chosen, showing either no values, total number of track or items at every node.<br><br>Alignment is only available while using this mode, greyed out for any other.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Regorxxx -->
+
 		<!-- Regorxxx Code cleanup -->
 		<div id="albumArt" class="tabcontent">
 			<div class="row">
-
 				<div class="column25">
 					<div class="div_text1">Labels</div>
 					<div id="labels"></div>
@@ -564,6 +593,14 @@
 					<div class="div_text1">Scrollbar</div>
 					<div id="scrollbar"></div>
 					<div class="info5" style="padding-right:20%;"><i>Select custom scrollbar icon in 'Behaviour Tab' under 'Scroll: Arrows' (N/A if windows scrollbar set). Set custom node icon in 'Display Tab' under 'Node style'. Ensure icons are supported by fonts.</i></div>
+					<!-- Regorxxx Don't create cache playlists if possible. Chained facets updates -->
+					<div class="div_text1">Multi-panel mode (facets)</div>
+					<div id="facets"></div>
+					<div style="display:inline-block; padding-top:0.7em;"><a id="facets_help" href="#" onclick="showHelp('facets_text');return false;">Multi-panel mode help</a></div>
+					<div id="facets_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
+						<div class="info4">Chained source notifications:<br><br>&#x2022; Facets mode is enabled when setting source to panel. More info at Views tab</a><br>&#x2022; Every panel will send updates to other panels when being refreshed<br>&#x2022; No need to set multiple sources, only the most immediate parent's name<br>&#x2022; The entire chain will be updated if needed<br>&#x2022; Disable the setting to roll back to legacy behaviour<br>&#x2022; For example: Genre|Artist|Album 3-panel layout<br>  'Album' panel uses 'Artist' as source, and 'Artist' panel uses 'Genre'<br>  Any change on 'Genre' would immediately refresh the other 2 child panels<br>  If disabled (legacy behaviour), then third panel should use 'Genre|Artist' instead<br><br><br>Multiple sources:<br><br>&#x2022; Multiple sources are only needed if they are fully independent<br>&#x2022; Along chained source notifications, sources are merged and deduplicated<br>&#x2022; Can merge selections from total different views/filters (for ex. artist and genres)<br>&#x2022; Destination panel's sorting and display don't follow sources' settings<br>&#x2022; If disabled (legacy behaviour), the last one selected on UI is used instead<br>&#x2022; For example: Artist1|Artist2|Album 3-panel layout<br>  'Album' uses 'Artist1|Artist2' as sources<br>  Selection from both 'Artist' panels are merged and used on 'Album' panel<br>  Legacy behaviour uses either 'Artist1' or 'Artist2', last one selected on UI, not both<br><br><br>Internal cache:<br><br>&#x2022; To use a panel as source, its selection must be stored somewhere<br>&#x2022; This can be done using playlists (legacy behaviour) or internal caching<br>&#x2022; A dummy playlist is required per panel with legacy behaviour<br>&#x2022; Internal caching requires methods available only at latest JSplitter and SMP versions<br>&#x2022; if not supported, it fallbacks to legacy behaviour instead<br>&#x2022; Internal caching is preferable to avoid filling your playlist list with dummy playlists</div>
+					</div>
+					<!-- Regorxxx -->
 				</div>
 					
 				<div class="column50">
@@ -579,6 +616,10 @@
 					<div id="mode"></div>
 					<div id="modeInput"></div>
 					<div class="info5"><i>Requires a panel above or below library tree. N/A with panel stack splitter or if root node displayed in line.</i></div>
+					<!-- Regorxxx Library profiling -->
+					<div class="div_text1">Logging</div>
+					<div id="logging"></div>
+					<!-- Regorxxx -->
 				</div>
 			</div>
 		</div>	
@@ -587,14 +628,40 @@
 		<!-- Regorxxx IE8 Polyfill -->
 		<script>
 			if (!('indexOf' in Array.prototype)) {
-				Array.prototype.indexOf= function(find, i /*opt*/) {
-					if (i===undefined) i= 0;
-					if (i<0) i+= this.length;
-					if (i<0) i= 0;
-					for (var n= this.length; i<n; i++)
-						if (i in this && this[i]===find)
-							return i;
+				Array.prototype.indexOf = function (find, i /*opt*/) {
+					'use strict';
+					if (typeof i === 'undefined') { i= 0; }
+					if (i < 0) { i+= this.length; }
+					if (i < 0) { i= 0; }
+					for (var n= this.length; i<n; i++) {
+						if (i in this && this[i] === find) { return i; }
+					}
 					return -1;
+				};
+			}
+			if (!('filter' in Array.prototype)) {
+				Array.prototype.filter = function(fun /*, thisp */) {
+					'use strict';
+					if (typeof this === 'undefined' || this === null) { throw new TypeError(); }
+					var t = Object(this);
+					var len = t.length >>> 0;
+					if (typeof fun !== 'function') { throw new TypeError(); }
+					var res = [];
+					var thisp = arguments[1];
+					for (var i = 0; i < len; i++) {
+						if (i in t) {
+							var val = t[i]; // in case fun mutates this
+							if (fun.call(thisp, val, i, t))
+							res.push(val);
+						}
+					}
+					return res;
+				};
+			}
+			if (!('startsWith' in String.prototype)) {
+				String.prototype.startsWith = function(search, rawPos) {
+					var pos = rawPos > 0 ? rawPos | 0 : 0;
+					return this.substring(pos, pos + search.length) === search;
 				};
 			}
 		</script>
@@ -702,6 +769,7 @@
 
 				var needCustomCol = /colour_container/.test(id);
 				if (needCustomCol) setCustomColours('value');
+				if (/statisticsNames_container/.test(id)) { setStatisticsLabels(); } // Regorxxx <- New statistics ->
 				document.getElementById("btn_apply").disabled = JSON.stringify(cfg) != parsed_args[0] || JSON.stringify(ppt) != parsed_args[1] ? false : true;
 			}
 
@@ -855,13 +923,16 @@
 				var sbarIconLabels = ['Arrows', 'Triangles', 'Custom'];
 				var sbarShowLabels = ['Hide', 'Auto', 'Show'];
 				var sbarTypeLabels = ['Default', 'Styled', 'Windows'];
-				var scrollbarLabels = ['Bar Width', 'Narrow bar width (0 = auto)', 'Arrow width', 'Arrow padding (+/-)', 'Grip min height', 'Custom icon', 'Custom icon font name', 'Custom icon offset (%)', 'Prefer full height scrollbar'];								
+				var scrollbarLabels = ['Bar Width', 'Narrow bar width (0 = auto)', 'Arrow width', 'Arrow padding (+/-)', 'Grip min height', 'Custom icon', 'Custom icon font name', 'Custom icon offset (%)', 'Prefer full height scrollbar'];
+				var facetsLabels = ['Prefer internal cache (if supported)', 'Chained source notifications']; // Regorxxx <- Don't create cache playlists if possible.Chained facets updates ->
+				var loggingLabels = ['Library loading profiling']; // Regorxxx <- Library profiling ->
 				var scrollLabels = ['Use windows metrics', 'Smooth scroll', 'Touch control'];
 				var selectionLabels = ['Full line', 'Play on enter or send from menu'];
 				var searchLabels = ['Search only', 'Send results to playlist on enter','Auto-send results to playlist', 'Require enter to search'];
 				var showLabels = ['Row stripes', 'Nowplaying in highlight', 'Nowplaying sidemarker (tree / text)', 'Nowplaying indicator (tree / text)', 'Album art options', 'Facet view', 'Tracks (tree)'];				
 				// Regorxxx <- New statistics
 				var statisticsLabels = ['Rating', 'Popularity', 'Date', 'Custom-1 (sum)', 'Custom-2 (sum)', 'Custom-3 (sum)', 'Custom-1 (avg)', 'Custom-2 (avg)', 'Custom-3 (avg)', '', 'Auto show labels', 'Auto show tooltips'];
+				var statisticsDecimalsLabels = ['Number of decimals shown'];
 				// Regorxxx ->
 				// Regorxxx <- Send to playlist & select 
 				var selectAddedToPlsLabels = ['Send to playlist and select items'];
@@ -909,8 +980,12 @@
 					// Regorxxx ->
 					// Regorxxx <- New statistics
 					display: {
-						name: ['covAlpha', 'tfRating', 'tfPopularity', 'tfDate', 'tfCustom1Sum', 'tfCustom2Sum', 'tfCustom3Sum', 'tfCustom1Avg', 'tfCustom2Avg', 'tfCustom3Avg', 'margin', 'treeIndent', 'verticalPad', 'verticalAlbumArtPad', 'marginTopBottom', 'sideMarkerWidth'],
-						type: ['float', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'int', 'int', 'int', 'int', 'int', 'int']
+						name: ['covAlpha', 'margin', 'treeIndent', 'verticalPad', 'verticalAlbumArtPad', 'marginTopBottom', 'sideMarkerWidth'],
+						type: ['float', 'int', 'int', 'int', 'int', 'int', 'int']
+					},
+					statistics: {
+						name: ['tfRating', 'tfPopularity', 'tfDate', 'tfCustom1Sum', 'tfCustom2Sum', 'tfCustom3Sum', 'tfCustom1Avg', 'tfCustom2Avg', 'tfCustom3Avg', 'tfCustomLabels', 'ratingDecimals'],
+						type: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'int']
 					},
 					// Regorxxx ->	
 					albumArt: {
@@ -927,9 +1002,9 @@
 					},
 					all: {}
 				}
-				// Regorxxx <- Drag n' drop to search box
-				input.all.name = input.behaviour.name.concat(input.search.name, input.display.name, input.albumArt.name, input.custom.name, input.advanced.name);
-				input.all.type = input.behaviour.type.concat(input.search.type, input.display.type, input.albumArt.type, input.custom.type, input.advanced.type);
+				// Regorxxx <- Drag n' drop to search box. New statistics
+				input.all.name = input.behaviour.name.concat(input.search.name, input.display.name, input.statistics.name, input.albumArt.name, input.custom.name, input.advanced.name);
+				input.all.type = input.behaviour.type.concat(input.search.type, input.display.type, input.statistics.type, input.albumArt.type, input.custom.type, input.advanced.type);
 				// Regorxxx <- Better debug
 				if (input.all.name.length !== input.all.type.length) { throw new Error('Input names length (' + input.all.name.length +') does not match type length (' + input.all.type.length + ')'); }
 				// Regorxxx ->
@@ -937,13 +1012,14 @@
 				var box = {
 					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'activateOnChange', 'selectAdded'], // Regorxxx <- Send to playlist & select ->
 					search: ['searchEnter'], // Regorxxx <- New search tab ->
-					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'recItemImage', 'labelStatistics', 'tooltipStatistics', 'inlineRoot', 'showSource', 'nodeLines', 'countsRight', 'colLineDark', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'nowPlayingSidemarker', 'nowPlayingIndicator', 'albumArtOptionsShow', 'facetView', 'showTracks'],
+					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'recItemImage', 'inlineRoot', 'showSource', 'nodeLines', 'colLineDark', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'nowPlayingSidemarker', 'nowPlayingIndicator', 'albumArtOptionsShow', 'facetView'], // Regorxxx <- New statistics tab ->
+					statistics: ['labelStatistics', 'tooltipStatistics', 'showTracks', 'countsRight'], // Regorxxx <- New statistics tab ->
 					albumArt: ['albumArtFlipLabels', 'albumArtDiskCache', 'albumArtPreLoad', 'albumArtFlowMode', 'albumArtDropShadow', 'artTreeSameView', 'albumArtLetter', 'albumArtYearAuto'],
 					custom: ['custFontUse', 'custAlbumArtGrpFontUse', 'custAlbumArtLotFontUse', 'custAlbumArtDurFontUse', 'textUse', 'text_hUse', 'textSelUse', 'nowpUse', 'searchUse', 'txt_boxUse', 'bgUse', 'bg_hUse', 'bgSelUse', 'frameUse', 'bgSelframeUse', 'countsUse', 'icon_cUse', 'icon_eUse', 'icon_hUse', 'lineUse', 's_lineUse', 'sideMarkerUse', 'bgTransUse'],
-					advanced: ['sbarFullHeight', 'winNode', 'blurAutofill', 'libAutoSync', 'pn_h_auto']
+					advanced: ['sbarFullHeight', 'panelInternalCache', 'libSourceChained', 'winNode', 'blurAutofill', 'libAutoSync', 'pn_h_auto', 'logLibProfiler'] // Regorxxx <- Library profiling. Don't create cache playlists if possible. Chained facets updates ->
 				}
 				// Regorxxx <- New search tab
-				box.all = box.behaviour.concat(box.search, box.display, box.albumArt, box.custom, box.advanced);
+				box.all = box.behaviour.concat(box.search, box.display, box.statistics, box.albumArt, box.custom, box.advanced);
 				// Regorxxx ->
 	
 				var radio = {
@@ -952,6 +1028,7 @@
 					behaviour: ['actionMode', 'sendToCur'],
 					search: [], // Regorxxx <- Drag n' drop to search box ->
 					display: ['itemShowStatistics'],
+					search: [], // Regorxxx <- New statistics tab ->
 					albumArt: ['albumArtLabelType', 'imgStyleFront', 'imgStyleBack', 'imgStyleDisc', 'imgStyleIcon', 'imgStyleArtist'],
 					custom: [],
 					advanced: []
@@ -1375,10 +1452,11 @@
 					window.searchDragQueryOpShift_dropdown.innerHTML = dragQueryOpShiftLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragQueryOpShift_internal'].value.toUpperCase())];
 					for (i = 0; i < 3; i++) {window.searchDragQueryOpShift.insertAdjacentHTML('beforeend', '<a onclick="setDragQueryOpShift(' + i + ');">'+dragQueryOpShiftLabels[i]+'</a>');}
 
-					for (i = 0; i < 3; i++) {window.dragTags.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="dragTags_container'+i+'" name="display_input" class="input70" /><label for="metrics_container'+i+'" class="inp_label2">'+dragTagsLabels[i]+'</label></div>');}
+					for (i = 0; i < 3; i++) {window.dragTags.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="dragTags_container'+i+'" name="display_input" class="input70" /><label for="dragTags_container'+i+'" class="inp_label2">'+dragTagsLabels[i]+'</label></div>');}
 				}
 				// Regorxxx ->
 
+				// Regorxxx <- New statistics
 				function setDisplay() {
 					for (i = 0; i < 3; i++) {window.bar.insertAdjacentHTML('beforeend', '<div><input id="bar_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="bar_checkbox'+i+'" class="checkbox_label">'+barLabels[i]+'</label></div>');}
 					
@@ -1403,19 +1481,35 @@
 					for (i = 0; i < 7; i++) {window.node.insertAdjacentHTML('beforeend', '<a id="nodeNo'+i+'" onclick="setNode(' + i + ');">'+nodeLabels[i]+'</a>');}
 					i = 7; window.nodeLines.insertAdjacentHTML('beforeend', '<div><input id="node_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="node_checkbox'+i+'" class="checkbox_label">Show lines (squares only)</label></div>');
 
-					window.itemCounts_dropdown.innerHTML = itemCountsLabels[ppt['nodeCounts_internal'].value];
-					for (i = 0; i < 3; i++) {window.itemCounts.insertAdjacentHTML('beforeend', '<a onclick="setItemCounts(' + i + ');">'+itemCountsLabels[i]+'</a>');}
-					i = 3; window.countsRight.insertAdjacentHTML('beforeend', '<div><input id="itemCounts_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="itemCounts_checkbox'+i+'" class="checkbox_label">'+itemCountsLabels[i]+'</label></div>');
-					// Regorxxx <- New statistics
-					for (i = 0; i < 9; i++) {window.statistics2.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="statistics_container'+i+'" name="display_input" class="input70" /><label for="metrics_container'+i+'" class="inp_label2">'+statisticsLabels[i]+'</label></div>');}
-					for (i = 10; i < 12; i++) {window.labelStatistics.insertAdjacentHTML('beforeend', '<div><input id="itemCounts_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="itemCounts_checkbox'+i+'" class="checkbox_label">'+statisticsLabels[i]+'</label></div>')};
-					// Regorxxx ->
 					window.showHl_dropdown.innerHTML = highLightLabels[ppt['highLightRow_internal'].value];
 					for (i = 0; i < 4; i++) {window.showHl.insertAdjacentHTML('beforeend', '<a onclick="setHoverBg(' + i + ');">'+highLightLabels[i]+'</a>');}
 					i = 0; window.frameStyle.insertAdjacentHTML('beforeend', '<div><input id="frame_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="frame_checkbox'+i+'" class="checkbox_label">Frame style (album art): image border</label></div>');
 					for (i = 4; i < 7; i++) {window.showH2.insertAdjacentHTML('beforeend', '<div><input id="showH2_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="showH2_checkbox'+i+'" class="checkbox_label">'+highLightLabels[i]+'</label></div>');}
 					for (i = 0; i < 7; i++) {window.show.insertAdjacentHTML('beforeend', '<div><input id="show_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="show_checkbox'+i+'" class="checkbox_label">'+showLabels[i]+'</label></div>');}
 				}
+
+				function setStatistcs() {
+					for (i = 0; i < 9; i++) {window.statisticsTf.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="statisticsTf_container'+i+'" name="statistics_input" class="input70" /><label for="statisticsTf_container'+i+'" class="inp_label2">'+statisticsLabels[i]+'</label></div>');}
+					i = 0; {window.statisticsNames.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="statisticsNames_container'+i+'" name="statistics_input" class="input70" /><label id="statisticsNamesLabel" for="statisticsNames_container'+i+'" class="inp_label2">' + getStatisticsSlots() + '</label></div>');}
+					
+					for (i = 10; i < 12; i++) {window.labelStatistics.insertAdjacentHTML('beforeend', '<div><input id="labelStatistics_checkbox'+i+'" name="statistics_checkbox" style="'+cbox+'" type="checkbox" /><label for="labelStatistics_checkbox'+i+'" class="checkbox_label">'+statisticsLabels[i]+'</label></div>')};
+					window.itemCounts_dropdown.innerHTML = itemCountsLabels[ppt['nodeCounts_internal'].value];
+					i = 0; window.labelStatistics.insertAdjacentHTML('beforeend', '<div class="input_cnt3"><label id="statisticsDecimalsLabel" for="statisticsDecimals_container'+i+'" class="inp_label1">'+ statisticsDecimalsLabels[i]+'</label><input id="statisticsDecimals_container'+i+'" name="statistics_input" class="input70" /></div>');
+					for (i = 0; i < 3; i++) {window.itemCounts.insertAdjacentHTML('beforeend', '<a onclick="setItemCounts(' + i + ');">'+itemCountsLabels[i]+'</a>');}
+					i = 3; window.countsRight.insertAdjacentHTML('beforeend', '<div><input id="itemCounts_checkbox'+i+'" name="statistics_checkbox" style="'+cbox+'" type="checkbox" /><label for="itemCounts_checkbox'+i+'" class="checkbox_label">'+itemCountsLabels[i]+'</label></div>');
+				}
+
+				function getStatisticsSlots() {
+					var customLabel = function (l) { return l.startsWith('Custom-');};
+					var slots = statisticsLabels.filter(customLabel).length;
+					var missing = slots - ppt['tfCustomLabels_internal'].value.split('|').length;
+					return slots + ' slots' + (missing === 0 ? '' : ' (' + (missing > 0 ? 'missing' : 'extra') + ' ' + Math.abs(missing) + ')');
+				}
+
+				function setStatisticsLabels() {
+					document.getElementById('statisticsNamesLabel').innerText = getStatisticsSlots();
+				}
+				// Regorxxx ->
 
 				var rootStubLabels = JSON.parse(ppt['rootImages_internal'].value) || [];
 				var root_ix = ppt['curRootImg_internal'].value;
@@ -1488,6 +1582,9 @@
 					i = 5; window.scrollbar.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="scrollbar_container'+i+'" name="advanced_input" class="input35" style="font-family:'+fFamily+'" /><label for="scrollbar_container'+i+'" class="inp_label2">'+scrollbarLabels[i]+'</label></div>');
 					for (i = 6; i < 8; i++) {window.scrollbar.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="scrollbar_container'+i+'" name="advanced_input" class="input35" /><label for="scrollbar_container'+i+'" class="inp_label2">'+scrollbarLabels[i]+'</label></div>');}
 					i = 8; window.scrollbar.insertAdjacentHTML('beforeend', '<div><input id="scrollbar_checkbox'+i+'" name="advanced_checkbox" style="'+cbox+'" type="checkbox" /><label for="scrollbar_checkbox'+i+'" class="checkbox_label">'+scrollbarLabels[i]+'</label></div>');
+					// Regorxxx <- Don't create cache playlists if possible.Chained facets updates
+					for (i = 0; i < facetsLabels.length; i++) {window.facets.insertAdjacentHTML('beforeend', '<div><input id="facets_checkbox'+i+'" name="advanced_checkbox" style="'+cbox+'" type="checkbox" /><label for="facets_checkbox'+i+'" class="checkbox_label">'+facetsLabels[i]+'</label></div>');};
+					// Regorxxx ->
 					fFamily = ppt['custIconFont_internal'].value;
 					i = 0; window.cusNode.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="cusNode_container'+i+'" name="advanced_input" class="input35" style="font-family:'+fFamily+'" /><label for="cusNode_container'+i+'" class="inp_label2">'+cusNodeLabels[i]+'</label></div>');
 					for (i = 1; i < 3; i++) {window.cusNode.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="cusNode_container'+i+'" name="advanced_input" class="input35" /><label for="cusNode_container'+i+'" class="inp_label2">'+cusNodeLabels[i]+'</label></div>');}
@@ -1496,8 +1593,11 @@
 					for (i = 1; i < 3; i++) {window.themeBlur.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="themeBlur_container'+i+'" name="advanced_input" class="input35" /><label for="themeBlur_container'+i+'" class="inp_label2">'+themeBlurLabels[i]+'</label></div>');}
 					i = 0; window.load.insertAdjacentHTML('beforeend', '<div><input id="load_checkbox'+i+'" name="advanced_checkbox" style="'+cbox+'" type="checkbox" /><label for="load_checkbox'+i+'" class="checkbox_label">'+loadLabels[i]+'</label></div>');
 					i = 1; window.prefixes.insertAdjacentHTML('beforeend', '<div class="input_cnt4"><label for="prefixes_container'+i+'" class="inp_label1">'+loadLabels[i]+'</label><input id="prefixes_container'+i+'" name="advanced_input" class="inputFull" /></div>');
-					i = 0; window.mode.insertAdjacentHTML('beforeend', '<div><input id="mode_checkbox'+i+'" name="advanced_checkbox" style="'+cbox+'" type="checkbox" /></div>');
+					i = 0; window.mode.insertAdjacentHTML('beforeend', '<div><input id="mode_checkbox'+i+'" name="advanced_checkbox" style="'+cbox+'" type="checkbox" /><label for="mode_checkbox'+i+'" class="checkbox_label">Enabled</label></div>');
 					for (i = 0; i < 2; i++) {window.modeInput.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="modeInput_container'+i+'" name="advanced_input" class="input35" /><label for="modeInput_container'+i+'" class="inp_label2">'+modeLabels[i]+'</label></div>');}
+					// Regorxxx <- Library profiling
+					i = 0; window.logging.insertAdjacentHTML('beforeend', '<div><input id="logging_checkbox'+i+'" name="advanced_checkbox" style="'+cbox+'" type="checkbox" /><label for="logging_checkbox'+i+'" class="checkbox_label">'+loggingLabels[i]+'</label></div>');
+					// Regorxxx ->
 				}
 
 				setViews();
@@ -1505,6 +1605,7 @@
 				setBehaviour();
 				setSearch(); // Regorxxx <- Drag n' drop to search box ->
 				setDisplay();
+				setStatistcs(); // Regorxxx <- statistics tab ->
 				setAlbumArt();
 				setCustom();
 				setAdvanced();
@@ -1562,7 +1663,7 @@
 				window.coverFormat_container1.parentNode.disabled = ppt['theme_internal'].value != 5;
 				window.frame_checkbox0.parentNode.disabled = ppt['highLightRow_internal'].value != 3;
 				window.node_checkbox7.parentNode.disabled = ppt['nodeStyle_internal'].value != 0 && ppt['nodeStyle_internal'].value != 7;
-				window.itemCounts_checkbox3.parentNode.disabled = ppt['itemShowStatistics_internal'].value;
+				window.itemCounts_checkbox3.parentNode.disabled = ppt['nodeCounts_internal'].value === 0|| ppt['itemShowStatistics_internal'].value > 0; // Regorxxx <- Fix checkbox ->
 				setNodeLabels();
 				window.showH2_checkbox5.parentNode.disabled = window.cusNode_checkbox3.checked && (ppt['nodeStyle_internal'].value == 0 || ppt['nodeStyle_internal'].value == 7);
 				document.getElementById("albumArtCfg").style.display = window.show_checkbox4.checked ? "block" : "none";
@@ -2020,7 +2121,7 @@
 					syntax_btn.innerHTML = 'Hide Help';
 				} else {
 					divToggleSyn.style.display = 'none';
-					syntax_btn.innerHTML = 'Show New Facets, Multiple Panel Mode & Extended Syntax Help'; // Regorxxx <- Text cleanup ->
+					syntax_btn.innerHTML = 'Show Multi-Panel Mode (Facets) & Extended Syntax Help'; // Regorxxx <- Text cleanup ->
 				}
 			}
 			// Regorxxx <- Add help to filter tab
@@ -2094,6 +2195,7 @@
 			}
 
 			window.document.body.focus();
+			textChange(); // Regorxxx <- Fix initial values ->
 			document.getElementById("btn_ok").focus();
 		</script>
 	</body>

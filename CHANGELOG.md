@@ -1,3 +1,24 @@
+# v2.4.0.mod.20
+### Added
+	- Added $nowplaying{}, $nowplayingorselected{} and $selected{} support at search input box.
+	- Added 'Statistics' tab at HTML options panel. Moved multiple settings from 'Display' tab into it. Added multiple help texts from new and previously added settings.
+	- Added custom statistics slot names to 'Statistics' tab at HTML options panel.
+	- Added number of decimals shown setting to 'Statistics' tab at HTML options panel.
+	- Added profiling logging for library loading setting to 'Advanced' tab at HTML options panel.
+	- Added facets chained source notifications setting to 'Advanced' tab at HTML options panel (along help texts).
+	- Added facets internal cache setting to 'Advanced' tab at HTML options panel (along help texts).
+	- Added help text related to RegExp usage to 'Search' tab at HTML options panel.
+### Changed
+	- Changed the way quick-search works for non ASCII characters, similar to foobar2000 asymmetric search where 'á' or 'a' are equivalent when pressing 'a' key. As result, jumping by letter across the panel will not skip anymore words starting with accents, etc. Additionally, there is internal transliteration between greek and cyrilic letters to latin alphabet, so 'Σ' or 'σ' are also matched with 's', 'п' to 'p', etc.
+	- Expanded help text related to Drag n' drop usage on 'Search' tab at HTML options panel.
+	- Minor improvements and cleanup at HTML options panel.
+	- Internal changes (for future development).
+### Fixed
+	- Fixed search history not being updated immediately when pressing Enter, but waiting 3 seconds before adding the new expression (so later changes affected or even skipped saving it). Any other kind of search still uses the delay as originally intended.
+	- Minor fixes to HTML options panel. In some cases initial values after opening the window were not properly updated on original script or checkboxes were enabled when they shouldn't.
+
+<br />
+
 # v2.4.0.mod.19
 ### Added
 	- New 'Send top tracks' and 'Add top tracks' mouse actions for Alt + L. Click and M. Click. Available for current and default playlist.
