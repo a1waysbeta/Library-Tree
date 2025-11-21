@@ -99,7 +99,7 @@ class Library {
 					this.validSearch = true;
 					try {
 						// Regorxxx <- RegExp library search
-						const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+						const isRegExp = search.isSearchRegExp();
 						const tags = isRegExp
 							? panel.folderView 
 								? ['%PATH%']
@@ -163,7 +163,7 @@ class Library {
 					this.validSearch = true;
 					try {
 						// Regorxxx <- RegExp library search
-						const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+						const isRegExp = search.isSearchRegExp();
 						const tags = isRegExp
 							? panel.folderView 
 								? ['%PATH%']
@@ -336,38 +336,26 @@ class Library {
 		pop.cache.filter = {};
 		pop.cache.search = {};
 		this.searchCache = {};
-		if (panel.filter.mode[ppt.filterBy].type.match(/\$nowplaying{(.+?)}/)) {
-			this.getFilterQuery();
-			if (this.filterQuery != this.filterQueryID) {
-				if (!ppt.rememberTree && !ppt.reset) this.logTree();
-				else if (ppt.rememberTree) this.logFilter();
-				if (panel.search.txt) lib.upd_search = true;
-				this.getLibrary();
-				this.rootNodes(!ppt.reset ? 1 : 0, true);
-				if (!pop.notifySelection())  {
-					const list = !panel.search.txt.length || !lib.list.Count ? lib.list : panel.list;
-					window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
+		// Regorxxx <- Merge now playing and selected as fallback
+		[/\$nowplaying{(.+?)}/, /\$selected{(.+?)}/, /\$nowplayingorselected{(.+?)}/].forEach((re) => {
+			if (panel.filter.mode[ppt.filterBy].type.match(re)) {
+				this.getFilterQuery();
+				if (this.filterQuery != this.filterQueryID) {
+					if (!ppt.rememberTree && !ppt.reset) this.logTree();
+					else if (ppt.rememberTree) this.logFilter();
+					if (panel.search.txt) lib.upd_search = true;
+					this.getLibrary();
+					this.rootNodes(!ppt.reset ? 1 : 0, true);
+					if (!pop.notifySelection())  {
+						const list = !panel.search.txt.length || !lib.list.Count ? lib.list : panel.list;
+						window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
+					}
+					if (ppt.searchSend == 2 && panel.search.txt.length) pop.load(panel.list, false, false, false, true, false);
+					pop.checkAutoHeight();
 				}
-				if (ppt.searchSend == 2 && panel.search.txt.length) pop.load(panel.list, false, false, false, true, false);
-				pop.checkAutoHeight();
 			}
-		}
-		if (panel.filter.mode[ppt.filterBy].type.match(/\$selected{(.+?)}/)) {
-			this.getFilterQuery();
-			if (this.filterQuery != this.filterQueryID) {
-				if (!ppt.rememberTree && !ppt.reset) this.logTree();
-				else if (ppt.rememberTree) this.logFilter();
-				if (panel.search.txt) lib.upd_search = true;
-				this.getLibrary();
-				this.rootNodes(!ppt.reset ? 1 : 0, true);
-				if (!pop.notifySelection())  {
-					const list = !panel.search.txt.length || !lib.list.Count ? lib.list : panel.list;
-					window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
-				}
-				if (ppt.searchSend == 2 && panel.search.txt.length) pop.load(panel.list, false, false, false, true, false);
-				pop.checkAutoHeight();
-			}
-		}
+		})
+		// Regorxxx ->
 	}
 
 	checkLines(arr, arrExpanded) {
@@ -460,6 +448,14 @@ class Library {
 				if (fb.IsPlaying && fb.PlaybackLength <= 0) return tfo.Eval();
 				handle = fb.GetFocusItem();
 				return handle ? tfo.EvalWithMetadb(handle) : '';
+			// Regorxxx <- Merge now playing and selected as fallback
+			case 'nowplayingorselected':
+				if (!n) return '';
+				tfo = FbTitleFormat(n);
+				if (fb.IsPlaying && fb.PlaybackLength <= 0) return tfo.Eval();
+				handle = fb.IsPlaying ? fb.GetNowPlaying() : fb.GetFocusItem();
+				return handle ? tfo.EvalWithMetadb(handle) : '';
+			// Regorxxx ->
 		}
 	}
 
@@ -489,6 +485,12 @@ class Library {
 			const q = this.filterQuery.match(/\$selected{(.+?)}/);
 			this.filterQuery = this.filterQuery.replace(q[0], this.eval(q[1], 'selected') || `~#No Value For Item#~`);
 		}
+		// Regorxxx <- Merge now playing and selected as fallback
+		while (this.filterQuery.includes('$nowplayingorselected{')) {
+			const q = this.filterQuery.match(/\$nowplayingorselected{(.+?)}/);
+			this.filterQuery = this.filterQuery.replace(q[0], this.eval(q[1], 'nowplayingorselected') || `~#No Value For Item#~`);
+		}
+		// Regorxxx ->
 	}
 
 	getLibrary(items) {
@@ -902,7 +904,7 @@ class Library {
 			this.none = '';
 			try {
 				// Regorxxx <- RegExp library search
-				const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+				const isRegExp = search.isSearchRegExp();
 				const tags = isRegExp
 					? panel.folderView 
 						? ['%PATH%']
@@ -1168,7 +1170,7 @@ class Library {
 					this.validSearch = true;
 					try {
 						// Regorxxx <- RegExp library search
-						const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+						const isRegExp = search.isSearchRegExp();
 						const tags = isRegExp
 							? panel.folderView 
 								? ['%PATH%']
@@ -1202,7 +1204,7 @@ class Library {
 					this.validSearch = true;
 					try {
 						// Regorxxx <- RegExp library search
-						const isRegExp = /\/.+\/[gimsuy]?/.test(panel.search.txt);
+						const isRegExp = search.isSearchRegExp();
 						const tags = isRegExp
 							? panel.folderView 
 								? ['%PATH%']

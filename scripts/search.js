@@ -76,15 +76,15 @@ class Search {
 				return $.queryJoin(
 					searchTags.map((searchTag, i) => {
 						if (!operators.tag && i > 0) { return; }
-						const values = [...new Set(trackTags[i].map(s => s.toLowerCase()))];
+						const values = [...new Set(trackTags[i].filter(Boolean).map(s => s.toLowerCase()))];
 						if (!operators.value) { values.length = 1; }
 						return searchTag.toUpperCase() === 'ALBUM ARTIST'
 							? $.queryJoin([
 								$.queryCombinations(values, 'ALBUM ARTIST', operators.value),
 								$.queryCombinations(values, 'ARTIST', operators.value),
-							], 'OR')
+							].filter(Boolean), 'OR')
 							: $.queryCombinations(values, searchTag, operators.value);
-					}),
+					}).filter(Boolean),
 					operators.tag
 				);
 			}).filter(Boolean);
@@ -125,6 +125,12 @@ class Search {
 					: searchTags[0];
 				return (operators.query || !panel.search.txt ? 'Add' : 'Replace') + ' query: ' + tagsDisplay;
 			}
+		}
+		// Regorxxx ->
+		// Regorxxx <- RegExp library search
+		const isRegExp = /^\/.+\/[gimsuy]?/;
+		this.isSearchRegExp = () => {
+			return isRegExp.test(panel.search.txt);
 		}
 		// Regorxxx ->
 

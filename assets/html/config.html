@@ -151,7 +151,9 @@
 Selected items will be displayed in the menu. A separator may be added by setting name to 'separator' and pattern to any non-empty string.
 		</div>
 		<p "><a href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target=\"_blank\">Title format reference</a></p>
-		<button id="syntax_button" name="syntax_button" style="margin-left:0px;" type="button">New Facets / Multiple Panel Mode / Extended Syntax Help</button><div id="syntax_help" style="display: none;">
+		<!-- Regorxxx Text cleanup -->
+		<button id="syntax_button" name="syntax_button" style="margin-left:0px;" type="button">Show New Facets, Multiple Panel Mode & Extended Syntax Help</button><div id="syntax_help" style="display: none;">
+		<!-- Regorxxx -->
 <div class="info5"><b>New Facets / Multiple Panel Mode </b></div>
 			<div class="info5">
 Each panel can contain either a tree, album art or facet view. Panels needn't be contiguous. The example describes how to set-up New Facets with 3 facet panels: Genre, Artist & Album.</div>
@@ -234,6 +236,17 @@ Use $colour{0-255-0}$swapbranchprefix{%&ltartist&gt%}. Don't use $swapbranchpref
 			<div class="info1">
 Selected items will be displayed in the menu. A separator may be added by setting name to 'separator' and query to any non-empty string.
 		</div>
+		<!-- Regorxxx Add help to filter tab -->
+		<p "><a href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target=\"_blank\">Title format reference</a></p>
+		<button id="syntaxFilter_button" name="syntax_button" style="margin-left:0px;" type="button">Extended Syntax Help</button><div id="syntaxFilter_help" style="display: none;">
+		<div class="info5"><b>Extended syntax</b></div>		
+		<table id="syntaxFilter" class="table98">
+		<br>
+		<colgroup>
+			<col span="1" style="width:20%">
+		</colgroup>
+		</table>
+		<!-- Regorxxx -->
 		</div>
 		<div style="clear:both;"></div>
 		<div id="btn_cnt_right" class="btn_cnt"> 
@@ -1202,22 +1215,25 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 							}
 							columnCount = 6;
 						break;
+						case 'syntaxFilter': // Regorxxx <- Add help to filter tab ->
 						case 'syntax':
+							// Regorxxx <- Merge now playing and selected as fallback. Code cleanup
 							var headers = ['Syntax', 'Use\u00A0In\u00A0\u00A0\u00A0', 'Description'];
 							cells.push(headers);
 							var labels = [
 							['%&ltfield&gt%', 'Views', 'Split multiple values into separate items, e.g. use %&ltartist&gt%'],
 							['$stripbranchprefix{%&ltfield&gt%}', 'Views', 'Same as above, additionally removes prefixes (like leading "The" or "A") from each value, e.g. use $stripbranchprefix{%&ltartist&gt%}'],
 							['$swapbranchprefix{%&ltfield&gt%}', 'Views', 'Same as above, additionally moves prefixes (like leading "The" or "A") to end of each value, e.g. use $swapbranchprefix{%&ltartist&gt%}'],
-							['%field1%&#166%field2%&#166...', 'Views', '&#166 combines different fields into the same branch level, e.g. use %album artist%&#166%artist% or %&ltalbum artist&gt%&#166%&ltartist&gt%.'],
+							['%field1%&#166%field2%&#166...', 'Views', '&#166 combines different fields into the same branch level, e.g. use %album artist%&#166%artist% or %&ltalbum artist&gt%&#166%&ltartist&gt%'],
 							['$nodisplay{X}', 'Views', "Sorts & groups by X without display of X, e.g. the following sorts latest albums first & displays the date.<br><input class='input75' style='font:1em Segoe UI; border:none; background:none;' value='%artist%|$nodisplay{$sub(99999,%date%)}%album%[ &#39[&#39%date%&#39]&#39]|%tracknumber%. %title%'/>"],
 							['$nowplaying{X}', 'Filters', 'Returns value of X for the playing track, e.g. artist IS $nowplaying{$meta(artist,0)} Displays tracks by nowplaying artist.'],
 							['$selected{X}', 'Filters', 'Returns value of X for the selected track, e.g. artist IS $selected{$meta(artist,0)} Displays tracks by selected (focused) artist.'],
+							['$nowplayingorselected{X}', 'Filters', 'Returns value of X for the playing track or selected track as fallback, i.e. behaves as $nowplaying while playing and $selected otherwise.'],
 							['$searchtext', 'Filters', 'Returns search text, e.g. enter following as a filter "genre HAS $searchtext", then type "rock" in search box: yields query "genre HAS rock"'],
 							['$colour{normal,hover,selected}', 'Views', 'Set different colours for parts of a line of text, see below for more info.']				
 							];
 							var items = [];
-							for (j = 0; j < 8; j++) {
+							for (j = 0; j < labels.length; j++) {
 								items[j] = [];
 								for (i = 0; i < labels[j].length; i++) {
 									items[j].push('<div class=info5;">'+labels[j][i]+'</div>');
@@ -1227,6 +1243,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 								}
 							}
 							columnCount = 3;
+							// Regorxxx ->
 						break;
 						case 'elementColour':
 							headers = ['Buttons', 'Search', 'Separators', 'Lines', ''];
@@ -1275,11 +1292,11 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 						for (j = 0; j < columnCount; j++) {
 							var cell = row.insertCell(-1);
 							cell.innerHTML = cells[i][j];
-							if (tb != 'syntax' && i % 2 == 1) cell.style.background = '#E8E8E8';
+							if (tb != 'syntax' && tb != 'syntaxFilter' && i % 2 == 1) cell.style.background = '#E8E8E8';  // Regorxxx <- Add help to filter tab ->
 						}
 					}
 					
-					if (tb == 'syntax') {
+					if (tb == 'syntax' || tb === 'syntaxFilter') { // Regorxxx <- Add help to filter tab ->
 						var els = document.getElementById(tb).getElementsByTagName("th");
 						for (i = 0;i <els.length;i++){
 							els[i].style.lineHeight = "1.62em";
@@ -1530,6 +1547,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				setInputs('all', 'value');
 				setRadioBtns('all', 'value');
 				generateTable('syntax');
+				generateTable('syntaxFilter');  // Regorxxx <- Add help to filter tab ->
 
 				document.getElementById("btn_delete").disabled = true;
 				document.getElementById("btn_down").disabled = true;
@@ -2036,9 +2054,23 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					syntax_btn.innerHTML = 'Hide Help';
 				} else {
 					divToggleSyn.style.display = 'none';
-					syntax_btn.innerHTML = 'Show New Facets & Extended Syntax Help';
+					syntax_btn.innerHTML = 'Show New Facets, Multiple Panel Mode & Extended Syntax Help'; // Regorxxx <- Text cleanup ->
 				}
 			}
+			// Regorxxx <- Add help to filter tab
+			var divToggleSynFilter = document.getElementById('syntaxFilter_help');
+			var syntaxFilter_btn = document.getElementById('syntaxFilter_button');
+ 
+			syntaxFilter_btn.onclick = function() {
+				if (divToggleSynFilter.style.display === 'none') {
+					divToggleSynFilter.style.display = 'block';
+					syntaxFilter_btn.innerHTML = 'Hide Help';
+				} else {
+					divToggleSynFilter.style.display = 'none';
+					syntaxFilter_btn.innerHTML = 'Extended Syntax Help';
+				}
+			}
+			// Regorxxx ->
 
 			function toggle(item) {
 				if (window[item].style.display != 'block') window[item].style.display = 'block'

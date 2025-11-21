@@ -1,3 +1,17 @@
+# v2.4.0.mod.14
+### Added
+	- Added support for $nowplayingorselected{} TF expressions which uses the focused track as fallback while not playing anything. This allows filters which should work for both playing and selected tracks.
+	- Added Syntax help to HTML options panel Filters tab.
+### Changed
+	- All default filter presets using $nowplaying{} have been tweaked to use $nowplayingorselected{} instead, so they always work with selection as fallback. Restore filter defaults to use them.
+### Removed
+	- Removed 'Selected Artist' filter preset, since it's now provided with nowplaying presets too as fallback.
+### Fixed
+	- Fixed Drag n' drop queries for tags with no values.
+	- Fixed queries with /.../ patterns being recognized as RegExp in some cases and displaying 'invalid search expression'.
+
+<br />
+
 # v2.4.0.mod.13
 ### Added
 	- New tab at HTML options panel named 'Search' which contains all settings related to the search input box (including the new drag n' drop feature).

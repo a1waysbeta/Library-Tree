@@ -446,12 +446,12 @@ class Helpers {
 		return bUnquote //NOSONAR
 			? tag.replace(/(^")(.*\$+.*)("$)/g, '$2')
 			: tag.includes('$')
-				? $._q(tag)
+				? this._q(tag)
 				: tag;
 	}
 
 	sanitizeQueryVal(val) {
-		return (val.match(/[()]/g) ? _q(val) : val);
+		return (val.match(/[()]/g) ? this._q(val) : val);
 	}
 
 	queryCombinations(tagsArray, queryKey, tagsArrayLogic /*AND, OR [NOT]*/, subTagsArrayLogic /*AND, OR [NOT]*/, match = 'IS' /*IS, HAS, EQUAL*/) {
