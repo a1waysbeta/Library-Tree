@@ -288,6 +288,33 @@ class MenuItems {
 				separator: i == 2 || i == 3 || i == 5 || i == 6
 			}));
 		}
+		// Regorxxx <- Background image position
+		menu.newItem({
+			menuName: 'Quick setup',
+			separator: true
+		});
+		menu.newItem({
+			menuName: 'Quick setup',
+			str: 'Background grid mode...',
+			func: () => {
+				let panels = 1;
+				try {
+					panels = utils.InputBox(0, 'Set total number of Library Tree panels:\n\nBackground image will be adjusted to extend over all panels, showing only a portion of the image in every panel.\n\nIt only works on horizontal rows.', 'Background grid mode: number of panels', 1, true);
+				} catch (e) { return; }
+				if (!panels || panels < 1) { return; }
+				let pos = 1;
+				try {
+					pos = utils.InputBox(0, 'Set panel position within the row:' + '\nFrom 1 to ' + panels, 'Background grid mode: panel position', 1, true);
+				} catch (e) { return; }
+				if (!pos || pos < 1) { return; }
+				ppt.xOffsetBg = 100 / panels * (pos - 1)
+				ppt.wOffsetBg = 100 / panels * (panels - pos);
+				panel.load();
+			},
+			flags: panel.imgView ? MF_GRAYED : MF_STRING,
+			checkItem: ppt.xOffsetBg !== 0 || ppt.wOffsetBg !== 0
+		});
+		// Regorxxx ->
 
 		menu.newMenu({menuName: 'Source', appendTo: mainMenu(), separator: true});
 		['Library', 'Panel', 'Playlist'].forEach((v, i) => menu.newItem({
