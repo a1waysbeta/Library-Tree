@@ -1,3 +1,10 @@
+# v2.4.0.mod.15
+### Fixed
+	- Fixed Drag n' drop queries for tags with no values.
+	- Fixed error on HTML options panel.
+
+<br />
+
 # v2.4.0.mod.14
 ### Added
 	- Added support for $nowplayingorselected{} TF expressions which uses the focused track as fallback while not playing anything. This allows filters which should work for both playing and selected tracks.

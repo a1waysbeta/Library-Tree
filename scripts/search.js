@@ -88,7 +88,7 @@ class Search {
 					operators.tag
 				);
 			}).filter(Boolean);
-			return $.queryJoin([...new Set(trackQueries)], operators.track);
+			return $.queryJoin([...new Set(trackQueries)], operators.track) || '';
 		}
 
 		this.getDragDropPathRegexp = (selItems) => {
@@ -96,7 +96,7 @@ class Search {
 				.map((path) => path.split('\\').slice(-1)[0])
 				.filter(Boolean)
 				.map((s) => $.escapeRegExp(s));
-			return '/' + paths.join('|') + '/i';
+			return paths.length ? '/' + paths.join('|') + '/i' : '';
 		}
 
 		this.getDragDropExpression = (selItems, method, mask) => {
@@ -107,8 +107,8 @@ class Search {
 				const searchTags = this.getDragDropTags(mask);
 				const operators = this.getDragDropOperators(mask);
 				input = this.getDragDropQuery(selItems, searchTags, operators);
-				if (panel.search.txt && operators.query) {
-					input = $.queryJoin([panel.search.txt, input], operators.query);
+				if (input.length && panel.search.txt && operators.query) {
+					input = $.queryJoin([panel.search.txt, input], operators.query) || '';
 				}
 			}
 			return input;

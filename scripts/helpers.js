@@ -511,7 +511,7 @@ class Helpers {
 
 	queryJoin(queryArray, setLogic = 'AND') {
 		setLogic = (setLogic || '').toUpperCase();
-		if (!['AND', 'OR', 'AND NOT', 'OR NOT'].includes(setLogic)) {	return; }
+		if (!['AND', 'OR', 'AND NOT', 'OR NOT'].includes(setLogic)) { return; }
 		let arrayLength = queryArray.length;
 		// Wrong array
 		if (!Array.isArray(queryArray) || typeof queryArray === 'undefined' || queryArray === null || arrayLength === null || arrayLength === 0) { return; }
