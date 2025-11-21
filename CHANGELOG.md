@@ -1,3 +1,17 @@
+# v2.4.0.mod.13
+### Added
+	- New tab at HTML options panel named 'Search' which contains all settings related to the search input box (including the new drag n' drop feature).
+### Changed
+	- Modified Drag n' Drop into search box. Dropping any selection will be modified by keyboard key pressed. The modifiers can be adjusted with different tags, multi-value tag, inter-tags, inter-tracks and inter-query operators at the HTML options panel (or looking for 'Search Drag n' Drop ... ' at the properties panel).
+		* None
+		* Alt
+		* Ctrl
+		* Shift
+	- Statistics custom slots TF can also be modified at the HTML options panel. The labels can only be modified at the properties panel.
+	- Drag n' drop over search box text is now modified according to action being used, indicating if query will be joined or replaced and the tags used. Note multi-value tag and inter-tracks operators are not displayed, only inter-tag operator.
+
+<br />
+
 # v2.4.0.mod.12
 ### Added
 	- Added tooltip over search input box which displays the entire search string (useful for long queries) along the found tracks count.

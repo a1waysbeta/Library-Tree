@@ -132,10 +132,13 @@
 			<a onclick="openPage('views', this, 'red')" id="viewsCfg">Views</a>
 			<a onclick="openPage('filters', this, 'green')" id="filtersCfg">Filters</a>
 			<a onclick="openPage('behaviour', this, 'orange')" id="behaviourCfg">Behaviour</a>
-			<a onclick="openPage('display', this, 'blue')" id="displayCfg">Display</a>
-			<a onclick="openPage('albumArt', this, 'red')" id="albumArtCfg">Album Art</a>
-			<a onclick="openPage('custom', this, 'green')" id="customCfg">Custom</a>
-			<a onclick="openPage('advanced', this, 'orange')" id="advancedCfg">Advanced</a>
+			 <!-- Regorxxx New Tabs. New statistics -->
+			<a onclick="openPage('search', this, 'blue')" id="searchCfg">Search</a>
+			<a onclick="openPage('display', this, 'red')" id="displayCfg">Display</a>
+			<a onclick="openPage('albumArt', this, 'green')" id="albumArtCfg">Album Art</a>
+			<a onclick="openPage('custom', this, 'orange')" id="customCfg">Custom</a>
+			<a onclick="openPage('advanced', this, 'blue')" id="advancedCfg">Advanced</a>
+			<!-- Regorxxx -->
 		</div>
 <div id="mainMargin">
 		<div style="clear:both;"></div>
@@ -313,11 +316,7 @@ Selected items will be displayed in the menu. A separator may be added by settin
 			</div>
 			
 			<div class="column29">
-				<div class="div_text1">Search</div>
-				<span class="dropdown"><a id="search_dropdown" class="dropbtn" href="#" onclick="toggle('search');"></a>
-				<span id="search" class="dropdown-content"></span>
-				</span>
-				<div id="searchEnter" style="padding-top:0.5em;"></div>				
+				<!-- Regorxxx Search settings to search tab -->
 				<div class="div_text2">Tree</div>
 				<div id="expand"></div>
 				<div id="expandLimit"></div>
@@ -341,10 +340,86 @@ Selected items will be displayed in the menu. A separator may be added by settin
 		</div>
 		</div>
 
+		<!-- Regorxxx Drag n' drop to search box. Search settings to search tab -->
+		<div id="search" class="tabcontent">
+			<div class="row">
+				<div class="column33">
+					<div class="div_text1">Drag n' Drop</div>
+					<div class="div_text2">Multi-value tag Operator</div>
+					<span class="info5600">Default:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragValOpDefault_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragValOpDefault');"></a>
+						<span id="searchDragValOpDefault" class="dropdown-content"></span>
+					</span>
+					<span class="info5600">On Ctrl:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragValOpCtrl_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragValOpCtrl');"></a>
+						<span id="searchDragValOpCtrl" class="dropdown-content"></span>
+					</span>
+					<span class="info5600">On Alt:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragValOpAlt_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragValOpAlt');"></a>
+						<span id="searchDragValOpAlt" class="dropdown-content"></span>
+					</span>
+					<div class="div_text2">Inter-tag Operator</div>
+					<span class="info5600">Default:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragTagOpDefault_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragTagOpDefault');"></a>
+						<span id="searchDragTagOpDefault" class="dropdown-content"></span>
+					</span>
+					<span class="info5600">On Ctrl:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragTagOpCtrl_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragTagOpCtrl');"></a>
+						<span id="searchDragTagOpCtrl" class="dropdown-content"></span>
+					</span>
+					<span class="info5600">On Alt:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragTagOpAlt_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragTagOpAlt');"></a>
+						<span id="searchDragTagOpAlt" class="dropdown-content"></span>
+					</span>
+					<div class="div_text2" style="margin-top:0">Inter-track Operator</div>
+					<span class="info5600" style="margin-top:0">Default:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragTrackOpDefault_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragTrackOpDefault');"></a>
+						<span id="searchDragTrackOpDefault" class="dropdown-content"></span>
+					</span>
+					<span class="info5600">On Ctrl:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragTrackOpCtrl_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragTrackOpCtrl');"></a>
+						<span id="searchDragTrackOpCtrl" class="dropdown-content"></span>
+					</span>
+					<span class="info5600">On Alt:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragTrackOpAlt_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragTrackOpAlt');"></a>
+						<span id="searchDragTrackOpAlt" class="dropdown-content"></span>
+					</span>
+				</div>
+				
+				<div class="column33">
+					<div class="div_text1">Drag n' Drop</div>
+					<div class="div_text2">Inter-query operator</div>
+					<span class="info5600">Default:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragQueryOpDefault_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragQueryOpDefault');"></a>
+						<span id="searchDragQueryOpDefault" class="dropdown-content"></span>
+					</span>
+					<span class="info5600">On Shift:</span>
+					<span class="dropdown" style="margin-top:0"><a id="searchDragQueryOpShift_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragQueryOpShift');"></a>
+						<span id="searchDragQueryOpShift" class="dropdown-content"></span>
+					</span>
+					<div class="div_text2">Tags</div>
+					<div class="info5"><i>Title format can be set below</i></div>
+					<div id="dragTags"></div>
+					<div style="display:inline-block; padding-top:0.7em;"><a id="mode_help" href="#" onclick="showDragHelp();return false;">Drag n' drop help</a></div>
+					<div id="drag_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
+						<div class="info4">&#x2022; Default is used without any key pressed<br><br>&#x2022; Behaviour is affected by Ctrl, Alt and Shift keys<br><br>&#x2022; Multi-value tag operator is used between different values on same tag:<br>&emsp; 'ARTIST IS A OR ARTIST IS B'<br><br>&#x2022; Inter-tag operator is used between different tags:<br>&emsp; 'ARTIST IS Nina Simone OR GENRE IS Rock'<br><br>&#x2022; Inter-track operator is used between queries for different tracks (on multiple selection)<br><br>&#x2022; Inter-query operator is used if there is already an expression at the search box, to join or replace them</div>
+					</div>
+				</div>
+
+				<div class="column33">
+					<div class="div_text1">Results</div>
+					<span class="dropdown"><a id="searchSend_dropdown" class="dropbtn" href="#" onclick="toggle('searchSend');"></a>
+					<span id="searchSend" class="dropdown-content"></span>
+					</span>
+					<div id="searchEnter" style="padding-top:0.5em;"></div>	
+				</div>
+			</div>
+		</div>
+
 		<div id="display" class="tabcontent">
 		<div class="row">
-
-			<div class="column33">		
+			<!-- Regorxxx New Statistics. Adjust column width -->
+			<div class="column38">		
 				<div class="div_text1">Top bar</b></div>
 				<div id="bar"></div>
 				<div style="padding-right:10%;" class="info4"><i>*If hidden, right click over filter or icon. If all hidden, use context menu.</i></div>
@@ -361,7 +436,8 @@ Selected items will be displayed in the menu. A separator may be added by settin
 				<div id="statistics2"></div>
 			</div>				
 
-			<div class="column33">
+			<!-- Regorxxx New Statistics. Adjust column width -->
+			<div class="column29">
 				<div class="div_text1">Root</div>
 				<span class="dropdown"><a id="root_dropdown" class="dropbtn" href="#" onclick="toggle('root');"></a>
 				<span id="root" class="dropdown-content"></span>
@@ -381,7 +457,8 @@ Selected items will be displayed in the menu. A separator may be added by settin
 				<div id="lines"></div>
 			</div>
 					
-			<div class="column33">
+			<!-- Regorxxx New Statistics. Adjust column width -->
+			<div class="column32">
 				<div class="div_text1">Hover effect (background)</div>
 				<span class="dropdown"><a id="showHl_dropdown" class="dropbtn" href="#" onclick="toggle('showHl');"></a>
 				<span id="showHl" class="dropdown-content"></span>
@@ -547,6 +624,21 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 		</div>	
 	</div>
 	<div id="div" style="height:0; width:0;outline:none; border:none; padding:none; margin:none; box-sizing:content-box;"></div>
+		<!-- Regorxxx IE8 Polyfill -->
+		<script>
+			if (!('indexOf' in Array.prototype)) {
+				Array.prototype.indexOf= function(find, i /*opt*/) {
+					if (i===undefined) i= 0;
+					if (i<0) i+= this.length;
+					if (i<0) i= 0;
+					for (var n= this.length; i<n; i++)
+						if (i in this && this[i]===find)
+							return i;
+					return -1;
+				};
+			}
+		</script>
+		<!-- Regorxxx -->
 		<script>
 			var em, i = 0, is_closed_manually = false, j = 0, height, left, top, window_h, window_w;
 
@@ -803,7 +895,9 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				var selectionLabels = ['Full line', 'Play on enter or send from menu'];
 				var searchLabels = ['Search only', 'Send results to playlist on enter','Auto-send results to playlist', 'Require enter to search'];
 				var showLabels = ['Row stripes', 'Nowplaying in highlight', 'Nowplaying sidemarker (tree / text)', 'Nowplaying indicator (tree / text)', 'Album art options', 'Facet view', 'Tracks (tree)'];				
-				var statisticsLabels = ['Rating', 'Popularity', 'Date', '', 'Auto show labels', 'Auto show tooltips'];
+				// Regorxxx <- New statistics
+				var statisticsLabels = ['Rating', 'Popularity', 'Date', 'Custom-1 (sum)', 'Custom-2 (sum)', 'Custom-3 (sum)', 'Custom-1 (avg)', 'Custom-2 (avg)', 'Custom-3 (avg)', '', 'Auto show labels', 'Auto show tooltips'];
+				// Regorxxx ->
 				var targetPlaylistLabels = ['Default', 'Current'];
 				var tfInput = ['Library View'];
 				var themeLabels = !ppt['themed_internal'].value ? ['User interface', 'Dark', 'Blend', 'Light', 'Random', 'Cover', 'Swap colours', 'Panel source: use received item image'] : ['N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set', 'N/A: central set'];
@@ -813,6 +907,20 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				var treeLabels = ['Auto-collapse', 'Expand single items', 'Expand if # tracks less than:'];	
 				var loadLabels = ['Auto-sync with library changes', 'Prefixes to strip or swap (| separator)']
 				var modeLabels = ['Max height', 'Min height', 'Limit menu expand: 10-6000'];
+				// Regorxxx <- Drag n' drop to search box
+				var dragValOpDefaultLabels = ['Use only 1st value', 'Join with \'OR\'', 'Join with \'AND\''];
+				var dragValOpCtrlLabels = dragValOpDefaultLabels;
+				var dragValOpAltLabels = dragValOpDefaultLabels;
+				var dragTagOpDefaultLabels = ['Use only 1st tag', 'Join with \'OR\'', 'Join with \'AND\''];
+				var dragTagOpCtrlLabels = dragTagOpDefaultLabels;
+				var dragTagOpAltLabels = dragTagOpDefaultLabels;
+				var dragTrackOpDefaultLabels = ['Use only 1st track', 'Join with \'OR\'', 'Join with \'AND\''];
+				var dragTrackOpCtrlLabels = dragTrackOpDefaultLabels;
+				var dragTrackOpAltLabels = dragTrackOpDefaultLabels;
+				var dragQueryOpDefaultLabels = ['Replace search', 'Join with \'OR\'', 'Join with \'AND\''];
+				var dragQueryOpShiftLabels = dragQueryOpDefaultLabels;
+				var dragTagsLabels = ['Default', 'On Ctrl', 'On Alt'];
+				// Regorxxx ->
 				
 				function setNodeLabels() {
 					nodeLabels[0] = !ppt['winNode_internal'].value ? 'Squares' : 'Squares (windows)';
@@ -825,11 +933,18 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 						name: ['autoExpandLimit', 'libPlaylist', 'customSort'],
 						type: ['int', 'text', 'text']
 					},
-					display: {
-						name: ['covAlpha', 'tfRating', 'tfPopularity', 'tfDate', 'margin', 'treeIndent', 'verticalPad', 'verticalAlbumArtPad', 'marginTopBottom', 'sideMarkerWidth'],
-						type: ['float', 'text', 'text', 'text', 'int', 'int', 'int', 'int', 'int', 'int']
-						
+					// Regorxxx <- Drag n' drop to search box
+					search: {
+						name: ['searchDragTags', 'searchDragTagsCtrl', 'searchDragTagsAlt'],
+						type: ['text', 'text', 'text']
 					},
+					// Regorxxx ->
+					// Regorxxx <- New statistics
+					display: {
+						name: ['covAlpha', 'tfRating', 'tfPopularity', 'tfDate', 'tfCustom1Sum', 'tfCustom2Sum', 'tfCustom3Sum', 'tfCustom1Avg', 'tfCustom2Avg', 'tfCustom3Avg', 'margin', 'treeIndent', 'verticalPad', 'verticalAlbumArtPad', 'marginTopBottom', 'sideMarkerWidth'],
+						type: ['float', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'int', 'int', 'int', 'int', 'int', 'int']
+					},
+					// Regorxxx ->	
 					albumArt: {
 						name: ['thumbNailGapStnd', 'thumbNailGapCompact', 'albumArtLetterNo'],
 						type: ['int', 'int', 'int']
@@ -844,21 +959,30 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					},
 					all: {}
 				}
-				input.all.name = input.behaviour.name.concat(input.display.name, input.albumArt.name, input.custom.name, input.advanced.name);
-				input.all.type = input.behaviour.type.concat(input.display.type, input.albumArt.type, input.custom.type, input.advanced.type);
+				// Regorxxx <- Drag n' drop to search box
+				input.all.name = input.behaviour.name.concat(input.search.name, input.display.name, input.albumArt.name, input.custom.name, input.advanced.name);
+				input.all.type = input.behaviour.type.concat(input.search.type, input.display.type, input.albumArt.type, input.custom.type, input.advanced.type);
+				// Regorxxx <- Better debug
+				if (input.all.name.length !== input.all.type.length) { throw new Error('Input names length (' + input.all.name.length +') does not match type length (' + input.all.type.length + ')'); }
+				// Regorxxx ->
+				// Regorxxx ->
 				var box = {
-					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'searchEnter', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'activateOnChange'],
+					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'activateOnChange'],
+					search: ['searchEnter'], // Regorxxx <- New search tab ->
 					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'recItemImage', 'labelStatistics', 'tooltipStatistics', 'inlineRoot', 'showSource', 'nodeLines', 'countsRight', 'colLineDark', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'nowPlayingSidemarker', 'nowPlayingIndicator', 'albumArtOptionsShow', 'facetView', 'showTracks'],
 					albumArt: ['albumArtFlipLabels', 'albumArtDiskCache', 'albumArtPreLoad', 'albumArtFlowMode', 'albumArtDropShadow', 'artTreeSameView', 'albumArtLetter', 'albumArtYearAuto'],
 					custom: ['custFontUse', 'custAlbumArtGrpFontUse', 'custAlbumArtLotFontUse', 'custAlbumArtDurFontUse', 'textUse', 'text_hUse', 'textSelUse', 'nowpUse', 'searchUse', 'txt_boxUse', 'bgUse', 'bg_hUse', 'bgSelUse', 'frameUse', 'bgSelframeUse', 'countsUse', 'icon_cUse', 'icon_eUse', 'icon_hUse', 'lineUse', 's_lineUse', 'sideMarkerUse', 'bgTransUse'],
 					advanced: ['sbarFullHeight', 'winNode', 'blurAutofill', 'libAutoSync', 'pn_h_auto']
 				}
-				box.all = box.behaviour.concat(box.display, box.albumArt, box.custom, box.advanced);
+				// Regorxxx <- New search tab
+				box.all = box.behaviour.concat(box.search, box.display, box.albumArt, box.custom, box.advanced);
+				// Regorxxx ->
 	
 				var radio = {
 					views: [],
 					filters: [],
 					behaviour: ['actionMode', 'sendToCur'],
+					search: [], // Regorxxx <- Drag n' drop to search box ->
 					display: ['itemShowStatistics'],
 					albumArt: ['albumArtLabelType', 'imgStyleFront', 'imgStyleBack', 'imgStyleDisc', 'imgStyleIcon', 'imgStyleArtist'],
 					custom: [],
@@ -946,11 +1070,69 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					window.overlay.style.display = 'none';
 				}
 
-				function setSearch(n) {
-					window.search_dropdown.innerHTML = searchLabels[n];
+				// Regorxxx <- Drag n' drop to search box
+				function setSearchSend(n) {
+					window.searchSend_dropdown.innerHTML = searchLabels[n];
 					ppt['searchSend_internal'].value = n;
-					window.search.style.display = 'none';
+					window.searchSend.style.display = 'none';
 				}
+				
+				function setDragValOpDefault(n) {
+					window.searchDragValOpDefault_dropdown.innerHTML = dragValOpDefaultLabels[n];
+					ppt['searchDragValOp_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragValOpDefault.style.display = 'none';
+				}
+				function setDragValOpCtrl(n) {
+					window.searchDragValOpCtrl_dropdown.innerHTML = dragValOpCtrlLabels[n];
+					ppt['searchDragValOpCtrl_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragValOpCtrl.style.display = 'none';
+				}
+				function setDragValOpAlt(n) {
+					window.searchDragValOpAlt_dropdown.innerHTML = dragValOpAltLabels[n];
+					ppt['searchDragValOpAlt_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragValOpAlt.style.display = 'none';
+				}
+				function setDragTagOpDefault(n) {
+					window.searchDragTagOpDefault_dropdown.innerHTML = dragTagOpDefaultLabels[n];
+					ppt['searchDragTagOp_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragTagOpDefault.style.display = 'none';
+				}
+				function setDragTagOpCtrl(n) {
+					window.searchDragTagOpCtrl_dropdown.innerHTML = dragTagOpCtrlLabels[n];
+					ppt['searchDragTagOpCtrl_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragTagOpCtrl.style.display = 'none';
+				}
+				function setDragTagOpAlt(n) {
+					window.searchDragTagOpAlt_dropdown.innerHTML = dragTagOpAltLabels[n];
+					ppt['searchDragTagOpAlt_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragTagOpAlt.style.display = 'none';
+				}
+				function setDragTrackOpDefault(n) {
+					window.searchDragTrackOpDefault_dropdown.innerHTML = dragTrackOpDefaultLabels[n];
+					ppt['searchDragTrackOp_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragTrackOpDefault.style.display = 'none';
+				}
+				function setDragTrackOpCtrl(n) {
+					window.searchDragTrackOpCtrl_dropdown.innerHTML = dragTrackOpCtrlLabels[n];
+					ppt['searchDragTrackOpCtrl_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragTrackOpCtrl.style.display = 'none';
+				}
+				function setDragTrackOpAlt(n) {
+					window.searchDragTrackOpAlt_dropdown.innerHTML = dragTrackOpAltLabels[n];
+					ppt['searchDragTrackOpAlt_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragTrackOpAlt.style.display = 'none';
+				}
+				function setDragQueryOpDefault(n) {
+					window.searchDragQueryOpDefault_dropdown.innerHTML = dragQueryOpDefaultLabels[n];
+					ppt['searchDragQueryOp_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragQueryOpDefault.style.display = 'none';
+				}
+				function setDragQueryOpShift(n) {
+					window.searchDragQueryOpShift_dropdown.innerHTML = dragQueryOpShiftLabels[n];
+					ppt['searchDragQueryOpShift_internal'].value = ['', 'OR', 'AND'][n];
+					window.searchDragQueryOpShift.style.display = 'none';
+				}
+				// Regorxxx ->
 
 				function setTheme(n) {
 					window.theme_dropdown.innerHTML = themeLabels[n];
@@ -1158,9 +1340,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					sbar_icon_dropdown.style.display = ppt['sbarType_internal'].value != 2 ? "inline-block" : "none";
 					for (i = 0; i < 3; i++) {window.scrolling.insertAdjacentHTML('beforeend', '<div><input id="scroll_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="scroll_checkbox'+i+'" class="checkbox_label">'+scrollLabels[i]+'</label></div>');}
 
-					window.search_dropdown.innerHTML = searchLabels[ppt['searchSend_internal'].value];
-					for (i = 0; i < 3; i++) {window.search.insertAdjacentHTML('beforeend', '<a onclick="setSearch(' + i + ');">'+searchLabels[i]+'</a>');}
-					i = 3; window.searchEnter.insertAdjacentHTML('beforeend', '<div><input id="search_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="search_checkbox'+i+'" class="checkbox_label">'+searchLabels[i]+'</label></div>');
+					// Regorxxx <- Search settings to search tab ->
 					for (i = 0; i < 3; i++) {window.expand.insertAdjacentHTML('beforeend', '<div><input id="expand_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="expand_checkbox'+i+'" class="checkbox_label">'+treeLabels[i]+'</label></div>');}
 					i = 4; window.expandLimit.insertAdjacentHTML('beforeend', '<div class="input_cnt3"><input id="expand_container'+i+'" name="behaviour_input" class="input3" /></div>');
 					for (i = 0; i < 2; i++) {window.selection.insertAdjacentHTML('beforeend', '<div><input id="selection_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="selection_checkbox'+i+'" class="checkbox_label">'+selectionLabels[i]+'</label></div>');}
@@ -1172,6 +1352,49 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 						window.targetPlaylist.insertAdjacentHTML('beforeend', '<div><input id="sendToCur'+i+'" name="sendToCur" style="'+cbox+'" type="radio" /><label for="sendToCur'+i+'" class="checkbox_label">'+targetPlaylistLabels[i]+'</label></div>');
 					}
 				}
+
+				// Regorxxx <- Drag n' drop to search box
+				function setSearch() {	
+					window.searchSend_dropdown.innerHTML = searchLabels[ppt['searchSend_internal'].value];
+					for (i = 0; i < 3; i++) {window.searchSend.insertAdjacentHTML('beforeend', '<a onclick="setSearchSend(' + i + ');">'+searchLabels[i]+'</a>');}
+					i = 3; window.searchEnter.insertAdjacentHTML('beforeend', '<div><input id="search_checkbox'+i+'" name="search_checkbox" style="'+cbox+'" type="checkbox" /><label for="search_checkbox'+i+'" class="checkbox_label">'+searchLabels[i]+'</label></div>');
+					
+					window.searchDragValOpDefault_dropdown.innerHTML = dragValOpDefaultLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragValOp_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragValOpDefault.insertAdjacentHTML('beforeend', '<a onclick="setDragValOpDefault(' + i + ');">'+dragValOpDefaultLabels[i]+'</a>');}
+
+					window.searchDragValOpCtrl_dropdown.innerHTML = dragValOpCtrlLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragValOpCtrl_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragValOpCtrl.insertAdjacentHTML('beforeend', '<a onclick="setDragValOpCtrl(' + i + ');">'+dragValOpCtrlLabels[i]+'</a>');}
+
+					window.searchDragValOpAlt_dropdown.innerHTML = dragValOpAltLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragValOpAlt_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragValOpAlt.insertAdjacentHTML('beforeend', '<a onclick="setDragValOpAlt(' + i + ');">'+dragValOpAltLabels[i]+'</a>');}
+
+					window.searchDragTagOpDefault_dropdown.innerHTML = dragTagOpDefaultLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTagOp_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragTagOpDefault.insertAdjacentHTML('beforeend', '<a onclick="setDragTagOpDefault(' + i + ');">'+dragTagOpDefaultLabels[i]+'</a>');}
+	
+					window.searchDragTagOpCtrl_dropdown.innerHTML = dragTagOpCtrlLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTagOpCtrl_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragTagOpCtrl.insertAdjacentHTML('beforeend', '<a onclick="setDragTagOpCtrl(' + i + ');">'+dragTagOpCtrlLabels[i]+'</a>');}
+
+					window.searchDragTagOpAlt_dropdown.innerHTML = dragTagOpAltLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTagOpAlt_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragTagOpAlt.insertAdjacentHTML('beforeend', '<a onclick="setDragTagOpAlt(' + i + ');">'+dragTagOpAltLabels[i]+'</a>');}
+
+					window.searchDragTrackOpDefault_dropdown.innerHTML = dragTrackOpDefaultLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTrackOp_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragTrackOpDefault.insertAdjacentHTML('beforeend', '<a onclick="setDragTrackOpDefault(' + i + ');">'+dragTrackOpDefaultLabels[i]+'</a>');}
+
+					window.searchDragTrackOpCtrl_dropdown.innerHTML = dragTrackOpCtrlLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTrackOpCtrl_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragTrackOpCtrl.insertAdjacentHTML('beforeend', '<a onclick="setDragTrackOpCtrl(' + i + ');">'+dragTrackOpCtrlLabels[i]+'</a>');}
+					
+					window.searchDragTrackOpAlt_dropdown.innerHTML = dragTrackOpAltLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTrackOpAlt_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragTrackOpAlt.insertAdjacentHTML('beforeend', '<a onclick="setDragTrackOpAlt(' + i + ');">'+dragTrackOpAltLabels[i]+'</a>');}
+
+					window.searchDragQueryOpDefault_dropdown.innerHTML = dragQueryOpDefaultLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragQueryOp_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragQueryOpDefault.insertAdjacentHTML('beforeend', '<a onclick="setDragQueryOpDefault(' + i + ');">'+dragQueryOpDefaultLabels[i]+'</a>');}
+
+					window.searchDragQueryOpShift_dropdown.innerHTML = dragQueryOpShiftLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragQueryOpShift_internal'].value.toUpperCase())];
+					for (i = 0; i < 3; i++) {window.searchDragQueryOpShift.insertAdjacentHTML('beforeend', '<a onclick="setDragQueryOpShift(' + i + ');">'+dragQueryOpShiftLabels[i]+'</a>');}
+
+					for (i = 0; i < 3; i++) {window.dragTags.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="dragTags_container'+i+'" name="display_input" class="input70" /><label for="metrics_container'+i+'" class="inp_label2">'+dragTagsLabels[i]+'</label></div>');}
+				}
+				// Regorxxx ->
 
 				function setDisplay() {
 					for (i = 0; i < 3; i++) {window.bar.insertAdjacentHTML('beforeend', '<div><input id="bar_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="bar_checkbox'+i+'" class="checkbox_label">'+barLabels[i]+'</label></div>');}
@@ -1200,8 +1423,10 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					window.itemCounts_dropdown.innerHTML = itemCountsLabels[ppt['nodeCounts_internal'].value];
 					for (i = 0; i < 3; i++) {window.itemCounts.insertAdjacentHTML('beforeend', '<a onclick="setItemCounts(' + i + ');">'+itemCountsLabels[i]+'</a>');}
 					i = 3; window.countsRight.insertAdjacentHTML('beforeend', '<div><input id="itemCounts_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="itemCounts_checkbox'+i+'" class="checkbox_label">'+itemCountsLabels[i]+'</label></div>');
-					for (i = 0; i < 3; i++) {window.statistics2.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="statistics_container'+i+'" name="display_input" class="input70" /><label for="metrics_container'+i+'" class="inp_label2">'+statisticsLabels[i]+'</label></div>');}
-					for (i = 4; i < 6; i++) {window.labelStatistics.insertAdjacentHTML('beforeend', '<div><input id="itemCounts_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="itemCounts_checkbox'+i+'" class="checkbox_label">'+statisticsLabels[i]+'</label></div>')};
+					// Regorxxx <- New statistics
+					for (i = 0; i < 9; i++) {window.statistics2.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="statistics_container'+i+'" name="display_input" class="input70" /><label for="metrics_container'+i+'" class="inp_label2">'+statisticsLabels[i]+'</label></div>');}
+					for (i = 10; i < 12; i++) {window.labelStatistics.insertAdjacentHTML('beforeend', '<div><input id="itemCounts_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="itemCounts_checkbox'+i+'" class="checkbox_label">'+statisticsLabels[i]+'</label></div>')};
+					// Regorxxx ->
 					window.showHl_dropdown.innerHTML = highLightLabels[ppt['highLightRow_internal'].value];
 					for (i = 0; i < 4; i++) {window.showHl.insertAdjacentHTML('beforeend', '<a onclick="setHoverBg(' + i + ');">'+highLightLabels[i]+'</a>');}
 					i = 0; window.frameStyle.insertAdjacentHTML('beforeend', '<div><input id="frame_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="frame_checkbox'+i+'" class="checkbox_label">Frame style (album art): image border</label></div>');
@@ -1295,6 +1520,7 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				setViews();
 				setFilters();
 				setBehaviour();
+				setSearch(); // Regorxxx <- Drag n' drop to search box ->
 				setDisplay();
 				setAlbumArt();
 				setCustom();
@@ -1667,9 +1893,23 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 					setsbarType(ppt['sbarType_internal'].default_value);
 					setSbarCol(ppt['sbarCol_internal'].default_value);
 					setSbarIcon(ppt['highLightRow_internal'].default_value);
-					
-					setSearch(ppt['searchSend_internal'].default_value);
 				}
+				// Regorxxx <- New search tab. Drag n' drop to search box
+				if (cur.page == 'search') {
+					setSearchSend(ppt['searchSend_internal'].default_value);
+					setDragValOpDefault(['', 'OR', 'AND'].indexOf(ppt['searchDragValOp_internal'].default_value.toUpperCase()));
+					setDragValOpCtrl(['', 'OR', 'AND'].indexOf(ppt['searchDragValOpCtrl_internal'].default_value.toUpperCase()));
+					setDragValOpAlt(['', 'OR', 'AND'].indexOf(ppt['searchDragValOpAlt_internal'].default_value.toUpperCase()));
+					setDragTagOpDefault(['', 'OR', 'AND'].indexOf(ppt['searchDragTagOp_internal'].default_value.toUpperCase()));
+					setDragTagOpCtrl(['', 'OR', 'AND'].indexOf(ppt['searchDragTagOpCtrl_internal'].default_value.toUpperCase()));
+					setDragTagOpAlt(['', 'OR', 'AND'].indexOf(ppt['searchDragTagOpAlt_internal'].default_value.toUpperCase()));
+					setDragTrackOpDefault(['', 'OR', 'AND'].indexOf(ppt['searchDragTrackOp_internal'].default_value.toUpperCase()));
+					setDragTrackOpCtrl(['', 'OR', 'AND'].indexOf(ppt['searchDragTrackOpCtrl_internal'].default_value.toUpperCase()));
+					setDragTrackOpAlt(['', 'OR', 'AND'].indexOf(ppt['searchDragTrackOpAlt_internal'].default_value.toUpperCase()));
+					setDragQueryOpDefault(['', 'OR', 'AND'].indexOf(ppt['searchDragQueryOp_internal'].default_value.toUpperCase()));
+					setDragQueryOpShift(['', 'OR', 'AND'].indexOf(ppt['searchDragQueryOpShift_internal'].default_value.toUpperCase()));
+				}
+				// Regorxxx ->		
 				if (cur.page == 'display') {
 					setTheme(ppt['theme_internal'].default_value);
 				}
@@ -1775,6 +2015,18 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				}
 			}
 
+			// Regorxxx <- Drag n' drop to search box
+			function showDragHelp() {
+				var divToggleMode = document.getElementById('drag_text');
+				if (divToggleMode.style.display === 'none') {
+					divToggleMode.style.display = 'block';
+					divToggleMode.scrollIntoView();
+				} else {
+					divToggleMode.style.display = 'none';
+				}
+			}
+			// Regorxxx ->
+
 			var divToggleSyn = document.getElementById('syntax_help');
 			var syntax_btn = document.getElementById('syntax_button');
  
@@ -1810,7 +2062,20 @@ Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline
 				['sbarType_dropdown', 'sbarType'],
 				['sbarCol_dropdown', 'sbarCol'],
 				['sbarIcon_dropdown', 'sbarIcon'],
-				['search_dropdown', 'search'],
+				// Regorxxx <- Drag n' drop to search box
+				['searchSend_dropdown', 'searchSend'],
+				['searchDragValOpDefault_dropdown', 'searchDragValOpDefault'],
+				['searchDragValOpCtrl_dropdown', 'searchDragValOpCtrl'],
+				['searchDragValOpAlt_dropdown', 'searchDragValOpAlt'],
+				['searchDragTagOpDefault_dropdown', 'searchDragTagOpDefault'],
+				['searchDragTagOpCtrl_dropdown', 'searchDragTagOpCtrl'],
+				['searchDragTagOpAlt_dropdown', 'searchDragTagOpAlt'],
+				['searchDragTrackOpDefault_dropdown', 'searchDragTrackOpDefault'],
+				['searchDragTrackOpCtrl_dropdown', 'searchDragTrackOpCtrl'],
+				['searchDragTrackOpAlt_dropdown', 'searchDragTrackOpAlt'],
+				['searchDragQueryOpDefault_dropdown', 'searchDragQueryOpDefault'],
+				['searchDragQueryOpShift_dropdown', 'searchDragQueryOpShift'],
+				// Regorxxx ->
 				['showHl_dropdown', 'showHl'],
 				['theme_dropdown', 'themeBg'],
 				['thumbSize_dropdown', 'thumbSize']

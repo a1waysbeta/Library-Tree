@@ -620,23 +620,6 @@ function on_locations_added(taskId, handleList) {
 // Regorxxx ->
 
 // Regorxxx <- Drag n' drop to search box
-// Mask for mouse callbacks
-var MK_LBUTTON = 0x0001;
-var MK_SHIFT = 0x0004; // The SHIFT key is down.
-var MK_CONTROL = 0x0008; // The CTRL key is down.
-const dropEffect = {
-	none: 0,
-	copy: 1,
-	move: 2,
-	link: 4,
-	scroll: 0x80000000
-};
-const dropMask = { // on_drag_over, on_drag_leave, on_drag_over, on_drag_enter
-	ctrl: MK_LBUTTON + MK_CONTROL,
-	shift: MK_LBUTTON + MK_SHIFT,
-	shiftCtrl: MK_LBUTTON + MK_CONTROL + MK_SHIFT
-};
-
 // Drag n drop to copy/move tracks to playlists (only files from foobar2000)
 function on_drag_enter(action, x, y, mask) {
 	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
@@ -657,7 +640,7 @@ function on_drag_over(action, x, y, mask) {
 	on_mouse_move(x, y, mask);
 	// Set effects
 	action.Effect = dropEffect.copy;
-	action.Text = 'Add paths to search box';
+	action.Text = search.getDragDropTooltipText(ppt.searchDragMethod, mask);
 };
 
 function on_drag_drop(action, x, y, mask) {
@@ -667,37 +650,8 @@ function on_drag_drop(action, x, y, mask) {
 	action.Effect = dropEffect.none; // Forces not sending things to a playlist
 	const selItems = fb.GetSelections(1);
 	if (selItems && selItems.Count) {
-		let input = '';
-		const trackSearch = (method) => {
-			if (method === 0 && panel.folderView) { // Auto: tags or path
-				const paths = selItems.GetLibraryRelativePaths()
-					.map((path) => path.split('\\').slice(-1)[0])
-					.filter(Boolean)
-					.map((s) => $.escapeRegExp(s));
-				input = '/' + paths.join('|') + '/i';
-				return true;
-			} else if (method === 0 && !panel.folderView || method === 1) { // Tags
-				const searchTags = $.jsonParse(ppt.searchDragTags);
-				const trackQueries = $.getHandleListTags(selItems, searchTags).map((trackTags) => {
-					return $.queryJoin(
-						searchTags.map((searchTag, i) => {
-							const values = [...new Set(trackTags[i].map(s => s.toLowerCase()))];
-							return searchTag.toUpperCase() === 'ALBUM ARTIST'
-								? $.queryJoin([
-									$.queryCombinations(values, 'ALBUM ARTIST', 'AND'),
-									$.queryCombinations(values, 'ARTIST', 'AND'),
-								], 'OR')
-								: $.queryCombinations(values, searchTag, 'AND');
-						}),
-						'AND'
-					);
-				});
-				input = $.queryJoin([...new Set(trackQueries)], 'OR');
-				return true;
-			}
-			return false;
-		};
-		trackSearch(ppt.searchDragMethod);
+		const input = search.getDragDropExpression(selItems, ppt.searchDragMethod, mask);
+		search.clear();
 		if (input.length) {
 			input.split('').forEach((s) => search.on_char(s.charCodeAt(0), true));
 			search.on_char(vk.enter);

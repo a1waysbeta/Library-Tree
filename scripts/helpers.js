@@ -552,3 +552,22 @@ if (!Set.prototype.difference) {
 	};
 }
 // Regorxxx ->
+
+// Regorxxx <- Drag n' drop to search box
+// Mask for mouse callbacks
+var MK_LBUTTON = 0x0001;
+var MK_SHIFT = 0x0004; // The SHIFT key is down.
+var MK_CONTROL = 0x0008; // The CTRL key is down.
+const dropEffect = {
+	none: 0,
+	copy: 1,
+	move: 2,
+	link: 4,
+	scroll: 0x80000000
+};
+const dropMask = { // on_drag_over, on_drag_leave, on_drag_over, on_drag_enter
+	ctrl: MK_LBUTTON + MK_CONTROL,
+	shift: MK_LBUTTON + MK_SHIFT,
+	shiftCtrl: MK_LBUTTON + MK_CONTROL + MK_SHIFT
+};
+// Regorxxx ->

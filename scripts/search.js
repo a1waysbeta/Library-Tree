@@ -37,6 +37,96 @@ class Search {
 			this.tt('');
 		};
 		// Regorxxx ->
+		// Regorxxx <- Drag n' drop to search box
+		this.getDragDropTags = (mask) => {
+			const bCtrl = (mask & MK_CONTROL) === MK_CONTROL;
+			const bAlt = (mask & 32) === 32;
+			return $.jsonParse(
+				bAlt 
+					? ppt.searchDragTagsAlt 
+					: bCtrl ? ppt.searchDragTagsCtrl : ppt.searchDragTags
+			);
+		}
+
+		this.getDragDropOperators = (mask) => {
+			const operators = {value: '', tag: '', track: '', query: ''};
+			const bCtrl = (mask & MK_CONTROL) === MK_CONTROL;
+			const bAlt = (mask & 32) === 32;
+			const bShift = (mask & MK_SHIFT) === MK_SHIFT;
+			if (bAlt) {
+				operators.value = ppt.searchDragValOpAlt;
+				operators.tag = ppt.searchDragTagOpAlt;
+				operators.track = ppt.searchDragTrackOpAlt;
+			} else if (bCtrl) {
+				operators.value = ppt.searchDragValOpCtrl;
+				operators.tag = ppt.searchDragTagOpCtrl;
+				operators.track = ppt.searchDragTrackOpCtrl;
+			} else {
+				operators.value = ppt.searchDragValOp;
+				operators.tag = ppt.searchDragTagOp;
+				operators.track = ppt.searchDragTrackOp;
+			}
+			operators.query = bShift ? ppt.searchDragQueryOpShift : ppt.searchDragQueryOp;
+			return operators;
+		}
+
+		this.getDragDropQuery = (selItems, searchTags, operators) => {
+			if (!operators.track) { selItems = new FbMetadbHandleList(selItems[0]); }
+			const trackQueries = $.getHandleListTags(selItems, searchTags).map((trackTags) => {
+				return $.queryJoin(
+					searchTags.map((searchTag, i) => {
+						if (!operators.tag && i > 0) { return; }
+						const values = [...new Set(trackTags[i].map(s => s.toLowerCase()))];
+						if (!operators.value) { values.length = 1; }
+						return searchTag.toUpperCase() === 'ALBUM ARTIST'
+							? $.queryJoin([
+								$.queryCombinations(values, 'ALBUM ARTIST', operators.value),
+								$.queryCombinations(values, 'ARTIST', operators.value),
+							], 'OR')
+							: $.queryCombinations(values, searchTag, operators.value);
+					}),
+					operators.tag
+				);
+			}).filter(Boolean);
+			return $.queryJoin([...new Set(trackQueries)], operators.track);
+		}
+
+		this.getDragDropPathRegexp = (selItems) => {
+			const paths = selItems.GetLibraryRelativePaths()
+				.map((path) => path.split('\\').slice(-1)[0])
+				.filter(Boolean)
+				.map((s) => $.escapeRegExp(s));
+			return '/' + paths.join('|') + '/i';
+		}
+
+		this.getDragDropExpression = (selItems, method, mask) => {
+			let input = '';
+			if (method === 0 && panel.folderView) { // Auto: tags or path
+				input = this.getDragDropPathRegexp(selItems);
+			} else if (method === 0 && !panel.folderView || method === 1) { // Tags
+				const searchTags = this.getDragDropTags(mask);
+				const operators = this.getDragDropOperators(mask);
+				input = this.getDragDropQuery(selItems, searchTags, operators);
+				if (panel.search.txt && operators.query) {
+					input = $.queryJoin([panel.search.txt, input], operators.query);
+				}
+			}
+			return input;
+		}
+
+		this.getDragDropTooltipText = (method, mask) => {
+			if (method === 0 && panel.folderView) { // Auto: tags or path
+				return 'Add paths to search box';
+			} else { // Tags
+				const searchTags = this.getDragDropTags(mask);
+				const operators = this.getDragDropOperators(mask);
+				const tagsDisplay = operators.tag
+					? searchTags.join(' ' + operators.tag + ' ')
+					: searchTags[0];
+				return (operators.query || !panel.search.txt ? 'Add' : 'Replace') + ' query: ' + tagsDisplay;
+			}
+		}
+		// Regorxxx ->
 
 		this.logHistory = $.debounce(() => {
 			let item = -1;
