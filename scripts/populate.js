@@ -115,19 +115,47 @@ class Populate {
 		tooltip.Activate();
 	}
 
+	// Regorxxx <- Code cleanup
 	add(x, y, pl) {
+		this.selectAndRun(
+			x, y, 
+			() => this.load({ bAddToPls: true, bAutoPlay: false, bUseDefaultPls: pl, bInsertToPls: false }), 
+			false
+		);
+	}
+	// Regorxxx ->
+
+	// Regorxxx <- Top tracks
+	selectAndRun(x, y, callback, bRepaint = true) {
 		if (y < panel.search.h) return;
 		const ix = this.get_ix(x, y, true, false);
 		panel.pos = ix;
-		if (ix < this.tree.length && ix >= 0)
+		if (ix < this.tree.length && ix >= 0) {
 			if (this.check_ix(this.tree[ix], x, y, true)) {
 				this.clearSelected();
 				this.tree[ix].sel = true;
 				this.getTreeSel();
-				this.load({ bAddToPls: true, bAutoPlay: false, bUseDefaultPls: pl, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
+				callback();
+				if (bRepaint) { panel.treePaint(); }
 				lib.treeState(false, ppt.rememberTree);
 			}
+		}
 	}
+
+	addTopTracks(x, y, bAddToPls, bUseDefaultPls = !ppt.sendToCur) {
+		this.selectAndRun(
+			x, y, 
+			() => this.loadTopTracks(bAddToPls, bUseDefaultPls)
+		);
+	}
+
+	loadTopTracks(bAddToPls, bUseDefaultPls) {
+		const items = fb.GetQueryItems(this.getHandleList(), lib.processCustomTf(ppt.topTracksFilter));
+		const bCustomSort = ppt.topTracksSorting.length;
+		if (bCustomSort) { items.OrderByFormat(fb.TitleFormat(lib.processCustomTf(ppt.topTracksSorting)), 1); }
+		this.load({ handleList: items, bAddToPls, bAutoPlay: false, bUseDefaultPls, bInsertToPls: false, bApplySort: !bCustomSort });
+	}
+	// Regorxxx ->
 
 	addItems(arr, item) {
 		item.forEach(v => {
@@ -1677,7 +1705,7 @@ class Populate {
 
 		if (bApplySort) { this.sortIfNeeded(items); }
 		this.selList = items.Clone();
-		this.selection_holder.SetSelection(this.selList, 6); // Regorxxx <- Set selection type to media library viewer ->
+		this.selection_holder.SetSelection(this.selList);
 		const plnIsValid = pl_stnd_idx != -1 && pl_stnd_idx < plman.PlaylistCount;
 		const pllockRemoveOrAdd = plnIsValid ? plman.GetPlaylistLockedActions(pl_stnd_idx).includes('RemoveItems') || plman.GetPlaylistLockedActions(pl_stnd_idx).includes('ReplaceItems') || plman.GetPlaylistLockedActions(pl_stnd_idx).includes('AddItems') : false;
 		if (!bAddToPls && pllockRemoveOrAdd) return;
@@ -1819,6 +1847,11 @@ class Populate {
 					});
 				}
 			}, 180);
+		// Regorxxx <- Top tracks
+		} else if ((type == 'mbtn' || type == 'alt') && [3, 4, 5, 6].includes(ppt[`${type}ClickAction`])) {
+			if (!ppt.libSource) return;
+			this.addTopTracks(x, y, ppt[`${type}ClickAction`] >= 5, ![4, 6].includes(ppt[`${type}ClickAction`]));
+		// Regorxxx ->
 		} else {
 			if (!ppt.libSource) return;
 			this.add(x, y, !ppt[`${type}ClickAction`]);

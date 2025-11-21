@@ -89,7 +89,7 @@ class PanelProperties {
 let properties = [
 	['- Show Html Dialog Unsupported-0 Supported-1 Autocheck-2', 2, 'isHtmlDialogSupported'],
 	['Action Mode', 0, 'actionMode'],
-	['Alt-Click Action', 0, 'altClickAction'],
+	['Alt-Click Action', 3, 'altClickAction'], // Regorxxx <- Add to default (0), Add to current (1), Add to queue (2), Send top tracks to default (3), Send top tracks to current (4) , Add top tracks to default (5), Add top tracks to current (6) ->
 
 	['Colour Line Dark', false, 'colLineDark'],
 	['Colour Swap', false, 'swapCol'],
@@ -221,7 +221,7 @@ let properties = [
 	['Line Padding Album Art', 2, 'verticalAlbumArtPad'],
 	['Margin', Math.round(8 * $.scale), 'margin'],
 	['Margin Override Top/Bottom (No Top Bar)', Math.round(8 * $.scale), 'marginTopBottom'],
-	['Middle-Click Action', 1, 'mbtnClickAction'],
+	['Middle-Click Action', 0, 'mbtnClickAction'],  // Regorxxx <- Add to default (0), Add to current (1), Add to queue (2), Send top tracks to default (3), Send top tracks to current (4) , Add top tracks to default (5), Add top tracks to current (6) ->
 	['Mouse: Always Pointer (no hand)', false, 'mousePointerOnly'],
 
 	['Node: Auto Collapse', false, 'autoCollapse'],

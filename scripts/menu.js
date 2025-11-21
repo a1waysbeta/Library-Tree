@@ -757,10 +757,7 @@ class MenuItems {
 			// Regorxxx <- Top tracks
 			case 6:
 			case 7:
-				const items = fb.GetQueryItems(pop.getHandleList(), lib.processCustomTf(ppt.topTracksFilter));
-				const bCustomSort = ppt.topTracksSorting.length;
-				if (bCustomSort) { items.OrderByFormat(fb.TitleFormat(lib.processCustomTf(ppt.topTracksSorting)), 1); }
-				pop.load({ handleList: items, bAddToPls: i === 7, bAutoPlay: false, bUseDefaultPls: !ppt.sendToCur, bInsertToPls: false, bApplySort: !bCustomSort });
+				pop.loadTopTracks(i === 7, !ppt.sendToCur);
 				panel.treePaint();
 				lib.treeState(false, ppt.rememberTree);
 				break;

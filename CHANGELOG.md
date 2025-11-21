@@ -1,3 +1,13 @@
+# v2.4.0.mod.19
+### Added
+	- New 'Send top tracks' and 'Add top tracks' mouse actions for Alt + L. Click and M. Click. Available for current and default playlist.
+### Changed
+	- Reverted changes to selection type at FbUiSelectionHolder because it conflicts with other settings, resulting in bugs when adding items (instead of replacing them). It will be reimplemented on future versions, replacing the current Library Tree code and using the native library viewer playlist.
+	- Default action for Alt + L. Click is now 'Send Top tracks to default playlist'.
+	- Internal changes (for future development).
+
+<br />
+
 # v2.4.0.mod.18
 ### Added
 	- New 'Send top tracks' and 'Add top tracks' contextual menu entries which filter and sort the current selection on panel with customizable expressions. Note this custom filter is totally independent to the view/filter patterns being used on the panel, and is applied on top of them.

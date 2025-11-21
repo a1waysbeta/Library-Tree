@@ -824,7 +824,7 @@
 				var albumArtGapLabels = ['Normal (0 = auto)', 'Compact'];
 				var albumArtLabels = ['None', 'Bottom', 'Right', 'Blend', 'Dark', 'Flip'];
 				var albumArtOverlayLabels = ['None', 'Track Count', 'Year'];
-				var altClickLabels = ['Add to default playlist', 'Add to current playlist', 'Add to playback queue (alt dblclk removes)'];
+				var altClickLabels = ['Add to default playlist', 'Add to current playlist', 'Add to playback queue (alt dblclk removes)', 'Send Top tracks to default playlist', 'Send Top tracks to current playlist', 'Add Top tracks to default playlist', 'Add Top tracks to current playlist']; // Regorxxx <- Top tracks ->
 				var barLabels = ['Search', 'Filter Button', 'Settings button*'];
 				var clickLabels = ppt['actionMode_internal'].value == 1 ? ['Send to playlist'] : ppt['actionMode_internal'].value == 2 ? ['Select'] : ['Select', 'Send to playlist', 'Send to playlist & play', 'Send to playlist & play [add if playing]'];
 				var colourLabels = ['Text', 'Text highlight', 'Text selection', 'Nowplaying text / sidemarker highlight', 'Text search', 'Buttons', 'Background', 'Background accent', 'Background selection', 'Frame hover', 'Frame selection', 'Counts & statistics', 'Node collapse', 'Node expand', 'Node hover', 'Node lines', 'Separators', 'Side marker', 'Transparent fill'];
@@ -840,7 +840,11 @@
 				var keystrokeLabels = ['Select', 'Send to playlist']
 				var itemCountsLabels = ['Hide', '# Tracks', '# Items', 'Align right (tree / text)'];
 				var metricsLabels = ['Margin', 'Tree indent', 'Line padding tree', 'Line padding album art', 'Margin overide top/bottom (no top bar)', 'Side marker width (0 = auto)'];
-				var mbtnClickLabels = ppt['actionMode_internal'].value == 2 ? ['Add to playback queue (middle dblclk removes)'] : ['Add to default playlist', 'Add to current playlist', 'Add to playback queue (middle dblclk removes)'];
+				// Regorxxx <- Top tracks
+				var mbtnClickLabels = ppt['actionMode_internal'].value == 2 
+					? ['Add to playback queue (middle dblclk removes)'] 
+					: ['Add to default playlist', 'Add to current playlist', 'Add to playback queue (middle dblclk removes)', 'Send Top tracks to default playlist', 'Send Top tracks to current playlist', 'Add Top tracks to default playlist', 'Add Top tracks to current playlist'];
+				// Regorxxx ->
 				var nodeLabels = ['Squares', 'Arrows', 'Arrows Light', 'Triangles', 'Triangles Light', 'Signs', 'Custom'];
 				var playlistLabels = ['Default', 'Activate when changed'];
 				var playlistSortLabels = ['Playlist sort order (empty = default)'];				
@@ -1286,12 +1290,16 @@
 						window.mbtnClick.insertAdjacentHTML('beforeend', '<a>PRESET</a>');
 						window.mbtnClick_dropdown.style.background = 'rgb(244, 67, 54)';
 					} else {
+						// Regorxxx <- Top tracks
 						window.mbtnClick_dropdown.innerHTML = mbtnClickLabels[ppt['mbtnClickAction_internal'].value];
-						for (i = 0; i < 3; i++) {window.mbtnClick.insertAdjacentHTML('beforeend', '<a onclick="setMbtnClickAction(' + i + ');">'+mbtnClickLabels[i]+'</a>');}
+						for (i = 0; i < 7; i++) {window.mbtnClick.insertAdjacentHTML('beforeend', '<a onclick="setMbtnClickAction(' + i + ');">'+mbtnClickLabels[i]+'</a>');}
+						// Regorxxx ->
 					}
 
+					// Regorxxx <- Top tracks
 					window.altClick_dropdown.innerHTML = altClickLabels[ppt['altClickAction_internal'].value];
-					for (i = 0; i < 3; i++) {window.altClick.insertAdjacentHTML('beforeend', '<a onclick="setAltClickAction(' + i + ');">'+altClickLabels[i]+'</a>');}
+					for (i = 0; i < 7; i++) {window.altClick.insertAdjacentHTML('beforeend', '<a onclick="setAltClickAction(' + i + ');">'+altClickLabels[i]+'</a>');}
+					// Regorxxx ->
 
 					window.keystroke_dropdown.innerHTML = keystrokeLabels[ppt['keyAction_internal'].value];
 					for (i = 0; i < 2; i++) {window.keystroke.insertAdjacentHTML('beforeend', '<a onclick="setKeyAction(' + i + ');">'+keystrokeLabels[i]+'</a>');}
