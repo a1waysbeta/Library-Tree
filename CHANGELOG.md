@@ -5,6 +5,7 @@
 ### Fixed
 - Fixed bug on original script within HTML options panel on dropdown layout when opening help boxes. Now they are placed relative to the buttons which open them.
 - Fixed bug on original script related to throttle helper.
+- Fixed bug with high DPI settings on HTML message popup. See [here](https://hydrogenaudio.org/index.php/topic,111060.msg1072346.html#msg1072346).
 
 <br />
 
