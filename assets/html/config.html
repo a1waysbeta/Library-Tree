@@ -595,6 +595,8 @@
 					<span id="noArtistStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
 					</span>
 					<div class="info5"><i>Click dropdown items for full preview (provided visible in panel).</i></div>
+					<!-- Regorxxx Fix dropdown content with invisible text -->
+					<p class="invisible">Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.</p>
 				</div>
 			</div>
 			<div id="help_text" style="display: none;">
@@ -1068,8 +1070,8 @@
 				var box = {
 					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'activateOnChange', 'selectAdded'], // Regorxxx <- Send to playlist & select ->
 					search: ['searchEnter', 'searchRefreshTf'], // Regorxxx <- New search tab ->
-					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'recItemImage', 'inlineRoot', 'showSource', 'nodeLines', 'colLineDark', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'nowPlayingSidemarker', 'nowPlayingIndicator', 'albumArtOptionsShow', 'facetView'], // Regorxxx <- New statistics tab ->
-					statistics: ['labelStatistics', 'tooltipStatistics', 'showTracks', 'countsRight'], // Regorxxx <- New statistics tab ->
+					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'recItemImage', 'inlineRoot', 'showSource', 'nodeLines', 'colLineDark', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'nowPlayingSidemarker', 'nowPlayingIndicator', 'albumArtOptionsShow', 'facetView', 'showTracks'], // Regorxxx <- New statistics tab ->
+					statistics: ['labelStatistics', 'tooltipStatistics', 'countsRight'], // Regorxxx <- New statistics tab ->
 					albumArt: ['albumArtFlipLabels', 'albumArtDiskCache', 'albumArtPreLoad', 'albumArtFlowMode', 'albumArtDropShadow', 'artTreeSameView', 'albumArtLetter', 'albumArtYearAuto'],
 					custom: ['custFontUse', 'custAlbumArtGrpFontUse', 'custAlbumArtLotFontUse', 'custAlbumArtDurFontUse', 'textUse', 'text_hUse', 'textSelUse', 'nowpUse', 'searchUse', 'txt_boxUse', 'bgUse', 'bg_hUse', 'bgSelUse', 'frameUse', 'bgSelframeUse', 'countsUse', 'icon_cUse', 'icon_eUse', 'icon_hUse', 'lineUse', 's_lineUse', 'sideMarkerUse', 'bgTransUse'],
 					advanced: ['sbarFullHeight', 'panelInternalCache', 'libSourceChained', 'winNode', 'blurAutofill', 'libAutoSync', 'pn_h_auto', 'logLibProfiler'] // Regorxxx <- Library profiling. Don't create cache playlists if possible. Chained facets updates ->
@@ -1083,13 +1085,13 @@
 					filters: [],
 					behaviour: ['actionMode', 'sendToCur'],
 					search: [], // Regorxxx <- Drag n' drop to search box ->
-					display: ['itemShowStatistics'],
-					search: [], // Regorxxx <- New statistics tab ->
+					display: [],
+					statistics: ['itemShowStatistics'], // Regorxxx <- New statistics tab ->
 					albumArt: ['albumArtLabelType', 'imgStyleFront', 'imgStyleBack', 'imgStyleDisc', 'imgStyleIcon', 'imgStyleArtist'],
 					custom: [],
 					advanced: []
 				}
-				radio.all = radio.behaviour.concat(radio.display, radio.albumArt);
+				radio.all = radio.behaviour.concat(radio.statistics, radio.albumArt);
 				callback = parsed_args[3];
 				props_callback = parsed_args[4];
 
@@ -1454,6 +1456,9 @@
 					i = 4; window.expandLimit.insertAdjacentHTML('beforeend', '<div class="input_cnt3"><input id="expand_container'+i+'" name="behaviour_input" class="input3" /></div>');
 					for (i = 0; i < 2; i++) {window.selection.insertAdjacentHTML('beforeend', '<div><input id="selection_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="selection_checkbox'+i+'" class="checkbox_label">'+selectionLabels[i]+'</label></div>');}
 					for (i = 0; i < 3; i++) {window.remember.insertAdjacentHTML('beforeend', '<div><input id="remember_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="remember_checkbox'+i+'" class="checkbox_label">'+rememberLabels[i]+'</label></div>');}
+					// Regorxxx <- Fix follow selection checkboxes
+					for (i = 0; i < 2; i++) {window.followCurrent.insertAdjacentHTML('beforeend', '<div><input id="followCurrent_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="followCurrent_checkbox'+i+'" class="checkbox_label">'+followCurrentLabels[i]+'</label></div>');}
+					// Regorxxx ->
 					i = 0; window.playlist.insertAdjacentHTML('beforeend', '<div class="input_cnt2"><label for="playlist_container'+i+'" class="inp_label1">'+playlistLabels[i]+'</label><input id="playlist_container'+i+'" name="behaviour_input" class="input75" /></div>');
 					i = 1; window.playlist.insertAdjacentHTML('beforeend', '<div><input id="playlist_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="playlist_checkbox'+i+'" class="checkbox_label">'+playlistLabels[i]+'</label></div>');
 					window.playlistSort.insertAdjacentHTML('beforeend', '<div class="input_cnt3"><label for="playlistSort_container1" class="inp_label1">'+playlistSortLabels[0]+'</label><input id="playlistSort_container1" name="behaviour_input" class="input75" /></div>');
@@ -1584,7 +1589,6 @@
 					window.overlay_dropdown.innerHTML = albumArtOverlayLabels[ppt['itemOverlayType_internal'].value];
 					for (i = 0; i < 3; i++) {window.overlay.insertAdjacentHTML('beforeend', '<a onclick="setOverlay(' + i + ');">'+albumArtOverlayLabels[i]+'</a>');}
 
-					for (i = 0; i < 2; i++) {window.followCurrent.insertAdjacentHTML('beforeend', '<div><input id="selection_checkbox'+i+'" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="selection_checkbox'+i+'" class="checkbox_label">'+followCurrentLabels[i]+'</label></div>');}
 					for (i = 0; i < 2; i++) {window.useCache.insertAdjacentHTML('beforeend', '<div><input id="cache_checkbox" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="cache_checkbox" class="checkbox_label">'+diskCacheLabels[i]+'</label></div>');}
 					var pth = '...*YOUR PATH*...\\art_img\\$cut(%artist%,1)\\%artist%\\*    [CHANGE ...*YOUR PATH*... as required; pattern assumes biography is saving to default folder]';
 					window.photoPath.insertAdjacentHTML('beforeend', '<div class="input_cnt1" id="view_cnt_photoPath"><input name="photoPath_view" class="input98" readonly value="'+pth+'" /></div>')
@@ -1695,8 +1699,9 @@
 				}
 				var nm = page.toString()+'_checkbox', boxes = document.querySelectorAll(page == 'all' ? "[name$='_checkbox']" : "[name="+nm+"]");
 				for (i = 0; i < boxes.length; i++) {
-					boxes[i].checked = ppt[box[page][i] + '_internal'][value];
-				}		
+					try { boxes[i].checked = ppt[box[page][i] + '_internal'][value]; }
+					catch (e) { alert('Error on ' + nm + ' -> ' + boxes[i].id + ' -> ' + box[page][i] + '_internal (' + i + ')' ); }
+				}
 
 				if (ppt['albumArtShow_internal'][value]) {
 					window.show_checkbox4.parentNode.disabled = true;
@@ -2004,7 +2009,8 @@
 				
 				var nm = page.toString()+'_input', inputs = document.querySelectorAll(page == 'all' ? "[name$='_input']" : "[name="+nm+"]");
 				for (i = 0; i < inputs.length; i++) {
-					inputs[i].value = ppt[input[page].name[i] + '_internal'][value];
+					try { inputs[i].value = ppt[input[page].name[i] + '_internal'][value]; }
+					catch (e) { alert('Error on ' + nm + ' -> ' + inputs[i].id + ' -> ' + input[page].name[i] + '_internal (' + i + ')' ); }
 				}
 
 				window.coverFormat_container1.parentNode.disabled = ppt['theme_internal'].value != 4;
@@ -2027,24 +2033,21 @@
 				setCheckboxes(cur.page, 'default_value');
 				setInputs(cur.page, 'default_value');
 				setRadioBtns(cur.page, 'default_value');
+				// Regorxxx <- Fix reset
 				if (cur.page == 'behaviour') {
 					setClickAction(ppt['clickAction_internal'].default_value);
 					setDblClickAction(ppt['dblClickAction_internal'].default_value);
 					setKeyAction(ppt['keyAction_internal'].default_value);
-					
-					setRoot(ppt['rootNode_internal'].default_value);
-					setNode(ppt['nodeStyle_internal'].default_value);
-					setItemCounts(ppt['nodeCounts_internal'].default_value);
-					setHoverBg(ppt['highLightRow_internal'].default_value);
-
+					setMbtnClickAction(ppt['mbtnClickAction_internal'].default_value)
+					setAltClickAction(ppt['altClickAction_internal'].default_value)
 					setSbarShow(ppt['sbarShow_internal'].default_value);
 					setsbarType(ppt['sbarType_internal'].default_value);
 					setSbarCol(ppt['sbarCol_internal'].default_value);
-					setSbarIcon(ppt['highLightRow_internal'].default_value);
+					setSbarIcon(ppt['sbarButType_internal'].default_value);
 				}
+				// Regorxxx ->
 				// Regorxxx <- New search tab. Drag n' drop to search box
 				if (cur.page == 'search') {
-					setSearchSend(ppt['searchSend_internal'].default_value);
 					setDragValOpDefault(['', 'OR', 'AND'].indexOf(ppt['searchDragValOp_internal'].default_value.toUpperCase()));
 					setDragValOpCtrl(['', 'OR', 'AND'].indexOf(ppt['searchDragValOpCtrl_internal'].default_value.toUpperCase()));
 					setDragValOpAlt(['', 'OR', 'AND'].indexOf(ppt['searchDragValOpAlt_internal'].default_value.toUpperCase()));
@@ -2056,18 +2059,31 @@
 					setDragTrackOpAlt(['', 'OR', 'AND'].indexOf(ppt['searchDragTrackOpAlt_internal'].default_value.toUpperCase()));
 					setDragQueryOpDefault(['', 'OR', 'AND'].indexOf(ppt['searchDragQueryOp_internal'].default_value.toUpperCase()));
 					setDragQueryOpShift(['', 'OR', 'AND'].indexOf(ppt['searchDragQueryOpShift_internal'].default_value.toUpperCase()));
+					setSearchSend(ppt['searchSend_internal'].default_value);
 				}
-				// Regorxxx ->		
+				// Regorxxx ->
+				// Regorxxx <- Fix reset
 				if (cur.page == 'display') {
 					setTheme(ppt['theme_internal'].default_value);
+					setRoot(ppt['rootNode_internal'].default_value);
+					setNode(ppt['nodeStyle_internal'].default_value);
+					setHoverBg(ppt['highLightRow_internal'].default_value);
 				}
+				// Regorxxx ->
+				// Regorxxx <- New statistics tab.
+				if (cur.page == 'statistics') {
+					setItemCounts(ppt['nodeCounts_internal'].default_value);
+				}
+				// Regorxxx ->
 				if (cur.page == 'albumArt') {
-					window.rootStub_dropdown.innerHTML = '<b>Root:</b> ' + ppt.curRootImg_internal.default_value;
+					// Regorxxx <- Fix stub images on reset
+					window.rootStub_dropdown.innerHTML = '<b>Root:</b> <img src="'+rootStubLabels[ppt.curRootImg_internal.default_value].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+rootStubLabels[ppt.curRootImg_internal.default_value].name+'<';
 					ppt.curRootImg_internal.value = ppt.curRootImg_internal.default_value;
-					window.noArtistStub_dropdown.innerHTML = '<b>No artist:</b> ' + ppt.curNoArtistImg_internal.default_value;
+					window.noArtistStub_dropdown.innerHTML = '<b>No artist:</b> <img src="'+noArtistStubLabels[ppt.curNoArtistImg_internal.default_value].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noArtistStubLabels[ppt.curNoArtistImg_internal.default_value].name+'<';
 					ppt.curNoArtistImg_internal.value = ppt.curNoArtistImg_internal.default_value;
-					window.noCoverStub_dropdown.innerHTML = '<b>No cover:</b> ' + ppt.curNoCoverImg_internal.default_value;
+					window.noCoverStub_dropdown.innerHTML = '<b>No cover:</b> <img src="'+noCoverStubLabels[ppt.curNoCoverImg_internal.default_value].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noCoverStubLabels[ppt.curNoCoverImg_internal.default_value].name+'<';
 					ppt.curNoCoverImg_internal.value = ppt.curNoCoverImg_internal.default_value;
+					// Regorxxx ->
 					setOverlay(ppt['itemOverlayType_internal'].default_value);
 					setthumbSize(ppt['thumbNailSize_internal'].default_value);
 				}
@@ -2075,7 +2091,7 @@
 			}
 			
 			window.btn_reset.onclick = function () {
-				var msg = 'This will reset all library tree settings to default; all your settings including \'Views\' and \Filters\' will be lost.\\n\\nSettings are stored in panel properties, which has back-up options, and which can be opened by shift+right click of library tree.\\n\\nContinue with reset?';
+				var msg = 'This will reset all library tree settings to default; all your settings including \'Views\' and \Filters\' will be lost.\n\nSettings are stored in panel properties, which has back-up options, and which can be opened by shift+right click of library tree.\n\nContinue with reset?'; // Regorxxx <- Fix new lines ->
 				var r = window.confirm(msg);
 				if (r == true) {
 					var new_cur = JSON.stringify(cur);

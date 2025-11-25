@@ -1,7 +1,20 @@
+# v2.4.0.mod.25
+### Added
+- Added alerts to HTML options panel in case an input box or checkbox doesn't match the associated property. This is a non-functional change which will help debugging possible errors like the ones fixed at top.
+### Fixed
+- Fixed bug, on original script, related to pressing 'Reset page' at 'Album Art' tab on HTML options panel, which broke a lot of settings if pressing apply afterwards. There was some misplaced code related to 'Behaviour' tab, which broke the rest of the tab logic.
+- Fixed bug, on original script, related to pressing 'Reset page' at 'Album Art' tab on HTML options panel, which applied the image index instead of the icon for art stub lists.
+- Fixed bug, on original script, related to pressing 'Reset page' at 'Behaviour' tab on HTML options panel, with  some default values never being applied and others being applied to wrong keys.
+- Fixed text errors at 'Reset all' button popup, on original script,  on HTML options panel.
+- Fixed multiple errors related to 'Reset page' usage on HTML options panel.
+
+<br />
+
 # v2.4.0.mod.24
 ### Fixed
 - Fixed 'Send top tracks' and 'Add top tracks' mouse actions for M. Click not being shown on HTML options panel (although they worked if manually set via properties panel).
 
+<br />
 
 # v2.4.0.mod.23
 ### Fixed
