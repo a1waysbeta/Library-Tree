@@ -1,3 +1,7 @@
+# v2.4.0.mod.23
+### Fixed
+- Fixed bug on original script within HTML options panel on dropdown layout when opening help boxes. Now they are placed relative to the buttons which open them. Also fixed global overflow problems.
+
 # v2.4.0.mod.22
 ### Added
 - Added R. click on links, within HTML options panel, to copy the URL. As a workaround for links always opening within IE.
@@ -5,7 +9,6 @@
 ### Removed
 - Removed code on original script related to 'UserInterface.id.local' references which was never set, used nor called.
 ### Fixed
-- Fixed bug on original script within HTML options panel on dropdown layout when opening help boxes. Now they are placed relative to the buttons which open them.
 - Fixed bug on original script related to throttle helper.
 - Fixed bug on older foobar versions (v1.6.x) and newer SMP/JSplitter releases during playback.
 - Fixed bug with high DPI settings on HTML message popup. See [here](https://hydrogenaudio.org/index.php/topic,111060.msg1072346.html#msg1072346).
