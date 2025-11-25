@@ -1730,7 +1730,11 @@
 				window.metrics_container4.parentNode.style.display = !ppt['filterShow_internal'].value && !ppt['searchShow_internal'].value && !ppt['settingsShow_internal'].value ? "block" : "none";
 				clickLabels = ppt['actionMode_internal'].value == 1 ? ['Send to playlist'] : ppt['actionMode_internal'].value == 2 ? ['Select'] : ['Select', 'Send to playlist', 'Send to playlist & play', 'Send to playlist & play [add if playing]'];
 				dblClickLabels = ppt['actionMode_internal'].value == 1 ? ['Send to playlist & play'] : ppt['actionMode_internal'].value == 2 ? ['Send to playback queue and play'] : ['Send to playlist', 'Send to playlist & play', 'Expand / collapse (tree)', 'Send to playback queue and play'];
-				mbtnClickLabels = ppt['actionMode_internal'].value == 2 ? ['Add to playback queue (middle dblclk removes)'] : ['Add to default playlist', 'Add to current playlist', 'Add to playback queue (middle dblclk removes)'];
+				// Regorxxx <- Top tracks
+				mbtnClickLabels = ppt['actionMode_internal'].value == 2
+					? ['Add to playback queue (middle dblclk removes)']
+					: ['Add to default playlist', 'Add to current playlist', 'Add to playback queue (middle dblclk removes)', 'Send Top tracks to default playlist', 'Send Top tracks to current playlist', 'Add Top tracks to default playlist', 'Add Top tracks to current playlist'];
+				// Regorxxx ->
 
 				if (ppt['actionMode_internal'].value) {
 					window.click_dropdown.innerHTML = clickLabels[0];
@@ -1759,9 +1763,11 @@
 				} else {
 					window.mbtnClick_dropdown.innerHTML = mbtnClickLabels[ppt['mbtnClickAction_internal'].value];
 					window.mbtnClick.innerHTML = '';
-					for (i = 0; i < 3; i++) {window.mbtnClick.insertAdjacentHTML('beforeend', '<a onclick="setMbtnClickAction(' + i + ');">'+mbtnClickLabels[i]+'</a>');}
+					// Regorxxx <- Top tracks
+					for (i = 0; i < 7; i++) {window.mbtnClick.insertAdjacentHTML('beforeend', '<a onclick="setMbtnClickAction(' + i + ');">'+mbtnClickLabels[i]+'</a>');}
 					window.mbtnClick_dropdown.style.background = '#3e8e41';
-				}	
+					// Regorxxx ->
+				}
 			}
 
 			setInterval(inputChanged, 500);

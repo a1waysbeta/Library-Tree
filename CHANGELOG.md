@@ -1,3 +1,8 @@
+# v2.4.0.mod.24
+### Fixed
+- Fixed 'Send top tracks' and 'Add top tracks' mouse actions for M. Click not being shown on HTML options panel (although they worked if manually set via properties panel).
+
+
 # v2.4.0.mod.23
 ### Fixed
 - Fixed bug on original script within HTML options panel on dropdown layout when opening help boxes. Now they are placed relative to the buttons which open them. Also fixed global overflow problems.
