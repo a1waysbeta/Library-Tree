@@ -2,6 +2,8 @@
 ### Added
 - Added R. click on links, within HTML options panel, to copy the URL. As a workaround for links always opening within IE.
 - Added tooltips to links within HTML options panel.
+### Removed
+- Removed code on original script related to 'UserInterface.id.local' references which was never set, used nor called.
 ### Fixed
 - Fixed bug on original script within HTML options panel on dropdown layout when opening help boxes. Now they are placed relative to the buttons which open them.
 - Fixed bug on original script related to throttle helper.

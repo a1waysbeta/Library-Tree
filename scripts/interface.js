@@ -45,7 +45,7 @@ class UserInterface {
 
 		this.id = {
 			dragDrop: -1,
-			local: typeof conf === 'undefined' ? false : true,
+			// Regorxxx <- Code cleanup. Remove ui.id.local references ->
 			touch_dn: -1,
 			tree: ''
 		}
@@ -190,7 +190,7 @@ class UserInterface {
 
 	calcText(refreshImg) {
 		$.gr(1, 1, false, g => {
-			if (!this.id.local) this.row.h = Math.max(Math.round(g.CalcTextHeight('String', this.font.main)) + ppt.verticalPad, 2);
+			this.row.h = Math.max(Math.round(g.CalcTextHeight('String', this.font.main)) + ppt.verticalPad, 2); // Regorxxx <- Code cleanup. Remove ui.id.local references ->
 			if (this.style.squareNode) {
 				this.sz.node = Math.round($.clamp(this.sz.node, 7, this.row.h - 2));
 				ppt.zoomNode = Math.round(this.sz.node / this.sz.node_base * 100);
@@ -483,7 +483,7 @@ class UserInterface {
 		} else if (this.dui) this.font.main = window.GetFontDUI(2);
 		else this.font.main = window.GetFontCUI(0);
 
-		if (this.id.local) this.font.main = c_font;
+		// Regorxxx <- Code cleanup. Remove ui.id.local references ->
 
 		if (!this.font.main || /tahoma/i.test(this.font.main.Name) && DetectWine()) { // Windows: check still needed (test MS Serif or Modern, neither can be used); Wine: tahoma is default system font, but bold and some unicode characters don't work: if Wine + tahoma detected changed to Segoe UI (if that's not installed, tahoma is still used) 
 			this.font.main = gdi.Font('Segoe UI', 16, 0);
@@ -500,20 +500,7 @@ class UserInterface {
 		this.font.search = gdi.Font(this.font.main.Name, this.font.main.Size, 0);
 		this.font.find = gdi.Font(this.font.main.Name, this.font.main.Size * 1.5, 1);
 
-		if (this.id.local) {
-			this.font.search = c_s_font;
-			this.font.find = gdi.Font(this.font.main.Name, this.font.main.Size * 1.5, 1);
-			this.sz.margin = c_margin;
-			ppt.treeIndent = c_pad;
-			this.row.h = c_row_h;
-			if (ppt.sbarShow) {
-				this.sbar.type = 0;
-				this.sbar.w = c_scr_w;
-				this.sbar.but_w = this.sbar.w + 1;
-				this.sbar.but_h = this.sbar.w + 1;
-				this.sbar.sp = this.sbar.w + 1;
-			}
-		}
+		// Regorxxx <- Code cleanup. Remove ui.id.local references ->
 
 		this.font.label = gdi.Font(this.font.main.Name, !ppt.treeAutoExpand || ppt.libSource != 2 ? Math.round(this.font.main.Size * 11 / 14) : this.font.main.Size, this.font.main.Style);
 		this.font.small = gdi.Font(this.font.main.Name, !ppt.treeAutoExpand || ppt.libSource != 2 ? Math.round(this.font.main.Size * 12 / 14) : this.font.main.Size, this.font.main.Style);
@@ -666,28 +653,7 @@ class UserInterface {
 		this.col.t = this.style.bg ? this.getButCol(this.col.bg) : 200;
 		this.col.topBarUnderlay = this.col.bg;
 
-		if (this.id.local) {
-			this.col.topBarUnderlay = this.getAlpha(c_b1) != 255 ? $.RGB(25, 28, 30) : c_b1;
-			this.col.text = this.col.lotBlend = this.img.blurBlend ? this.setBrightness(c_textcol, this.isLightCol(this.col.bg == 0 ? 0xff000000 : this.col.bg) ? -10 : 10) : this.img.blurDark ? $.RGB(255, 255, 255) : this.img.blurLight ? $.RGB(50, 50, 50) : c_textcol;
-			this.col.text_h = this.img.blurBlend ? this.setBrightness(c_textcol_h, this.isLightCol(this.col.bg == 0 ? 0xff000000 : this.col.bg) ? -10 : 10) : this.img.blurDark ? $.RGB(255, 255, 255) : this.img.blurLight ? $.RGB(50, 50, 50) : c_textcol_h;
-			this.col.textSel = this.col.selBlend = c_textselcol;
-			this.col.bgSel = c_backcolsel;
-			ppt.rowStripes = c_alternate;
-			this.style.fill = c_fill;
-			this.style.pen = c_pen;
-			this.style.pen_c = c_pen_c;
-			this.col.search = this.col.txt_box = c_txt_box;
-			this.col.bg_h = ppt.highLightRow > 2 ? (this.img.blurDark ? 0x24000000 : 0x1E30AFED) : this.img.blurDark ? 0x19ffffff : this.img.blurLight || lightBg ? 0x19000000 : 0x19ffffff;
-			this.col.bgSel_h = this.col.bg_h;
-			if (this.getColSat(this.col.bg) < 150 && !this.img.blurDark && !this.img.blurLight && !ppt.highLightRow != 3) {
-				this.col.bg_h = this.getBlend(this.col.bg == 0 ? 0xff000000 : this.col.bg, this.col.bgSel, 0.55);
-				this.col.bgSel_h = this.getBlend(this.col.bg == 0 ? 0xff000000 : this.col.bg, this.col.bgSel, 0.25);
-			}
-			this.col.sideMarker = this.col.text_h;
-			this.col.count = this.setBrightness(this.col.text, this.isLightCol(this.col.text) ? -30 : 30);
-			this.col.bg1 = c_b1;
-			this.col.bg2 = c_b2;
-		}
+		// Regorxxx <- Code cleanup. Remove ui.id.local references ->
 
 		this.icon.col_c = this.col.icon_c;
 		this.icon.col_e = this.col.icon_e;
@@ -856,7 +822,13 @@ class UserInterface {
 		if (!ppt.highLightNode) return;
 		if (this.icon.col_h === '') {
 			const nodeDiffHighlight = this.img.blurDark && !ppt.highLightRow && ppt.highLightNode;
-			this.col.icon_h = this.style.squareNode ? !this.img.blurDark && !this.img.blurLight ? !this.id.local ? (this.getColSat(this.col.text_h) < 650 ? this.col.text_h : this.col.text) : (this.getColSat(c_iconcol_h) < 650 ? c_iconcol_h : c_textcol) : $.RGB(50, 50, 50) : (nodeDiffHighlight ? this.col.nowp : this.col.text_h);
+			// Regorxxx <- Code cleanup. Remove ui.id.local references
+			this.col.icon_h = this.style.squareNode
+				? !this.img.blurDark && !this.img.blurLight
+					? this.getColSat(this.col.text_h) < 650 ? this.col.text_h : this.col.text
+					: $.RGB(50, 50, 50)
+				: nodeDiffHighlight ? this.col.nowp : this.col.text_h;
+			// Regorxxx ->
 			this.icon.col_h = this.col.icon_h;
 		}
 		if (this.style.squareNode) {

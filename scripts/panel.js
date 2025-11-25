@@ -579,12 +579,16 @@ class Panel {
 	}
 
 	on_size(fontChanged) {
-		const ln_sp = ui.style.topBarShow && !ui.id.local ? Math.floor(ui.row.h * 0.1) : 0;
+		const ln_sp = ui.style.topBarShow ? Math.floor(ui.row.h * 0.1) : 0; // Regorxxx <- Code cleanup. Remove ui.id.local references ->
 		const sbarStyle = !ppt.sbarFullHeight ? 2 : 0;
 		this.calcText();
 		this.ln.x = ppt.countsRight || ppt.itemShowStatistics || ppt.rowStripes || ppt.fullLineSelection || pop.inlineRoot ? 0 : ui.sz.marginSearch;
 		this.ln.w = ui.w - this.ln.x - 1;
-		this.search.h = ui.style.topBarShow ? ui.row.h + (!ui.id.local ? ln_sp * 2 : 0) : ppt.marginTopBottom;
+		// Regorxxx <- Code cleanup. Remove ui.id.local references
+		this.search.h = ui.style.topBarShow
+			? ui.row.h + ln_sp * 2
+			: ppt.marginTopBottom;
+		// Regorxxx ->
 		this.search.sp = this.search.h - ln_sp;
 		let sp = ui.h - this.search.h - (ui.style.topBarShow ? 0 : ppt.marginTopBottom);
 		this.rows = sp / ui.row.h;
