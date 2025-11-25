@@ -10,6 +10,7 @@
 - Fixed bug on older foobar versions (v1.6.x) and newer SMP/JSplitter releases during playback.
 - Fixed bug with high DPI settings on HTML message popup. See [here](https://hydrogenaudio.org/index.php/topic,111060.msg1072346.html#msg1072346).
 - Fixed bug on playback. See [here](https://hydrogenaudio.org/index.php/topic,111060.msg1073010.html#msg1073010).
+- Fixed double click bug on original script while using the search box and playlist as source. Item played was different than the one selected. See [here](https://hydrogenaudio.org/index.php/topic,111060.msg1073020.html#msg1073020).
 
 <br />
 

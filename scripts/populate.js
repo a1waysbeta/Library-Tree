@@ -1569,10 +1569,18 @@ class Populate {
 					fb.Play();
 					return;
 				}
+				// Regorxxx <- Fix Double click while using search on playlist sources
 				if (!ppt.libSource) {
-					plman.ExecutePlaylistDefaultAction($.pl_active, this.range(item.item)[0]);
+					const plsIdx = ppt.fixedPlaylist ? plman.FindPlaylist(ppt.fixedPlaylistName) : $.pl_active;
+					if (plsIdx !== -1) {
+						const idx = panel.search.txt.length
+							? plman.GetPlaylistItems(plsIdx).Find(panel.list[this.range(item.item)[0]])
+							: this.range(item.item)[0];
+						if (idx !== -1) { plman.ExecutePlaylistDefaultAction(plsIdx, idx); }
+					}
 					return;
 				}
+				// Regorxxx ->
 				if (!this.dblClickAction && !this.autoFill.mouse && !this.autoPlay.click) return this.send(item, x, y);
 				if (this.dblClickAction == 2 && !item.track && !panel.imgView) {
 					this.expandCollapse(x, y, item, ix);
