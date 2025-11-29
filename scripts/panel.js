@@ -1276,6 +1276,7 @@ class Panel {
 		img.setNoArtist();
 		img.setNoCover();
 		if (value === 'default_value') {
+			this.clear('both');
 			this.zoomReset();
 			this.setTopBar();
 			this.getViews();

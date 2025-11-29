@@ -1,3 +1,8 @@
+# v2.4.0.mod.27
+### Fixed
+- Fixed bug, on original script, related to pressing 'Reset all' on HTML options panel, which did not reset custom Views and Filters added.
+- Removed extra separator on settings menu.
+<br>
 # v2.4.0.mod.26
 ### Fixed
 - Fixed multiple bugs, on original script, related to pressing 'Reset all' on HTML options panel, which broke a lot of settings only fixed on panel reload.

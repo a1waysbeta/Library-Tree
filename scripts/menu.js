@@ -206,8 +206,8 @@ class MenuItems {
 				});
 			}
 			// Regorxxx ->
+			menu.newItem({ separator: true }); // Regorxxx <- Menu cleanup ->
 		}
-		menu.newItem({ separator: true }); // Regorxxx <- Menu cleanup ->
 
 		if (this.validItem && ppt.albumArtOptionsShow) {
 			menu.newItem({
