@@ -1,6 +1,7 @@
 # v2.4.0.mod.30
 ### Fixed
 - Fixed bug, on original script, related to 'Prefixes to Strip or Swap (| Separator)' setting not being applied without a panel reload.
+- Minor HTML options panel improvements and fixes.
 
 <br>
 

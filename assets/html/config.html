@@ -131,17 +131,18 @@
 
 	.tooltip .tooltiptext {
 		visibility: hidden;
-		width: 120px;
+		width: 150%;
 		background-color: #555;
 		color: #fff;
 		text-align: center;
 		border-radius: 6px;
-		padding: 5px 0;
+		padding: 6px 2px;
 		position: absolute;
 		z-index: 1;
 		bottom: 125%;
 		left: 0%;
 		opacity: 0;
+		line-height: 1.4;
 		transition: opacity 0.3s;
 	}
 
@@ -191,7 +192,7 @@
 				<div style="clear:both;"></div>
 				<div id="view"></div>
 				<div class="info1">Selected items will be displayed in the menu. A separator may be added by setting name to 'separator' and pattern to any non-empty string.</div>
-				<p "><a class="tooltip" id="tfReference" href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target="_blank" oncontextmenu="copyToClipboardId('tfReference')">Title format reference<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a></p>
+				<p "><a class="tooltip" id="tfReference" href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target="_blank" oncontextmenu="copyToClipboardId('tfReference')">Title format reference<span class="tooltiptext">L. Click to open in IE<br>R. Click to copy</span></a></p>
 				<!-- Regorxxx Text cleanup -->
 				<button id="syntax_button" name="syntax_button" style="margin-left:0px;" type="button">Show Multi-Panel Mode (Facets) & Extended Syntax Help</button><div id="syntax_help" style="display: none;">
 				<!-- Regorxxx -->
@@ -224,7 +225,7 @@
 			<div id="filter"></div>
 			<div class="info1">Selected items will be displayed in the menu. A separator may be added by setting name to 'separator' and query to any non-empty string.	</div>
 			<!-- Regorxxx Add help to filter tab -->
-			<p "><a class="tooltip" id="tfReference2" href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target="_blank" oncontextmenu="copyToClipboardId('tfReference2')">Title format reference<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a></p>
+			<p "><a class="tooltip" id="tfReference2" href="https://wiki.hydrogenaud.io/index.php?title=Foobar2000:Title_Formatting_Reference" target="_blank" oncontextmenu="copyToClipboardId('tfReference2')">Title format reference<span class="tooltiptext">L. Click to open in IE<br>R. Click to copy</span></a></p>
 			<button id="syntaxFilter_button" name="syntaxFilter_button" style="margin-left:0px;" type="button">Extended Syntax Help</button>
 			<div id="syntaxFilter_help" style="display: none;">
 				<div class="info5"><b>Extended syntax</b></div>
@@ -423,7 +424,7 @@
 					<div id="searchEnter" style="padding-top:0.5em;"></div>
 					<div style="display:inline-block; padding-top:0.7em;"><a id="searcg_help" href="#" onclick="showHelp('search_text');return false;">Search help</a></div>
 					<div id="search_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
-						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a class="tooltip" id="regexpReference" href="https://regexr.com/" target="_blank" oncontextmenu="copyToClipboardId('regexpReference')">RegExp reference<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup<br><br><br>Queries usage:<br><br>&#x2022; Supports $nowplaying{}, $nowplayingorselected{} and $selected{}<br>&#x2022; If auto-refresh is disabled, search results will not be updated when using above syntax on playback/selection changes<br>&#x2022; Auto-refresh may have a performance impact with $selected{} (or similar) on selection changes, use filters instead whenever possible</div>
+						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a class="tooltip" id="regexpReference" href="https://regexr.com/" target="_blank" oncontextmenu="copyToClipboardId('regexpReference')">RegExp reference<span class="tooltiptext">L. Click to open in IE<br>R. Click to copy</span></a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup<br><br><br>Queries usage:<br><br>&#x2022; Supports $nowplaying{}, $nowplayingorselected{} and $selected{}<br>&#x2022; If auto-refresh is disabled, search results will not be updated when using above syntax on playback/selection changes<br>&#x2022; Auto-refresh may have a performance impact with $selected{} (or similar) on selection changes, use filters instead whenever possible</div>
 					</div>
 				</div>
 			</div>
@@ -610,7 +611,7 @@
 					<div id="albumArtFonts"></div>
 					<div class="info6"><b>Colours (R,G,B):</b></div>
 					<div id="colours1"></div>
-					<p "><a class="tooltip" id="colorPicker" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool#ColorPicker_tool" target="_blank" oncontextmenu="copyToClipboardId('colorPicker')">Colour picker<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a></p>
+					<p "><a class="tooltip" id="colorPicker" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool#ColorPicker_tool" target="_blank" oncontextmenu="copyToClipboardId('colorPicker')">Colour picker<span class="tooltiptext">L. Click to open in IE<br>R. Click to copy</span></a></p>
 					<div class="info3">Selected colours and fonts will be used.<br>Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline</div>
 				</div>
 
@@ -864,10 +865,14 @@
 				}
 				switch (t) {
 					case 0: cc = [c[0], c[1], c[2]]; break;
-					case 1: switch (c.length) {
-						case 3: cc = [c[0], c[1], c[2]]; break;
-						case 4: cc = RGBAtoRGB([c[0], c[1], c[2], c[3]], [255, 255, 255, 255]); break;
-					} break;}
+					case 1: {
+						switch (c.length) {
+							case 3: cc = [c[0], c[1], c[2]]; break;
+							case 4: cc = RGBAtoRGB([c[0], c[1], c[2], c[3]], [255, 255, 255, 255]); break;
+						}
+						break;
+					}
+				}
 				return cc;
 			}
 
@@ -1285,7 +1290,7 @@
 								}
 							}
 							columnCount = 6;
-						break;
+							break;
 						case 'syntaxFilter': // Regorxxx <- Add help to filter tab ->
 						case 'syntax':
 							// Regorxxx <- Merge now playing and selected as fallback. Code cleanup
@@ -1315,7 +1320,8 @@
 							}
 							columnCount = 3;
 							// Regorxxx ->
-						break;
+							break;
+
 						case 'elementColour':
 							headers = ['Buttons', 'Search', 'Separators', 'Lines', ''];
 							cells.push(headers);
@@ -1335,7 +1341,7 @@
 							}
 							columnCount = 5;
 							break;
-							}
+						}
 						return [cells, headers.length, columnCount];
 				}
 
