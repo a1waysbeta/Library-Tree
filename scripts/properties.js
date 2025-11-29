@@ -257,7 +257,7 @@ let properties = [
 	['Playlist: Top tracks filter', '%RATING% GREATER 3 OR %FEEDBACK% IS 1 OR %2003_LOVED% IS 1', 'topTracksFilter'],
 	['Playlist: Top tracks sorting', '$rand()', 'topTracksSorting'],
 	// Regorxxx ->
-	['Prefixes to Strip or Swap (| Separator)', 'A|The', 'prefix'],
+	['Prefixes to Strip or Swap (| Separator)', 'A|The|Las|Los|Les|La|El|Le', 'prefix'], // Regorxxx <- separators in other languages ->
 	['Preset: Load Current View', false, 'presetLoadCurView'],
 	['Remember.PreSearch', true, 'rememberPreSearch'],
 	['Remember.Proc', false, 'process'],

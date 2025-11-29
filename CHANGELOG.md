@@ -1,3 +1,12 @@
+# v2.4.0.mod.31
+### Changed
+- Changed default prefixes to Strip or Swap setting to 'A|The|Las|Los|Les|La|El|Le'.
+### Fixed
+- Handled errors in case user inputs wrong values into drag n' drop tags settings.
+- Minor HTML options panel improvements and fixes.
+
+<br>
+
 # v2.4.0.mod.30
 ### Fixed
 - Fixed bug, on original script, related to 'Prefixes to Strip or Swap (| Separator)' setting not being applied without a panel reload.

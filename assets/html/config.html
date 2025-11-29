@@ -214,6 +214,7 @@
 				<div class="info7">Item counts are a special case. They don't form part of the view pattern.<br>Align right: drawn separately; not controlled by $colour codes; already dimmed.<br>End of text: effected by $colour codes. Use $colour{} at the end of the line to reset or set to a different colour if desired ($colour{--} is used in the example above).</div>
 				<div class="info7" style="color:#0066cc;"><b>String limitation</b></div>
 				<div class="info7">$nodisplay & $colour are generally unsafe inside string manipulation functions that remove a part of a string or insert a substring by position. Instead, they should be put before the string function, e.g.<br>Use $colour{255-0-0}$substr(str,from,to). Don't use $substr($colour{255-0-0}str,from,to).<br>Use $colour{0-255-0}$swapbranchprefix{%&ltartist&gt%}. Don't use $swapbranchprefix{$colour{0-255-0}%&ltartist&gt%}.</div>
+				<div><br></div>
 			</div>
 		</div>
 		<!-- Regorxxx -->
@@ -235,6 +236,7 @@
 					<col span="1" style="width:20%">
 				</colgroup>
 				</table>
+				<div><br></div>
 			</div>
 			<!-- Regorxxx -->
 		</div>
@@ -344,6 +346,7 @@
 					<div id="topTracks_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
 						<div class="info4">Uses an additional query filter and sorting for current selection on top of the current view/filter.<br><br>&#x2022; Found at the Context menu<br>&#x2022; Target playlist follows global settings above<br>&#x2022; Supports $nowplaying{}, $selected{}, ...<br>&#x2022; Use '$rand()' as sorting to shuffle<br>&#x2022; Leave sorting empty to follow panel sorting</div>
 					</div>
+					<div><br></div>
 					<!-- Regorxxx -->
 				</div>
 			</div>
@@ -413,6 +416,7 @@
 					<div style="display:inline-block; padding-top:0.7em;"><a id="mode_help" href="#" onclick="showHelp('drag_text');return false;">Drag n' drop help</a></div>
 					<div id="drag_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
 						<div class="info4">Usage:<br><br>&#x2022; Tracks can be drag n' dropped to search box<br>&#x2022; Search expression is adjusted to View mode<br>&#x2022; View by Folder structure: filenames (RegExp)<br>&#x2022; Any other View: tags (Queries)<br>&#x2022; Tags used and how they are joined can be customized<br><br>Keyboard modifiers:<br><br>&#x2022; Default is used without any key pressed<br>&#x2022; Behaviour is affected by Ctrl, Alt and Shift keys<br>&#x2022; Multi-value tag operator is used between different values on same tag:<br>&emsp; 'ARTIST IS A OR ARTIST IS B'<br><br>&#x2022; Inter-tag operator is used between different tags:<br>&emsp; 'ARTIST IS Nina Simone OR GENRE IS Rock'<br><br>&#x2022; Inter-track operator is used between queries for different tracks (on multiple selection)<br><br>&#x2022; Inter-query operator is used if there is already an expression at the search box, to join or replace them</div>
+						<div><br></div>
 					</div>
 				</div>
 
@@ -425,6 +429,7 @@
 					<div style="display:inline-block; padding-top:0.7em;"><a id="searcg_help" href="#" onclick="showHelp('search_text');return false;">Search help</a></div>
 					<div id="search_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
 						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a class="tooltip" id="regexpReference" href="https://regexr.com/" target="_blank" oncontextmenu="copyToClipboardId('regexpReference')">RegExp reference<span class="tooltiptext">L. Click to open in IE<br>R. Click to copy</span></a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup<br><br><br>Queries usage:<br><br>&#x2022; Supports $nowplaying{}, $nowplayingorselected{} and $selected{}<br>&#x2022; If auto-refresh is disabled, search results will not be updated when using above syntax on playback/selection changes<br>&#x2022; Auto-refresh may have a performance impact with $selected{} (or similar) on selection changes, use filters instead whenever possible</div>
+						<div><br></div>
 					</div>
 				</div>
 			</div>
@@ -502,6 +507,7 @@
 					<div style="display:inline-block; padding-top:0.7em;"><a id="stats_help" href="#" onclick="showHelp('stats_text');return false;">Statistics help</a></div>
 					<div id="stats_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
 						<div class="info4">There are some hardcoded statistics (like duration, ...), partially customizable ones (rating, ...) and fully customizable slots. The latter can use your own TF expressions and names, which will be shown at the menu entries and labels used by the panel.<br><br>&#x2022; Average: for every node, averaged value from all their children<br>&#x2022; Sum: for every node, sum of values from all their children<br>&#x2022; Decimals setting applies to rating, popularity and custom slots</div>
+						<div><br></div>
 					</div>
 				</div>
 
@@ -516,6 +522,7 @@
 					<div style="display:inline-block; padding-top:0.7em;"><a id="counts_help" href="#" onclick="showHelp('counts_text');return false;">Item counts help</a></div>
 					<div id="counts_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
 						<div class="info4">The first available entry at Settings > Statistics will follow the option chosen, showing either no values, total number of track or items at every node.<br><br>Alignment is only available while using this mode, greyed out for any other.</div>
+						<div><br></div>
 					</div>
 				</div>
 			</div>
@@ -568,17 +575,17 @@
 				<div class="column41">
 					<div class="div_text1">Stub</div>
 					<span style="margin:0 0 0.31em;" class="dropdown"><a id="rootStub_dropdown" class="dropbtnLight" href="#" onclick="toggle('rootStub');"></a>
-					<span id="rootStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
+						<span id="rootStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
 					</span>
 					<span style="margin:1em 0 0.31em 0;" class="dropdown"><a id="noCoverStub_dropdown" class="dropbtnLight" href="#" onclick="toggle('noCoverStub');"></a>
-					<span id="noCoverStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
+						<span id="noCoverStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
 					</span>
 					<span style="margin:1em 0 0.31em 0;" class="dropdown"><a id="noArtistStub_dropdown" class="dropbtnLight" href="#" onclick="toggle('noArtistStub');"></a>
-					<span id="noArtistStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
+						<span id="noArtistStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
 					</span>
+					<div class="info5"><i>Click dropdown items for full preview (provided visible in panel).</i></div>
 					<div class="div_text2">Index</div>
 					<div id="indexLetter"></div>
-					<div class="info5"><i>Click dropdown items for full preview (provided visible in panel).</i></div>
 				</div>
 			</div>
 			<div id="help_text" style="display: none;">
@@ -594,6 +601,7 @@
 				<div class="info5">If enabled, the &quot;File>Preferences>Display>Selection viewers&quot; setting is used.</div>
 				<div class="info5"><b>Tree only mode</b></div>
 				<div class="info5">Switch off 'Show Album Art Options' on the display tab while in tree view. Album art loading, disk caching plus the album art tab and menu options are disabled. Switch the option back on to allow album art mode.</div>
+				<div><br></div>
 			</div>
 		</div>
 		<!-- Regorxxx -->
@@ -639,6 +647,7 @@
 					<div style="display:inline-block; padding-top:0.7em;"><a id="facets_help" href="#" onclick="showHelp('facets_text');return false;">Multi-panel mode help</a></div>
 					<div id="facets_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
 						<div class="info4">Chained source notifications:<br><br>&#x2022; Facets mode is enabled when setting source to panel. More info at Views tab</a><br>&#x2022; Every panel will send updates to other panels when being refreshed<br>&#x2022; No need to set multiple sources, only the most immediate parent's name<br>&#x2022; The entire chain will be updated if needed<br>&#x2022; Disable the setting to roll back to legacy behaviour<br>&#x2022; For example: Genre|Artist|Album 3-panel layout<br>&emsp;'Album' panel uses 'Artist' as source, and 'Artist' panel uses 'Genre'<br>&emsp;Any change on 'Genre' would immediately refresh the other 2 child panels<br>&emsp;If disabled (legacy behaviour), then third panel should use 'Genre|Artist' instead<br><br><br>Multiple sources:<br><br>&#x2022; Multiple sources are only needed if they are fully independent<br>&#x2022; Along chained source notifications, sources are merged and deduplicated<br>&#x2022; Can merge selections from total different views/filters (for ex. artist and genres)<br>&#x2022; Destination panel's sorting and display don't follow sources' settings<br>&#x2022; If disabled (legacy behaviour), the last one selected on UI is used instead<br>&#x2022; For example: Artist1|Artist2|Album 3-panel layout<br>&emsp;'Album' uses 'Artist1|Artist2' as sources<br>&emsp;Selection from both 'Artist' panels are merged and used on 'Album' panel<br>&emsp;Legacy behaviour uses either 'Artist1' or 'Artist2', last one selected on UI, not both<br><br><br>Internal cache:<br><br>&#x2022; To use a panel as source, its selection must be stored somewhere<br>&#x2022; This can be done using playlists (legacy behaviour) or internal caching<br>&#x2022; A dummy playlist is required per panel with legacy behaviour<br>&#x2022; Internal caching requires methods available only at latest JSplitter and SMP versions<br>&#x2022; if not supported, it fallbacks to legacy behaviour instead<br>&#x2022; Internal caching is preferable to avoid filling your playlist list with dummy playlists</div>
+						<div><br></div>
 					</div>
 					<!-- Regorxxx -->
 				</div>

@@ -42,11 +42,14 @@ class Search {
 			const bCtrl = (mask & MK_CONTROL) === MK_CONTROL;
 			const bAlt = (mask & 32) === 32;
 			return $.jsonParse(
-				bAlt 
-					? ppt.searchDragTagsAlt 
-					: bCtrl ? ppt.searchDragTagsCtrl : ppt.searchDragTags
+				bAlt
+					? ppt.searchDragTagsAlt
+					: bCtrl ? ppt.searchDragTagsCtrl : ppt.searchDragTags,
+				bAlt
+					? ['ALBUM ARTIST']
+					: ['ALBUM ARTIST', 'GENRE']
 			);
-		}
+		};
 
 		this.getDragDropOperators = (mask) => {
 			const operators = {value: '', tag: '', track: '', query: ''};
