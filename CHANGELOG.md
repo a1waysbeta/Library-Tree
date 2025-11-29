@@ -1,3 +1,9 @@
+# v2.4.0.mod.30
+### Fixed
+- Fixed bug, on original script, related to 'Prefixes to Strip or Swap (| Separator)' setting not being applied without a panel reload.
+
+<br>
+
 # v2.4.0.mod.29
 ### Changed
 - Changed how Auto-refreshing search when using $selected{} and similar functions works. Now is only available when 'Require pressing Enter to search' is not enabled, since it would be undesirable to have automatic searches in such case. The HTML options panel checkboxes behavior has been adjusted to reflect this change.

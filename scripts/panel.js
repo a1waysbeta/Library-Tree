@@ -1228,6 +1228,7 @@ class Panel {
 			delete v.statistics;
 			delete v._statistics;
 		});
+		lib.prefix = ppt.prefix.split('|'); // Regorxxx <- Fix values on reset ->
 		lib.checkView();
 		lib.logTree();
 		img.setRoot();
