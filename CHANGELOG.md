@@ -1,3 +1,14 @@
+# v2.4.0.mod.28
+### Changed
+- Moved all licenses to 'assets\licenses'.
+- HTML options panel code cleanup.
+### Removed
+- Removed license popup on first installations.
+### Fixed
+- Fixed bug on original script within HTML options panel on dropdown layout when opening help boxes. Now they are placed relative to the buttons which open them. Also fixed global overflow problems on every element, substituting previous hacks with proper CSS formatting.
+- Fixed Album Art not working on 'Group:auto' mode for 'View by Album' default pattern.
+
+<br>
 # v2.4.0.mod.27
 ### Fixed
 - Fixed bug, on original script, related to pressing 'Reset all' on HTML options panel, which did not reset custom Views and Filters added.

@@ -13,7 +13,7 @@
 	.tablink a:hover {padding:0.31em 2px; background-color:#777;}
 	.tablink a:focus {padding:0.31em 2px; background-color:#777;}
 	.tablink a:focus a:hover {padding:0.31em 2px; background-color:#777;}
-	.tabcontent {display:none; padding:1px;}
+	.tabcontent {display:none; padding:1px; overflow:hidden;} /* Regorxxx <- Fix global overflow problems -> */
 
 	input[type="checkbox"] {vertical-align:middle; position:relative; width:17px; height:15px; border:0; padding:2px 1px; margin:5px 0;}
 	input[type="checkbox"]:focus {border:1px solid #0078D7; padding:1px 0;}
@@ -63,7 +63,7 @@
 	.inp_label1 {display:block; padding-top:0em; margin:0.31em 0;}
 	.inp_label2 {padding-left:0.46em;}
 
-	.btn_cnt {padding:0.7em 1em; position:absolute; bottom:0; right:0; left:0;}
+	.btn_cnt {padding:0.7em 1em; position:absolute; bottom:0; right:0; left:0; z-index: 2;} /* Regorxxx <- Fix global overflow problems -> */
 	#btn_cnt_right {background:#e5e5e5; border-top:1px solid #d0d0d0; text-align:right;}
 	#btn_cnt_left {text-align:left;}
 	#btn_cnt_center {text-align:center;}
@@ -92,7 +92,7 @@
 	.dropdown .dropdown-content {display:none;}
 	.dropdown:hover .dropbtn {background-color:#4CAF50;}
 	.dropdown:hover .dropbtnLight {background-color:Gainsboro;}
-	
+
 	.dropArrow {display:inline-block; font-family: FontAwesome; padding-left:0.5em; padding-right:0.19em;}
 
 	.pad {height:1.57em;}
@@ -163,15 +163,8 @@
 	}
 	/* Regorxxx -> */
 
-	/* Regorxxx <- Fix dropdown content with invisible text */
-	.invisible {
-		filter: alpha(opacity=0);
-		opacity: 0;
-	}
-	/* Regorxxx -> */
-
 	ul {margin-top:0; margin-bottom:0;}
-						
+
 	</style>
 	</head>
 	<body>
@@ -192,7 +185,7 @@
 		<!-- Regorxxx Code cleanup -->
 		<div id="mainMargin">
 			<div style="clear:both;"></div>
-			<div id='views' class="tabcontent">	
+			<div id='views' class="tabcontent">
 				<span class="alignLeftH">Name</span>
 				<span class="alignRightH">Pattern</span>
 				<div style="clear:both;"></div>
@@ -224,7 +217,7 @@
 		</div>
 		<!-- Regorxxx -->
 		<div style="clear:both;"></div>
-		<div id='filters' class="tabcontent">		
+		<div id='filters' class="tabcontent">
 			<span class="alignLeftH">Name</span>
 			<span class="alignRightH">Query</span>
 			<div style="clear:both;"></div>
@@ -245,7 +238,7 @@
 			<!-- Regorxxx -->
 		</div>
 		<div style="clear:both;"></div>
-		<div id="btn_cnt_right" class="btn_cnt"> 
+		<div id="btn_cnt_right" class="btn_cnt">
 			<button id="btn_ok" >OK</button>
 			<button class="button_apply" id="btn_apply">Apply</button>
 			<button id="btn_cancel">Cancel</button>
@@ -254,7 +247,7 @@
 			<button id="btn_reset" >Reset all</button>
 			<button id="btn_resetPage" >Reset page</button>
 		</div>
-		<div id="btn_cnt_center" class="btn_cnt"> 
+		<div id="btn_cnt_center" class="btn_cnt">
 			<button id="btn_add" >Add new</button>
 			<button id="btn_up" >Up</button>
 			<button id="btn_down" >Down</button>
@@ -311,10 +304,8 @@
 					<span id="sbarIcon" class="dropdown-content"></span>
 					</span>
 					<div id="scrolling"></div>
-					<!-- Regorxxx Fix dropdown content with invisible text -->
-					<p class="invisible">Text to fix dropdown content.Text to fix dropdown content.Text to fix dropdown content.Text to fix dropdown content.Text to fix dropdown content.Text to fix dropdown content.</p>
 				</div>
-				
+
 				<div class="column29">
 					<!-- Regorxxx Search settings to search tab -->
 					<div class="div_text2">Tree</div>
@@ -326,7 +317,7 @@
 					<div id="selection"></div>
 					<div class="div_text1">Follow selection</div>
 					<div id="followCurrent"></div>
-					<div class="info9"><a id="setSize" style="text-decoration:none;" href="#" onclick="setWindowSize();return false;">Click to reset window size</a></div>				
+					<div class="info9"><a id="setSize" style="text-decoration:none;" href="#" onclick="setWindowSize();return false;">Click to reset window size</a></div>
 				</div>
 
 				<div class="column32">
@@ -402,10 +393,8 @@
 					<span class="dropdown" style="margin-top:0"><a id="searchDragTrackOpAlt_dropdown" class="dropbtn" href="#" onclick="toggle('searchDragTrackOpAlt');"></a>
 						<span id="searchDragTrackOpAlt" class="dropdown-content"></span>
 					</span>
-					<!-- Regorxxx Fix dropdown content with invisible text -->
-					<p class="invisible">Text to fix dropdown content.Text to fix dropdown content.Text to fix dropdown content.</p>
 				</div>
-				
+
 				<div class="column33">
 					<div class="div_text1">Drag n' Drop</div>
 					<div class="div_text2">Inter-query operator</div>
@@ -431,7 +420,7 @@
 					<span class="dropdown"><a id="searchSend_dropdown" class="dropbtn" href="#" onclick="toggle('searchSend');"></a>
 					<span id="searchSend" class="dropdown-content"></span>
 					</span>
-					<div id="searchEnter" style="padding-top:0.5em;"></div>	
+					<div id="searchEnter" style="padding-top:0.5em;"></div>
 					<div style="display:inline-block; padding-top:0.7em;"><a id="searcg_help" href="#" onclick="showHelp('search_text');return false;">Search help</a></div>
 					<div id="search_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
 						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a class="tooltip" id="regexpReference" href="https://regexr.com/" target="_blank" oncontextmenu="copyToClipboardId('regexpReference')">RegExp reference<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup<br><br><br>Queries usage:<br><br>&#x2022; Supports $nowplaying{}, $nowplayingorselected{} and $selected{}<br>&#x2022; If auto-refresh is disabled, search results will not be updated when using above syntax on playback/selection changes<br>&#x2022; Auto-refresh may have a performance impact with $selected{} (or similar) on selection changes, use filters instead whenever possible</div>
@@ -444,7 +433,7 @@
 			<!-- Regorxxx Code cleanup -->
 			<div class="row">
 				<!-- Regorxxx New Statistics. Adjust column width -->
-				<div class="column38">		
+				<div class="column38">
 					<div class="div_text1">Top bar</b></div>
 					<div id="bar"></div>
 					<div style="padding-right:10%;" class="info4"><i>*If hidden, right click over filter or icon. If all hidden, use context menu.</i></div>
@@ -455,8 +444,6 @@
 					<div id="themeStyle" style="padding-top:0.5em;"></div>
 					<div id="coverFormat"></div>
 					<div id="panelStyle"></div>
-					<!-- Regorxxx Fix dropdown content with invisible text -->
-					<p class="invisible">Text to fix dropdown content.Text to fix dropdown content.Text to fix dropdown content.</p>
 				</div>
 
 				<!-- Regorxxx New Statistics. Adjust column width -->
@@ -473,10 +460,8 @@
 					<div id="nodeLines" style="padding-top:0.5em;"></div>
 					<div class="div_text2">Line style</div>
 					<div id="lines"></div>
-					<!-- Regorxxx Fix dropdown content with invisible text -->
-					<p class="invisible">Text to fix dropdown content.Text to fix dropdown content.Text to fix dropdown content.</p>
 				</div>
-						
+
 				<!-- Regorxxx New Statistics. Adjust column width -->
 				<div class="column32">
 					<div class="div_text1">Hover effect (background)</div>
@@ -506,7 +491,7 @@
 		<!-- Regorxxx New statistics tab -->
 		<div id="statistics" class="tabcontent">
 			<div class="row">
-				<div class="column50">		
+				<div class="column50">
 					<div class="div_text2">Title format</div>
 					<div class="info5"><i>Title format for some can be set below</i></div>
 					<div id="statisticsTf"></div>
@@ -531,8 +516,6 @@
 					<div id="counts_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
 						<div class="info4">The first available entry at Settings > Statistics will follow the option chosen, showing either no values, total number of track or items at every node.<br><br>Alignment is only available while using this mode, greyed out for any other.</div>
 					</div>
-					<!-- Regorxxx Fix dropdown content with invisible text -->
-					<p class="invisible">Text to fix dropdown content.Text to fix dropdown content.Text to fix dropdown content.</p>
 				</div>
 			</div>
 		</div>
@@ -577,15 +560,11 @@
 							</span>
 							<div class="div_text2">View</div>
 							<div id="sameAsTree"></div>
-							<!-- Regorxxx Fix dropdown content with invisible text -->
-							<p class="invisible">Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.</p>
 						</div>
 					</div>
 				</div>
 
 				<div class="column41">
-					<div class="div_text2">Index</div>
-					<div id="indexLetter"></div>
 					<div class="div_text1">Stub</div>
 					<span style="margin:0 0 0.31em;" class="dropdown"><a id="rootStub_dropdown" class="dropbtnLight" href="#" onclick="toggle('rootStub');"></a>
 					<span id="rootStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
@@ -596,9 +575,9 @@
 					<span style="margin:1em 0 0.31em 0;" class="dropdown"><a id="noArtistStub_dropdown" class="dropbtnLight" href="#" onclick="toggle('noArtistStub');"></a>
 					<span id="noArtistStub" style="font:0.85em Segoe UI;" class="dropdown-content"></span>
 					</span>
+					<div class="div_text2">Index</div>
+					<div id="indexLetter"></div>
 					<div class="info5"><i>Click dropdown items for full preview (provided visible in panel).</i></div>
-					<!-- Regorxxx Fix dropdown content with invisible text -->
-					<p class="invisible">Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.<br>Text to fix dropdown content.</p>
 				</div>
 			</div>
 			<div id="help_text" style="display: none;">
@@ -634,7 +613,7 @@
 					<p "><a class="tooltip" id="colorPicker" href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Colors/Color_picker_tool#ColorPicker_tool" target="_blank" oncontextmenu="copyToClipboardId('colorPicker')">Colour picker<span class="tooltiptext">L. Click to open in IE<br>R. CLick to copy</span></a></p>
 					<div class="info3">Selected colours and fonts will be used.<br>Font style codes: 0 regular, 1 bold, 2 italic,  3 bold italic, 4 underline</div>
 				</div>
-			
+
 				<div class="column50">
 					<div class="info6"><b>Colours (R,G,B or R,G,B,A):</b></div>
 					<div id="colours2"></div>
@@ -643,7 +622,7 @@
 			</div>
 		</div>
 		<!-- Regorxxx -->
-	
+
 		<!-- Regorxxx Code cleanup -->
 		<div id="advanced" class="tabcontent">
 			<div class="row">
@@ -662,7 +641,7 @@
 					</div>
 					<!-- Regorxxx -->
 				</div>
-					
+
 				<div class="column50">
 					<div class="div_text1">Node</div>
 					<div id="cusNode"></div>
@@ -682,7 +661,7 @@
 					<!-- Regorxxx -->
 				</div>
 			</div>
-		</div>	
+		</div>
 	</div>
 	<div id="div" style="height:0; width:0;outline:none; border:none; padding:none; margin:none; box-sizing:content-box;"></div>
 		<!-- Regorxxx IE8 Polyfill -->
@@ -745,7 +724,7 @@
 				top = (screen.height - window_h) / 2;
 				window.resizeTo(window_w, window_h);
 				window.moveTo(left, top);
-				height = document.documentElement.clientHeight || document.body.clientHeight;	
+				height = document.documentElement.clientHeight || document.body.clientHeight;
 			}
 
 			function openPage(pageName,elmnt,color) {
@@ -805,7 +784,7 @@
 				if (element.nextSibling && element.nextSibling.id != "view_cnt_folderView" && element.nextSibling.id != "filter_cnt_menuName")
 					element.parentNode.insertBefore(element.nextSibling, element);
 			}
-			
+
 			function set_btn_add_state() {
 				switch (cur.page) {
 					case 'views':
@@ -821,7 +800,7 @@
 
 			function set_btn_apply_state() {
 				getValues();
-				
+
 				var id = document.activeElement.id;
 				if (/scrollbar_container6/.test(id)) {
 					window.scrollbar_container5.style.fontFamily = window.scrollbar_container6.value;
@@ -939,7 +918,7 @@
 				if (cur.w == cur.def_w) window_w = Math.min(window_w, screen.width * 0.67);
 				if (cur.h == cur.def_h) window_h = Math.min(window_h, screen.height * 0.85);
 				left = (screen.width - window_w) / 2;
-				top = (screen.height - window_h) / 2;		
+				top = (screen.height - window_h) / 2;
 				window.resizeTo(window_w, window_h);
 				window.moveTo(left, top);
 				height = document.documentElement.clientHeight || document.body.clientHeight;
@@ -969,13 +948,13 @@
 				var itemCountsLabels = ['Hide', '# Tracks', '# Items', 'Align right (tree / text)'];
 				var metricsLabels = ['Margin', 'Tree indent', 'Line padding tree', 'Line padding album art', 'Margin overide top/bottom (no top bar)', 'Side marker width (0 = auto)'];
 				// Regorxxx <- Top tracks
-				var mbtnClickLabels = ppt['actionMode_internal'].value == 2 
-					? ['Add to playback queue (middle dblclk removes)'] 
+				var mbtnClickLabels = ppt['actionMode_internal'].value == 2
+					? ['Add to playback queue (middle dblclk removes)']
 					: ['Add to default playlist', 'Add to current playlist', 'Add to playback queue (middle dblclk removes)', 'Send Top tracks to default playlist', 'Send Top tracks to current playlist', 'Add Top tracks to default playlist', 'Add Top tracks to current playlist'];
 				// Regorxxx ->
 				var nodeLabels = ['Squares', 'Arrows', 'Arrows Light', 'Triangles', 'Triangles Light', 'Signs', 'Custom'];
 				var playlistLabels = ['Default', 'Activate when changed'];
-				var playlistSortLabels = ['Playlist sort order (empty = default)'];				
+				var playlistSortLabels = ['Playlist sort order (empty = default)'];
 				var topTracksLabels = ['Custom query filter', 'Custom TF expression for sorting']; // Regorxxx <- Top tracks ->
 				var rememberLabels = ['On exit', 'All views', 'Before search'];
 				var rootLabels = ['Hide', 'All Music', 'View name', 'Summary item', 'Display in line (tree)', 'Show source'];
@@ -989,12 +968,12 @@
 				var scrollLabels = ['Use windows metrics', 'Smooth scroll', 'Touch control'];
 				var selectionLabels = ['Full line', 'Play on enter or send from menu'];
 				var searchLabels = ['Search only', 'Send results to playlist on enter','Auto-send results to playlist', 'Require enter to search', 'Auto-refresh when using $selected{}, ...'];
-				var showLabels = ['Row stripes', 'Nowplaying in highlight', 'Nowplaying sidemarker (tree / text)', 'Nowplaying indicator (tree / text)', 'Album art options', 'Facet view', 'Tracks (tree)'];				
+				var showLabels = ['Row stripes', 'Nowplaying in highlight', 'Nowplaying sidemarker (tree / text)', 'Nowplaying indicator (tree / text)', 'Album art options', 'Facet view', 'Tracks (tree)'];
 				// Regorxxx <- New statistics
 				var statisticsLabels = ['Rating', 'Popularity', 'Date', 'Custom-1 (sum)', 'Custom-2 (sum)', 'Custom-3 (sum)', 'Custom-1 (avg)', 'Custom-2 (avg)', 'Custom-3 (avg)', '', 'Auto show labels', 'Auto show tooltips'];
 				var statisticsDecimalsLabels = ['Number of decimals shown'];
 				// Regorxxx ->
-				// Regorxxx <- Send to playlist & select 
+				// Regorxxx <- Send to playlist & select
 				var selectAddedToPlsLabels = ['Send to playlist and select items'];
 				// Regorxxx ->
 				var targetPlaylistLabels = ['Default', 'Current'];
@@ -1003,7 +982,7 @@
 				var themeBlurLabels = ['Auto-fill', 'Level (%)', 'Opacity (%)', '%'];
 				var thumbNailGapLabels = ['Thumbnail gap'];
 				var thumbnailSizeLabels = ['Mini', 'Small', 'Regular', 'Medium', 'Large', 'XL', 'XXL', 'Max'];
-				var treeLabels = ['Auto-collapse', 'Expand single items', 'Expand if # tracks less than:'];	
+				var treeLabels = ['Auto-collapse', 'Expand single items', 'Expand if # tracks less than:'];
 				var loadLabels = ['Auto-sync with library changes', 'Prefixes to strip or swap (| separator)']
 				var modeLabels = ['Max height', 'Min height', 'Limit menu expand: 10-6000'];
 				// Regorxxx <- Drag n' drop to search box
@@ -1020,7 +999,7 @@
 				var dragQueryOpShiftLabels = dragQueryOpDefaultLabels;
 				var dragTagsLabels = ['Default', 'On Ctrl', 'On Alt'];
 				// Regorxxx ->
-				
+
 				function setNodeLabels() {
 					nodeLabels[0] = !ppt['winNode_internal'].value ? 'Squares' : 'Squares (windows)';
 					if (ppt['nodeStyle_internal'].value == 0 || ppt['nodeStyle_internal'].value == 7) window.node_dropdown.innerHTML = nodeLabels[0];
@@ -1047,7 +1026,7 @@
 						name: ['tfRating', 'tfPopularity', 'tfDate', 'tfCustom1Sum', 'tfCustom2Sum', 'tfCustom3Sum', 'tfCustom1Avg', 'tfCustom2Avg', 'tfCustom3Avg', 'tfCustomLabels', 'ratingDecimals'],
 						type: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'int']
 					},
-					// Regorxxx ->	
+					// Regorxxx ->
 					albumArt: {
 						name: ['thumbNailGapStnd', 'thumbNailGapCompact', 'albumArtLetterNo'],
 						type: ['int', 'int', 'int']
@@ -1081,7 +1060,7 @@
 				// Regorxxx <- New search tab
 				box.all = box.behaviour.concat(box.search, box.display, box.statistics, box.albumArt, box.custom, box.advanced);
 				// Regorxxx ->
-	
+
 				var radio = {
 					views: [],
 					filters: [],
@@ -1122,14 +1101,14 @@
 					ppt['sbarButType_internal'].value = n;
 					window.sbarIcon.style.display = 'none';
 				}
-				
+
 				function setRootImage(n) {
 					window.rootStub_dropdown.innerHTML = '<b>Root:</b> <img src="'+rootStubLabels[n].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+rootStubLabels[n].name+'<';
 					ppt.curRootImg_internal.value = n;
 					btn_apply.onclick();
 					window.rootStub.style.display = 'none';
 				}
-				
+
 				function setNoArtistImage(n) {
 					window.noArtistStub_dropdown.innerHTML = '<b>No artist:</b> <img src="'+noArtistStubLabels[n].path+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noArtistStubLabels[n].name+'<';
 					ppt.curNoArtistImg_internal.value = n;
@@ -1143,7 +1122,7 @@
 					btn_apply.onclick();
 					window.noCoverStub.style.display = 'none';
 				}
-				
+
 				function setRoot(n) {
 					window.root_dropdown.innerHTML = rootLabels[n];
 					ppt['rootNode_internal'].value = n;
@@ -1181,7 +1160,7 @@
 					ppt['searchSend_internal'].value = n;
 					window.searchSend.style.display = 'none';
 				}
-				
+
 				function setDragValOpDefault(n) {
 					window.searchDragValOpDefault_dropdown.innerHTML = dragValOpDefaultLabels[n];
 					ppt['searchDragValOp_internal'].value = ['', 'OR', 'AND'][n];
@@ -1250,19 +1229,19 @@
 					ppt['thumbNailSize_internal'].value = n;
 					window.thumbSize.style.display = 'none';
 				}
-				
+
 				function setClickAction(n) {
 					window.click_dropdown.innerHTML = clickLabels[n];
 					ppt['clickAction_internal'].value = n;
 					window.click.style.display = 'none';
 				}
-				
+
 				function setDblClickAction(n) {
 					window.dblClick_dropdown.innerHTML = dblClickLabels[n];
 					ppt['dblClickAction_internal'].value = n;
 					window.dblClick.style.display = 'none';
 				}
-				
+
 				function setMbtnClickAction(n) {
 					window.mbtnClick_dropdown.innerHTML = mbtnClickLabels[n];
 					ppt['mbtnClickAction_internal'].value = n;
@@ -1296,8 +1275,8 @@
 							for (j = 0; j < 3; j++) {
 								items[j] = [];
 								for (i = 0; i < imgTable.length; i++) {
-									var n = imgTable[i]; 
-									var id = imgTable[i] + j; 
+									var n = imgTable[i];
+									var id = imgTable[i] + j;
 									items[j].push('<input id="'+id+'" name="'+n+'" style="'+cbox+'" type="radio" />');
 									if (i == 4) {
 										items[j].push('<div style="padding-left:0.46em; text-align:left">'+radioLabels[j]+'</div>');
@@ -1322,7 +1301,7 @@
 							['$selected{X}', 'Filters', 'Returns value of X for the selected track, e.g. artist IS $selected{$meta(artist,0)} Displays tracks by selected (focused) artist.'],
 							['$nowplayingorselected{X}', 'Filters', 'Returns value of X for the playing track or selected track as fallback, i.e. behaves as $nowplaying while playing and $selected otherwise.'],
 							['$searchtext', 'Filters', 'Returns search text, e.g. enter following as a filter "genre HAS $searchtext", then type "rock" in search box: yields query "genre HAS rock"'],
-							['$colour{normal,hover,selected}', 'Views', 'Set different colours for parts of a line of text, see below for more info.']				
+							['$colour{normal,hover,selected}', 'Views', 'Set different colours for parts of a line of text, see below for more info.']
 							];
 							var items = [];
 							for (j = 0; j < labels.length; j++) {
@@ -1346,7 +1325,7 @@
 								items[j] = [];
 								for (i = 0; i < menuTable.length; i++) {
 									var n = menuTable[i];
-									var id = n + j; 
+									var id = n + j;
 									items[j].push('<input id="'+id+'" name="'+n+'" style="'+cbox+'" type="radio" />');
 									if (i == 3) {
 										items[j].push('<div style="padding-left:0.46em; text-align:left">'+labels[j]+'</div>');
@@ -1387,7 +1366,7 @@
 							if (tb != 'syntax' && tb != 'syntaxFilter' && i % 2 == 1) cell.style.background = '#E8E8E8';  // Regorxxx <- Add help to filter tab ->
 						}
 					}
-					
+
 					if (tb == 'syntax' || tb === 'syntaxFilter') { // Regorxxx <- Add help to filter tab ->
 						var els = document.getElementById(tb).getElementsByTagName("th");
 						for (i = 0;i <els.length;i++){
@@ -1467,7 +1446,7 @@
 					for (i = 0; i < 2; i++) {
 						window.targetPlaylist.insertAdjacentHTML('beforeend', '<div><input id="sendToCur'+i+'" name="sendToCur" style="'+cbox+'" type="radio" /><label for="sendToCur'+i+'" class="checkbox_label">'+targetPlaylistLabels[i]+'</label></div>');
 					}
-					// Regorxxx <- Send to playlist & select 
+					// Regorxxx <- Send to playlist & select
 					i = 0; window.selectAddedToPls.insertAdjacentHTML('beforeend', '<div><input id="selectAdded_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="selectAdded_checkbox'+i+'" class="checkbox_label">'+selectAddedToPlsLabels[i]+'</label></div>');
 					// Regorxxx ->
 					// Regorxxx <- Top tracks
@@ -1477,12 +1456,12 @@
 				}
 
 				// Regorxxx <- Drag n' drop to search box
-				function setSearch() {	
+				function setSearch() {
 					window.searchSend_dropdown.innerHTML = searchLabels[ppt['searchSend_internal'].value];
 					for (i = 0; i < 3; i++) {window.searchSend.insertAdjacentHTML('beforeend', '<a onclick="setSearchSend(' + i + ');">'+searchLabels[i]+'</a>');}
 					i = 3; window.searchEnter.insertAdjacentHTML('beforeend', '<div><input id="search_checkbox'+i+'" name="search_checkbox" style="'+cbox+'" type="checkbox" /><label for="search_checkbox'+i+'" class="checkbox_label">'+searchLabels[i]+'</label></div>');
 					i = 4; window.searchEnter.insertAdjacentHTML('beforeend', '<div><input id="search_checkbox'+i+'" name="search_checkbox" style="'+cbox+'" type="checkbox" /><label for="search_checkbox'+i+'" class="checkbox_label">'+searchLabels[i]+'</label></div>');
-					
+
 					window.searchDragValOpDefault_dropdown.innerHTML = dragValOpDefaultLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragValOp_internal'].value.toUpperCase())];
 					for (i = 0; i < 3; i++) {window.searchDragValOpDefault.insertAdjacentHTML('beforeend', '<a onclick="setDragValOpDefault(' + i + ');">'+dragValOpDefaultLabels[i]+'</a>');}
 
@@ -1494,7 +1473,7 @@
 
 					window.searchDragTagOpDefault_dropdown.innerHTML = dragTagOpDefaultLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTagOp_internal'].value.toUpperCase())];
 					for (i = 0; i < 3; i++) {window.searchDragTagOpDefault.insertAdjacentHTML('beforeend', '<a onclick="setDragTagOpDefault(' + i + ');">'+dragTagOpDefaultLabels[i]+'</a>');}
-	
+
 					window.searchDragTagOpCtrl_dropdown.innerHTML = dragTagOpCtrlLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTagOpCtrl_internal'].value.toUpperCase())];
 					for (i = 0; i < 3; i++) {window.searchDragTagOpCtrl.insertAdjacentHTML('beforeend', '<a onclick="setDragTagOpCtrl(' + i + ');">'+dragTagOpCtrlLabels[i]+'</a>');}
 
@@ -1506,7 +1485,7 @@
 
 					window.searchDragTrackOpCtrl_dropdown.innerHTML = dragTrackOpCtrlLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTrackOpCtrl_internal'].value.toUpperCase())];
 					for (i = 0; i < 3; i++) {window.searchDragTrackOpCtrl.insertAdjacentHTML('beforeend', '<a onclick="setDragTrackOpCtrl(' + i + ');">'+dragTrackOpCtrlLabels[i]+'</a>');}
-					
+
 					window.searchDragTrackOpAlt_dropdown.innerHTML = dragTrackOpAltLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragTrackOpAlt_internal'].value.toUpperCase())];
 					for (i = 0; i < 3; i++) {window.searchDragTrackOpAlt.insertAdjacentHTML('beforeend', '<a onclick="setDragTrackOpAlt(' + i + ');">'+dragTrackOpAltLabels[i]+'</a>');}
 
@@ -1516,14 +1495,14 @@
 					window.searchDragQueryOpShift_dropdown.innerHTML = dragQueryOpShiftLabels[['', 'OR', 'AND'].indexOf(ppt['searchDragQueryOpShift_internal'].value.toUpperCase())];
 					for (i = 0; i < 3; i++) {window.searchDragQueryOpShift.insertAdjacentHTML('beforeend', '<a onclick="setDragQueryOpShift(' + i + ');">'+dragQueryOpShiftLabels[i]+'</a>');}
 
-					for (i = 0; i < 3; i++) {window.dragTags.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="dragTags_container'+i+'" name="display_input" class="input70" /><label for="dragTags_container'+i+'" class="inp_label2">'+dragTagsLabels[i]+'</label></div>');}
+					for (i = 0; i < 3; i++) {window.dragTags.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="dragTags_container'+i+'" name="search_input" class="input70" /><label for="dragTags_container'+i+'" class="inp_label2">'+dragTagsLabels[i]+'</label></div>');}
 				}
 				// Regorxxx ->
 
 				// Regorxxx <- New statistics
 				function setDisplay() {
 					for (i = 0; i < 3; i++) {window.bar.insertAdjacentHTML('beforeend', '<div><input id="bar_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="bar_checkbox'+i+'" class="checkbox_label">'+barLabels[i]+'</label></div>');}
-					
+
 					window.theme_dropdown.innerHTML = themeLabels[ppt['theme_internal'].value];
 					for (i = 0; i < 6; i++) {window.themeBg.insertAdjacentHTML('beforeend', '<a onclick="setTheme(' + i + ');">'+themeLabels[i]+'</a>');}
 					i = 6; window.themeStyle.insertAdjacentHTML('beforeend', '<div><input id="theme_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="theme_checkbox'+i+'" class="checkbox_label">'+themeLabels[i]+'</label></div>');
@@ -1535,7 +1514,7 @@
 					for (i = 0; i < 2; i++) {window.metrics1.insertAdjacentHTML('beforeend', '<div class="input_cnt3"><input id="metrics_container'+i+'" name="display_input" style="padding:0; margin:0;" class="input3" /><label for="metrics_container'+i+'" class="inp_label2">'+metricsLabels[i]+'</label></div>');}
 					for (i = 2; i < 4; i++) {window.metrics2.insertAdjacentHTML('beforeend', '<div class="input_cnt3"><input id="metrics_container'+i+'" name="display_input" style="padding:0; margin:0;" class="input3" /><label for="metrics_container'+i+'" class="inp_label2">'+metricsLabels[i]+'</label></div>');}
 					for (i = 4; i < 6; i++) {window.metrics3.insertAdjacentHTML('beforeend', '<div class="input_cnt3"><input id="metrics_container'+i+'" name="display_input" style="padding:0; margin:0;" class="input3" /><label for="metrics_container'+i+'" class="inp_label2">'+metricsLabels[i]+'</label></div>')};
-			
+
 					window.root_dropdown.innerHTML = rootLabels[ppt['rootNode_internal'].value];
 					for (i = 0; i < 4; i++) {window.root.insertAdjacentHTML('beforeend', '<a onclick="setRoot(' + i + ');">'+rootLabels[i]+'</a>');}
 					i = 4; window.rootStyle.insertAdjacentHTML('beforeend', '<div><input id="root_checkbox'+i+'" name="display_checkbox" style="'+cbox+'" type="checkbox" /><label for="root_checkbox'+i+'" class="checkbox_label">'+rootLabels[i]+'</label></div>');
@@ -1555,7 +1534,7 @@
 				function setStatistcs() {
 					for (i = 0; i < 9; i++) {window.statisticsTf.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="statisticsTf_container'+i+'" name="statistics_input" class="input70" /><label for="statisticsTf_container'+i+'" class="inp_label2">'+statisticsLabels[i]+'</label></div>');}
 					i = 0; {window.statisticsNames.insertAdjacentHTML('beforeend', '<div class="input_cnt5"><input id="statisticsNames_container'+i+'" name="statistics_input" class="input70" /><label id="statisticsNamesLabel" for="statisticsNames_container'+i+'" class="inp_label2">' + getStatisticsSlots() + '</label></div>');}
-					
+
 					for (i = 10; i < 12; i++) {window.labelStatistics.insertAdjacentHTML('beforeend', '<div><input id="labelStatistics_checkbox'+i+'" name="statistics_checkbox" style="'+cbox+'" type="checkbox" /><label for="labelStatistics_checkbox'+i+'" class="checkbox_label">'+statisticsLabels[i]+'</label></div>')};
 					window.itemCounts_dropdown.innerHTML = itemCountsLabels[ppt['nodeCounts_internal'].value];
 					i = 0; window.labelStatistics.insertAdjacentHTML('beforeend', '<div class="input_cnt3"><label id="statisticsDecimalsLabel" for="statisticsDecimals_container'+i+'" class="inp_label1">'+ statisticsDecimalsLabels[i]+'</label><input id="statisticsDecimals_container'+i+'" name="statistics_input" class="input70" /></div>');
@@ -1577,7 +1556,7 @@
 
 				var rootStubLabels = JSON.parse(ppt['rootImages_internal'].value) || [];
 				var root_ix = ppt['curRootImg_internal'].value;
-				
+
 				var noArtistStubLabels = JSON.parse(ppt['noArtistImages_internal'].value) || [];
 				var noart_ix = ppt['curNoArtistImg_internal'].value;
 
@@ -1587,7 +1566,7 @@
 				function setAlbumArt() {
 					for (i = 0; i < 5; i++) {window.labels.insertAdjacentHTML('beforeend', '<div><input id="albumArtLabelType'+i+'" name="albumArtLabelType" style="'+cbox+'" type="radio" /><label for="albumArtLabelType'+i+'" class="checkbox_label">'+albumArtLabels[i]+'</label></div>');}
 					i = 5; window.flip.insertAdjacentHTML('beforeend', '<div><input id="flip_checkbox'+i+'" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="flip_checkbox'+i+'" class="checkbox_label">'+albumArtLabels[i]+'</label></div>');
-					
+
 					window.overlay_dropdown.innerHTML = albumArtOverlayLabels[ppt['itemOverlayType_internal'].value];
 					for (i = 0; i < 3; i++) {window.overlay.insertAdjacentHTML('beforeend', '<a onclick="setOverlay(' + i + ');">'+albumArtOverlayLabels[i]+'</a>');}
 
@@ -1597,7 +1576,7 @@
 
 					window.rootStub_dropdown.innerHTML = '<b>Root:</b> <img src="'+rootStubLabels[root_ix].path +'" alt="'+rootStubLabels[root_ix].name+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+rootStubLabels[root_ix].name+'<';
 					for (i = 0; i < rootStubLabels.length; i++) {window.rootStub.insertAdjacentHTML('beforeend', '<a onclick="setRootImage(' + i + ');"> <img src="'+rootStubLabels[i].path+'" alt="'+rootStubLabels[i].name+'" width="'+ em +'" height="'+ em +'" style="vertical-align:middle;"/> '+rootStubLabels[i].name+'</a>');}
-					
+
 					window.noArtistStub_dropdown.innerHTML = '<b>No artist:</b> <img src="'+noArtistStubLabels[noart_ix].path +'" alt="'+noArtistStubLabels[noart_ix].name+'" width="'+ em +'" height="'+ em +'" class="stub"/> '+noArtistStubLabels[noart_ix].name+'<';
 					for (i = 0; i < noArtistStubLabels.length; i++) {window.noArtistStub.insertAdjacentHTML('beforeend', '<a onclick="setNoArtistImage(' + i + ');"> <img src="'+noArtistStubLabels[i].path+'" alt="'+noArtistStubLabels[i].name+'" width="'+ em +'" height="'+ em +'" style="vertical-align:middle;"/> '+noArtistStubLabels[i].name+'</a>');}
 
@@ -1608,10 +1587,10 @@
 					window.flowMode.insertAdjacentHTML('beforeend', '<div><input id="flowMode_checkbox" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="flowMode_checkbox" class="checkbox_label">Enable</label></div>');
 					window.dropShadow.insertAdjacentHTML('beforeend', '<div><input id="dropShadow_checkbox" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="dropShadow_checkbox" class="checkbox_label">Enable</label></div>');
 					window.sameAsTree.insertAdjacentHTML('beforeend', '<div><input id="sameAsTree_checkbox" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="sameAsTree_checkbox" class="checkbox_label">Same As Tree</label></div>');
-					
+
 					window.thumbSize_dropdown.innerHTML = thumbnailSizeLabels[ppt['thumbNailSize_internal'].value];
 					for (i = 0; i < 8; i++) {window.thumbSize.insertAdjacentHTML('beforeend', '<a onclick="setthumbSize(' + i + ');">'+thumbnailSizeLabels[i]+'</a>');}
-					
+
 					i = 0; window.indexLetter.insertAdjacentHTML('beforeend', '<div><input id="indexLetter_checkbox'+i+'" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="indexLetter_checkbox'+i+'" class="checkbox_label">'+indexLetterLabels[i]+'</label></div>');
 					i = 1; window.indexLetter.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="indexLetter_container'+i+'" name="albumart_input" class="input7" /><label for="indexLetter_container'+i+'" class="inp_label2">'+indexLetterLabels[i]+'</label></div>');
 					i = 2; window.indexLetter.insertAdjacentHTML('beforeend', '<div><input id="indexLetter_checkbox'+i+'" name="albumart_checkbox" style="'+cbox+'" type="checkbox" /><label for="indexLetter_checkbox'+i+'" class="checkbox_label">'+indexLetterLabels[i]+'</label></div>');
@@ -1709,14 +1688,14 @@
 					window.show_checkbox4.parentNode.disabled = true;
 				}
 				if (window.remember_checkbox1.checked || window.remember_checkbox2.checked) window.remember_checkbox0.checked = true;
-				window.remember_checkbox0.parentNode.disabled = window.remember_checkbox1.checked || window.remember_checkbox2.checked;				
+				window.remember_checkbox0.parentNode.disabled = window.remember_checkbox1.checked || window.remember_checkbox2.checked;
 				window.thumbSize_dropdown.style.visibility = window.flowMode_checkbox.checked ? 'hidden' : 'visible';
 				window.thumbNailSize.style.visibility = window.flowMode_checkbox.checked ? 'hidden' : 'visible';
 				window.checkbox_folderView.disabled = true;
 				window.checkbox_menuName.disabled = true;
 				document.getElementById("albumArtCfg").style.display = window.show_checkbox4.checked ? "block" : "none";
 				window.indexLetter_checkbox2.parentNode.disabled = ppt['albumArtLetterNo_internal'].value == 0;
-				window.metrics_container4.parentNode.style.display = !ppt['filterShow_internal'].value && !ppt['searchShow_internal'].value && !ppt['settingsShow_internal'].value ? "block" : "none";				
+				window.metrics_container4.parentNode.style.display = !ppt['filterShow_internal'].value && !ppt['searchShow_internal'].value && !ppt['settingsShow_internal'].value ? "block" : "none";
 			}
 
 			function textChange(e) {
@@ -1791,7 +1770,7 @@
 					for (j = 0; j < radioBtns.length; j++) {
 						if (j == new_value) {
 							radioBtns[j].checked = true;
-							radioBtns[j].value = j;	
+							radioBtns[j].value = j;
 						}
 					}
 				}
@@ -1803,7 +1782,7 @@
 				if (ppt['themed_internal'].value) window.panelStyle.style.display = "none";
 				window.node_checkbox7.parentNode.disabled = ppt['nodeStyle_internal'].value != 0 && ppt['nodeStyle_internal'].value != 7;
 				window.showH2_checkbox5.parentNode.disabled = window.cusNode_checkbox3.checked && (ppt['nodeStyle_internal'].value == 0 || ppt['nodeStyle_internal'].value == 7);
-				
+
 				window.albumArtLabelType2.parentNode.disabled = window.flowMode_checkbox.checked;
 			}
 
@@ -1815,7 +1794,7 @@
 					else window.view.insertAdjacentHTML('beforeend', '<div class="input_cnt1" id="view_cnt_folderView"><input id="checkbox_folderView" name="viewCheckbox" style="'+cbox+'" type="checkbox" /><input id="view_container'+i+'" name="view_name" class="input21" /><input name="input_view" class="input71" readonly /></div>')
 				}
 			}
-			
+
 
 			function setFilters(clear) {
 				if (clear) document.getElementById("filter").innerHTML = '';
@@ -1841,7 +1820,7 @@
 				var check = document.getElementsByName('viewCheckbox');
 				for (i = 0; i < check.length; i++) {
 					v[i].menu = check[i].checked;
-				}				
+				}
 
 				v = cfg[1] = [];
 				inputs = document.getElementsByName('filter_name');
@@ -1868,7 +1847,7 @@
 				for (i = 0; i < boxes.length; i++) {
 					(ppt[box.all[i] + '_internal'] || cfg[box.all[i] + '_internal']).value = boxes[i].checked;
 				}
-				
+
 				for (i = 0; i < radio.all.length; i++) {
 					var radioBtns = document.getElementsByName(radio.all[i]);
 					for (j = 0; j < radioBtns.length; j++) {
@@ -1989,26 +1968,26 @@
 				var inputs = [];
 				if (page == 'all' || page == 'views') {
 					inputs = document.getElementsByName('view_name');
-					for (i = 0; i < inputs.length; i++) {	
+					for (i = 0; i < inputs.length; i++) {
 						inputs[i].value = cfg[0][i].name;
 					}
 					inputs = document.getElementsByName('input_view');
-					for (i = 0; i < inputs.length; i++) {	
+					for (i = 0; i < inputs.length; i++) {
 						inputs[i].value = cfg[0][i].type;
 					}
 				}
-				
+
 				if (page == 'all' || page == 'filters') {
 					inputs = document.getElementsByName('filter_name');
-					for (i = 0; i < inputs.length; i++) {	
+					for (i = 0; i < inputs.length; i++) {
 						inputs[i].value = cfg[1][i].name;
 					}
 					inputs = document.getElementsByName('input_filter');
-					for (i = 0; i < inputs.length; i++) {	
+					for (i = 0; i < inputs.length; i++) {
 						inputs[i].value = cfg[1][i].type;
 					}
 				}
-				
+
 				var nm = page.toString()+'_input', inputs = document.querySelectorAll(page == 'all' ? "[name$='_input']" : "[name="+nm+"]");
 				for (i = 0; i < inputs.length; i++) {
 					try { inputs[i].value = ppt[input[page].name[i] + '_internal'][value]; }
@@ -2091,7 +2070,7 @@
 				}
 				if (cur.page == 'custom') setCustomColours('default_value');
 			}
-			
+
 			window.btn_reset.onclick = function () {
 				var msg = 'This will reset all library tree settings to default; all your settings including \'Views\' and \Filters\' will be lost.\n\nSettings are stored in panel properties, which has back-up options, and which can be opened by shift+right click of library tree.\n\nContinue with reset?'; // Regorxxx <- Fix new lines ->
 				var r = window.confirm(msg);
@@ -2108,7 +2087,7 @@
 					window.btn_ok.onclick();
 				}
 			}
-			
+
 			document.onkeyup = function () {
 				set_btn_apply_state();
 			}
@@ -2160,7 +2139,7 @@
 
 			var divToggleVis = document.getElementById('help_text');
 			var help_btn = document.getElementById('help_button');
- 
+
 			help_btn.onclick = function() {
 				if (divToggleVis.style.display === 'none') {
 					divToggleVis.style.display = 'block';
@@ -2195,7 +2174,7 @@
 
 			var divToggleSyn = document.getElementById('syntax_help');
 			var syntax_btn = document.getElementById('syntax_button');
- 
+
 			syntax_btn.onclick = function() {
 				if (divToggleSyn.style.display === 'none') {
 					divToggleSyn.style.display = 'block';
@@ -2208,7 +2187,7 @@
 			// Regorxxx <- Add help to filter tab
 			var divToggleSynFilter = document.getElementById('syntaxFilter_help');
 			var syntaxFilter_btn = document.getElementById('syntaxFilter_button');
- 
+
 			syntaxFilter_btn.onclick = function() {
 				if (divToggleSynFilter.style.display === 'none') {
 					divToggleSynFilter.style.display = 'block';
@@ -2231,13 +2210,13 @@
 				['dblClick_dropdown', 'dblClick'],
 				['itemCounts_dropdown', 'itemCounts'],
 				['mbtnClick_dropdown', 'mbtnClick'],
-				['keystroke_dropdown', 'keystroke'],			
+				['keystroke_dropdown', 'keystroke'],
 				['noArtistStub_dropdown', 'noArtistStub'],
 				['noCoverStub_dropdown', 'noCoverStub'],
 				['node_dropdown', 'node'],
 				['overlay_dropdown', 'overlay'],
 				['root_dropdown', 'root'],
-				['rootStub_dropdown', 'rootStub'],				
+				['rootStub_dropdown', 'rootStub'],
 				['sbarShow_dropdown', 'sbarShow'],
 				['sbarType_dropdown', 'sbarType'],
 				['sbarCol_dropdown', 'sbarCol'],
@@ -2260,7 +2239,7 @@
 				['theme_dropdown', 'themeBg'],
 				['thumbSize_dropdown', 'thumbSize']
 			];
-			
+
 			function hide() {
 				var id = document.activeElement.id;
 				for (i = 0; i < h.length; i++) {
