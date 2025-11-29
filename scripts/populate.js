@@ -104,7 +104,10 @@ class Populate {
 			custom1Avg: FbTitleFormat(ppt.tfCustom1Avg),
 			custom2Avg: FbTitleFormat(ppt.tfCustom2Avg),
 			custom3Avg: FbTitleFormat(ppt.tfCustom3Avg)
-		}
+		};
+		// Regorxxx <- Fix sorting not being applied after HTML options panel change.
+		this.customSort = FbTitleFormat(ppt.customSort);
+		// Regorxxx ->
 	}
 	// Regorxxx ->
 

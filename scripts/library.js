@@ -362,7 +362,7 @@ class Library {
 			...(type === 'selection' || !type ? [/\$selected{(.+?)}/] : []),
 			/\$nowplayingorselected{(.+?)}/
 		].filter(Boolean).some((re) => {
-			const bSearchMatch = ppt.searchRefreshTf && panel.search.txt.match(re);
+			const bSearchMatch = !ppt.searchEnter && ppt.searchRefreshTf && panel.search.txt.match(re);
 			const bFilterMatch = panel.filter.mode[ppt.filterBy].type.match(re);
 			if (bFilterMatch || bSearchMatch) {
 				if (bFilterMatch) { this.getFilterQuery(); }

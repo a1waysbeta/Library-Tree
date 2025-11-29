@@ -1219,9 +1219,9 @@ class Panel {
 			'search': {},
 			'filter': {}
 		};
-	
-		pop.setTf(); // Regorxxx <- New statistics ->
-		
+
+		pop.setTf(); // Regorxxx <- New statistics. Fix sorting not being applied after HTML options panel change. ->
+
 		pop.tree.forEach(v => {
 			v.id = '';
 			v.count = '';

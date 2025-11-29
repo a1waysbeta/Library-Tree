@@ -1,3 +1,13 @@
+# v2.4.0.mod.29
+### Changed
+- Changed how Auto-refreshing search when using $selected{} and similar functions works. Now is only available when 'Require pressing Enter to search' is not enabled, since it would be undesirable to have automatic searches in such case. The HTML options panel checkboxes behavior has been adjusted to reflect this change.
+### Fixed
+- Fixed bug, on original script, related to Playlist sort setting changes not being applied without a panel reload.
+- Minor HTML options panel improvements and fixes.
+- Fixed checkboxes behaviour, on original script, at HTML options panel.
+
+<br>
+
 # v2.4.0.mod.28
 ### Changed
 - Moved all licenses to 'assets\licenses'.
@@ -9,6 +19,7 @@
 - Fixed Album Art not working on 'Group:auto' mode for 'View by Album' default pattern.
 
 <br>
+
 # v2.4.0.mod.27
 ### Fixed
 - Fixed bug, on original script, related to pressing 'Reset all' on HTML options panel, which did not reset custom Views and Filters added.
@@ -20,6 +31,7 @@
 - Fixed overflow problems within HTML options panel for thumbnail size dropdown.
 
 <br />
+
 # v2.4.0.mod.25
 ### Added
 - Added alerts to HTML options panel in case an input box or checkbox doesn't match the associated property. This is a non-functional change which will help debugging possible errors like the ones fixed at top.
@@ -41,6 +53,8 @@
 # v2.4.0.mod.23
 ### Fixed
 - Fixed bug on original script within HTML options panel on dropdown layout when opening help boxes. Now they are placed relative to the buttons which open them. Also fixed global overflow problems.
+
+<br>
 
 # v2.4.0.mod.22
 ### Added
