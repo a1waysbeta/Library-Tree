@@ -1271,6 +1271,22 @@ class Panel {
 		but.refresh(true);
 		find.on_size();
 		pop.createImages();
+		// Regorxxx <- Fix values on reset
+		img.setRoot();
+		img.setNoArtist();
+		img.setNoCover();
+		if (value === 'default_value') {
+			this.zoomReset();
+			this.setTopBar();
+			this.getViews();
+			this.getFilters();
+			ppt.initialLoadFilters = false;
+			ppt.initialLoadViews = false;
+			ppt.initialLoadFilters = false;
+			ppt.initialLoadViews = false;
+			this.getFields(ppt.viewBy, ppt.filterBy);
+		}
+		// Regorxxx ->
 
 		if (ppt.highLightNowplaying || ppt.nowPlayingSidemarker) {
 			pop.getNowplaying();

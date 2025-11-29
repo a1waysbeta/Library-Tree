@@ -1,3 +1,9 @@
+# v2.4.0.mod.26
+### Fixed
+- Fixed multiple bugs, on original script, related to pressing 'Reset all' on HTML options panel, which broke a lot of settings only fixed on panel reload.
+- Fixed overflow problems within HTML options panel for thumbnail size dropdown.
+
+<br />
 # v2.4.0.mod.25
 ### Added
 - Added alerts to HTML options panel in case an input box or checkbox doesn't match the associated property. This is a non-functional change which will help debugging possible errors like the ones fixed at top.
