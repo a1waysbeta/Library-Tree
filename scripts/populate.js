@@ -73,10 +73,10 @@ class Populate {
 			select: null
 		}
 
-		this.collator = new Intl.Collator(undefined, {
-			sensitivity: 'accent',
-			numeric: true
-		});
+		// Regorxxx <- Fixed Library's "View by Folder Structure"
+		this.collator = new Intl.Collator(void (0), { sensitivity: 'accent', numeric: true });
+		this.folderCollator = new Intl.Collator(void (0), { numeric: true });
+		// Regorxxx ->
 
 		this.setTf(); // Regorxxx <- New statistics ->
 		this.setActions();
@@ -2376,8 +2376,8 @@ class Populate {
 	sort(data) {
 		if (!ppt.libSource && !panel.multiProcess) return;
 		this.specialCharSort(data);
-		// Regorxxx <- By TT: Fixed Library's "View by Folder Structure" to match Windows Explorer. https://github.com/TT-ReBORN/Georgia-ReBORN/commit/819284002e133bb4d9406ad55e233e7bb18d39b8
-		if (ppt.folderView) { // Handle sorting for View By Folder Structure
+		// Regorxxx <- Fix "View by Folder Structure" to match Windows Explorer.
+		if (panel.folderView) { // Handle sorting for View By Folder Structure
 			this.sortViewByFolder(data);
 		} else { // Default sorting for other views
 			data.sort((a, b) => this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0));
@@ -2391,18 +2391,11 @@ class Populate {
 		else if (ppt.customSort.length) items.OrderByFormat(this.customSort, 1);
 	}
 
-	// Regorxxx <- By TT: Fixed Library's "View by Folder Structure" to match Windows Explorer. https://github.com/TT-ReBORN/Georgia-ReBORN/commit/819284002e133bb4d9406ad55e233e7bb18d39b8
+	// Regorxxx <- Fixed Library's "View by Folder Structure" to match Windows Explorer.
 	sortViewByFolder(data) {
-		// Use Intl.Collator with numeric: true to sort file/folder names (srt[0]) naturally,
-		// matching Windows Explorer's alphanumeric order (e.g., "2.01" < "2.15", "1985a" < "1986 -").
-		// This fixes incorrect track and folder sorting in View by Folder Structure.
-		const naturalCollator = new Intl.Collator(undefined, { numeric: true });
-
+		// Fallback to metadata sorting (srt[2], srt[3]) for identical file/folder names.
 		data.sort((a, b) => {
-			const nameCompare = naturalCollator.compare(a.srt[0], b.srt[0]);
-			if (nameCompare !== 0) return nameCompare;
-			// Fallback to metadata sorting (srt[2], srt[3]) for identical file/folder names.
-			return this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0);
+			return this.folderCollator.compare(a.srt[0], b.srt[0]) || this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0);
 		});
 	}
 	// Regorxxx ->

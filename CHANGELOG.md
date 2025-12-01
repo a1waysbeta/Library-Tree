@@ -1,3 +1,12 @@
+# v2.4.0.mod.32
+### Changed
+- Minor HTML options panel improvements.
+### Fixed
+- Fixed bug, on original script, when changing currently in use view or filter TF pattern and any other setting afterwards. When the first condition is met, the panel is reloaded after clicking the apply button and the HTML options panel is no longer a valid instance. As workaround, after panel reloading, the HTML options panel is automatically closed and reopened at the same page. This allows further settings editing without errors.
+- Fix logic of View By Folder Structure sorting (fix from Library-Tree-v2.4.0.mod.2 was not being applied).
+
+<br>
+
 # v2.4.0.mod.31
 ### Changed
 - Changed default prefixes to Strip or Swap setting to 'A|The|Las|Los|Les|La|El|Le'.

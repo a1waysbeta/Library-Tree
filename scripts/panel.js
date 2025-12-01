@@ -663,20 +663,25 @@ class Panel {
 				this.getViews();
 				this.getFilters();
 				this.getFields(ppt.viewBy, ppt.filterBy, true);
-				if (this.getViewIndex(this.grp, view_name, view_type) == -1 || this.getFilterIndex(this.filter.mode, filter_name, filter_type) == -1) {
+				// Regorxxx <- Fix HTML options panel error on panel reload when changing current library view or filter
+				if (this.getViewIndex(this.grp, view_name, view_type) === -1 || this.getFilterIndex(this.filter.mode, filter_name, filter_type) === -1) {
 					lib.logTree();
-					window.Reload();
-				} else this.getFields(ppt.viewBy, ppt.filterBy);
+					ppt.set('Library Tree Dialog Box Reopen', true);
+					return window.Reload();
+				} else { this.getFields(ppt.viewBy, ppt.filterBy); }
+				// Regorxxx ->
 			}
 
 			if (new_ppt) this.updateProp($.jsonParse(new_ppt, {}), 'value');
 
 			if (new_cfgWindow) ppt.set('Library Tree Dialog Box', new_cfgWindow);
+			ppt.set('Library Tree Dialog Box Reopen', false); // Regorxxx <- Fix HTML options panel error on panel reload when changing current library view or filter ->
 
 			if (type == 'reset') {
 				this.updateProp(ppt, 'default_value');
 			}
-		}
+			return true;
+		};
 
 		this.getViews();
 		let cfgWindow = ppt.get('Library Tree Dialog Box');

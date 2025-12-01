@@ -451,7 +451,7 @@ addEventListener('on_paint', (gr) => {
 		} else {
 			lib.initialise(void (0), true);
 		}
-	}
+	} else if (ppt.get('Library Tree Dialog Box Reopen')) { ppt.set('Library Tree Dialog Box Reopen', false); panel.open(); } // Regorxxx <- Fix HTML options panel error on panel reload when changing current library view or filter ->
 	// Regorxxx ->
 	ui.draw(gr);
 	lib.checkTree();
