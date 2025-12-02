@@ -73,7 +73,7 @@ addEventListener('on_key_down', (vkey) => {
 addEventListener('on_key_up', (vkey) => {
 	img.on_key_up(vkey);
 	if (!ppt.searchShow) return;
-	search.on_key_up(vkey)
+	search.on_key_up(vkey);
 });
 
 addEventListener('on_library_items_added', (handleList) => {
@@ -248,7 +248,7 @@ addEventListener('on_notify_data', (name, info) => {
 						'standard': {},
 						'search': {},
 						'filter': {}
-					}
+					};
 					lib.treeState(false, 2, null, 3);
 					ui.expandHandle = lib.list.Count ? lib.list[0] : null;
 					ui.on_playback_new_track();
@@ -393,7 +393,7 @@ addEventListener('on_notify_data', (name, info) => {
 			const types = men.sourceTypes();
 			if (typeof info.sourceName !== 'undefined') { idx = types.findIndex((t) => t.toLowerCase() === info.sourceName.toLowerCase()); }
 			else if (typeof info.sourceIdx !== 'undefined' && info.sourceIdx >= -1 && info.sourceIdx < types.length) {
-				if (info.sourceIdx === -1) { idx = 0 }
+				if (info.sourceIdx === -1) { idx = 0; }
 				else { idx = info.sourceIdx; }
 			}
 			// Playlists
@@ -416,14 +416,14 @@ addEventListener('on_notify_data', (name, info) => {
 			let idx = -1;
 			const types = men.statisticsTypes();
 			const customRe = / \[custom-\d \(avg\)\]/i;
-			if (typeof info.statisticsName !== 'undefined') { 
+			if (typeof info.statisticsName !== 'undefined') {
 				const statsName = info.statisticsName.toLowerCase();
 				idx = types.findIndex((t) => {
 					t = t.toLowerCase(); // Match entire name, user label or Custom-X (avg) labels
 					return t === statsName || t.replace(customRe, '') === statsName || t === t.replace(customRe, '') + ' [' + statsName + ']';
-				}); 
+				});
 			} else if (typeof info.statisticsIdx !== 'undefined' && info.statisticsIdx >= -1 && info.statisticsIdx < types.length) {
-				if (info.statisticsIdx === -1) { idx = 0 }
+				if (info.statisticsIdx === -1) { idx = 0; }
 				else { idx = info.statisticsIdx; }
 			}
 			if (idx !== -1) { men.setSource(idx); }
@@ -431,10 +431,7 @@ addEventListener('on_notify_data', (name, info) => {
 		}
 		// Regorxxx ->
 	}
-	if (ui.id.local && name.startsWith('opt_')) {
-		const clone = typeof info === 'string' ? String(info) : info;
-		on_notify(name, clone);
-	}
+	// Regorxxx <- Code cleanup. Remove ui.id.local references ->
 });
 
 addEventListener('on_paint', (gr) => {
@@ -500,7 +497,7 @@ addEventListener('on_playlist_items_added', (playlistIndex) => {
 		const fixedPlaylistIndex = plman.FindPlaylist(ppt.fixedPlaylistName);
 		if (playlistIndex == fixedPlaylistIndex) {
 			lib.playlist_update(playlistIndex);
-			return
+			return;
 		}
 	}
 	if (!ppt.libSource && playlistIndex == $.pl_active) {
@@ -514,7 +511,7 @@ addEventListener('on_playlist_items_removed', (playlistIndex) => {
 		const fixedPlaylistIndex = plman.FindPlaylist(ppt.fixedPlaylistName);
 		if (playlistIndex == fixedPlaylistIndex) {
 			lib.playlist_update(playlistIndex);
-			return
+			return;
 		}
 	}
 
@@ -549,7 +546,7 @@ const on_queue_changed = $.debounce(() => {
 		'standard': {},
 		'search': {},
 		'filter': {}
-	}
+	};
 	panel.treePaint();
 }, 250, {
 	leading: true,
@@ -576,7 +573,7 @@ addEventListener('on_size', () => {
 	pop.deactivateTooltip();
 	tooltip.SetMaxWidth(Math.max(ui.w, 800));
 	ui.blurReset();
-	ui.calcText(true)
+	ui.calcText(true);
 
 	if (ppt.themed && ppt.theme) {
 		const themed_image = `${fb.ProfilePath}settings\\themed\\themed_image.bmp`;
@@ -593,7 +590,7 @@ addEventListener('on_size', () => {
 	windowMetrics[window.Name] = {
 		w: ui.w,
 		h: ui.h
-	}
+	};
 	$.save(windowMetricsPath, JSON.stringify(windowMetrics, null, 3), true);
 });
 

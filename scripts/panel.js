@@ -53,22 +53,22 @@ class Panel {
 			x: 0,
 			y: 0,
 			w: 0
-		}
+		};
 
 		this.last_pressed_coord = {
 			x: -1,
 			y: -1
-		}
+		};
 
 		this.ln = {
 			x: 0,
 			w: 100
-		}
+		};
 
 		this.m = {
 			x: -1,
 			y: -1
-		}
+		};
 
 		this.search = {
 			active: false,
@@ -78,9 +78,9 @@ class Panel {
 			w: 100,
 			h: 25,
 			sp: 25
-		}
+		};
 
-		this.settings = {}
+		this.settings = {};
 
 		this.tree = {
 			sel: {
@@ -91,7 +91,7 @@ class Panel {
 			},
 			w: 0,
 			y: 0
-		}
+		};
 
 		ppt.get('Library Tree Dialog Box', JSON.stringify({
 			w: 85,
@@ -179,7 +179,7 @@ class Panel {
 				this.grp[i] = {
 					name: grps[0].trim(),
 					type: grps[1]
-				}
+				};
 			}
 		});
 
@@ -190,7 +190,7 @@ class Panel {
 				this.filter.mode[i] = {
 					name: grps[0].trim(),
 					type: grps[1].trim()
-				}
+				};
 			}
 		});
 
@@ -207,12 +207,12 @@ class Panel {
 				}
 			}
 			return -1;
-		}
+		};
 		const indexOfAll = (str, item) => {
 			const indices = [];
 			for (let pos = str.indexOf(item); pos !== -1; pos = str.indexOf(item, pos + 1)) indices.push(pos);
 			return indices.reverse();
-		}
+		};
 		const name = v => v.name;
 		const removeEmpty = v => v && v.name != '' && v.type != '';
 
@@ -377,7 +377,7 @@ class Panel {
 				name: grps[0].trim(),
 				type: grps[1].trim(),
 				menu: true
-			}
+			};
 		});
 
 		const dialogFilters = [];
@@ -418,14 +418,14 @@ class Panel {
 					name: grps[0].trim(),
 					type: grps[1].trim(),
 					menu: true
-				}
+				};
 			} else if (v.includes('/hide/')) {
 				grps = v.split('/hide/');
 				return {
 					name: grps[0].trim(),
 					type: grps[1].trim(),
 					menu: false
-				}
+				};
 			}
 		});
 
@@ -435,10 +435,8 @@ class Panel {
 	}
 
 	getViewIndex(arr, name, type) {
-		let findViewIndex = arr.findIndex(v => {
-			return v.name.trim() === name && v.type.trimStart() === type;
-		})
-		if (findViewIndex != -1) ppt.viewBy = findViewIndex;
+		const findViewIndex = arr.findIndex(v => v.name.trim() === name && v.type.trimStart() === type);
+		if (findViewIndex != -1) { ppt.viewBy = findViewIndex; }
 		return findViewIndex;
 	}
 
@@ -471,7 +469,7 @@ class Panel {
 				level2: v[3],
 				lines: v[4],
 				menu: true
-			}
+			};
 		});
 
 		this.defaultViews = this.defViewPatterns.filter((v) => v.name !== 'separator').map(v => v.type);
@@ -483,7 +481,7 @@ class Panel {
 			if (!v.name || !v.type || !v.level1 || !v.level2) { console.log('Library Tree: error on default view pattern\n\t ' + JSON.stringify(v)); }
 			if (!albumArtGrpNames[`${v.type}1`]) albumArtGrpNames[`${v.type}1`] = v.level1;
 			if (!albumArtGrpNames[`${v.type}2`]) albumArtGrpNames[`${v.type}2`] = v.level2;
-		})
+		});
 		// Regorxxx ->
 
 		const dialogViews = [];
@@ -538,14 +536,14 @@ class Panel {
 					name: grps[0].trim(),
 					type: grps[1].trimStart(),
 					menu: true
-				}
+				};
 			} else if (v.includes('/hide/')) {
 				grps = v.split('/hide/');
 				return {
 					name: grps[0].trim(),
 					type: grps[1].trimStart(),
 					menu: false
-				}
+				};
 			}
 		});
 
@@ -553,7 +551,7 @@ class Panel {
 		this.dialogGrps.push(this.dialogGrps.shift());
 		this.defViewPatterns.push(this.defViewPatterns.shift());
 		this.view_ppt.push(this.view_ppt.shift());
-		
+
 		const albumArtGrpNameKeys = Object.keys(albumArtGrpNames);
 		if (albumArtGrpNameKeys.length > 100) {
 			let keysPresent = this.dialogGrps.map(v => `${v.type}1`);
@@ -574,7 +572,7 @@ class Panel {
 		ppt.sbarButType = 0;
 		ppt.searchShow = true;
 		ppt.filterShow = true;
-		ppt.settingsShow = true
+		ppt.settingsShow = true;
 		window.Reload();
 	}
 
@@ -647,14 +645,14 @@ class Panel {
 					if (!cfg[0][i].type) cfg[0].splice(i, 1);
 				cfg[0].forEach((v, i) => {
 					const nm = v.type ? v.name + (v.menu ? ' // ' : ' /hide/ ') + v.type : null;
-					ppt.set(v.type != 'Pattern Not Configurable' ? `View ${$.padNumber(i + 2, 2)}: Name // Pattern` : `View 01: Name // Pattern`, nm);
+					ppt.set(v.type != 'Pattern Not Configurable' ? `View ${$.padNumber(i + 2, 2)}: Name // Pattern` : 'View 01: Name // Pattern', nm);
 				});
 				i = cfg[1].length;
 				while (i--)
 					if (!cfg[1][i].type) cfg[1].splice(i, 1);
 				cfg[1].forEach((v, i) => {
 					const nm = v.type ? v.name + (v.menu ? ' // ' : ' /hide/ ') + v.type : null;
-					ppt.set(v.type != 'Button Name' ? `Filter ${$.padNumber(i + 2, 2)}: Name // Query` : `Filter 01: Name // Query`, nm);
+					ppt.set(v.type != 'Button Name' ? `Filter ${$.padNumber(i + 2, 2)}: Name // Query` : 'Filter 01: Name // Query', nm);
 				});
 				const view_name = this.grp[ppt.viewBy].name;
 				const view_type = this.grp[ppt.viewBy].type.trimStart();
@@ -695,7 +693,7 @@ class Panel {
 		if (popUpBox.isHtmlDialogSupported()) popUpBox.config(JSON.stringify([this.dialogGrps, this.dialogFiltGrps, this.defViewPatterns, this.defFilterPatterns]), pptStr, cfgWindow, ok_callback);
 		else {
 			popUpBox.ok = false;
-			$.trace('options dialog isn\'t available with current operating system. All settings in options are available in panel properties. Common settings are on the menu.');	
+			$.trace('options dialog isn\'t available with current operating system. All settings in options are available in panel properties. Common settings are on the menu.');
 		}
 	}
 
@@ -734,7 +732,7 @@ class Panel {
 								ppt.artId = 0;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Traditional Style';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -766,7 +764,7 @@ class Panel {
 								ppt.artId = 0;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Modern Style';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -805,7 +803,7 @@ class Panel {
 								ppt.artId = 0;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Ultra Modern Style';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -837,7 +835,7 @@ class Panel {
 								ppt.artId = 0;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Clean';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -869,7 +867,7 @@ class Panel {
 								ppt.rootNode = 3;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Facet';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -902,7 +900,7 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Covers [Labels Right]';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -935,7 +933,7 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Covers [Labels Bottom]';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -968,7 +966,7 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Covers [Labels Blend]';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -1000,7 +998,7 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Artist Photos [Labels Right]';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -1029,7 +1027,7 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
+						};
 						const caption = 'Quick Setup: Flow Mode';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
@@ -1068,16 +1066,14 @@ class Panel {
 									}
 								}
 							}
-						if (!ppt.rememberTree && !ppt.reset) 
-							lib.logTree();
-						else if (ppt.rememberTree) 
-							lib.logFilter();
+							if (!ppt.rememberTree && !ppt.reset) { lib.logTree(); }
+							else if (ppt.rememberTree) { lib.logFilter(); }
 						}
 						lib.getLibrary();
 						lib.rootNodes(!ppt.reset ? 1 : 0, true);
 						but.refresh(true);
 						this.searchPaint();
-						if (!pop.notifySelection())  {
+						if (!pop.notifySelection()) {
 							const list = !this.search.txt.length || !lib.list.Count ? lib.list : this.list;
 							window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
 						}
@@ -1107,7 +1103,7 @@ class Panel {
 					but.refresh(true);
 					this.searchPaint();
 					lib.logTree();
-					if (!pop.notifySelection())  {
+					if (!pop.notifySelection()) {
 						const list = !this.search.txt.length || !lib.list.Count ? lib.list : this.list;
 						window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
 					}
@@ -1182,7 +1178,7 @@ class Panel {
 	updateProp(prop, value) {
 		const curActionMode = ppt.actionMode;
 		Object.entries(prop).forEach(v => {
-			ppt[v[0].replace('_internal', '')] = v[1][value]
+			ppt[v[0].replace('_internal', '')] = v[1][value];
 		});
 
 		img.asyncBypass = Date.now();
@@ -1262,7 +1258,7 @@ class Panel {
 		on_colours_changed();
 		if (ui.col.counts) panel.colMarker = true;
 		if (ppt.themed && ppt.theme) {
-			const themed_image = `${fb.ProfilePath}settings\\themed\\themed_image.bmp`;	
+			const themed_image = `${fb.ProfilePath}settings\\themed\\themed_image.bmp`;
 			if ($.file(themed_image)) sync.image(gdi.Image(themed_image));
 		}
 		this.setRootName();
@@ -1297,7 +1293,7 @@ class Panel {
 
 		if (ppt.highLightNowplaying || ppt.nowPlayingSidemarker) {
 			pop.getNowplaying();
-			pop.nowPlayingShow()
+			pop.nowPlayingShow();
 		}
 
 		if (panel.imgView && pop.tree.length) {

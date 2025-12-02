@@ -29,7 +29,7 @@ class Search {
 			let tooltipText = panel.search.txt;
 			tooltipText += '\n----------------------------------------------';
 			const count = pop.tree[0] && pop.tree[0].root && pop.tree[0].tracksCount ? pop.tree[0].tracksCount : panel.list.Count;
-			tooltipText += '\nFound ' + panel.list.Count + ' tracks';
+			tooltipText += '\nFound ' + count + ' tracks';
 			return tooltipText;
 		};
 
@@ -52,7 +52,7 @@ class Search {
 		};
 
 		this.getDragDropOperators = (mask) => {
-			const operators = {value: '', tag: '', track: '', query: ''};
+			const operators = { value: '', tag: '', track: '', query: '' };
 			const bCtrl = (mask & MK_CONTROL) === MK_CONTROL;
 			const bAlt = (mask & 32) === 32;
 			const bShift = (mask & MK_SHIFT) === MK_SHIFT;
@@ -71,7 +71,7 @@ class Search {
 			}
 			operators.query = bShift ? ppt.searchDragQueryOpShift : ppt.searchDragQueryOp;
 			return operators;
-		}
+		};
 
 		this.getDragDropQuery = (selItems, searchTags, operators) => {
 			if (!operators.track) { selItems = new FbMetadbHandleList(selItems[0]); }
@@ -92,7 +92,7 @@ class Search {
 				);
 			}).filter(Boolean);
 			return $.queryJoin([...new Set(trackQueries)], operators.track) || '';
-		}
+		};
 
 		this.getDragDropPathRegexp = (selItems) => {
 			const paths = selItems.GetLibraryRelativePaths()
@@ -100,7 +100,7 @@ class Search {
 				.filter(Boolean)
 				.map((s) => $.escapeRegExp(s));
 			return paths.length ? '/' + paths.join('|') + '/i' : '';
-		}
+		};
 
 		this.getDragDropExpression = (selItems, method, mask) => {
 			let input = '';
@@ -115,7 +115,7 @@ class Search {
 				}
 			}
 			return input;
-		}
+		};
 
 		this.getDragDropTooltipText = (method, mask) => {
 			if (method === 0 && panel.folderView) { // Auto: tags or path
@@ -128,13 +128,13 @@ class Search {
 					: searchTags[0];
 				return (operators.query || !panel.search.txt ? 'Add' : 'Replace') + ' query: ' + tagsDisplay;
 			}
-		}
+		};
 		// Regorxxx ->
 		// Regorxxx <- RegExp library search
 		const isRegExp = /^\/.+\/[gimsuy]?/;
 		this.isSearchRegExp = () => {
 			return isRegExp.test(panel.search.txt);
-		}
+		};
 		// Regorxxx ->
 
 		// Regorxxx <- Fix search history on enter
@@ -149,7 +149,7 @@ class Search {
 				return;
 			}
 			if (!panel.search.txt) return;
-			this.menu.push({search: panel.search.txt, accessed: Date.now()});
+			this.menu.push({ search: panel.search.txt, accessed: Date.now() });
 			if (this.menu.length > 25) {
 				this.menu.sort((a, b) => b.accessed - a.accessed);
 				this.menu.length = 25;
@@ -406,9 +406,9 @@ class Search {
 					for (let k = 0; k < leftSide.length; k++) {
 						if (panel.search.txt[k] == ' ' && panel.search.txt[k + 1] != ' ') boundary = k + 1;
 					}
-					panel.search.txt = leftSide.slice(0, boundary) + panel.search.txt.slice(this.cx).trimStart()
+					panel.search.txt = leftSide.slice(0, boundary) + panel.search.txt.slice(this.cx).trimStart();
 					this.cx = boundary;
-					
+
 					if (this.offset > 0) {
 						this.offset -= initial - panel.search.txt.length;
 					}
@@ -491,7 +491,7 @@ class Search {
 	on_key_down(vkey) {
 		if (!panel.search.active) return;
 		switch (vkey) {
-			case vk.ctrl:	
+			case vk.ctrl:
 				this.ctrl = true;
 				break;
 			case vk.left:
@@ -516,7 +516,7 @@ class Search {
 							this.offset -= (this.cx - boundary);
 						}
 						this.cx = boundary;
-						this.offset = this.offset >= this.end - this.start ? this.offset - this.end + this.start : 0;	
+						this.offset = this.offset >= this.end - this.start ? this.offset - this.end + this.start : 0;
 					}
 				}
 				if (vkey == vk.right && this.cx < panel.search.txt.length) {
@@ -649,7 +649,7 @@ class Find {
 		if (panel.pos >= 0 && panel.pos < pop.tree.length) {
 			const char = pop.tree[panel.pos].name.replace(/@!#.*?@!#/g, '').charAt(0).toLowerCase();
 			// Regorxxx <- Fixed quick-search on same letter. Fix quick-searck for non ascii first char, greek and cyrilic
-			const normChar =  $.asciify($.transliterate(char));
+			const normChar = $.asciify($.transliterate(char));
 			if (pop.tree[panel.pos].sel && (char === text || normChar === text) && this.prevChar == text) { advance = true; }
 			this.prevChar = text;
 			timer.clear(timer.jsearch3);

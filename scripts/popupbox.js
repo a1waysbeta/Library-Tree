@@ -4,7 +4,7 @@ class PopUpBox {
 	constructor() {
 		this.getHtmlCode();
 		this.ok = true;
-		this.soFeat = {clipboard: true, gecko: true}
+		this.soFeat = { clipboard: true, gecko: true };
 	}
 
 	// Methods
@@ -69,7 +69,7 @@ class PopUpBox {
 				cache = doc.parentWindow.clipboardData.getData('Text');
 			} catch (e) {}
 			try {
-				doc.parentWindow.clipboardData.setData('Text', clText); 
+				doc.parentWindow.clipboardData.setData('Text', clText);
 				clText = doc.parentWindow.clipboardData.getData('Text');
 			} catch (e) {
 				this.soFeat.clipboard = false;
@@ -88,21 +88,10 @@ class PopUpBox {
 
 		ppt.isHtmlDialogSupported = this.soFeat.gecko && this.soFeat.clipboard || this.isIEInstalled() ? 1 : 0;
 		if (!ppt.isHtmlDialogSupported) {
-		const caption = 'Show HTML Dialog';
-			const prompt = 
-`A feature check indicates that Spider Monkey Panel show html dialog isn't supported by the current operating system.
-
-This is used to display options. The console will show alternatives on closing this dialog.
-
-Occassionally, the feature check may give the wrong answer.
-
-If you're using windows and have Internet Explorer support it should work, so enter 1 and press OK.
-
-The setting is saved in panel properties as the first item and can be changed there later.
-
-Supported-1; unsupported-0`;
+			const caption = 'Show HTML Dialog';
+			const prompt = 'A feature check indicates that Spider Monkey Panel show html dialog isn\'t supported by the current operating system.\n\nThis is used to display options. The console will show alternatives on closing this dialog.\n\nOccassionally, the feature check may give the wrong answer.\n\nIf you\'re using windows and have Internet Explorer support it should work, so enter 1 and press OK.\n\nThe setting is saved in panel properties as the first item and can be changed there later.\n\nSupported-1; unsupported-0';
 			let ns = '';
-			let status = 'ok'
+			let status = 'ok';
 			try {
 				ns = utils.InputBox(0, prompt, caption, ppt.isHtmlDialogSupported, true);
 			} catch(e) {

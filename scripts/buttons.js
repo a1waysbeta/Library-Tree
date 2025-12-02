@@ -13,18 +13,18 @@ class Buttons {
 		this.transition;
 		this.vertical = true;
 
-		this.b = {}
-		this.btns = {}
-		this.s = {}
+		this.b = {};
+		this.btns = {};
+		this.s = {};
 
 		this.cross = {
 			hover: null,
 			normal: null
-		}
+		};
 
 		this.q = {
 			s_img: null
-		}
+		};
 
 		this.scr = {
 			bg: null,
@@ -34,13 +34,13 @@ class Buttons {
 			img: null,
 			opaque: ui.getOpaque(),
 			pad: $.clamp(ppt.sbarButPad / 100, -0.5, 0.3)
-		}
+		};
 
 		this.tooltip = {
 			delay: true,
 			show: true,
 			start: Date.now() - 2000
-		}
+		};
 
 		this.setSbarIcon();
 		this.createImages();
@@ -146,7 +146,7 @@ class Buttons {
 		this.move(x, y);
 		if (!this.cur || this.cur.hide) {
 			this.Dn = false;
-			return false
+			return false;
 		} else this.Dn = this.cur.name;
 		this.cur.down = true;
 		this.cur.cs('down');
@@ -170,7 +170,7 @@ class Buttons {
 		this.move(x, y);
 		if (!this.cur || this.cur.hide) {
 			this.Dn = false;
-			return false
+			return false;
 		} else this.Dn = this.cur.name;
 		this.cur.lbtn_dblclk(x, y);
 		return true;
@@ -538,7 +538,7 @@ class Btn {
 		if (!ui.img.blurDark) gr.GdiDrawText(panel.settings.icon, panel.settings.font, colText, 0, this.y, this.p1, this.p2, panel.rc);
 		else {
 			gr.SetTextRenderingHint(5);
-			gr.DrawString(panel.settings.icon, panel.settings.font, colText, 0, this.y - 1, this.p1, this.p2, $.stringFormat(2, 1));		
+			gr.DrawString(panel.settings.icon, panel.settings.font, colText, 0, this.y - 1, this.p1, this.p2, $.stringFormat(2, 1));
 		}
 	}
 
