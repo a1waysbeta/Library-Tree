@@ -1,4 +1,6 @@
 ﻿'use strict';
+/* global ui:readable, panel:readable, ppt:readable, lib:readable, pop:readable, but:readable, img:readable, search:readable, timer:readable, $:readable, men:readable, vk:readable, tooltip:readable, globFonts:readable, sbar:readable */
+/* exported Populate */
 
 class Populate {
 	constructor() {
@@ -430,13 +432,13 @@ class Populate {
 	calcStatistics(v) {
 		const key = 'stat' + this.getKey(v);
 		const type = panel.search.txt ? 'search' : ppt.filterBy ? 'filter' : 'standard';
-		if (this.cache[type][key]) return this.cache[type][key].value;
+		if (this.cache[type][key]) { return this.cache[type][key]; }
 		const handleList = new FbMetadbHandleList();
 		let items = [];
 		this.addItems(items, v.item);
-		items = [...new Set(items)].sort(this.numSort)
+		items = [...new Set(items)].sort(this.numSort);
 		items.some(w => {
-			if (w >= panel.list.Count) return true;
+			if (w >= panel.list.Count) { return true; }
 			handleList.Add(panel.list[w]);
 		});
 		let date ='';
@@ -647,7 +649,7 @@ class Populate {
 			ui.style.symb.SetPartAndStateID(2, 1);
 			ui.style.symb.SetPartAndStateID(2, 2);
 			ui.style.symb.DrawThemeBackground(gr, -ui.sz.node, -ui.sz.node, ui.sz.node, ui.sz.node);
-		} catch (e) {
+		} catch (e) { // eslint-disable-line no-unused-vars
 			ppt.nodeStyle = 0;
 			this.nodeStyle = 0;
 		}

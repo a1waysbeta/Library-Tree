@@ -1,4 +1,6 @@
 ﻿'use strict';
+/* global ppt:readable, $:readable, WshShell:readable, doc:readable */
+/* exported PopUpBox */
 
 class PopUpBox {
 	constructor() {
@@ -42,11 +44,11 @@ class PopUpBox {
 			version += '.';
 			version += (WshShell.RegRead('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\CurrentMinorVersionNumber')).toString();
 			return version;
-		} catch (e) {}
+		} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 		try {
 			version = WshShell.RegRead('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\CurrentVersion');
 			return version;
-		} catch (e) {}
+		} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 		return '6.1';
 	}
 
@@ -67,18 +69,18 @@ class PopUpBox {
 			let clText = 'test';
 			try {
 				cache = doc.parentWindow.clipboardData.getData('Text');
-			} catch (e) {}
+			} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 			try {
 				doc.parentWindow.clipboardData.setData('Text', clText);
 				clText = doc.parentWindow.clipboardData.getData('Text');
-			} catch (e) {
+			} catch (e) { // eslint-disable-line no-unused-vars
 				this.soFeat.clipboard = false;
 			}
 			if (cache) { // Just in case previous clipboard data is needed
 				try {
 					doc.parentWindow.clipboardData.setData('Text', cache);
-				} catch (e) {}
-			} 
+				} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
+			}
 			if (clText !== 'test') {
 				this.soFeat.clipboard = false;
 			}
@@ -94,7 +96,7 @@ class PopUpBox {
 			let status = 'ok';
 			try {
 				ns = utils.InputBox(0, prompt, caption, ppt.isHtmlDialogSupported, true);
-			} catch(e) {
+			} catch (e) { // eslint-disable-line no-unused-vars
 				status = 'cancel';
 			}
 			if (status != 'cancel') {
@@ -110,7 +112,7 @@ class PopUpBox {
 		return diskLetters.some(d => {
 			try { // Needed when permission error occurs and current SMP implementation is broken for some devices....
 				return utils.IsDirectory(d) ? paths.some(p => utils.IsFile(d + p)) : false;
-			} catch (e) {return false;}
+			} catch (e) { return false; } // eslint-disable-line no-unused-vars
 		});
 	}
 

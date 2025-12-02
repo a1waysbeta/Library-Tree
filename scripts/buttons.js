@@ -1,4 +1,9 @@
 ﻿'use strict';
+//24/11/25
+
+/* global ui:readable, panel:readable, ppt:readable, pop:readable, but:readable, $:readable, tooltip:readable, sbar:readable, img:readable, search:readable, fMenu:readable, sMenu:readable, men:readable */
+
+/* exported Buttons, Btn, Tooltip, TooltipTimer, Transition */
 
 class Buttons {
 	constructor() {

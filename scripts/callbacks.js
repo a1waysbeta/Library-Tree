@@ -1,4 +1,6 @@
 ﻿'use strict';
+/* global ui:readable, panel:readable, ppt:readable, lib:readable, pop:readable, but:readable, img:readable, search:readable, timer:readable, $:readable, men:readable, vk:readable, folders:readable, sync:readable, tooltip:readable, sbar:readable */
+/* global dropEffect:readable */
 
 addEventListener('on_colours_changed', (keepCache) => {
 	ui.getColours();
@@ -332,15 +334,15 @@ addEventListener('on_notify_data', (name, info) => {
 			const types = men.artTypes();
 			if (typeof info.artType !== 'undefined') { idx = types.findIndex((t) => t.toLowerCase() === info.artType.toLowerCase()); }
 			else if (typeof info.artIdx !== 'undefined' && info.artIdx >= -1 && info.artIdx < types.length) {
-				if (info.artIdx === -1) { idx = 0 }
+				if (info.artIdx === -1) { idx = 0; }
 				else { idx = info.artIdx; }
 			}
-			if (idx !== -1) { men.setAlbumart(idx) }
+			if (idx !== -1) { men.setAlbumart(idx); }
 			break;
 		}
 		case 'Library Tree: Collapse all': {
 			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
-			men.setTreeState(0)
+			men.setTreeState(0);
 			break;
 		}
 		case 'Library Tree: Quicksearch': {
@@ -379,7 +381,7 @@ addEventListener('on_notify_data', (name, info) => {
 			let idx = -1;
 			if (typeof info.filterName !== 'undefined') { idx = panel.dialogFiltGrps.findIndex(v => v.name.trim().toLowerCase() === info.filterName.toLowerCase()); }
 			else if (typeof info.filterIdx !== 'undefined' && info.filterIdx >= -1 && info.filterIdx < panel.dialogFiltGrps.length) {
-				if (info.filterIdx === -1) { idx = 0 }
+				if (info.filterIdx === -1) { idx = 0; }
 				else if (panel.dialogFiltGrps[info.filterIdx].name.trim() !== 'separator') { idx = info.filterIdx; }
 			}
 			if (idx !== -1) { panel.set('Filter', idx); }
@@ -618,7 +620,7 @@ addEventListener('on_locations_added', (taskId, handleList) => {
 
 // Regorxxx <- Drag n' drop to search box
 // Drag n drop to copy/move tracks to playlists (only files from foobar2000)
-addEventListener('on_drag_enter', (action, x, y, mask) => {
+addEventListener('on_drag_enter', (action, x, y, mask) => { // eslint-disable-line no-unused-vars
 	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
 	// Avoid things outside foobar2000
 	if (action.Effect === dropEffect.none || (action.Effect & dropEffect.link) === dropEffect.link) { action.Effect = dropEffect.none; }

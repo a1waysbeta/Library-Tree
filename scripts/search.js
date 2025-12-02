@@ -1,4 +1,7 @@
 ﻿'use strict';
+/* global ui:readable, panel:readable, ppt:readable, lib:readable, pop:readable, but:readable, timer:readable, $:readable, vk:readable, tooltip:readable, sbar:readable, Tooltip:readable, searchMenu:readable */
+
+/* exported Search, Find */
 
 class Search {
 	constructor() {
@@ -348,7 +351,7 @@ class Search {
 				if (this.lg.length > 30) this.lg.shift();
 				if (this.log.length > 0) {
 					panel.search.txt = this.log.pop() + '';
-					this.cx++
+					this.cx++;
 				}
 				break;
 			case vk.undo:

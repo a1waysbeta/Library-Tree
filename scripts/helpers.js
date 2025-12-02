@@ -1,4 +1,5 @@
 ﻿'use strict';
+/* exported tooltip, $, ease, md5 */
 
 const requiredVersionStr = '1.5.2';
 
@@ -59,7 +60,7 @@ class Helpers {
 	create(fo) {
 		try {
 			if (!this.folder(fo)) fso.CreateFolder(fo);
-		} catch (e) {}
+		} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 	}
 
 	debounce(e, r, i) {
@@ -95,10 +96,10 @@ class Helpers {
 	getClipboardData() {
 		try {
 			return utils.GetClipboardText();
-		} catch(e) {
+		} catch (e) { // eslint-disable-line no-unused-vars
 			try {
 				return doc.parentWindow.clipboardData.getData('Text');
-			} catch (e) {
+			} catch (e) { // eslint-disable-line no-unused-vars
 				return null;
 			}
 		}
@@ -108,7 +109,7 @@ class Helpers {
 		let dpi = typeof window.DPI !== 'number' ? window.DPI : 120; // Regorxxx <- Use exposed SMP dpi ->
 		try {
 			dpi = WshShell.RegRead('HKCU\\Control Panel\\Desktop\\WindowMetrics\\AppliedDPI');
-		} catch (e) {}
+		} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 		return Math.max(dpi / 120, 1);
 	}
 
@@ -137,15 +138,15 @@ class Helpers {
 			case 'file':
 				try {
 					return JSON.parse(this.open(n));
-				} catch (e) {
+				} catch (e) { // eslint-disable-line no-unused-vars
 					return defaultVal;
 				}
-				default:
-					try {
-						return JSON.parse(n);
-					} catch (e) {
-						return defaultVal;
-					}
+			default:
+				try {
+					return JSON.parse(n);
+				} catch (e) { // eslint-disable-line no-unused-vars
+					return defaultVal;
+				}
 		}
 	}
 
@@ -156,7 +157,7 @@ class Helpers {
 	open(f) {
 		try { // handle locked files
 			return this.file(f) ? utils.ReadTextFile(f) : '';
-		} catch (e) {
+		} catch (e) { // eslint-disable-line no-unused-vars
 			return '';
 		}
 	}
@@ -170,7 +171,7 @@ class Helpers {
 		let l = new FbMetadbHandleList();
 		try {
 			l = fb.GetQueryItems(h, q);
-		} catch (e) {}
+		} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 		return l;
 	}
 
@@ -214,7 +215,7 @@ class Helpers {
 		try {
 			WshShell.Run(c);
 			return true;
-		} catch (e) {
+		} catch (e) { // eslint-disable-line no-unused-vars
 			return false;
 		}
 	}
@@ -222,7 +223,7 @@ class Helpers {
 	save(fn, text, bom) {
 		try {
 			utils.WriteTextFile(fn, text, bom);
-		} catch (e) {
+		} catch (e) { // eslint-disable-line no-unused-vars
 			this.trace('error saving: ' + fn);
 		}
 	}
@@ -230,10 +231,10 @@ class Helpers {
 	setClipboardData(n) {
 		try {
 			utils.SetClipboardText(n);
-		} catch(e) {
+		} catch (e) { // eslint-disable-line no-unused-vars
 			try {
 				doc.parentWindow.clipboardData.setData('Text', n);
-			} catch(e) {
+			} catch (e) { // eslint-disable-line no-unused-vars
 				this.trace('unable to set clipboard text');
 			}
 		}
@@ -301,7 +302,7 @@ class Helpers {
 			const ns = WshShell.Popup(prompt, 0, caption, 1);
 			if (ns == 1) return true;
 			return false;
-		} catch (e) {
+		} catch (e) { // eslint-disable-line no-unused-vars
 			return true;
 		}
 	}

@@ -1,4 +1,7 @@
 ﻿'use strict';
+/* global $:readable */
+
+/* exported PanelProperties */
 
 class PanelProperty {
 	constructor(name, default_value) {

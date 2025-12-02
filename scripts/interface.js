@@ -1,4 +1,7 @@
 ﻿'use strict';
+/* global panel:readable, ppt:readable, $:readable, vk:readable, sbar:readable, pop:readable, img:readable, but:readable */
+
+/* exported UserInterface, Vkeys, sync */
 
 window.DlgCode = 0x004;
 
@@ -473,7 +476,7 @@ class UserInterface {
 			return diskLetters.some(d => {
 				try { // Needed when permission error occurs and current SMP implementation is broken for some devices....
 					return utils.IsDirectory(d) ? paths.some(p => utils.IsFile(d + p)) : false;
-				} catch (e) {return false;}
+				} catch (e) { return false; } // eslint-disable-line no-unused-vars
 			});
 		};
 
@@ -888,7 +891,7 @@ class UserInterface {
 					this.style.symb.SetPartAndStateID(2, 1);
 					this.style.symb.SetPartAndStateID(2, 2);
 					this.style.symb.DrawThemeBackground(g, 0, 0, this.sz.node, this.sz.node);
-				} catch (e) {
+				} catch (e) { // eslint-disable-line no-unused-vars
 					ppt.nodeStyle = 0;
 				}
 			});
@@ -933,7 +936,7 @@ class UserInterface {
 						this.theme.SetPartAndStateID(1, i + 1);
 						this.theme.DrawThemeBackground(g, 0, 0, 21, 21);
 					}
-				} catch (e) {
+				} catch (e) { // eslint-disable-line no-unused-vars
 					this.sbar.type = 1;
 					ppt.sbarType = 1;
 				}
@@ -954,7 +957,7 @@ class UserInterface {
 		let themed_w = 21;
 		try {
 			themed_w = utils.GetSystemMetrics(2);
-		} catch (e) {}
+		} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 		if (ppt.sbarWinMetrics) {
 			this.sbar.w = themed_w;
 			this.sbar.but_w = this.sbar.w;

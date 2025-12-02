@@ -1,4 +1,7 @@
 ﻿'use strict';
+/* global ui:readable, panel:readable, ppt:readable, pop:readable, but:readable, $:readable, sbar:readable, img:readable, lib:readable, popUpBox:readable, pluralize:readable, sync:readable */
+
+/* exported Panel */
 
 class Panel {
 	constructor() {

@@ -1,4 +1,9 @@
 ﻿'use strict';
+/* global UserInterface:readable, Panel:readable, Scrollbar:readable, Vkeys:readable, Library:readable, Populate:readable, Search:readable, Find:readable, Buttons:readable, PopUpBox:readable, MenuItems:readable, Timers:readable */
+
+/* exported ui, panel, sbar, vk, lib, pop, search, but, find, popUpBox, men, timer */
+
+/* eslint-disable no-redeclare */
 
 let pop;
 const ui = new UserInterface;

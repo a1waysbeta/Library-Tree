@@ -1,4 +1,6 @@
 ﻿'use strict';
+/* global panel:readable, ppt:readable, $:readable, sbar:readable, pop:readable, img:readable, but:readable, lib:readable, search:readable, setSelection:readable, ui:readable */
+/* exported Library*/
 
 class Library {
 	constructor() {
@@ -121,7 +123,7 @@ class Library {
 									: this.filterQuery.replace(/\$searchtext/g, searchText)
 							);
 						// Regorxxx ->
-					} catch (e) {
+					} catch (e) { // eslint-disable-line no-unused-vars
 						this.validSearch = false;
 					}
 					this.binaryInsert(panel.folderView, newSearchItems, panel.list, this.searchNode);
@@ -194,7 +196,7 @@ class Library {
 									: this.filterQuery.replace(/\$searchtext/g, searchText)
 							);
 						// Regorxxx ->
-					} catch (e) {
+					} catch (e) { // eslint-disable-line no-unused-vars
 						this.validSearch = false;
 					}
 					panel.list.InsertRange(panel.list.Count, newSearchItems);
@@ -962,7 +964,7 @@ class Library {
 					);
 				this.searchCache[searchText] = panel.list;
 				// Regorxxx ->
-			} catch (e) {
+			} catch (e) { // eslint-disable-line no-unused-vars
 				this.list = this.list.Clone();
 				panel.list.RemoveAll();
 				this.validSearch = false;
@@ -1234,7 +1236,7 @@ class Library {
 									: this.filterQuery.replace(/\$searchtext/g, searchText)
 							);
 						// Regorxxx ->
-					} catch (e) {
+					} catch (e) { // eslint-disable-line no-unused-vars
 						this.validSearch = false;
 					}
 					origSearch.Sort();
@@ -1274,7 +1276,7 @@ class Library {
 									: this.filterQuery.replace(/\$searchtext/g, searchText)
 							);
 						// Regorxxx ->
-					} catch (e) {
+					} catch (e) { // eslint-disable-line no-unused-vars
 						this.validSearch = false;
 					}
 					handlesInSearch.Sort();

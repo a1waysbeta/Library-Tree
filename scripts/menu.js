@@ -1,4 +1,7 @@
 ﻿'use strict';
+/* global ui:readable, panel:readable, ppt:readable, pop:readable, but:readable, $:readable, sbar:readable, img:readable, search:readable, men:readable, vk:readable, lib:readable, popUpBox:readable */
+
+/* exported MenuItems, Btn, Tooltip, TooltipTimer, Transition */
 
 const MF_GRAYED = 0x00000001;
 const MF_STRING = 0x00000000;
@@ -338,12 +341,12 @@ class MenuItems {
 				let panels = 1;
 				try {
 					panels = utils.InputBox(0, 'Set total number of Library Tree panels:\n\nBackground image will be adjusted to extend over all panels, showing only a portion of the image in every panel.\n\nIt only works on horizontal rows.', 'Background grid mode: number of panels', 1, true);
-				} catch (e) { return; }
+				} catch (e) { return; } // eslint-disable-line no-unused-vars
 				if (!panels || panels < 1) { return; }
 				let pos = 1;
 				try {
 					pos = utils.InputBox(0, 'Set panel position within the row:' + '\nFrom 1 to ' + panels, 'Background grid mode: panel position', 1, true);
-				} catch (e) { return; }
+				} catch (e) { return; } // eslint-disable-line no-unused-vars
 				if (!pos || pos < 1) { return; }
 				ppt.xOffsetBg = 100 / panels * (pos - 1);
 				ppt.wOffsetBg = 100 / panels * (panels - pos);
@@ -667,7 +670,7 @@ class MenuItems {
 					let status = 'ok';
 					try {
 						ns = utils.InputBox(0, prompt, caption, def, true);
-					} catch(e) {
+					} catch (e) { // eslint-disable-line no-unused-vars
 						status = 'cancel';
 					}
 					ok_callback(status, ns);
@@ -838,7 +841,7 @@ class MenuItems {
 			let status = 'ok';
 			try {
 				ns = utils.InputBox(0, prompt, caption, def, true);
-			} catch(e) {
+			} catch (e) { // eslint-disable-line no-unused-vars
 				status = 'cancel';
 			}
 			ok_callback(status, ns);

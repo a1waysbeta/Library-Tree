@@ -1,4 +1,7 @@
 ﻿'use strict';
+/* global ui:readable, panel:readable, ppt:readable, $:readable, vk:readable, sbar:readable, pop:readable, md5:readable, pluralize:readable, popUpBox:readable */
+
+/* exported img */
 
 class Images {
 	constructor() {
@@ -203,7 +206,7 @@ class Images {
 				}
 			}, 1000);
 
-		} catch (e) {
+		} catch (e) { // eslint-disable-line no-unused-vars
 			$.trace('unable to load thumbnail image: ' + key);
 		}
 		this.drawDebounce();
@@ -216,7 +219,7 @@ class Images {
 				this.format(image, ppt.artId, ['default', 'crop', 'circular'][this.style.image], this.im.w, this.im.w, ppt.albumArtLabelType == 3, 'displayPreload', ix, key);
 			}
 			if (this.style.rootComposite && ix < this.rootNo) this.rootDebounce();
-		} catch (e) {
+		} catch (e) { // eslint-disable-line no-unused-vars
 			$.trace('unable to load thumbnail image: ' + key);
 		}
 		panel.treePaint();
@@ -1224,7 +1227,7 @@ class Images {
 						this.clearCache();
 						const app = new ActiveXObject('Shell.Application');
 						app.NameSpace(10).MoveHere(this.cachePath); // remove all saved images & databases if albumArtDiskCache
-					} catch (e) {
+					} catch (e) { // eslint-disable-line no-unused-vars
 						$.trace('unable to empty image cache: can be emptied in windows explorer'); // Wine fix
 					}
 				}
