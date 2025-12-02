@@ -1,3 +1,9 @@
+# v2.4.0.mod.33
+### Fixed
+- Fixed logic, on original script, related to View sorting identification. It now find matches for %YEAR%, %DATE% and %ALBUM% (case insensitive), instead of only matching lowercase values, ensuring it works with default and user-added TF patterns.
+
+<br>
+
 # v2.4.0.mod.32
 ### Changed
 - Minor HTML options panel improvements.

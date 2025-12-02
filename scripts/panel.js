@@ -18,7 +18,7 @@ class Panel {
 		this.dialogFiltGrps = [];
 		this.dialogGrps = [];
 		this.draw = true;
-		this.folder_view = 10;
+		this.folder_view = 16;
 		this.folderView = false;
 		this.grp = [];
 		this.imgView = ppt.albumArtShow;
@@ -165,7 +165,7 @@ class Panel {
 		let ix1 = -1;
 		let ix2 = -1;
 		this.filter.mode = [];
-		this.folder_view = 10;
+		this.folder_view = 16;
 		this.grp = [];
 		this.multiPrefix = false;
 		this.multiProcess = false;

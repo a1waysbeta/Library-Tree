@@ -504,8 +504,8 @@ class MenuItems {
 		d.value = ppt.get(d.name) || '';
 		d.valueLength = d.value.length;
 		let l = d.sortYear.length;
-		while(l-- && l) {
-			d.value = d.value.replace(RegExp($.regexEscape(d.sortYear[l]), 'g'), '')
+		while (l-- && l) {
+			d.value = d.value.replace(RegExp($.regexEscape(d.sortYear[l]), 'gi'), ''); // Regorxxx <- Sorting identification should not be case sensitive ->
 			if (d.valueLength != d.value.length) {
 				d.sortIX = l;
 				d.valueLength = d.value.length;
@@ -513,8 +513,8 @@ class MenuItems {
 		}
 		if (d.sortIX == -1) {
 			l = d.sortAlbumsByYearAfter.length;
-			while(l-- && l) {
-				d.value = d.value.replace(RegExp($.regexEscape(d.sortAlbumsByYearAfter[l]), 'g'), '%album%');
+			while (l-- && l) {
+				d.value = d.value.replace(RegExp($.regexEscape(d.sortAlbumsByYearAfter[l]), 'gi'), '%ALBUM%'); // Regorxxx <- Sorting identification should not be case sensitive ->
 				if (d.valueLength != d.value.length) {
 					d.sortIX = l;
 					d.valueLength = d.value.length;
@@ -523,16 +523,18 @@ class MenuItems {
 		}
 		if (d.sortIX == -1) {
 			l = d.sortAlbumsByYearBefore.length;
-			while(l-- && l) {
-				d.value = d.value.replace(RegExp($.regexEscape(d.sortAlbumsByYearBefore[l]), 'g'), '%album%');
+			while (l-- && l) {
+				d.value = d.value.replace(RegExp($.regexEscape(d.sortAlbumsByYearBefore[l]), 'gi'), '%ALBUM%'); // Regorxxx <- Sorting identification should not be case sensitive ->
 				if (d.valueLength != d.value.length) {
 					d.sortIX = l;
 					d.valueLength = d.value.length;
 				}
 			}
 		}
-		if (d.value.includes('//') && /%year%|%date%/.test(d.value)) d.sortType = 1;
-		else if (d.value.includes('%album%')) d.sortType = 2;
+		// Regorxxx <- Sorting identification should not be case sensitive
+		if (d.value.includes('//') && /%YEAR%|%DATE%/i.test(d.value)) { d.sortType = 1; }
+		else if (/%ALBUM%/i.test(d.value)) { d.sortType = 2; }
+		// Regorxxx ->
 
 		d.menuName = d.sortType ? 'Sort selected view' : 'Sort N/A for selected view pattern';
 	}
@@ -912,13 +914,15 @@ class MenuItems {
 			if (i) {
 				let str = d.value.split('//');
 				if (str[1]) {
-					str[1] = str[1].trim().replace(/(\|\s*)(.*?(%year%|%date%))/g,  '$1' + d.sortYear[i] + '$2')
-					if (!/\|.*?(%year%|%date%)/.test(str[1])) str[1] = d.sortYear[i] + str[1];
+					// Regorxxx <- Sorting identification should not be case sensitive ->
+					str[1] = str[1].trim().replace(/(\|\s*)(.*?(%YEAR%|%DATE%))/gi, '$1' + d.sortYear[i] + '$2');
+					if (!/\|.*?(%YEAR%|%DATE%)/i.test(str[1])) { str[1] = d.sortYear[i] + str[1]; }
+					// Regorxxx ->
 					d.value = str[0].trim() + ' // ' + str[1];
 				} else d.value = str[0];
 			}
 		} else if (d.sortType == 2 && i && sortByIX != -1) {
-			d.value = d.value.replace(/%album%/g, d.sortAlbumByYear[sortByIX])
+			d.value = d.value.replace(/%ALBUM%/gi, d.sortAlbumByYear[sortByIX]); // Regorxxx <- Sorting identification should not be case sensitive ->
 		}
 		if (d.sortType == 1 || sortByIX != -1) {
 			const expanded = [];
