@@ -2397,12 +2397,8 @@ class Populate {
 	}
 
 	sortIfNeeded(items) {
-		if (panel.multiProcess && !ppt.customSort.length) {
-			items = lib.processCustomSort(items, panel.playlistSort);
-		} else if (ppt.customSort.length) {
-			items = lib.processCustomSort(items, this.customSort);
-		}
-		return items;
+		if (panel.multiProcess && !ppt.customSort.length) items.OrderByFormat(panel.playlistSort, 1);
+		else if (ppt.customSort.length) items.OrderByFormat(this.customSort, 1);
 	}
 
 	// Regorxxx <- Fixed Library's "View by Folder Structure" to match Windows Explorer. Custom sorting for standard views
