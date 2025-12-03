@@ -321,6 +321,19 @@
 					<div class="div_text1">Follow selection</div>
 					<div id="followCurrent"></div>
 					<div class="info9"><a id="setSize" style="text-decoration:none;" href="#" onclick="setWindowSize();return false;">Click to reset window size</a></div>
+					<div class="div_text1">Views sorting</div>
+					<span class="info5600">By folder:</span>
+					 <!-- View by Folder structure sorting. Custom sorting for standard views -->
+					<span class="dropdown" style="margin-top:0"><a id="folderSorting_dropdown" class="dropbtn" href="#" onclick="toggle('folderSorting');"></a>
+						<span id="folderSorting" class="dropdown-content"></span>
+					</span>
+					<div style="margin:0.31em 0 0;" id="folderSortingFb"></div>
+					<div style="margin:0.31em 0 0;" id="folderSortingTrans"></div>
+					<span class="info5600">By TF:</span>
+					<span class="dropdown" style="margin-top:0"><a id="viewSorting_dropdown" class="dropbtn" href="#" onclick="toggle('viewSorting');"></a>
+						<span id="viewSorting" class="dropdown-content"></span>
+					</span>
+					<div style="margin:0.31em 0 0;" id="viewSortingTrans"></div>
 				</div>
 
 				<div class="column32">
@@ -428,7 +441,7 @@
 					<div id="searchEnter" style="padding-top:0.5em;"></div>
 					<div style="display:inline-block; padding-top:0.7em;"><a id="searcg_help" href="#" onclick="showHelp('search_text');return false;">Search help</a></div>
 					<div id="search_text" style="display:none; padding:0.7em; background-color:Gainsboro;">
-						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a class="tooltip" id="regexpReference" href="https://regexr.com/" target="_blank" oncontextmenu="copyToClipboardId('regexpReference')">RegExp reference<span class="tooltiptext">L. Click to open in IE<br>R. Click to copy</span></a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup<br><br><br>Queries usage:<br><br>&#x2022; Supports $nowplaying{}, $nowplayingorselected{} and $selected{}<br>&#x2022; If auto-refresh is disabled, search results will not be updated when using above syntax on playback/selection changes<br>&#x2022; Auto-refresh may have a performance impact with $selected{} (or similar) on selection changes, use filters instead whenever possible</div>
+						<div class="info4">General usage:<br><br>&#x2022; Queries, RegExp and drag n' drop are supported<br>&#x2022; Queries support $nowplaying{}, $selected{}, ...<br>&#x2022; RegExp must be written in /[expression]/[flags] form<br>&#x2022; For drag n' drop see its own section<br><br><br>RegExp usage:<br><br>&#x2022; <a class="tooltip" id="regexpReference" href="https://regexr.com/" target="_blank" oncontextmenu="copyToClipboardId('regexpReference')">RegExp reference<span class="tooltiptext">L. Click to open in IE<br>R. Click to copy</span></a><br>&#x2022; /[expression]/[flags]<br>&#x2022; Flags can be any of: 'gimsuyt'<br>&#x2022; Special 't' flag to apply transliteration to Latin script<br>&#x2022; Lookup tags retrieved from current View TF expression<br>&#x2022; On folder view, paths are used instead for lookup<br><br><br>Queries usage:<br><br>&#x2022; Supports $nowplaying{}, $nowplayingorselected{} and $selected{}<br>&#x2022; If auto-refresh is disabled, search results will not be updated when using above syntax on playback/selection changes<br>&#x2022; Auto-refresh may have a performance impact with $selected{} (or similar) on selection changes, use filters instead whenever possible</div>
 						<div><br></div>
 					</div>
 				</div>
@@ -955,6 +968,11 @@
 				var dblClickLabels = ppt['actionMode_internal'].value == 1 ? ['Send to playlist & play'] : ppt['actionMode_internal'].value == 2 ? ['Send to playback queue and play'] : ['Send to playlist', 'Send to playlist & play', 'Expand / collapse (tree)', 'Send to playback queue and play'];
 				var diskCacheLabels = ['Enable', 'Preload cached images']
 				var followCurrentLabels = ['Standard mode', 'Album art flow mode'];
+				 // Regorxxx <- View by Folder structure sorting. Custom sorting for standard views
+				var viewSortingLabels = ['Library Tree (original)', 'Library Tree (updated)','Windows-like (basic)', 'Windows-like (advanced)']
+				var folderSortingFbLabels = ['Prefer native sorting for library sources'];
+				var sortingTransLabels = ['Transliterate values to Latin', 'Transliterate values to Latin'];
+				// Regorxxx  ->
 				var fontLabels = ['Main', 'Album art group line 1', 'Album art group line 2', 'Album art statistics line'];
 				var highLightLabels = ['None', 'Side marker', 'Accent', 'Frame', 'Always pointer (no hand)', 'Highlight nodes', 'Highlight text'];
 				var indexLetterLabels = ['Show on scrollbar drag', 'Number of characters (0 = auto)', 'Auto-detect leading year (overrides above number)'];
@@ -1063,7 +1081,7 @@
 				// Regorxxx ->
 				// Regorxxx ->
 				var box = {
-					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'activateOnChange', 'selectAdded'], // Regorxxx <- Send to playlist & select ->
+					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'folderSortingFb', 'folderSortingTrans', 'viewSortingTrans', 'activateOnChange', 'selectAdded'], // Regorxxx <- Send to playlist & select ->
 					search: ['searchEnter', 'searchRefreshTf'], // Regorxxx <- New search tab ->
 					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'recItemImage', 'inlineRoot', 'showSource', 'nodeLines', 'colLineDark', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'nowPlayingSidemarker', 'nowPlayingIndicator', 'albumArtOptionsShow', 'facetView', 'showTracks'], // Regorxxx <- New statistics tab ->
 					statistics: ['labelStatistics', 'tooltipStatistics', 'countsRight'], // Regorxxx <- New statistics tab ->
@@ -1274,6 +1292,20 @@
 					window.keystroke.style.display = 'none';
 				}
 
+				// Regorxxx <- View by Folder structure sorting. Custom sorting for standard views
+				function setFolderSorting(n) {
+					window.folderSorting_dropdown.innerHTML = viewSortingLabels[n];
+					ppt['folderSorting_internal'].value = n;
+					window.folderSorting.style.display = 'none';
+				}
+
+				function setViewSorting(n) {
+					window.viewSorting_dropdown.innerHTML = viewSortingLabels[n];
+					ppt['viewSorting_internal'].value = n;
+					window.viewSorting.style.display = 'none';
+				}
+				// Regorxxx ->
+
 				var imgTable = ['imgStyleFront', 'imgStyleBack', 'imgStyleDisc', 'imgStyleIcon', 'imgStyleArtist'];
 				var menuTable = ['buttonCol', 'searchCol', 'searchLnCol', 'nodeLineCol'];
 				function getTableData(id) {
@@ -1454,6 +1486,15 @@
 					for (i = 0; i < 3; i++) {window.remember.insertAdjacentHTML('beforeend', '<div><input id="remember_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="remember_checkbox'+i+'" class="checkbox_label">'+rememberLabels[i]+'</label></div>');}
 					// Regorxxx <- Fix follow selection checkboxes
 					for (i = 0; i < 2; i++) {window.followCurrent.insertAdjacentHTML('beforeend', '<div><input id="followCurrent_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="followCurrent_checkbox'+i+'" class="checkbox_label">'+followCurrentLabels[i]+'</label></div>');}
+					// Regorxxx ->
+					// Regorxxx <- View by Folder structure sorting. Custom sorting for standard views
+					window.folderSorting_dropdown.innerHTML = viewSortingLabels[ppt['folderSorting_internal'].value];
+					for (i = 0; i < viewSortingLabels.length; i++) {window.folderSorting.insertAdjacentHTML('beforeend', '<a onclick="setFolderSorting(' + i + ');">' + viewSortingLabels[i] + '</a>');}
+					for (i = 0; i < folderSortingFbLabels.length; i++) {window.folderSortingFb.insertAdjacentHTML('beforeend', '<div><input id="folderSortingFb_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="folderSortingFb_checkbox'+i+'" class="checkbox_label">' + folderSortingFbLabels[i] + '</label></div>');}
+					i = 0; window.folderSortingTrans.insertAdjacentHTML('beforeend', '<div><input id="folderSortingTrans_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="folderSortingTrans_checkbox'+i+'" class="checkbox_label">' + sortingTransLabels[i] + '</label></div>');
+					window.viewSorting_dropdown.innerHTML = viewSortingLabels[ppt['viewSorting_internal'].value];
+					for (i = 0; i < viewSortingLabels.length; i++) {window.viewSorting.insertAdjacentHTML('beforeend', '<a onclick="setViewSorting(' + i + ');">' + viewSortingLabels[i] + '</a>');}
+					i = 1; window.viewSortingTrans.insertAdjacentHTML('beforeend', '<div><input id="viewSortingTrans_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="viewSortingTrans_checkbox'+i+'" class="checkbox_label">' + sortingTransLabels[i] + '</label></div>');
 					// Regorxxx ->
 					i = 0; window.playlist.insertAdjacentHTML('beforeend', '<div class="input_cnt2"><label for="playlist_container'+i+'" class="inp_label1">'+playlistLabels[i]+'</label><input id="playlist_container'+i+'" name="behaviour_input" class="input75" /></div>');
 					i = 1; window.playlist.insertAdjacentHTML('beforeend', '<div><input id="playlist_checkbox'+i+'" name="behaviour_checkbox" style="'+cbox+'" type="checkbox" /><label for="playlist_checkbox'+i+'" class="checkbox_label">'+playlistLabels[i]+'</label></div>');
@@ -2246,6 +2287,10 @@
 				['sbarType_dropdown', 'sbarType'],
 				['sbarCol_dropdown', 'sbarCol'],
 				['sbarIcon_dropdown', 'sbarIcon'],
+				// Regorxxx <- View by Folder structure sorting. Custom sorting for standard views
+				['folderSorting_dropdown', 'folderSorting'],
+				['viewSorting_dropdown', 'viewSorting'],
+				// Regorxxx ->
 				// Regorxxx <- Drag n' drop to search box
 				['searchSend_dropdown', 'searchSend'],
 				['searchDragValOpDefault_dropdown', 'searchDragValOpDefault'],
