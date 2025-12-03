@@ -1,5 +1,6 @@
 ﻿'use strict';
 /* global ui:readable, panel:readable, ppt:readable, lib:readable, pop:readable, but:readable, timer:readable, $:readable, vk:readable, tooltip:readable, sbar:readable, Tooltip:readable, searchMenu:readable */
+/* global Language:readable */
 
 /* exported Search, Find */
 
@@ -652,7 +653,7 @@ class Find {
 		if (panel.pos >= 0 && panel.pos < pop.tree.length) {
 			const char = pop.tree[panel.pos].name.replace(/@!#.*?@!#/g, '').charAt(0).toLowerCase();
 			// Regorxxx <- Fixed quick-search on same letter. Fix quick-searck for non ascii first char, greek and cyrilic
-			const normChar = $.asciify($.transliterate(char));
+			const normChar = $.asciify(Language.transliterate(char));
 			if (pop.tree[panel.pos].sel && (char === text || normChar === text) && this.prevChar == text) { advance = true; }
 			this.prevChar = text;
 			timer.clear(timer.jsearch3);
@@ -673,7 +674,7 @@ class Find {
 						pop.tree.forEach((v, i) => {
 							if (!v.root) {
 								const nm = v.name.replace(/@!#.*?@!#/g, '');
-								init = $.asciify($.transliterate(nm.charAt().toLowerCase())); // Regorxxx <- Fix quick-searck for non ascii first char, greek and cyrilic ->
+								init = $.asciify(Language.transliterate(nm.charAt(0).toLowerCase())); // Regorxxx <- Fix quick-searck for non ascii first char, greek and cyrilic ->
 								if (cur != init && !this.initials[init]) {
 									this.initials[init] = [i];
 									cur = init;
@@ -747,7 +748,7 @@ class Find {
 					timer.clear(timer.jsearch1);
 					timer.jsearch1.id = setTimeout(() => {
 						pop.tree.some((v, i) => {
-							const name = $.asciify($.transliterate(v.name.replace(/@!#.*?@!#/g, ''))); // Regorxxx <- Fix quick-searck for non ascii first char, greek and cyrilic ->
+							const name = $.asciify(Language.transliterate(v.name.replace(/@!#.*?@!#/g, ''))); // Regorxxx <- Fix quick-searck for non ascii first char, greek and cyrilic ->
 							if (name != panel.rootName && name.substring(0, this.jSearch.length).toLowerCase() == this.jSearch.toLowerCase()) {
 								found = true;
 								pos = i;

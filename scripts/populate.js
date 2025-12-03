@@ -1,5 +1,6 @@
 ﻿'use strict';
 /* global ui:readable, panel:readable, ppt:readable, lib:readable, pop:readable, but:readable, img:readable, search:readable, timer:readable, $:readable, men:readable, vk:readable, tooltip:readable, globFonts:readable, sbar:readable */
+/* global Language:readable*/
 /* exported Populate */
 
 class Populate {
@@ -77,7 +78,7 @@ class Populate {
 
 		// Regorxxx <- Fixed Library's "View by Folder Structure"
 		this.collator = new Intl.Collator(void (0), { sensitivity: 'accent', numeric: true });
-		this.folderCollator = new Intl.Collator(void (0), { numeric: true });
+		this.folderCollator = new Intl.Collator(void (0), { sensitivity: 'base', numeric: true });
 		// Regorxxx ->
 
 		this.setTf(); // Regorxxx <- New statistics ->
@@ -2378,11 +2379,18 @@ class Populate {
 	sort(data) {
 		if (!ppt.libSource && !panel.multiProcess) return;
 		this.specialCharSort(data);
-		// Regorxxx <- Fix "View by Folder Structure" to match Windows Explorer.
+		// Regorxxx <- Fixed Library's "View by Folder Structure" to match Windows Explorer. Custom sorting for standard views
+		//	First it tries to apply foobar2000 sorting for tracked library items
+		//	Otherwise it uses custom sorting algorithms which may mimic windows sorting
+		//	For non-library sources, only the second is available, despite playlist or panel sources pointing to tracked items
 		if (panel.folderView) { // Handle sorting for View By Folder Structure
-			this.sortViewByFolder(data);
+			if (ppt.libSource === 1 && !ppt.fixedPlaylist && ppt.folderSortingFb) { // For tracked items
+				data.sort((a, b) => a.item[0].start - b.item[0].start);
+			} else {
+				this.sortView(data, ppt.folderSorting, 'folders');
+			}
 		} else { // Default sorting for other views
-			data.sort((a, b) => this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0));
+			this.sortView(data, ppt.viewSorting, 'standard');
 		}
 		// Regorxxx ->
 
@@ -2397,12 +2405,130 @@ class Populate {
 		return items;
 	}
 
-	// Regorxxx <- Fixed Library's "View by Folder Structure" to match Windows Explorer.
-	sortViewByFolder(data) {
-		// Fallback to metadata sorting (srt[2], srt[3]) for identical file/folder names.
-		data.sort((a, b) => {
-			return this.folderCollator.compare(a.srt[0], b.srt[0]) || this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0);
-		});
+	// Regorxxx <- Fixed Library's "View by Folder Structure" to match Windows Explorer. Custom sorting for standard views
+	sortView(data, method, type) {
+		switch (method) {
+			default:
+			case 0: {
+				if (ppt.viewSortingTrans && type === 'standard' || ppt.folderSortingTrans && type === 'folders') {
+					data.sort((a, b) => this.collator.compare(Language.transliterate(a.srt[2]), Language.transliterate(b.srt[2])) || (a.srt[3] && !b.srt[3] ? 1 : 0));
+				} else {
+					data.sort((a, b) => this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0));
+				}
+				break;
+			}
+			case 1: {
+				// Fallback to metadata sorting (srt[2], srt[3]) for identical file/folder names.
+				switch (type) {
+					case 'standard':
+						if (ppt.viewSortingTrans) {
+							data.sort((a, b) => {
+								return this.folderCollator.compare(Language.transliterate(a.srt[2]), Language.transliterate(b.srt[2])) || (a.srt[3] && !b.srt[3] ? 1 : 0);
+							});
+						} else {
+							data.sort((a, b) => {
+								return this.folderCollator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0);
+							});
+						}
+						break;
+					case 'folders':
+						if (ppt.folderSortingTrans) {
+							data.sort((a, b) => {
+								return this.folderCollator.compare(Language.transliterate(a.srt[0]), Language.transliterate(b.srt[0])) || this.collator.compare(Language.transliterate(a.srt[2]), Language.transliterate(b.srt[2])) || (a.srt[3] && !b.srt[3] ? 1 : 0);
+							});
+						} else {
+							data.sort((a, b) => {
+								return this.folderCollator.compare(a.srt[0], b.srt[0]) || this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0);
+							});
+						}
+						break;
+				}
+				break;
+			}
+			case 2: {
+				const idx = type === 'standard' ? 2 : 0;
+				let srtA, typeA, srtB, idxA, typeB, idxB;
+				data.sort((a, b) => {
+					srtA = a.srt[idx];
+					srtB = b.srt[idx];
+					if (srtA.startsWith(' ') && !srtB.startsWith(' ')) { return -1; }
+					else if (!srtA.startsWith(' ') && srtB.startsWith(' ')) { return 1; }
+					srtA = srtA.trim();
+					srtB = srtB.trim();
+					typeA = $.getTypeWeight(srtA[0]);
+					typeB = $.getTypeWeight(srtB[0]);
+					if (typeA !== typeB) { return typeA - typeB; }
+					else if (typeA === typeB && typeA === 0) {
+						idxA = $.getSymbolIndex(srtA[0]);
+						idxB = $.getSymbolIndex(srtB[0]);
+						if (idxA !== idxB) { return idxA - idxB; }
+					}
+					return ppt.viewSortingTrans && type === 'standard' || ppt.folderSortingTrans && type === 'folders'
+						? this.folderCollator.compare(Language.transliterate(srtA), Language.transliterate(srtB)) || this.collator.compare(Language.transliterate(a.srt[2]), Language.transliterate(b.srt[2])) || (a.srt[3] && !b.srt[3] ? 1 : 0)
+						: this.folderCollator.compare(srtA, srtB) || this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0);
+				});
+				break;
+			}
+			case 3: {
+				const idx = type === 'standard' ? 2 : 0;
+				let srtA, charA, lenA, typeA, idxA, srtB, charB, lenB, typeB, idxB, out, i;
+				data.sort((a, b) => {
+					out = 0;
+					srtA = a.srt[idx];
+					srtB = b.srt[idx];
+					if (srtA === srtB) { return 0; }
+					lenA = srtA.length;
+					lenB = srtB.length;
+					for (i = 0; i < lenA; i++) {
+						if (i >= lenB) { out = 1; break; }
+						charA = srtA[i];
+						charB = srtB[i];
+						if (charA !== ' ' && charB !== ' ') { break; }
+						else if (charA === ' ' && charB !== ' ') { out = -1; break; }
+						else if (charA !== ' ' && charB === ' ') { out = 1; break; }
+						else if (charA === ' ' && charB === ' ') { continue; }
+					}
+					if (out) { return out; }
+					else if (i === lenA) { return -1; }
+					srtA = srtA.trim();
+					srtB = srtB.trim();
+					lenA = srtA.length;
+					lenB = srtB.length;
+					for (i = 0; i < lenA; i++) {
+						if (i >= lenB) { out = 1; break; }
+						charA = srtA[i];
+						charB = srtB[i];
+						if (charA === ' ' || charB === ' ') { break; }
+						if ($.isNumeric(charA) && $.isNumeric(charB)) { break; }
+						idxA = $.getSymbolIndex(charA);
+						idxB = $.getSymbolIndex(charB);
+						if (!idxA || !idxB) {
+							if (!idxA) {
+								if ($.isNumeric(charA)) { out = idxB ? 1 : $.isNumeric(charB) ? 0 : -1; }
+								else if (idxB) { out = 1; }
+							}
+							if (out) { return out; }
+							if (idxA && !idxB && $.isNumeric(charB)) { out =  -1; break; }
+							if (out) { return out; }
+						}
+						typeA = $.getTypeWeight(charA, idxA, 'base');
+						typeB = $.getTypeWeight(charB, idxB, 'base');
+						if (typeA !== typeB) { out = typeA - typeB; break; }
+						else if (typeA === typeB) {
+							if (typeA === 0) {
+								if (idxA !== idxB) { out = idxA - idxB; break; }
+							} else if (typeA === 1 || typeA === 2 || typeA === 3) { break; }
+						}
+					}
+					if (out) { return out; }
+					return ppt.viewSortingTrans && type === 'standard' || ppt.folderSortingTrans && type === 'folders'
+						? this.folderCollator.compare(Language.transliterate(srtA), Language.transliterate(srtB)) || this.collator.compare(Language.transliterate(a.srt[2]), Language.transliterate(b.srt[2])) || (a.srt[3] && !b.srt[3] ? 1 : 0)
+						: this.folderCollator.compare(srtA, srtB) || this.collator.compare(a.srt[2], b.srt[2]) || (a.srt[3] && !b.srt[3] ? 1 : 0);
+				});
+				break;
+			}
+		}
+		return data;
 	}
 	// Regorxxx ->
 

@@ -1,6 +1,21 @@
 # v2.4.0.mod.33
+### Added
+- Full rework of sorting logic for tree view.
+  - 4 custom sorting methods: 
+    * library tree (original)
+    * library tree (updated)
+    * windows (simple)
+    * windows (advanced): should mimic windows behavior in most cases.
+  - Sorting methods are applied recursively to entire string, not only to first char.
+  - These sorting methods can be applied to views by TF and Folders, with independent settings.
+  - Additional setting to apply transliteration of Cyrillic, Greek and Japanese (Katakana and Hiragana) language to Latin script.
+  - For library sources, a new setting allows to directly use the sorting provided by foobar2000. This built-in sorting should 100% match Windows behaviour, but it only works for tracked items on library.
+  - Can be tweaked at 'Behaviour' tab (HTML options panel) or 'View By Sorting...' and 'View By Folder Sorting...' (properties panel).
+- Added Japanese romanization (Katakana and Hiragana) support to quick-search.
+- Added non-official flag 't' to search RegExp support, which will apply transliteration to tag values before matching. i.e. /[expression]/[flags], where flags can be any of 'gimsuyt'. Transliteration supports Cyrillic, Greek and Japanese (Katakana and Hiragana), like quick-search and sorting. Note it only works for RegExp because standard searches uses queries, so they are directly processed by foobar2000.
 ### Changed
 - Code cleanup.
+- Updated help text at HTML options panel to reflect the new changes.
 ### Fixed
 - Fixed logic, on original script, related to View sorting identification. It now find matches for %YEAR%, %DATE% and %ALBUM% (case insensitive), instead of only matching lowercase values, ensuring it works with default and user-added TF patterns.
 
@@ -125,7 +140,7 @@
 - Added facets internal cache setting to 'Advanced' tab at HTML options panel (along help texts).
 - Added help text related to RegExp usage to 'Search' tab at HTML options panel.
 ### Changed
-- Changed the way quick-search works for non ASCII characters, similar to foobar2000 asymmetric search where 'á' or 'a' are equivalent when pressing 'a' key. As result, jumping by letter across the panel will not skip anymore words starting with accents, etc. Additionally, there is internal transliteration between greek and cyrilic letters to latin alphabet, so 'Σ' or 'σ' are also matched with 's', 'п' to 'p', etc.
+- Changed the way quick-search works for non ASCII characters, similar to foobar2000 asymmetric search where 'á' or 'a' are equivalent when pressing 'a' key. As result, jumping by letter across the panel will not skip anymore words starting with accents, etc. Additionally, there is internal transliteration between Greek and Cyrillic letters to Latin script, so 'Σ' or 'σ' are also matched with 's', 'п' to 'p', etc.
 - Expanded help text related to Drag n' drop usage on 'Search' tab at HTML options panel.
 - Minor improvements and cleanup at HTML options panel.
 - Internal changes (for future development).

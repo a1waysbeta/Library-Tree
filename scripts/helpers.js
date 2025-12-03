@@ -1,4 +1,5 @@
 ﻿'use strict';
+/* global Language:readable */
 /* exported tooltip, $, ease, md5 */
 
 const requiredVersionStr = '1.5.2';
@@ -22,8 +23,7 @@ class Helpers {
 	constructor() {
 		this.pl_active = plman.ActivePlaylist;
 		this.scale = this.getDpi();
-		this.greek = { 'Α': 'A', 'Χ': 'C', 'Δ': 'D', 'Ε': 'E', 'Φ': 'F', 'Γ': 'G', 'Η': 'h', 'Ι': 'I', 'Κ': 'K', 'Λ': 'L', 'Μ': 'M', 'Ν': 'N', 'Ο': 'O', 'Ω': 'o', 'Π': 'P', 'Ρ': 'R', 'Σ': 'S', 'Τ': 'T', 'Υ': 'U', 'Ξ': 'X', 'Ζ': 'Z', 'α': 'a', 'β': 'b', 'χ': 'c', 'δ': 'd', 'ε': 'e', 'φ': 'f', 'γ': 'g', 'η': 'h', 'ι': 'i', 'κ': 'k', 'λ': 'l', 'μ': 'm', 'ν': 'n', 'ο': 'o', 'ω': 'o', 'π': 'p', 'ρ': 'r', 'σ': 's', 'τ': 't', 'θ': 't', 'υ': 'u', 'ξ': 'x', 'ζ': 'z' };
-		this.russian = { 'Ё': 'YO', 'Й': 'I', 'Ц': 'TS', 'У': 'U', 'К': 'K', 'Е': 'E', 'Н': 'N', 'Г': 'G', 'Ш': 'SH', 'Щ': 'SCH', 'З': 'Z', 'Х': 'H', 'Ъ': '\'', 'ё': 'yo', 'й': 'i', 'ц': 'ts', 'у': 'u', 'к': 'k', 'е': 'e', 'н': 'n', 'г': 'g', 'ш': 'sh', 'щ': 'sch', 'з': 'z', 'х': 'h', 'ъ': '\'', 'Ф': 'F', 'Ы': 'I', 'В': 'V', 'А': 'A', 'П': 'P', 'Р': 'R', 'О': 'O', 'Л': 'L', 'Д': 'D', 'Ж': 'ZH', 'Э': 'E', 'ф': 'f', 'ы': 'i', 'в': 'v', 'а': 'a', 'п': 'p', 'р': 'r', 'о': 'o', 'л': 'l', 'д': 'd', 'ж': 'zh', 'э': 'e', 'Я': 'Ya', 'Ч': 'CH', 'С': 'S', 'М': 'M', 'И': 'I', 'Т': 'T', 'Ь': '\'', 'Б': 'B', 'Ю': 'YU', 'я': 'ya', 'ч': 'ch', 'с': 's', 'м': 'm', 'и': 'i', 'т': 't', 'ь': '\'', 'б': 'b', 'ю': 'yu' };
+		this.symbolOrder = ['!', '#', '$', '%', '&', '(', ')', ',', '.', ';', '@', '[', ']', '^', '_', '`', '{', '}', '~', '+', '='];
 	}
 
 	// Methods
@@ -350,21 +350,27 @@ class Helpers {
 
 	// Regorxxx <- RegExp library search
 	applyRegExp(str, handleList, meta = ['ALBUM ARTIST', 'ALBUM', 'TITLE', 'DATE']) {
-		let rgExp, re, flag;
+		let rgExp, re, flag, bTransliterate;
 		try {
 			[, re, flag] = str.startsWith('/')
-				? str.match(/\/(.*)\/([gimsuy]+)?/)
+				? str.match(/\/(.*)\/([gimsuyt]+)?/)
 				: [];
-			rgExp = re ? new RegExp(re, flag) : null;
+			rgExp = re ? new RegExp(re, (flag || '').replace('t', '')) : null;
+			bTransliterate = (flag || '').includes('t');
 		} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 		if (!rgExp) { throw new Error('Non-valid RegExp: ' + str); }
 		const match = (val) => {
 			return Array.isArray(val)
 				? val.some((v) => rgExp.test(v))
-				: rgExp.test(val);
+				: rgExp.test(val) || (bTransliterate && rgExp.test(Language.transliterate(val)));
+		};
+		const matchTrans = (val) => {
+			return Array.isArray(val)
+				? val.some((v) => rgExp.test(Language.transliterate(v)))
+				: rgExp.test(Language.transliterate(val));
 		};
 		return new FbMetadbHandleList(
-			this.getHandleListTags(handleList, meta, { bMerged: true }).map((tagArr, i) => match(tagArr) ? handleList[i] : null).filter(Boolean)
+			this.getHandleListTags(handleList, meta, { bMerged: true }).map((tagArr, i) => (match(tagArr) || bTransliterate && matchTrans(tagArr)) ? handleList[i] : null).filter(Boolean)
 		);
 	}
 
@@ -434,6 +440,7 @@ class Helpers {
 	getTagsFromTf(tf, exclude = ['%DISCNUMBER%', '%TRACKNUMBER%', '%TRACK NUMBER%', '%TOTALTRACKS%', '%TOTALDISCS%', '%SUBSONG%', '%__CHANNELS%', '%COMPILATION%']) {
 		return [...(new Set(tf.match(/%.+?%||\$meta\(.+?,.+?\)/gi)
 			.map((tag) => tag.replace(/[<>]|\$meta\(|,\d\)/gi, ''))
+			.filter(Boolean)
 			.map((tag) => this._t(tag.toUpperCase()))
 		).difference(
 			new Set(exclude || [])
@@ -547,11 +554,35 @@ class Helpers {
 	asciify(value) {
 		return (typeof value === 'string' ? value : String(value)).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\u0142/g, 'l');
 	}
+	// Regorxxx ->
 
-	transliterate(value) {
-		return value.replace(/./gui, a => this.greek[a] || this.russian[a] || a);
+	// Regorxxx <- Fixed Library's "View by Folder Structure" to match Windows Explorer. Improves behavior compared to TT's fix https://github.com/TT-ReBORN/Georgia-ReBORN/commit/819284002e133bb4d9406ad55e233e7bb18d39b8
+	getSymbolIndex(ch) {
+		const i = this.symbolOrder.indexOf(ch);
+		return i >= 0 ? i + 1 : 0;
 	}
 
+	getTypeWeight(ch, symbolIdx = this.getSymbolIndex(ch), sensitivity) {
+		const code = ch.charCodeAt(0);
+		if (symbolIdx) { return 0; }
+		else if (code >= 48 && code <= 57) { return 2; } // 0-9
+		else if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) { return 3; } // A-z
+		else if (code >= 192 && code <= 591) { return sensitivity === 'base' ? 3 : 4; } // À-ɏ
+		else if (code >= 880 && code <= 1023) { return sensitivity === 'base' ? 3 : 5; } // Greek
+		else if (code >= 1024 && code <= 1279) { return sensitivity === 'base' ? 3: 6; } // Cyrilic
+		else if (code >= 12352 && code <= 12543) { return sensitivity === 'base' ? 3 : 7; } // Japanese
+		else if (code >= 1424 && code <= 1535) { return sensitivity === 'base' ? 3 : 8; } // Hebrew
+		else if (code >= 1536 && code <= 1791) { return sensitivity === 'base' ? 3 : 9; } // Arab
+		else if (code >= 2304 && code <= 2431) { return sensitivity === 'base' ? 3 : 10; } // Hindi
+		else if (code >= 3584 && code <= 3711) { return sensitivity === 'base' ? 3 : 11; } // Thai
+		else if (code >= 19968 && code <= 40959) { return sensitivity === 'base' ? 3 : 12; } // Chinese
+		else if (code >= 44032 && code <= 55215) { return sensitivity === 'base' ? 3 : 13; } // Korean
+		else { return 1; }
+	}
+
+	isNumeric(n) {
+		return !isNaN(parseFloat(n)) && isFinite(n);
+	}
 	// Regorxxx ->
 }
 

@@ -338,6 +338,13 @@ let properties = [
 	['View By', 1, 'viewBy'],
 	['View By Album Art', 1, 'albumArtViewBy'],
 	['View By Tree', 1, 'treeViewBy'],
+	// Regorxxx <- Fix "View by Folder Structure" to match Windows Explorer. Custom sorting for standard views
+	['View By Sorting', 0, 'viewSorting'],
+	['View By Sorting transliteration', true, 'viewSortingTrans'],
+	['View By Folder Sorting', 3, 'folderSorting'],
+	['View By Folder Sorting from foobar2000', true, 'folderSortingFb'],
+	['View By Folder Sorting transliteration', true, 'folderSortingTrans'],
+	// Regorxxx ->
 	['Zoom Filter Size (%)', 100, 'zoomFilter'],
 	['Zoom Font Size (%)', 100, 'zoomFont'],
 	['Zoom Node Size (%)', 100, 'zoomNode'],
