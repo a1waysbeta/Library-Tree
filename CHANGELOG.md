@@ -2,10 +2,10 @@
 ### Added
 - Full rework of sorting logic for tree view.
   - 4 custom sorting methods: 
-    * library tree (original)
-    * library tree (updated)
-    * windows (simple)
-    * windows (advanced): should mimic windows behavior in most cases.
+    * library tree (original): original behaviour of Library Tree (2023 version).
+    * library tree (updated): modified behaviour following TT's Georgia Reborn logic.
+    * windows (simple): simple method to partially follow Windows behaviour.
+    * windows (advanced): advanced logic to mimic Windows behavior in most cases.
   - Sorting methods are applied recursively to entire string, not only to first char.
   - These sorting methods can be applied to views by TF and Folders, with independent settings.
   - Additional setting to apply transliteration of Cyrillic, Greek and Japanese (Katakana and Hiragana) language to Latin script.
