@@ -268,7 +268,7 @@ class Images {
 		o = this.cache[key];
 		o.img = $.gr(this.cellWidth * n, this.cellWidth * n, true, g => this.createCollage(g, this.cellWidth, this.cellWidth, n, n, cells));
 		if (this.style.image == 2) this.circularMask(o.img, o.img.Width, o.img.Height);
-		o.img = o.img.Resize(this.im.w, this.im.w, 7);
+		o.img = o.img.Resize(this.im.w, this.im.w, 6); // Regorxxx <- Improve img to avoid artifacts at borders. Use bilinear interpolation ->
 		if (ppt.albumArtLabelType == 3) this.fadeMask(o.img, o.img.Width, o.img.Height);
 		panel.treePaint();
 	}
@@ -366,7 +366,7 @@ class Images {
 		this.mask.circular = $.gr(500, 500, true, g => {
 			g.FillSolidRect(0, 0, 500, 500, $.RGB(255, 255, 255));
 			g.SetSmoothingMode(2);
-			g.FillEllipse(1, 1, 498, 498, $.RGBA(0, 0, 0, 255));
+			g.FillEllipse(3, 3, 496, 496, $.RGBA(0, 0, 0, 255)); // Regorxxx <- Improve img mask to avoid rough edges ->
 			g.SetSmoothingMode(0);
 		});
 		this.mask.fade = $.gr(500, 500, true, g => {
@@ -434,7 +434,7 @@ class Images {
 						if (this.style.image != 2) gr.DrawRect(x1, y1, iw - 1, ih - 1, 1, ui.col.imgBor);
 						else {
 							gr.SetSmoothingMode(2);
-							gr.DrawEllipse(x1, y1, iw - 1, ih - 1, 1, ui.col.imgBor);
+							gr.DrawEllipse(x1 + 1, y1 + 1, iw - 2, ih - 2, 1, ui.col.imgBor); // Regorxxx <- Improve img mask to avoid rough edges ->
 							gr.SetSmoothingMode(0);
 						}
 					}
@@ -659,7 +659,7 @@ class Images {
 					}
 					image = image.Clone(ix, iy, iw, ih);
 				}
-				image = image.Resize(w, h, 7);
+				image = image.Resize(w, h, 6); // Regorxxx <- Improve img to avoid artifacts at borders. Use bilinear interpolation ->
 				if (type == 'circular') this.circularMask(image, image.Width, image.Height);
 				break;
 			}
@@ -668,7 +668,7 @@ class Images {
 				const sc = caller != 'save' ? Math.min(h / ih, w / iw) : Math.max(h / ih, w / iw);
 				const im_w = Math.round(iw * sc);
 				const im_h = Math.round(ih * sc);
-				image = image.Resize(im_w, im_h, 7);
+				image = image.Resize(im_w, im_h, 6); // Regorxxx <- Improve img to avoid artifacts at borders. Use bilinear interpolation ->
 				break;
 			}
 		}
