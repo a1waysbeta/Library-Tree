@@ -1,8 +1,11 @@
-# Library Tree
+# Library-Tree-SMP
+[![version][version_badge]][changelog]
+[![CodeFactor][codefactor_badge]](https://www.codefactor.io/repository/github/regorxxx/Library-Tree-SMP/overview/main)
+[![CodacyBadge][codacy_badge]](https://www.codacy.com/gh/regorxxx/Library-Tree-SMP/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=regorxxx/Library-Tree-SMP&amp;utm_campaign=Badge_Grade)
+![GitHub](https://img.shields.io/github/license/regorxxx/Library-Tree-SMP)  
+Feature rich library viewer and browser for [foobar2000](https://www.foobar2000.org) and [Spider Monkey Panel](https://theqwertiest.github.io/foo_spider_monkey_panel)/[JSplitter](https://foobar2000.ru/forum/viewtopic.php?t=6378). Improved version of the original Library Tree, which tons of new features, performance optimizations and fixes.
 
-Feature rich library viewer and browser for [foobar2000](https://www.foobar2000.org).
- 
- ### FEATURES
+## FEATURES
 - Tree viewer
 - Album art browser
 - New facets
@@ -15,33 +18,7 @@ Feature rich library viewer and browser for [foobar2000](https://www.foobar2000.
      - player: play without a playlist
      - default: choice of all actions
 
-### REQUIREMENTS:
-- [foobar2000](https://www.foobar2000.org)
-- [Spider Monkey Panel 1.5.2+](https://www.foobar2000.org/components)
-- IE8 or later
-- [FontAwesome](https://github.com/FortAwesome/Font-Awesome/blob/fa-4/fonts/fontawesome-webfont.ttf?raw=true)
-- Segoe UI Symbol
-    - should be present on most windows systems
-    - if you're on win7 and symbols don't render properly you can download an updated version that includes newer symbols [here](https://www.stephanpringle.com/corrupted-segoe-ui-symbol-font/)
-
-### INSTALLATION
-Install as a package as follows.
-
-New install or update:
-1) Add a spider monkey panel to foobar2000 if required
-2) Close any instances of windows explorer using foobar2000 folders or subfolders
-3) Right click the spider monkey panel while pressing the windows key + shift
-4) Choose configure panel
-5) On the script tab ensure package is selected
-6) Open package manager if it doesn't open automatically
-7) Import the package
-
-Tip: check out Quick setup for a flavour of capabilities
-
-### SUPPORT
-The official discussion thread for Library Tree is located at [HydrogenAudio](https://hydrogenaud.io/index.php?topic=111060.0) and that's a great place to go for questions and other support issues.
-
-## Screenshots
+### Screenshots
 
 #### Two panel mode with artist images and covers
 <kbd> <img src="https://user-images.githubusercontent.com/35600752/155884212-9bea1326-3430-46a4-a86e-3bc4b09e4dd4.png"> </kbd>
@@ -70,4 +47,29 @@ $cut(%artist%,1)|%artist%|$if2(%album%,εXtra)|[[%discnumber%.]%tracknumber%. ][
 ### Credits
 - Original Jscript library search (2013): thanhdat1710
 - Original JS smooth browser design (2015): Br3tt (aka falstaff)
-- [TT-ReBORN](https://github.com/TT-ReBORN) for clean preset inspiration and collaborative effort with new sort code
+- Collaborative code effort and inspiration: [TT-ReBORN](https://github.com/TT-ReBORN)
+- Original script (2023): [Wil-B](https://github.com/Wil-B)
+
+## Requirements (only one host component required)
+ 1. [Spider Monkey Panel](https://theqwertiest.github.io/foo_spider_monkey_panel): JavaScript host component required to install this. Only x32. **(host component)**
+ 2. [JSplitter](https://foobar2000.ru/forum/viewtopic.php?t=6378): JavaScript host component required to install this. Both x32 and x64. **(host component)**
+ 3. [Playback Statistics](https://www.foobar2000.org/components/view/foo_playcount): Some statistics and filters will only work if present.
+ 4. [Enhanced Playback Statistics](https://www.foobar2000.org/components/view/foo_enhanced_playcount): Some statistics and filters will only work if present.
+ 5. [Required fonts](https://github.com/regorxxx/foobar2000-assets/tree/main/Fonts): FontAwesome, Segoe UI, Arial Unicode MS
+
+## Installation
+See [Wiki](../../wiki/Installation) or the [_INSTALLATION (txt)](../main/_INSTALLATION.txt).
+Not properly following the installation instructions will result in scripts not working as intended. Please don't report errors before checking this.
+
+## Support
+ 1. [Issues tracker](../../issues).
+ 2. [Hydrogenaudio forum](https://hydrogenaudio.org/index.php/topic,111060.new.html#new).
+ 3. [Wiki](../../wiki).
+
+## Nightly releases
+Automatic package [built from GitHub](https://nightly.link/regorxxx/Library-Tree-SMP/workflows/build/main/file.zip) (using the latest commit). Unzip 'file.zip' downloaded and load the '*-package.zip' inside as package within your JS host component.
+
+[changelog]: CHANGELOG.md
+[version_badge]: https://img.shields.io/github/release/regorxxx/Library-Tree-SMP.svg
+[codacy_badge]: https://api.codacy.com/project/badge/Grade/e04be28637dd40d99fae7bd92f740677
+[codefactor_badge]: https://www.codefactor.io/repository/github/regorxxx/Library-Tree-SMP/badge/main
