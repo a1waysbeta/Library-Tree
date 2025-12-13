@@ -51,12 +51,10 @@ $cut(%artist%,1)|%artist%|$if2(%album%,εXtra)|[[%discnumber%.]%tracknumber%. ][
 - Original script (2023): [Wil-B](https://github.com/Wil-B)
 
 ## Requirements (only one host component required)
- 1. [Spider Monkey Panel (foobar2000 v2.x)](hydrogenaudio.org/index.php/topic,116669.new.html#new): JavaScript host component required to install this. Both [x86](https://github.com/marc2k3/spider-monkey-panel-x86) and [x64](https://github.com/marc2k3/spider-monkey-panel-x64). **(host component)**
- 2. [Spider Monkey Panel (foobar2000 v1.6.x)](https://theqwertiest.github.io/foo_spider_monkey_panel):  JavaScript host component required to install this. Only x86. **(host component)**
- 3. [JSplitter (any foobar2000 version)](https://foobar2000.ru/forum/viewtopic.php?t=6378): JavaScript host component required to install this. Both x86 and x64. **(host component)**
- 4. [Playback Statistics](https://www.foobar2000.org/components/view/foo_playcount): Some statistics and filters will only work if present.
- 5. [Enhanced Playback Statistics](https://www.foobar2000.org/components/view/foo_enhanced_playcount): Some statistics and filters will only work if present.
- 6. [Required fonts](https://github.com/regorxxx/foobar2000-assets/tree/main/Fonts): FontAwesome, Segoe UI, Arial Unicode MS
+ 1. [Spider Monkey Panel or JSplitter](../../wiki/SMP-vs-JSplitter-notes): JavaScript host component required to install this. Available in x86 and x64.
+ 2. [Playback Statistics](https://www.foobar2000.org/components/view/foo_playcount): Some statistics and filters will only work if present.
+ 3. [Enhanced Playback Statistics](https://www.foobar2000.org/components/view/foo_enhanced_playcount): Some statistics and filters will only work if present.
+ 4. [Required fonts](https://github.com/regorxxx/foobar2000-assets/tree/main/Fonts): FontAwesome, Segoe UI, Arial Unicode MS
 
 ## Installation
 See [Wiki](../../wiki/Installation) or the [_INSTALLATION (txt)](../main/_INSTALLATION.txt).
