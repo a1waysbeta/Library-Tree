@@ -1720,11 +1720,16 @@ class Populate {
 		let np_item = -1;
 		let pid = -1;
 		const pl_stnd = ppt.libPlaylist.replace(/%view_name%/i, panel.viewName);
-		let pl_stnd_idx = plman.FindOrCreatePlaylist(pl_stnd, true);
-
-		if (!bUseDefaultPls && plman.ActivePlaylist != -1) pl_stnd_idx = plman.ActivePlaylist;
-		else if (ppt.activateOnChange) plman.ActivePlaylist = pl_stnd_idx;
-
+		// Regorxxx <- Default playlist being always created even when unused
+		let pl_stnd_idx;
+		if (ppt.libPlaylistCreate) { pl_stnd_idx = plman.FindOrCreatePlaylist(pl_stnd, true); }
+		if (!bUseDefaultPls && plman.ActivePlaylist != -1) {
+			pl_stnd_idx = plman.ActivePlaylist;
+		} else {
+			if (!ppt.libPlaylistCreate) { pl_stnd_idx = plman.FindOrCreatePlaylist(pl_stnd, true); }
+			if (ppt.activateOnChange) {	plman.ActivePlaylist = pl_stnd_idx; }
+		}
+		// Regorxxx ->
 
 		if (bAutoPlay == 4 && plman.PlaylistItemCount(pl_stnd_idx) || bAutoPlay == 3 && fb.IsPlaying) {
 			bAutoPlay = false;
