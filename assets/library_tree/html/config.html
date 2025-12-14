@@ -1049,7 +1049,7 @@
 				var dblClickLabels = ppt['actionMode_internal'].value == 1 ? ['Send to playlist & play'] : ppt['actionMode_internal'].value == 2 ? ['Send to playback queue and play'] : ['Send to playlist', 'Send to playlist & play', 'Expand / collapse (tree)', 'Send to playback queue and play'];
 				var diskCacheLabels = ['Enable', 'Preload cached images']
 				var followCurrentLabels = ['Standard mode', 'Album art flow mode'];
-				 // Regorxxx <- View by Folder structure sorting. Custom sorting for standard views
+				 // Regorxxx <- View by Folder structure sorting | Custom sorting for standard views
 				var viewSortingLabels = ['Library Tree (original)', 'Library Tree (updated)','Windows-like (basic)', 'Windows-like (advanced)']
 				var folderSortingFbLabels = ['Prefer native sorting for library sources'];
 				var sortingTransLabels = ['Transliterate values to Latin', 'Transliterate values to Latin'];
@@ -1076,7 +1076,7 @@
 				var sbarShowLabels = ['Hide', 'Auto', 'Show'];
 				var sbarTypeLabels = ['Default', 'Styled', 'Windows'];
 				var scrollbarLabels = ['Bar Width', 'Narrow bar width (0 = auto)', 'Arrow width', 'Arrow padding (+/-)', 'Grip min height', 'Custom icon', 'Custom icon font name', 'Custom icon offset (%)', 'Prefer full height scrollbar'];
-				var facetsLabels = ['Prefer internal cache (if supported)', 'Chained source notifications']; // Regorxxx <- Don't create cache playlists if possible.Chained facets updates ->
+				var facetsLabels = ['Prefer internal cache (if supported)', 'Chained source notifications']; // Regorxxx <- Don't create cache playlists if possible | Chained facets updates ->
 				var loggingLabels = ['Library loading profiling']; // Regorxxx <- Library profiling ->
 				var scrollLabels = ['Use windows metrics', 'Smooth scroll', 'Touch control'];
 				var selectionLabels = ['Full line', 'Play on enter or send from menu'];
@@ -1154,7 +1154,7 @@
 					},
 					all: {}
 				}
-				// Regorxxx <- Drag n' drop to search box. New statistics
+				// Regorxxx <- Drag n' drop to search box | New statistics
 				input.all.name = input.behaviour.name.concat(input.search.name, input.display.name, input.statistics.name, input.albumArt.name, input.custom.name, input.advanced.name);
 				input.all.type = input.behaviour.type.concat(input.search.type, input.display.type, input.statistics.type, input.albumArt.type, input.custom.type, input.advanced.type);
 				// Regorxxx <- Better debug
@@ -1162,13 +1162,13 @@
 				// Regorxxx ->
 				// Regorxxx ->
 				var box = {
-					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'folderSortingFb', 'folderSortingTrans', 'viewSortingTrans', 'activateOnChange', 'libPlaylistCreate', 'selectAdded'], // Regorxxx <- Send to playlist & select ->
+					behaviour: ['sbarWinMetrics', 'smooth', 'touchControl', 'autoCollapse', 'treeAutoExpandSingle', 'treeAutoExpand', 'rememberTree', 'rememberView', 'rememberPreSearch', 'fullLineSelection', 'autoPlay', 'stndModeFollowSelection', 'flowModeFollowSelection', 'folderSortingFb', 'folderSortingTrans', 'viewSortingTrans', 'activateOnChange', 'libPlaylistCreate', 'selectAdded'], // Regorxxx <- Send to playlist & select | Default playlist being always created even when unused ->
 					search: ['searchEnter', 'searchRefreshTf'], // Regorxxx <- New search tab ->
 					display: ['searchShow', 'filterShow', 'settingsShow', 'swapCol', 'autoFill', 'recItemImage', 'inlineRoot', 'showSource', 'nodeLines', 'colLineDark', 'frameImage', 'mousePointerOnly', 'highLightNode', 'highLightText', 'rowStripes', 'highLightNowplaying', 'nowPlayingSidemarker', 'nowPlayingIndicator', 'albumArtOptionsShow', 'facetView', 'showTracks'], // Regorxxx <- New statistics tab ->
 					statistics: ['labelStatistics', 'tooltipStatistics', 'countsRight'], // Regorxxx <- New statistics tab ->
 					albumArt: ['albumArtFlipLabels', 'albumArtDiskCache', 'albumArtPreLoad', 'albumArtFlowMode', 'albumArtDropShadow', 'artTreeSameView', 'albumArtLetter', 'albumArtYearAuto'],
 					custom: ['custFontUse', 'custAlbumArtGrpFontUse', 'custAlbumArtLotFontUse', 'custAlbumArtDurFontUse', 'textUse', 'text_hUse', 'textSelUse', 'nowpUse', 'searchUse', 'txt_boxUse', 'bgUse', 'bg_hUse', 'bgSelUse', 'frameUse', 'bgSelframeUse', 'countsUse', 'icon_cUse', 'icon_eUse', 'icon_hUse', 'lineUse', 's_lineUse', 'sideMarkerUse', 'bgTransUse'],
-					advanced: ['sbarFullHeight', 'panelInternalCache', 'libSourceChained', 'winNode', 'blurAutofill', 'libAutoSync', 'pn_h_auto', 'logLibProfiler'] // Regorxxx <- Library profiling. Don't create cache playlists if possible. Chained facets updates ->
+					advanced: ['sbarFullHeight', 'panelInternalCache', 'libSourceChained', 'winNode', 'blurAutofill', 'libAutoSync', 'pn_h_auto', 'logLibProfiler'] // Regorxxx <- Library profiling | Don't create cache playlists if possible | Chained facets updates ->
 				}
 				// Regorxxx <- New search tab
 				box.all = box.behaviour.concat(box.search, box.display, box.statistics, box.albumArt, box.custom, box.advanced);
@@ -1373,7 +1373,7 @@
 					window.keystroke.style.display = 'none';
 				}
 
-				// Regorxxx <- View by Folder structure sorting. Custom sorting for standard views
+				// Regorxxx <- View by Folder structure sorting | Custom sorting for standard views
 				function setFolderSorting(n) {
 					window.folderSorting_dropdown.innerHTML = viewSortingLabels[n];
 					ppt['folderSorting_internal'].value = n;
@@ -1415,7 +1415,7 @@
 							break;
 						case 'syntaxFilter': // Regorxxx <- Add help to filter tab ->
 						case 'syntax':
-							// Regorxxx <- Merge now playing and selected as fallback. Code cleanup
+							// Regorxxx <- Merge now playing and selected as fallback | Code cleanup
 							var headers = ['Syntax', 'Use\u00A0In\u00A0\u00A0\u00A0', 'Description'];
 							cells.push(headers);
 							var labels = [
@@ -1765,7 +1765,7 @@
 					i = 5; window.scrollbar.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="scrollbar_container'+i+'" name="advanced_input" class="input35" style="font-family:'+fFamily+'" /><label for="scrollbar_container'+i+'" class="inp_label2">'+scrollbarLabels[i]+'</label></div>');
 					for (i = 6; i < 8; i++) {window.scrollbar.insertAdjacentHTML('beforeend', '<div class="input_cnt1"><input id="scrollbar_container'+i+'" name="advanced_input" class="input35" /><label for="scrollbar_container'+i+'" class="inp_label2">'+scrollbarLabels[i]+'</label></div>');}
 					i = 8; window.scrollbar.insertAdjacentHTML('beforeend', '<div><input id="scrollbar_checkbox'+i+'" name="advanced_checkbox" style="'+cbox+'" type="checkbox" /><label for="scrollbar_checkbox'+i+'" class="checkbox_label">'+scrollbarLabels[i]+'</label></div>');
-					// Regorxxx <- Don't create cache playlists if possible.Chained facets updates
+					// Regorxxx <- Don't create cache playlists if possible | Chained facets updates
 					for (i = 0; i < facetsLabels.length; i++) {window.facets.insertAdjacentHTML('beforeend', '<div><input id="facets_checkbox'+i+'" name="advanced_checkbox" style="'+cbox+'" type="checkbox" /><label for="facets_checkbox'+i+'" class="checkbox_label">'+facetsLabels[i]+'</label></div>');};
 					// Regorxxx ->
 					fFamily = ppt['custIconFont_internal'].value;
@@ -2194,7 +2194,7 @@
 					setSbarIcon(ppt['sbarButType_internal'].default_value);
 				}
 				// Regorxxx ->
-				// Regorxxx <- New search tab. Drag n' drop to search box
+				// Regorxxx <- New search tab | Drag n' drop to search box
 				if (cur.page == 'search') {
 					setDragValOpDefault(['', 'OR', 'AND'].indexOf(ppt['searchDragValOp_internal'].default_value.toUpperCase()));
 					setDragValOpCtrl(['', 'OR', 'AND'].indexOf(ppt['searchDragValOpCtrl_internal'].default_value.toUpperCase()));
@@ -2327,7 +2327,7 @@
 				}
 			}
 
-			// Regorxxx <- Drag n' drop to search box, Send to playlist & select
+			// Regorxxx <- Drag n' drop to search box | Send to playlist & select
 			function showHelp(id) { // plsSel_text, drag_text, mode_text, topTracks_text
 				var divToggleMode = document.getElementById(id);
 				if (divToggleMode.style.display === 'none') {
@@ -2388,7 +2388,7 @@
 				['sbarType_dropdown', 'sbarType'],
 				['sbarCol_dropdown', 'sbarCol'],
 				['sbarIcon_dropdown', 'sbarIcon'],
-				// Regorxxx <- View by Folder structure sorting. Custom sorting for standard views
+				// Regorxxx <- View by Folder structure sorting | Custom sorting for standard views
 				['folderSorting_dropdown', 'folderSorting'],
 				['viewSorting_dropdown', 'viewSorting'],
 				// Regorxxx ->
