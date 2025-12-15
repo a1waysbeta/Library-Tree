@@ -1,8 +1,8 @@
 ﻿'use strict';
-//01/12/25
+//15/12/25
 
 /* global ui:readable, panel:readable, ppt:readable, pop:readable, but:readable, $:readable, sbar:readable, img:readable, search:readable, men:readable, vk:readable, lib:readable, popUpBox:readable */
-/* global MF_STRING:readable, MF_GRAYED:readable */
+/* global MF_STRING:readable, MF_GRAYED:readable, folders:readable */
 
 /* exported MenuItems, Btn, Tooltip, TooltipTimer, Transition */
 
@@ -480,7 +480,7 @@ class MenuItems {
 
 	searchHistoryMenu() {
 		sMenu.newMenu({});
-		// Regorxxx <- RegExp library search and menu cleanup
+		// Regorxxx <- RegExp library search and menu cleanup | Syntax help
 		if (!search.menu.length) {
 			sMenu.newItem({
 				str: '- no search history -',
@@ -502,8 +502,13 @@ class MenuItems {
 		sMenu.newMenu({ menuName: 'Help' });
 		sMenu.newItem({
 			menuName: 'Help',
-			str: 'Query syntax',
+			str: 'foobar2000 Query syntax',
 			func: () => this.setSearchHistory(0),
+		});
+		sMenu.newItem({
+			menuName: 'Help',
+			str: window.ScriptInfo.Name + ' syntax',
+			func: () => this.setSearchHistory(-2),
 		});
 		sMenu.newItem({
 			menuName: 'Help',
@@ -813,6 +818,13 @@ class MenuItems {
 				$.browser('"' + fn);
 				break;
 			}
+			// Regorxxx <- Syntax help
+			case i === -2: {
+				let fn = folders.xxx + 'assets\\library_tree\\html\\syntax.html';
+				$.browser('"' + fn);
+				break;
+			}
+			// Regorxxx ->
 			// Regorxxx <- RegExp library search
 			case i === -1: {
 				let fn = 'https://regexr.com/';
