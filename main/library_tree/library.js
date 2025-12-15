@@ -1,9 +1,9 @@
 ﻿'use strict';
-//02/12/25
+//15/12/25
 
 /* global panel:readable, ppt:readable, $:readable, sbar:readable, pop:readable, img:readable, but:readable, lib:readable, search:readable, setSelection:readable, ui:readable */
 
-/* global globQuery:readable */
+/* global globQuery:readable, globTags:readable */
 /* global harmonicMixingSort:readable, harmonicMixingCycle:readable */
 /* global removeDuplicates:readable */
 /* global shuffleByTags:readable */
@@ -568,11 +568,6 @@ class Library {
 			handleList.OrderByFormat(tf, 1);
 			return handleList;
 		}
-		// Allow mixing special $funcs{} and standard TF, as long as it's valid, and use that first
-		const tfClean = this.processCustomTf(tf);
-		if (tf === tfClean || !tfClean.match(/^( *\$not\(0\) *)*$/)) {
-			handleList.OrderByFormat(fb.TitleFormat(tfClean), 1);
-		}
 		// Then process special $funcs{}
 		if (tf.includes('$harmonicsort{')) {
 			let [, bShuffleInput] = tf.match(/\$harmonicsort{([^,{}]*)}/) || [, 'true']; // eslint-disable-line no-sparse-arrays
@@ -599,6 +594,11 @@ class Library {
 			} else {
 				console.log(window.PanelName + ': $shufflebytags{tagName,sortBias,sortDir} missing \'tagName\' variable');
 			}
+		}
+		// Allow mixing special $funcs{} and standard TF, as long as it's valid, and use that as last step
+		const tfClean = this.processCustomTf(tf);
+		if (tf === tfClean || !tfClean.match(/^( *\$not\(0\) *)*$/)) {
+			handleList.OrderByFormat(fb.TitleFormat(tfClean), 1);
 		}
 		return handleList;
 	}
