@@ -1,5 +1,5 @@
 ﻿'use strict';
-//21/11/25
+//15/12/25
 
 /* global ppt:readable, $:readable, WshShell:readable, doc:readable */
 /* global folders:readable */
@@ -17,7 +17,7 @@ class PopUpBox {
 
 	config(cfg, ppt, cfgWindow, ok_callback) {
 		utils.ShowHtmlDialog(0, this.configHtmlCode, {
-			data: [cfg, ppt, cfgWindow, ok_callback],
+			data: [cfg, ppt, cfgWindow, ok_callback, void(0), folders.xxx + 'assets\\library_tree\\html'],  // Regorxxx <- Root path ->
 			resizable: true
 		});
 	}
