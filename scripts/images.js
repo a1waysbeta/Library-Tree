@@ -1,4 +1,7 @@
 ﻿'use strict';
+/* global ui:readable, panel:readable, ppt:readable, $:readable, vk:readable, sbar:readable, pop:readable, md5:readable, pluralize:readable, popUpBox:readable */
+
+/* exported img */
 
 class Images {
 	constructor() {
@@ -29,59 +32,59 @@ class Images {
 			cov: 16,
 			pad: 10,
 			side: 2
-		}
-	
+		};
+
 		this.box = {
 			h: 100,
 			w: 100
-		}
+		};
 
-		this.cache = {}
+		this.cache = {};
 
 		this.cachesize = {
 			min: 20
-		}
+		};
 
 		this.stub = {
 			noImg: null,
 			root: null
-		}
+		};
 
 		this.style = {
 			image: 0,
 			rootComposite: ppt.rootNode && ppt.curRootImg == 3,
 			vertical: !ppt.albumArtFlowMode ? true : ui.h - panel.search.h > ui.w - ui.sbar.w,
 			y: 25
-		}
+		};
 
 		this.im = {
 			offset: 0,
 			y: 0,
 			w: 120
-		}
+		};
 
 		this.interval = {
 			cache: 1,
 			preLoad: 7
-		}
+		};
 
-		this.labels = {statistics: ppt.itemShowStatistics ? 1 : 0}
+		this.labels = { statistics: ppt.itemShowStatistics ? 1 : 0 };
 
 		this.letter = {
 			albumArtYearAuto: ppt.albumArtYearAuto,
 			no: 1,
 			show: ppt.albumArtLetter,
 			w: 0
-		}
+		};
 
 		this.mask = {
 			fade: null,
 			circular: null
-		}
+		};
 
 		this.row = {
 			h: 80
-		}
+		};
 
 		this.text = {
 			x: 0,
@@ -89,14 +92,14 @@ class Images {
 			y2: 0,
 			h: 20,
 			w: 20
-		}
+		};
 
 		this.timer = {
 			load: null,
 			preLoad: null,
 			save: null
-		}
-		
+		};
+
 		this.drawDebounce = $.debounce(() => {
 			panel.treePaint();
 		}, 500);
@@ -203,8 +206,8 @@ class Images {
 				}
 			}, 1000);
 
-		} catch (e) {
-			$.trace('unable to load thumbnail image: ' + key);
+		} catch (e) { // eslint-disable-line no-unused-vars
+			$.trace('无法加载缩略图：' + key);
 		}
 		this.drawDebounce();
 	}
@@ -216,8 +219,8 @@ class Images {
 				this.format(image, ppt.artId, ['default', 'crop', 'circular'][this.style.image], this.im.w, this.im.w, ppt.albumArtLabelType == 3, 'displayPreload', ix, key);
 			}
 			if (this.style.rootComposite && ix < this.rootNo) this.rootDebounce();
-		} catch (e) {
-			$.trace('unable to load thumbnail image: ' + key);
+		} catch (e) { // eslint-disable-line no-unused-vars
+			$.trace('无法加载缩略图：' + key);
 		}
 		panel.treePaint();
 	}
@@ -261,11 +264,11 @@ class Images {
 		if (!o) this.cache[key] = {
 			img: 'called',
 			accessed: ++this.accessed
-		}
+		};
 		o = this.cache[key];
 		o.img = $.gr(this.cellWidth * n, this.cellWidth * n, true, g => this.createCollage(g, this.cellWidth, this.cellWidth, n, n, cells));
 		if (this.style.image == 2) this.circularMask(o.img, o.img.Width, o.img.Height);
-		o.img = o.img.Resize(this.im.w, this.im.w, 7);
+		o.img = o.img.Resize(this.im.w, this.im.w, 6); // Regorxxx <- Improve img to avoid artifacts at borders. Use bilinear interpolation ->
 		if (ppt.albumArtLabelType == 3) this.fadeMask(o.img, o.img.Width, o.img.Height);
 		panel.treePaint();
 	}
@@ -288,7 +291,7 @@ class Images {
 			1: tt1 ? gr.CalcTextWidth(tt1, font1) > w ? tt1 : false : false,
 			2: tt2 ? gr.CalcTextWidth(tt2, font2) > w ? tt2 : false : false,
 			3: tt3 ? gr.CalcTextWidth(tt3, font3) > w ? tt3 : false : false
-		}
+		};
 	}
 
 	circularMask(image, w, h) {
@@ -361,13 +364,13 @@ class Images {
 
 	createImages() {
 		this.mask.circular = $.gr(500, 500, true, g => {
-			g.FillSolidRect(0, 0, 500, 500, RGB(255, 255, 255));
+			g.FillSolidRect(0, 0, 500, 500, $.RGB(255, 255, 255));
 			g.SetSmoothingMode(2);
-			g.FillEllipse(1, 1, 498, 498, RGBA(0, 0, 0, 255));
+			g.FillEllipse(3, 3, 496, 496, $.RGBA(0, 0, 0, 255)); // Regorxxx <- Improve img mask to avoid rough edges ->
 			g.SetSmoothingMode(0);
 		});
 		this.mask.fade = $.gr(500, 500, true, g => {
-			g.FillSolidRect(0, 0, 500, 500, RGB(175, 175, 175));
+			g.FillSolidRect(0, 0, 500, 500, $.RGB(175, 175, 175));
 		});
 	}
 
@@ -392,7 +395,7 @@ class Images {
 				const lotCol = this.getLotCol(item, nowp, pop.highlight.text && i == pop.m.i);
 				this.drawSelBg(gr, cur_img, box_x, box_y, i, nowp || item.sel);
 				this.im.y = this.im.offset + box_y;
-				
+
 				if (pop.rowStripes && this.labels.right) {
 					if (i % 2 == 0) gr.FillSolidRect(0, box_y + 1, panel.tree.stripe.w, this.row.h, ui.col.bg1);
 					else gr.FillSolidRect(0, box_y, panel.tree.stripe.w, this.row.h, ui.col.bg2);
@@ -409,28 +412,29 @@ class Images {
 					let w = iw;
 					let h = ih;
 					if (this.style.dropShadow && this.shadow) {
-						this.style.image ? gr.DrawImage(this.shadow, x1, y1, this.shadow.Width, this.shadow.Height, 0, 0, this.shadow.Width, this.shadow.Height) : 
-						gr.DrawImage(this.shadow, x1, y1, Math.ceil(w * 1.15), Math.ceil(h * 1.15), 0, 0, this.shadow.Width, this.shadow.Height); // disabled for blend: not suitable
+						this.style.image
+							? gr.DrawImage(this.shadow, x1, y1, this.shadow.Width, this.shadow.Height, 0, 0, this.shadow.Width, this.shadow.Height)
+							: gr.DrawImage(this.shadow, x1, y1, Math.ceil(w * 1.15), Math.ceil(h * 1.15), 0, 0, this.shadow.Width, this.shadow.Height); // disabled for blend: not suitable
 					} else if (this.style.dropGrad) {
 						if (this.style.image != 2) {
-							gr.FillGradRect(x1 + w, y1, 4 * $.scale, h,  0, RGBA(0, 0, 0, 56), 0);
-							gr.FillGradRect(x1, y1 + h, w, 4 * $.scale, 90, RGBA(0, 0, 0, 56), 0);
+							gr.FillGradRect(x1 + w, y1, 4 * $.scale, h, 0, $.RGBA(0, 0, 0, 56), 0);
+							gr.FillGradRect(x1, y1 + h, w, 4 * $.scale, 90, $.RGBA(0, 0, 0, 56), 0);
 						} else {
 							gr.SetSmoothingMode(4);
-							gr.DrawEllipse(x1, y1, iw, ih, 4 * $.scale, RGBA(0, 0, 0, 32));
+							gr.DrawEllipse(x1, y1, iw, ih, 4 * $.scale, $.RGBA(0, 0, 0, 32));
 							gr.SetSmoothingMode(0);
 						}
 					}
 					gr.DrawImage(cur_img, x1, y1, w, h, 0, 0, iw, ih);
 					if (this.labels.overlayDark) {
-						if (item.sel || nowp) gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, RGBA(150, 150, 150, 150));
+						if (item.sel || nowp) gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, $.RGBA(150, 150, 150, 150));
 						gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, this.getSelBgCol(item, nowp));
 					}
 					if (!item.sel || !this.labels.overlay || this.style.image != 2) {
 						if (this.style.image != 2) gr.DrawRect(x1, y1, iw - 1, ih - 1, 1, ui.col.imgBor);
 						else {
 							gr.SetSmoothingMode(2);
-							gr.DrawEllipse(x1, y1, iw - 1, ih - 1, 1, ui.col.imgBor);
+							gr.DrawEllipse(x1 + 1, y1 + 1, iw - 2, ih - 2, 1, ui.col.imgBor); // Regorxxx <- Improve img mask to avoid rough edges ->
 							gr.SetSmoothingMode(0);
 						}
 					}
@@ -444,24 +448,24 @@ class Images {
 							gr.DrawImage(this.shadowStub, x1, y1, this.shadowStub.Width, this.shadowStub.Height, 0, 0, this.shadowStub.Width, this.shadowStub.Height);
 						} else if (this.style.dropGradStub) {
 							if (this.style.image != 2) {
-								gr.FillGradRect(x1 + iw - 2 * $.scale, y1, 6 * $.scale, ih,  0, RGBA(0, 0, 0, 56), 0);
-								gr.FillGradRect(x1, y1 + ih - 2 * $.scale, iw, 6 * $.scale, 90, RGBA(0, 0, 0, 56), 0);
+								gr.FillGradRect(x1 + iw - 2 * $.scale, y1, 6 * $.scale, ih, 0, $.RGBA(0, 0, 0, 56), 0);
+								gr.FillGradRect(x1, y1 + ih - 2 * $.scale, iw, 6 * $.scale, 90, $.RGBA(0, 0, 0, 56), 0);
 							} else {
 								gr.SetSmoothingMode(2);
-								gr.DrawEllipse(x1, y1, iw, ih, 4 * $.scale, RGBA(0, 0, 0, 32));
+								gr.DrawEllipse(x1, y1, iw, ih, 4 * $.scale, $.RGBA(0, 0, 0, 32));
 								gr.SetSmoothingMode(0);
-							}	
+							}
 						}
 						this.stub.noImg && gr.DrawImage(this.stub.noImg, x1, y1, iw, ih, 0, 0, iw, ih);
 					}
 					else if (!this.style.rootComposite && this.stub.root) gr.DrawImage(this.stub.root, x1, y1, iw, ih, 0, 0, iw, ih);
 
 					if (this.labels.overlay) {
-						gr.FillGradRect(x1, y2 - 1, iw / 2, ui.l.w, 1, RGBA(0, 0, 0, 0), ui.col.imgBor);
-						gr.FillGradRect(x1 + iw / 2, y2 - 1, iw / 2, ui.l.w, 1, ui.col.imgBor, RGBA(0, 0, 0, 0));
+						gr.FillGradRect(x1, y2 - 1, iw / 2, ui.l.w, 1, $.RGBA(0, 0, 0, 0), ui.col.imgBor);
+						gr.FillGradRect(x1 + iw / 2, y2 - 1, iw / 2, ui.l.w, 1, ui.col.imgBor, $.RGBA(0, 0, 0, 0));
 					}
 					if (this.labels.overlayDark) {
-						if (item.sel || nowp) gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, RGBA(150, 150, 150, 150));
+						if (item.sel || nowp) gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, $.RGBA(150, 150, 150, 150));
 						gr.FillSolidRect(x2, y2, this.im.w, this.overlayHeight, this.getSelBgCol(item, nowp));
 					}
 				}
@@ -488,11 +492,11 @@ class Images {
 							this.checkTooltip(gr, item, x, y1, y2, y3, this.text.w, grp, lot, statistics, ui.font.group, ui.font.lot, ui.font.statistics);
 							!panel.colMarker ? gr.GdiDrawText(grp, ui.font.group, grpCol, x, y1, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[1] ? panel.cc : panel.lc) : pop.cusCol(gr, grp, item, x, y1, this.text.w, this.text.h, type, nowp, ui.font.group, ui.font.groupEllipsisSpace, 'group');
 							!panel.colMarker ? gr.GdiDrawText(lot, ui.font.lot, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[2] ? panel.cc : panel.lc) : pop.cusCol(gr, lot, item, x, y2, this.text.w, this.text.h, type, nowp, ui.font.lot, ui.font.lotEllipsisSpace, 'lott');
-							if (statistics) gr.GdiDrawText(statistics, ui.font.statistics, lotCol, x, y3, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[2] ? panel.cc : panel.lc)
+							if (statistics) gr.GdiDrawText(statistics, ui.font.statistics, lotCol, x, y3, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[2] ? panel.cc : panel.lc);
 						} else {
 							this.checkTooltip(gr, item, x, y1, statistics ? y2 : -1, -1, this.text.w, grp, statistics, false, ui.font.group, ui.font.statistics);
 							!panel.colMarker ? gr.GdiDrawText(grp, ui.font.group, grpCol, x, y1, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[1] ? panel.cc : panel.lc) : pop.cusCol(gr, grp, item, x, y1, this.text.w, this.text.h, type, nowp, ui.font.group, ui.font.mainEllipsisSpace, 'group');
-							if (statistics) gr.GdiDrawText(statistics, ui.font.statistics, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[2] ? panel.cc : panel.lc)
+							if (statistics) gr.GdiDrawText(statistics, ui.font.statistics, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 && !this.labels.right && !item.tt[2] ? panel.cc : panel.lc);
 						}
 					} else {
 						y1 = this.im.y + this.text.y1;
@@ -502,11 +506,11 @@ class Images {
 							this.checkTooltip(gr, item, x, y1, y2, y3, this.text.w, grp, lot, statistics, ui.font.group, ui.font.lot, ui.font.statistics);
 							!panel.colMarker ? gr.GdiDrawText(grp, ui.font.group, grpCol, x, y1, this.text.w, this.text.h, this.style.image != 1 && !item.tt[1] ? panel.cc : panel.lc) : pop.cusCol(gr, grp, item, x, y1, this.text.w, this.text.h, type, nowp, ui.font.group, ui.font.groupEllipsisSpace, 'lott');
 							!panel.colMarker ? gr.GdiDrawText(lot, ui.font.lot, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 && !item.tt[2] ? panel.cc : panel.lc) : pop.cusCol(gr, lot, item, x, y2, this.text.w, this.text.h, type, nowp, ui.font.lot, ui.font.lotEllipsisSpace, 'group');
-							if (statistics) gr.GdiDrawText(statistics, ui.font.statistics, lotCol, x, y3, this.text.w, this.text.h, this.style.image != 1 && !item.tt[3] ? panel.cc : panel.lc)
+							if (statistics) gr.GdiDrawText(statistics, ui.font.statistics, lotCol, x, y3, this.text.w, this.text.h, this.style.image != 1 && !item.tt[3] ? panel.cc : panel.lc);
 						} else {
 							this.checkTooltip(gr, item, x, y1, statistics ? y2 : -1, -1, this.text.w, grp, statistics, false, ui.font.group, ui.font.statistics);
 							!panel.colMarker ? gr.GdiDrawText(grp, ui.font.group, grpCol, x, y1, this.text.w, this.text.h, this.style.image != 1 && !item.tt[1] ? panel.cc : panel.lc) : pop.cusCol(gr, grp, item, x, y1, this.text.w, this.text.h, type, nowp, ui.font.group, ui.font.groupEllipsisSpace, 'group');
-							if (statistics) gr.GdiDrawText(statistics, ui.font.statistics, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 && !item.tt[2] ? panel.cc : panel.lc)
+							if (statistics) gr.GdiDrawText(statistics, ui.font.statistics, lotCol, x, y2, this.text.w, this.text.h, this.style.image != 1 && !item.tt[2] ? panel.cc : panel.lc);
 						}
 					}
 				}
@@ -528,7 +532,7 @@ class Images {
 				l_w = 2;
 				break;
 			case 'thick':
-				x = box_x + Math.round((this.box.w - this.im.w) / 2) + 1
+				x = box_x + Math.round((this.box.w - this.im.w) / 2) + 1;
 				y = this.im.y + 3;
 				w = this.im.w - 3;
 				h = this.im.w - 3;
@@ -563,14 +567,14 @@ class Images {
 					count_w = Math.max(gr.CalcTextWidth(count[0], ui.font.tracks), gr.CalcTextWidth(count[1], ui.font.tracks));
 					count_x = x + (this.style.image != 2 ? w - count_w - 3 : (w - count_w - 2) / 2);
 					gr.SetSmoothingMode(2);
-					gr.FillSolidRect(count_x, count_y, count_w + 2, count_h2, RGBA(0, 0, 0, 115));
-					gr.GdiDrawText(count[0], ui.font.tracks, RGB(255, 255, 255), count_x + 1, count_y, count_w, count_h, this.style.image != 2 ? panel.rc : panel.cc);
-					gr.GdiDrawText(count[1], ui.font.tracks, RGB(255, 255, 255), count_x + 1, count_y + count_h, count_w, count_h, this.style.image != 2 ? panel.rc : panel.cc);
+					gr.FillSolidRect(count_x, count_y, count_w + 2, count_h2, $.RGBA(0, 0, 0, 115));
+					gr.GdiDrawText(count[0], ui.font.tracks, $.RGB(255, 255, 255), count_x + 1, count_y, count_w, count_h, this.style.image != 2 ? panel.rc : panel.cc);
+					gr.GdiDrawText(count[1], ui.font.tracks, $.RGB(255, 255, 255), count_x + 1, count_y + count_h, count_w, count_h, this.style.image != 2 ? panel.rc : panel.cc);
 					gr.SetSmoothingMode(0);
 				} else {
 					gr.SetSmoothingMode(2);
-					gr.FillSolidRect(count_x, count_y, count_w + 2, count_h2, RGBA(0, 0, 0, 115));
-					gr.GdiDrawText(count, ui.font.tracks, RGB(255, 255, 255), count_x + 1, count_y, count_w, count_h, panel.cc);
+					gr.FillSolidRect(count_x, count_y, count_w + 2, count_h2, $.RGBA(0, 0, 0, 115));
+					gr.GdiDrawText(count, ui.font.tracks, $.RGB(255, 255, 255), count_x + 1, count_y, count_w, count_h, panel.cc);
 					gr.SetSmoothingMode(0);
 				}
 				break;
@@ -582,8 +586,8 @@ class Images {
 				let year_x = x + (this.style.image != 2 ? 0 : (w - year_w - 2) / 2);
 				const year_y = y + (this.style.image != 2 ? 0 : year_h / 1.67);
 				gr.SetSmoothingMode(2);
-				gr.FillSolidRect(year_x, year_y, year_w + 2, year_h, RGBA(0, 0, 0, 115));
-				gr.GdiDrawText(item.year, ui.font.tracks, RGB(255, 255, 255), year_x + 1, year_y, year_w, year_h, panel.cc);
+				gr.FillSolidRect(year_x, year_y, year_w + 2, year_h, $.RGBA(0, 0, 0, 115));
+				gr.GdiDrawText(item.year, ui.font.tracks, $.RGB(255, 255, 255), year_x + 1, year_y, year_w, year_h, panel.cc);
 				gr.SetSmoothingMode(0);
 				break;
 			}
@@ -608,14 +612,14 @@ class Images {
 						y = box_y + (!this.labels.right ? 2 : 1);
 						w = !this.labels.right ? this.box.w : panel.tree.sel.w;
 						h = this.box.h;
-						break
+						break;
 				}
 				break;
 			case pop.highlight.row == 2 && i == pop.m.i:
 				col = ui.col.bg_h;
 				if ((this.labels.overlay || this.labels.hide) && this.style.image == 2) {
 					x = box_x + Math.round((this.box.w - (cur_img ? cur_img.Width : this.im.w)) / 2);
-					y = box_y + (cur_img ? 2 + this.im.w - cur_img.Height : 2)
+					y = box_y + (cur_img ? 2 + this.im.w - cur_img.Height : 2);
 					w = cur_img ? cur_img.Width : this.im.w;
 					h = cur_img ? cur_img.Height : this.im.w;
 				} else {
@@ -655,7 +659,7 @@ class Images {
 					}
 					image = image.Clone(ix, iy, iw, ih);
 				}
-				image = image.Resize(w, h, 7);
+				image = image.Resize(w, h, 6); // Regorxxx <- Improve img to avoid artifacts at borders. Use bilinear interpolation ->
 				if (type == 'circular') this.circularMask(image, image.Width, image.Height);
 				break;
 			}
@@ -664,7 +668,7 @@ class Images {
 				const sc = caller != 'save' ? Math.min(h / ih, w / iw) : Math.max(h / ih, w / iw);
 				const im_w = Math.round(iw * sc);
 				const im_h = Math.round(ih * sc);
-				image = image.Resize(im_w, im_h, 7);
+				image = image.Resize(im_w, im_h, 6); // Regorxxx <- Improve img to avoid artifacts at borders. Use bilinear interpolation ->
 				break;
 			}
 		}
@@ -672,7 +676,7 @@ class Images {
 		if (caller.startsWith('display')) this.cache[key] = {
 			img: image,
 			accessed: caller == 'display' ? ++this.accessed : 0
-		}
+		};
 		else return image;
 	}
 
@@ -685,7 +689,7 @@ class Images {
 		this.interval = {
 			cache: this.saveSize == 250 ? 1 : this.saveSize == 500 ? 4 : 9,
 			preLoad: this.saveSize == 250 ? (ppt.albumArtLabelType != 3 ? 7 : 15) : this.saveSize == 500 ? 20 : 45
-		}
+		};
 		this.cacheFolder = this.cachePath + ['front', 'back', 'disc', 'icon', 'artist'][ppt.artId] + (this.saveSize == 250 ? '' : this.saveSize) + '\\';
 		$.create(this.cacheFolder);
 		this.database = $.jsonParse(this.cacheFolder + 'database.dat', this.newDatabase(), 'file');
@@ -716,11 +720,11 @@ class Images {
 	}
 
 	getGrpCol(item, nowp, hover) {
-		return nowp ? ui.col.nowp : hover ? (panel.textDiffHighlight ? ui.col.nowp : ui.col.text_h) : item.sel ? !this.labels.overlayDark ? ui.col.textSel : ui.col.text : !this.labels.overlayDark ? ui.col.text : RGB(240, 240, 240);
+		return nowp ? ui.col.nowp : hover ? (panel.textDiffHighlight ? ui.col.nowp : ui.col.text_h) : item.sel ? !this.labels.overlayDark ? ui.col.textSel : ui.col.text : !this.labels.overlayDark ? ui.col.text : $.RGB(240, 240, 240);
 	}
 
 	getImages() {
-		const extraRows = this.albumArtDiskCache ? panel.rows * 2 : panel.rows; // will load any extra including those after any preLoad 
+		const extraRows = this.albumArtDiskCache ? panel.rows * 2 : panel.rows; // will load any extra including those after any preLoad
 
 		if (!panel.imgView) return;
 		this.items = [];
@@ -768,13 +772,13 @@ class Images {
 						this.cache[key] = {
 							img: 'called',
 							accessed: ++this.accessed
-						}
-						this.load_image_async(key, this.cacheFolder + this.database[key], v.ix)
+						};
+						this.load_image_async(key, this.cacheFolder + this.database[key], v.ix);
 					} else {
 						this.cache[key] = {
 							img: 'called',
 							accessed: ++this.accessed
-						}
+						};
 						if (v.handle) this.get_album_art_async(v.handle, ppt.artId, key, v.ix);
 					}
 				}
@@ -803,7 +807,7 @@ class Images {
 				return {
 					ix: i,
 					key: key
-				}
+				};
 			}
 		}
 		return null;
@@ -829,7 +833,7 @@ class Images {
 				} else {
 					this.start = Math.round(sbar.delta / this.blockWidth);
 					this.end = Math.min(this.start + panel.rows + 2, pop.tree.length);
-					this.start = $.clamp(this.start, 0, this.start - 1)
+					this.start = $.clamp(this.start, 0, this.start - 1);
 				}
 				break;
 		}
@@ -837,7 +841,7 @@ class Images {
 	}
 
 	getLotCol(item, nowp, hover) {
-		return nowp ? ui.col.nowp : hover ? (panel.textDiffHighlight ? ui.col.nowp : ui.col.text_h) : item.sel ? !this.labels.overlayDark ? ui.col.selBlend : ui.col.lotBlend : !this.labels.overlayDark ? ui.col.lotBlend : RGB(220, 220, 220);
+		return nowp ? ui.col.nowp : hover ? (panel.textDiffHighlight ? ui.col.nowp : ui.col.text_h) : item.sel ? !this.labels.overlayDark ? ui.col.selBlend : ui.col.lotBlend : !this.labels.overlayDark ? ui.col.lotBlend : $.RGB(220, 220, 220);
 	}
 
 	getMostFrequentField(arr) {
@@ -855,25 +859,25 @@ class Images {
 		let wh = this.style.image ? this.im.w * 0.985 : this.im.w; // draw at actual size if possible as faster; regular have to be resized during draw
 		const sz = this.im.w * 1.17;
 		if (this.style.image != 2) {
-			this.shadow = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+			this.shadow = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 			this.shadow.StackBlur(5);
 		} else {
-			this.shadow = $.gr(sz, sz, true, g => g.FillEllipse(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+			this.shadow = $.gr(sz, sz, true, g => g.FillEllipse(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 			this.shadow.StackBlur(4);
 		}
 		wh = this.im.w * 0.985; // always drawn at actual size
 		if (ppt.artId == 4) {
 			if (ppt.curNoArtistImg == 0 || ppt.curNoArtistImg == 2 || this.style.image == 2) {
-				this.shadowStub = $.gr(sz, sz, true, g => g.FillEllipse(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+				this.shadowStub = $.gr(sz, sz, true, g => g.FillEllipse(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 				this.shadowStub.StackBlur(4);
 			} else if (ppt.curNoArtistImg != 4) {
-				this.shadowStub = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+				this.shadowStub = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 				this.shadowStub.StackBlur(5);
 			} else {
 				this.shadowStub = null;
 			}
 		} else if (ppt.curNoCoverImg > 2) {
-			this.shadowStub = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, RGBA(0, 0, 0, 128)));
+			this.shadowStub = $.gr(sz, sz, true, g => g.FillSolidRect(xy, xy, wh, wh, $.RGBA(0, 0, 0, 128)));
 			this.shadowStub.StackBlur(5);
 		} else {
 			this.shadowStub = null;
@@ -888,7 +892,7 @@ class Images {
 	}
 
 	getSelBgCol(item, nowp) {
-		return nowp || item.sel ? this.albumArtShowLabels ? ui.col.imgBgSel : ui.col.imgOverlaySel : RGBA(0, 0, 0, 175);
+		return nowp || item.sel ? this.albumArtShowLabels ? ui.col.imgBgSel : ui.col.imgOverlaySel : $.RGBA(0, 0, 0, 175);
 	}
 
 	getStyle() {
@@ -912,7 +916,7 @@ class Images {
 		const mod = pop.tree.length < 1000 ? 1 : pop.tree.length < 3500 ? Math.round(pop.tree.length / 1000) : 3;
 		const tf_d = FbTitleFormat('[$year(%date%)]');
 		this.groupField = albumArtGrpNames[`${panel.grp[ppt.viewBy].type.trim()}${panel.lines}`];
-		
+
 		pop.tree.forEach((v, i) => {
 			const handle = panel.list[v.item[0].start];
 			v.handle = handle;
@@ -925,23 +929,23 @@ class Images {
 		});
 
 		if (!this.groupField && !panel.folderView) {
-			this.groupField = this.getMostFrequentField(fields) || 'Item';
+			this.groupField = this.getMostFrequentField(fields) || '个项目';
 			this.groupField = $.titlecase(this.groupField);
 		}
 
 		if (ppt.rootNode) {
-			if (!this.groupField) this.groupField = 'Item';
+			if (!this.groupField) this.groupField = '个项目';
 			const plurals = this.groupField.split(' ').map(v => pluralize(v));
-			const pluralField = plurals.join(' ').replace(/(album|artist|top|track)s\s/gi, '$1 ').replace(/(similar artist)\s/gi, '$1s ').replace(/years - albums/gi, 'Year - Albums');
+			const pluralField = plurals.join(' ').replace(/(album|artist|top|track)s\s/gi, '$1 ').replace(/(similar artist)\s/gi, '$1s ').replace(/years - albums/gi, '日期 - 专辑');
 			pop.tree[0].key = pop.tree[0].name;
 			const ln1 = pop.tree.length - 1;
 			const ln2 = panel.list.Count;
-			const nm = `${!ppt.showSource ? 'All' : panel.sourceName} (` + ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${this.groupField}`) + `)`;
+			const nm = `${!ppt.showSource ? '所有' : panel.sourceName} (` + ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${this.groupField}`) + ')';
 			if (ppt.rootNode == 3) pop.tree[0].grp = nm;
-			else if (panel.lines == 1) pop.tree[0].grp = panel.rootName + (ppt.nodeCounts ? ' (' + (ppt.nodeCounts == 2 && ppt.rootNode != 3 ? ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${this.groupField}`) : ln2 + (ln2 > 1 ? ' tracks' : ' track')) + ')' : '');
+			else if (panel.lines == 1) pop.tree[0].grp = panel.rootName + (ppt.nodeCounts ? ' (' + (ppt.nodeCounts == 2 && ppt.rootNode != 3 ? ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${this.groupField}`) : ln2 + ' 首') + ')' : '');
 			if (panel.lines == 2) {
 				if (ppt.rootNode != 3) pop.tree[0].grp = panel.rootName;
-				pop.tree[0].lot = ppt.nodeCounts == 2 && ppt.rootNode != 3 ? ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${this.groupField}`) : ln2 + (ln2 > 1 ? ' tracks' : ' track');
+				pop.tree[0].lot = ppt.nodeCounts == 2 && ppt.rootNode != 3 ? ln1 + (ln1 > 1 ? ` ${pluralField}` : ` ${this.groupField}`) : ln2 + ' 首';
 			}
 		}
 		this.metrics();
@@ -967,7 +971,7 @@ class Images {
 			image: this.getStyle(),
 			rootComposite: ppt.rootNode && ppt.curRootImg == 3,
 			vertical: !ppt.albumArtFlowMode ? true : ui.h - panel.search.h > ui.w - ui.sbar.w
-		}
+		};
 
 		this.style.dropGrad = ppt.albumArtDropShadow && !this.style.dropShadow;
 		this.style.dropGradStub = ppt.albumArtDropShadow && !this.style.dropShadowStub;
@@ -986,7 +990,7 @@ class Images {
 					overlayDark: ppt.albumArtLabelType == 4,
 					flip: ppt.albumArtFlipLabels,
 					statistics: ppt.itemShowStatistics ? 1 : 0
-				}
+				};
 				this.bor.pad = !this.labels.hide && !this.labels.overlay ? (ppt.thumbNailGapStnd == 0 ? Math.round(this.text.h * (!this.labels.right ? 1.05 : 0.75)) : ppt.thumbNailGapStnd - Math.round(2 * $.scale)) : ppt.thumbNailGapCompact;
 				this.im.offset = Math.round(!this.labels.hide && !this.labels.overlay ? this.bor.pad / 2 : -2);
 
@@ -1043,7 +1047,7 @@ class Images {
 					overlayDark: ppt.albumArtLabelType == 4,
 					flip: ppt.albumArtFlipLabels,
 					statistics: ppt.itemShowStatistics ? 1 : 0
-				}
+				};
 				this.bor.pad = !this.labels.hide && !this.labels.overlay ? (ppt.thumbNailGapStnd == 0 ? Math.round(this.text.h * 1.05) : ppt.thumbNailGapStnd - Math.round(2 * $.scale)) : ppt.thumbNailGapCompact;
 				this.im.offset = Math.round(!this.labels.hide && !this.labels.overlay ? this.bor.pad / 2 : -2);
 				if (this.labels.hide || this.labels.overlay) {
@@ -1128,7 +1132,7 @@ class Images {
 	newDatabase() {
 		return {
 			'-----------group key------------': '-----------image key------------.jpg'
-		}
+		};
 	}
 
 	on_key_down() {
@@ -1154,14 +1158,14 @@ class Images {
 		let end = this.end != 0 ? Math.min(this.end + this.columns, pop.tree.length) : this.end;
 		for (let i = begin; i < end; i++) {
 			const v = this.getItem(i);
-			
+
 			if (v) {
 				const key = v.key;
 				if (!this.cache[key]) {
 					this.cache[key] = {
 						img: 'called',
 						accessed: ++this.accessed
-					}
+					};
 					this.load_image_async(key, this.cacheFolder + this.database[key], v.ix, true);
 				}
 			}
@@ -1187,28 +1191,28 @@ class Images {
 							this.cache[key] = {
 								img: 'called',
 								accessed: 0
-							}
-							this.load_image_async(key, this.cacheFolder + this.database[key], v.ix, true)
+							};
+							this.load_image_async(key, this.cacheFolder + this.database[key], v.ix, true);
 						}
 					}
 
 					if (j > upEnd) v = this.getItem(j--);
-						if (v) {
-							const key = v.key;
-							if (!this.cache[key]) {
-								this.cache[key] = {
-									img: 'called',
-									accessed: 0
-								}
-								this.load_image_async(key, this.cacheFolder + this.database[key], v.ix, true)
-							}
+					if (v) {
+						const key = v.key;
+						if (!this.cache[key]) {
+							this.cache[key] = {
+								img: 'called',
+								accessed: 0
+							};
+							this.load_image_async(key, this.cacheFolder + this.database[key], v.ix, true);
 						}
-					} else {
-						clearInterval(this.timer.preLoad);
-						this.timer.preLoad = null;
 					}
-				}, this.interval.preLoad);
-		}
+				} else {
+					clearInterval(this.timer.preLoad);
+					this.timer.preLoad = null;
+				}
+			}, this.interval.preLoad);
+		};
 
 		doPreload();
 	}
@@ -1223,14 +1227,14 @@ class Images {
 						this.clearCache();
 						const app = new ActiveXObject('Shell.Application');
 						app.NameSpace(10).MoveHere(this.cachePath); // remove all saved images & databases if albumArtDiskCache
-					} catch (e) {
-						$.trace('unable to empty image cache: can be emptied in windows explorer'); // Wine fix
+					} catch (e) { // eslint-disable-line no-unused-vars
+						$.trace('无法清空图像缓存：可以在 Windows 资源管理器中清空'); // Wine fix
 					}
 				}
-			}
-			const caption = 'Reset All Images';
-			const prompt = 'This action resets the library tree thumbnail disk cache\n\nContinue?';
-			const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
+			};
+			const caption = '重置所有图像';
+			const prompt = '此操作将重置 Library Tree 的缩略图磁盘缓存\n\n继续？';
+			const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, '是', '否', '', '', continue_confirmation) : true;
 			if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 			return;
 		}
@@ -1290,8 +1294,8 @@ class Images {
 		ppt.curNoArtistImg = $.clamp($.value(ppt.curNoArtistImg, 0, 0), 0, this.artist_images.length - 1);
 		const artistImages = this.artist_images.map(v => ({
 			name: utils.SplitFilePath(v)[1],
-			path: 'file://' + v.replace('noArtist', 'noArtist/small')
-		}))
+			path: v.replace('noArtist', 'noArtist/small').replace(my_utils.packageInfo.Directories.Root + '\\', './')
+		}));
 		this.no_artist_img = gdi.Image(this.artist_images[ppt.curNoArtistImg]);
 		ppt.noArtistImages = JSON.stringify(artistImages);
 	}
@@ -1301,7 +1305,7 @@ class Images {
 		ppt.curNoCoverImg = $.clamp($.value(ppt.curNoCoverImg, 0, 0), 0, this.cover_images.length - 1);
 		const coverImages = this.cover_images.map(v => ({
 			name: utils.SplitFilePath(v)[1],
-			path: 'file://' + v.replace('noCover', 'noCover/small')
+			path: v.replace('noCover', 'noCover/small').replace(my_utils.packageInfo.Directories.Root + '\\', './')
 		}));
 		this.no_cover_img = gdi.Image(this.cover_images[ppt.curNoCoverImg]);
 		ppt.noCoverImages = JSON.stringify(coverImages);
@@ -1312,7 +1316,7 @@ class Images {
 		ppt.curRootImg = $.clamp($.value(ppt.curRootImg, 0, 0), 0, this.root_images.length - 1);
 		const rootImages = this.root_images.map(v => ({
 			name: utils.SplitFilePath(v)[1],
-			path: 'file://' + v.replace('root', 'root/small')
+			path: v.replace('root', 'root/small').replace(my_utils.packageInfo.Directories.Root + '\\', './')
 		}));
 		if (ppt.rootNode && ppt.curRootImg == 3) {
 			this.style.rootComposite = true;

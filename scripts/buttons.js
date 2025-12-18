@@ -1,4 +1,9 @@
 ﻿'use strict';
+//24/11/25
+
+/* global ui:readable, panel:readable, ppt:readable, pop:readable, but:readable, $:readable, tooltip:readable, sbar:readable, img:readable, search:readable, fMenu:readable, sMenu:readable, men:readable */
+
+/* exported Buttons, Btn, Tooltip, TooltipTimer, Transition */
 
 class Buttons {
 	constructor() {
@@ -13,18 +18,18 @@ class Buttons {
 		this.transition;
 		this.vertical = true;
 
-		this.b = {}
-		this.btns = {}
-		this.s = {}
+		this.b = {};
+		this.btns = {};
+		this.s = {};
 
 		this.cross = {
 			hover: null,
 			normal: null
-		}
+		};
 
 		this.q = {
 			s_img: null
-		}
+		};
 
 		this.scr = {
 			bg: null,
@@ -34,13 +39,13 @@ class Buttons {
 			img: null,
 			opaque: ui.getOpaque(),
 			pad: $.clamp(ppt.sbarButPad / 100, -0.5, 0.3)
-		}
+		};
 
 		this.tooltip = {
 			delay: true,
 			show: true,
 			start: Date.now() - 2000
-		}
+		};
 
 		this.setSbarIcon();
 		this.createImages();
@@ -76,11 +81,13 @@ class Buttons {
 		const iconFont = gdi.Font(this.scr.iconFontName, sz, this.scr.iconFontStyle);
 		this.alpha = !ui.sbar.col ? [75, 192, 228] : [68, 153, 255];
 		const hovAlpha = (!ui.sbar.col ? 75 : (!ui.sbar.type ? 68 : 51)) * 0.4;
-		this.scr.hover = !ui.sbar.col ? RGBA(ui.col.t, ui.col.t, ui.col.t, hovAlpha) : ui.col.text & RGBA(255, 255, 255, hovAlpha);
+		this.scr.hover = !ui.sbar.col ? $.RGBA(ui.col.t, ui.col.t, ui.col.t, hovAlpha) : ui.col.text & $.RGBA(255, 255, 255, hovAlpha);
 		this.q.s_img = $.gr(100, 100, true, g => {
 			g.SetSmoothingMode(2);
-			g.DrawLine(59, 59, 90, 90, 10, !ui.id.local ? ui.col.txt_box_h : ui.col.txt_box);
-			g.DrawEllipse(10, 10, 54, 54, 10, !ui.id.local ? ui.col.txt_box_h : ui.col.txt_box);
+			// Regorxxx <- Code cleanup. Remove ui.id.local references
+			g.DrawLine(59, 59, 90, 90, 10, ui.col.txt_box_h);
+			g.DrawEllipse(10, 10, 54, 54, 10, ui.col.txt_box_h);
+			// Regorxxx ->
 			g.FillEllipse(16, 16, 42, 42, 0x0AFAFAFA);
 			g.SetSmoothingMode(0);
 		});
@@ -89,10 +96,10 @@ class Buttons {
 			g.SetTextRenderingHint(3);
 			g.SetSmoothingMode(2);
 			if (ui.sbar.col) {
-				this.scr.arrow == 0 ? g.FillPolygon(ui.col.text, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) : g.DrawString(this.scr.arrow, iconFont, ui.col.text, 0, sz * this.scr.pad, sz, sz, StringFormat(1, 1));
+				this.scr.arrow == 0 ? g.FillPolygon(ui.col.text, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) : g.DrawString(this.scr.arrow, iconFont, ui.col.text, 0, sz * this.scr.pad, sz, sz, $.stringFormat(1, 1));
 			} else {
-				this.scr.arrow == 0 ? g.FillPolygon(RGBA(ui.col.t, ui.col.t, ui.col.t, 255), 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) :
-					g.DrawString(this.scr.arrow, iconFont, RGBA(ui.col.t, ui.col.t, ui.col.t, 255), 0, sz * this.scr.pad, sz, sz, StringFormat(1, 1));
+				this.scr.arrow == 0 ? g.FillPolygon($.RGBA(ui.col.t, ui.col.t, ui.col.t, 255), 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) :
+					g.DrawString(this.scr.arrow, iconFont, $.RGBA(ui.col.t, ui.col.t, ui.col.t, 255), 0, sz * this.scr.pad, sz, sz, $.stringFormat(1, 1));
 			}
 			g.SetSmoothingMode(0);
 		});
@@ -100,10 +107,10 @@ class Buttons {
 			g.SetTextRenderingHint(3);
 			g.SetSmoothingMode(2);
 			if (ui.sbar.col) {
-				this.scr.arrow == 0 ? g.FillPolygon(ui.col.bg, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) : g.DrawString(this.scr.arrow, iconFont, ui.col.bg, 0, sz * this.scr.pad, sz, sz, StringFormat(1, 1));
+				this.scr.arrow == 0 ? g.FillPolygon(ui.col.bg, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) : g.DrawString(this.scr.arrow, iconFont, ui.col.bg, 0, sz * this.scr.pad, sz, sz, $.stringFormat(1, 1));
 			} else {
 				this.scr.arrow == 0 ? g.FillPolygon(ui.col.bg, 1, [50 * sc, 0, 100 * sc, 76 * sc, 0, 76 * sc]) :
-					g.DrawString(this.scr.arrow, iconFont, ui.col.bg, 0, sz * this.scr.pad, sz, sz, StringFormat(1, 1));
+					g.DrawString(this.scr.arrow, iconFont, ui.col.bg, 0, sz * this.scr.pad, sz, sz, $.stringFormat(1, 1));
 			}
 			g.SetSmoothingMode(0);
 		});
@@ -114,8 +121,10 @@ class Buttons {
 			let nn = 31;
 			let offset1 = 12;
 			let offset2 = 2;
-			g.DrawLine(offset1, nn - offset2, 100 - nn * 2 + offset1, 100 - nn - offset2, 5, !ui.id.local ? ui.col.txt_box_h : ui.col.txt_box);
-			g.DrawLine(offset1, 100 - nn - offset2, 100 - nn * 2 + offset1, nn - offset2, 5, !ui.id.local ? ui.col.txt_box_h : ui.col.txt_box);
+			// Regorxxx <- Code cleanup. Remove ui.id.local references
+			g.DrawLine(offset1, nn - offset2, 100 - nn * 2 + offset1, 100 - nn - offset2, 5, ui.col.txt_box_h);
+			g.DrawLine(offset1, 100 - nn - offset2, 100 - nn * 2 + offset1, nn - offset2, 5, ui.col.txt_box_h);
+			// Regorxxx ->
 			g.SetSmoothingMode(0);
 		});
 		this.cross.hover = $.gr(sz, sz, true, g => {
@@ -124,8 +133,10 @@ class Buttons {
 			let nn = 28;
 			let offset1 = 9;
 			let offset2 = 2;
-			g.DrawLine(offset1, nn - offset2, 100 - nn * 2 + offset1, 100 - nn - offset2, 5, !ui.id.local ? ui.col.txt_box_h : ui.col.txt_box);
-			g.DrawLine(offset1, 100 - nn - offset2, 100 - nn * 2 + offset1, nn - offset2, 5, !ui.id.local ? ui.col.txt_box_h : ui.col.txt_box);
+			// Regorxxx <- Code cleanup. Remove ui.id.local references
+			g.DrawLine(offset1, nn - offset2, 100 - nn * 2 + offset1, 100 - nn - offset2, 5, ui.col.txt_box_h);
+			g.DrawLine(offset1, 100 - nn - offset2, 100 - nn * 2 + offset1, nn - offset2, 5, ui.col.txt_box_h);
+			// Regorxxx ->
 			g.SetSmoothingMode(0);
 		});
 	}
@@ -140,7 +151,7 @@ class Buttons {
 		this.move(x, y);
 		if (!this.cur || this.cur.hide) {
 			this.Dn = false;
-			return false
+			return false;
 		} else this.Dn = this.cur.name;
 		this.cur.down = true;
 		this.cur.cs('down');
@@ -158,6 +169,18 @@ class Buttons {
 		this.cur.lbtn_up(x, y);
 		return true;
 	}
+
+	// Regorxxx <- Double click scrollbar
+	lbtn_dblclk(x, y) {
+		this.move(x, y);
+		if (!this.cur || this.cur.hide) {
+			this.Dn = false;
+			return false;
+		} else this.Dn = this.cur.name;
+		this.cur.lbtn_dblclk(x, y);
+		return true;
+	}
+	// Regorxxx ->
 
 	leave() {
 		if (this.cur) {
@@ -313,36 +336,36 @@ class Buttons {
 								normal: 1,
 								hover: 2,
 								down: 3
-							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp');
+							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp', () => sbar.but(Infinity)); // Regorxxx <- Double click scrollbar
 							this.btns.scrollDn = new Btn(this.scr.x1, this.scr.yDn1, ui.sbar.but_h, ui.sbar.but_h, 3, '', '', '', {
 								normal: 5,
 								hover: 6,
 								down: 7
-							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn');
+							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn', () => sbar.but(-Infinity)); // Regorxxx <- Double click scrollbar
 							break;
 						case !this.vertical:
 							this.btns.scrollUp = new Btn(this.scr.xLeft1, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h, 3, '', '', '', {
 								normal: 9,
 								hover: 10,
 								down: 11
-							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp');
+							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp', () => sbar.but(Infinity)); // Regorxxx <- Double click scrollbar
 							this.btns.scrollDn = new Btn(this.scr.xRight1, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h, 3, '', '', '', {
 								normal: 13,
 								hover: 14,
 								down: 15
-							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn');
+							}, ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn', () => sbar.but(-Infinity)); // Regorxxx <- Double click scrollbar
 							break;
 					}
 					break;
 				default:
 					switch (true) {
 						case this.vertical:
-							this.btns.scrollUp = new Btn(this.scr.x1, this.scr.yUp1 - this.scr.hotOffset, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 1, this.scr.x2, this.scr.yUp2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp');
-							this.btns.scrollDn = new Btn(this.scr.x1, this.scr.yDn1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 2, this.scr.x2, this.scr.yDn2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn');
+							this.btns.scrollUp = new Btn(this.scr.x1, this.scr.yUp1 - this.scr.hotOffset, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 1, this.scr.x2, this.scr.yUp2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp', () => sbar.but(Infinity)); // Regorxxx <- Double click scrollbar
+							this.btns.scrollDn = new Btn(this.scr.x1, this.scr.yDn1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 2, this.scr.x2, this.scr.yDn2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn', () => sbar.but(-Infinity)); // Regorxxx <- Double click scrollbar
 							break;
 						case !this.vertical:
-							this.btns.scrollUp = new Btn(this.scr.xLeft1 - this.scr.hotOffset, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 1, this.scr.y2, this.scr.xLeft2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp');
-							this.btns.scrollDn = new Btn(this.scr.xRight1, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 2, this.scr.y2, this.scr.xRight2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn');
+							this.btns.scrollUp = new Btn(this.scr.xLeft1 - this.scr.hotOffset, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 1, this.scr.y2, this.scr.xLeft2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(1), '', '', false, 'scrollUp', () => sbar.but(Infinity)); // Regorxxx <- Double click scrollbar
+							this.btns.scrollDn = new Btn(this.scr.xRight1, this.scr.y1, ui.sbar.but_h, ui.sbar.but_h + this.scr.hotOffset, 2, this.scr.y2, this.scr.xRight2, ui.sbar.but_w, '', ppt.sbarShow == 1 && sbar.narrow.show || sbar.scrollable_lines < 1, () => sbar.but(-1), '', '', false, 'scrollDn', () => sbar.but(-Infinity)); // Regorxxx <- Double click scrollbar
 							break;
 					}
 					break;
@@ -351,26 +374,26 @@ class Buttons {
 		this.transition = new Transition(this.btns, v => v.state !== 'normal');
 		this.btns.s_img = new Btn(this.q.x - this.margin / 2, this.hoverArea, this.q.h + this.margin, this.hot_h, 4, this.q.x, this.q.y, this.q.h, {
 			normal: this.q.s_img
-		}, false, '', () => sMenu.load(this.q.x - this.margin / 2, panel.search.h), () => 'History and query syntax help. Ctrl+E focuses search', true, 's_img');
+		}, false, '', () => sMenu.load(this.q.x - this.margin / 2, panel.search.h), () => '搜索历史记录和查询语法帮助。Ctrl+E 聚焦搜索框', true, 's_img');
 
 		this.btns.cross2 = new Btn(this.q.x - this.margin / 2, this.hoverArea, this.q.h + this.margin, this.hot_h, 5, this.q.x, this.b.y, this.b.h, {
 			normal: this.cross.normal,
 			hover: this.cross.hover
-		}, true, '', () => search.clear(), () => panel.search.txt ? 'Clear search text (escape). Double click to show history' : 'No search text to clear', true, 'cross2');
+		}, true, '', () => search.clear(), () => panel.search.txt ? '清除搜索文本（Esc 键）。双击以显示历史记录' : '搜索框为空', true, 'cross2');
 		this.btns.filter = new Btn(ppt.searchShow ? panel.filter.x + this.margin / 2 : panel.filter.x - this.margin / 2, 0, ppt.searchShow ? panel.filter.w - this.margin : panel.filter.w + this.margin, panel.search.sp, 6, panel.filter.x, ppt.searchShow ? panel.cc : panel.lc, panel.filter.w, {
 			normal: ui.col.txt_box,
-			hover: !ui.id.local ? (!ui.img.blurDark ? ui.col.txt_box_h : ui.col.text) : ui.col.txt_box
-		}, !ppt.filterShow, '', () => fMenu.load(panel.filter.x, panel.search.h), () => 'Filter', true, 'filter');
+			hover: !ui.img.blurDark ? ui.col.txt_box_h : ui.col.text // Regorxxx <- Code cleanup. Remove ui.id.local references
+		}, !ppt.filterShow, '', () => fMenu.load(panel.filter.x, panel.search.h), () => '过滤', true, 'filter');
 
 		this.btns.settings = new Btn(this.s.x, panel.settings.offset, this.s.w1, panel.search.sp, 7, this.s.w2, panel.search.sp, panel.settings.y, {
 			normal: ui.col.txt_box,
-			hover: !ui.id.local ? (!ui.img.blurDark ? ui.col.txt_box_h : ui.col.text) : ui.col.txt_box
-		}, !ppt.settingsShow, '', () => men.rbtn_up(this.s.x, panel.search.h, true), () => 'Settings', true, 'settings');
+			hover: !ui.img.blurDark ? ui.col.txt_box_h : ui.col.text // Regorxxx <- Code cleanup. Remove ui.id.local references
+		}, !ppt.settingsShow, '', () => men.rbtn_up(this.s.x, panel.search.h, true), () => '设置', true, 'settings');
 
 		this.btns.cross1 = new Btn(this.b.x - this.margin / 2, this.hoverArea, this.q.h + this.margin, this.hot_h, 5, this.b.x, this.b.y, this.b.h, {
 			normal: this.cross.normal,
 			hover: this.cross.hover
-		}, !ppt.searchShow || ppt.filterShow || ppt.settingsShow, '', () => search.clear(), () => panel.search.txt ? 'Clear search text (escape)' : 'No search text to clear', true, 'cross1');
+		}, !ppt.searchShow || ppt.filterShow || ppt.settingsShow, '', () => search.clear(), () => panel.search.txt ? '清除搜索文本（Esc 键）' : '搜索框为空', true, 'cross1');
 		this.setSearchBtnsHide();
 	}
 
@@ -388,7 +411,7 @@ class Buttons {
 }
 
 class Btn {
-	constructor(x, y, w, h, type, p1, p2, p3, item, hide, l_dn, l_up, tiptext, hand, name) {
+	constructor(x, y, w, h, type, p1, p2, p3, item, hide, l_dn, l_up, tiptext, hand, name, l_dbclk) { // Regorxxx <- Double click scrollbar
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -401,6 +424,7 @@ class Btn {
 		this.hide = hide;
 		this.l_dn = l_dn;
 		this.l_up = l_up;
+		this.l_dbclk = l_dbclk; // Regorxxx <- Double click scrollbar
 		this.tt = new Tooltip;
 		this.tiptext = tiptext;
 		this.hand = hand;
@@ -443,7 +467,11 @@ class Btn {
 	}
 
 	drawCross(gr) {
-		const a = !ui.id.local ? panel.search.txt ? (this.state !== 'down' ? Math.min(170 + (255 - 170) * this.transition_factor, 255) : 255) : 170 : 255;
+		// Regorxxx <- Code cleanup. Remove ui.id.local references
+		const a = panel.search.txt
+			? (this.state !== 'down' ? Math.min(170 + (255 - 170) * this.transition_factor, 255) : 255)
+			: 170;
+		// Regorxxx ->
 		const crossIm = this.state === 'normal' || !panel.search.txt ? this.item.normal : this.item.hover;
 		const colRect = this.state !== 'down' ? ui.getBlend(ui.col.bg4, ui.col.bg5, this.transition_factor, true) : ui.col.bg4;
 		gr.SetSmoothingMode(2);
@@ -455,7 +483,11 @@ class Btn {
 	}
 
 	drawFilter(gr) {
-		const colText = !ui.id.local ? (this.state !== 'down' ? ui.getBlend(this.item.hover, this.item.normal, this.transition_factor, true) : this.item.hover) : this.item.normal;
+		// Regorxxx <- Code cleanup. Remove ui.id.local references
+		const colText = this.state !== 'down'
+			? ui.getBlend(this.item.hover, this.item.normal, this.transition_factor, true)
+			: this.item.hover;
+		// Regorxxx ->
 		const colRect = this.state !== 'down' ? ui.getBlend(ui.col.bg4, ui.col.bg5, this.transition_factor, true) : ui.col.bg4;
 		gr.SetSmoothingMode(2);
 		gr.FillRoundRect(this.x, but.hoverArea, this.w, but.hot_h, but.arc, but.arc, colRect);
@@ -463,7 +495,7 @@ class Btn {
 		if (!ui.img.blurDark) gr.GdiDrawText(panel.filter.mode[ppt.filterBy].name, panel.filter.font, colText, this.p1, this.y, this.p3, this.h, this.p2);
 		else {
 			gr.SetTextRenderingHint(5);
-			gr.DrawString(panel.filter.mode[ppt.filterBy].name, panel.filter.font, colText, this.p1 - 1, this.y - 1, this.p3, this.h, StringFormat(1, 1));
+			gr.DrawString(panel.filter.mode[ppt.filterBy].name, panel.filter.font, colText, this.p1 - 1, this.y - 1, this.p3, this.h, $.stringFormat(1, 1));
 		}
 	}
 
@@ -484,7 +516,11 @@ class Btn {
 	}
 
 	drawSearch(gr) {
-		const a = !ui.id.local ? (this.state !== 'down' ? Math.min(170 + (255 - 170) * this.transition_factor, 255) : 255) : 255;
+		// Regorxxx <- Code cleanup. Remove ui.id.local references
+		const a = this.state !== 'down'
+			? Math.min(170 + (255 - 170) * this.transition_factor, 255)
+			: 255;
+		// Regorxxx ->
 		const colRect = this.state !== 'down' ? ui.getBlend(ui.col.bg4, ui.col.bg5, this.transition_factor, true) : ui.col.bg4;
 		gr.SetSmoothingMode(2);
 		gr.FillRoundRect(this.x, this.y, this.w, this.h, but.arc, but.arc, colRect);
@@ -495,7 +531,11 @@ class Btn {
 	}
 
 	drawSettings(gr) {
-		const colText = !ui.id.local ? (this.state !== 'down' ? ui.getBlend(this.item.hover, this.item.normal, this.transition_factor, true) : this.item.hover) : this.item.normal;
+		// Regorxxx <- Code cleanup. Remove ui.id.local references
+		const colText = this.state !== 'down'
+			? ui.getBlend(this.item.hover, this.item.normal, this.transition_factor, true)
+			: this.item.hover;
+		// Regorxxx ->
 		const colRect = this.state !== 'down' ? ui.getBlend(ui.col.bg4, ui.col.bg5, this.transition_factor, true) : ui.col.bg4;
 		gr.SetSmoothingMode(2);
 		gr.FillRoundRect(this.x, but.hoverArea, this.w, but.hot_h, but.arc, but.arc, colRect);
@@ -503,7 +543,7 @@ class Btn {
 		if (!ui.img.blurDark) gr.GdiDrawText(panel.settings.icon, panel.settings.font, colText, 0, this.y, this.p1, this.p2, panel.rc);
 		else {
 			gr.SetTextRenderingHint(5);
-			gr.DrawString(panel.settings.icon, panel.settings.font, colText, 0, this.y - 1, this.p1, this.p2, StringFormat(2, 1));		
+			gr.DrawString(panel.settings.icon, panel.settings.font, colText, 0, this.y - 1, this.p1, this.p2, $.stringFormat(2, 1));
 		}
 	}
 
@@ -515,6 +555,12 @@ class Btn {
 	lbtn_up() {
 		if (this.l_up) this.l_up();
 	}
+
+	// Regorxxx <- Double click scrollbar
+	lbtn_dblclk(x, y) {
+		if (this.l_dbclk) this.l_dbclk(x, y);
+	}
+	// Regorxxx ->
 
 	repaint() {
 		const expXY = 2;

@@ -1,4 +1,7 @@
 ﻿'use strict';
+/* global $:readable */
+
+/* exported PanelProperties */
 
 class PanelProperty {
 	constructor(name, default_value) {
@@ -43,7 +46,7 @@ class PanelProperties {
 
 	validate(item) {
 		if (!$.isArray(item) || item.length !== 3 || typeof item[2] !== 'string') {
-			throw (`invalid property: requires array: [string, any, string]`);
+			throw ('invalid property: requires array: [string, any, string]');
 		}
 
 		if (item[2] === 'add') {
@@ -89,7 +92,7 @@ class PanelProperties {
 let properties = [
 	['- Show Html Dialog Unsupported-0 Supported-1 Autocheck-2', 2, 'isHtmlDialogSupported'],
 	['Action Mode', 0, 'actionMode'],
-	['Alt-Click Action', 0, 'altClickAction'],
+	['Alt-Click Action', 3, 'altClickAction'], // Regorxxx <- Add to default (0), Add to current (1), Add to queue (2), Send top tracks to default (3), Send top tracks to current (4) , Add top tracks to default (5), Add top tracks to current (6) ->
 
 	['Colour Line Dark', false, 'colLineDark'],
 	['Colour Swap', false, 'swapCol'],
@@ -136,16 +139,16 @@ let properties = [
 	['Custom Colour Side Marker Use', false, 'sideMarkerUse'],
 	['Custom Colour Transparent Fill Use', false, 'bgTransUse'],
 
-	['Custom Font', 'Segoe UI,16,0', 'custFont'],
-	['Custom Font Album Art Line 1', 'Segoe UI,1', 'custAlbumArtGrpFont'],
-	['Custom Font Album Art Line 2', 'Segoe UI Semibold,0', 'custAlbumArtLotFont'],
-	['Custom Font Album Art Line 3', 'Segoe UI,0', 'custAlbumArtDurFont'],
+	['Custom Font', 'Microsoft Yahei UI,15,0', 'custFont'],
+	['Custom Font Album Art Line 1', 'Microsoft Yahei UI,1', 'custAlbumArtGrpFont'],
+	['Custom Font Album Art Line 2', 'Microsoft Yahei UI,0', 'custAlbumArtLotFont'],
+	['Custom Font Album Art Line 3', 'Microsoft Yahei UI,0', 'custAlbumArtDurFont'],
 
 	['Custom Font Use', false, 'custFontUse'],
 	['Custom Font Album Art Line 1 Use', false, 'custAlbumArtGrpFontUse'],
 	['Custom Font Album Art Line 2 Use', false, 'custAlbumArtLotFontUse'],
 	['Custom Font Album Art Line 3 Use', false, 'custAlbumArtDurFontUse'],
-	
+
 	['Custom Font Node Icon', 'Segoe UI Symbol', 'custIconFont'],
 	['Custom Font Scroll Icon', 'Segoe UI Symbol', 'butCustIconFont'],
 
@@ -166,6 +169,10 @@ let properties = [
 	['Image Blur Background Auto-Fill', false, 'blurAutofill'],
 	['Image Blur Background Level (%)', 90, 'blurTemp'],
 	['Image Blur Background Opacity (%)', 30, 'blurAlpha'],
+	// Regorxxx <-  Background image position
+	['Image Background x-offset (%)', 0, 'xOffsetBg'],
+	['Image Background w-offset (%)', 0, 'wOffsetBg'],
+	// Regorxxx ->
 	['Image Current Root', 17, 'curRootImg'],
 	['Image Current No Artist', 2, 'curNoArtistImg'],
 	['Image Current No Cover', 6, 'curNoCoverImg'],
@@ -205,7 +212,7 @@ let properties = [
 	['Key: Send to Playlist', 0, 'keyAction'],
 	['Library Auto-Sync', true, 'libAutoSync'],
 	['Library Sort Date Before Album', true, 'yearBeforeAlbum'],
-	
+
 	['Library Source', 1, 'libSource'],
 	['Library Source: Active Playlist Follow Focus', true, 'followPlaylistFocus'],
 	['Library Source: Fixed Playlist', false, 'fixedPlaylist'],
@@ -217,7 +224,7 @@ let properties = [
 	['Line Padding Album Art', 2, 'verticalAlbumArtPad'],
 	['Margin', Math.round(8 * $.scale), 'margin'],
 	['Margin Override Top/Bottom (No Top Bar)', Math.round(8 * $.scale), 'marginTopBottom'],
-	['Middle-Click Action', 1, 'mbtnClickAction'],
+	['Middle-Click Action', 0, 'mbtnClickAction'],  // Regorxxx <- Add to default (0), Add to current (1), Add to queue (2), Send top tracks to default (3), Send top tracks to current (4) , Add top tracks to default (5), Add top tracks to current (6) ->
 	['Mouse: Always Pointer (no hand)', false, 'mousePointerOnly'],
 
 	['Node: Auto Collapse', false, 'autoCollapse'],
@@ -233,7 +240,7 @@ let properties = [
 	['Node [Squares]: Windows', false, 'winNode'],
 	['Node Custom Icon: +|-', '\uE013|\uE015', 'iconCustom'],
 	['Node Custom Icon: Vertical Offset (%)', -2, 'iconVerticalPad'],
-	
+
 	['Nowplaying Highlight', false, 'highLightNowplaying'],
 	['Nowplaying Highlight Last', false, 'highLightNowplayinglast'],
 	['Nowplaying Indicator', false, 'nowPlayingIndicator'],
@@ -243,12 +250,17 @@ let properties = [
 
 	['Play on Enter or Send from Menu', false, 'autoPlay'],
 	['Playlist: Custom Sort', '', 'customSort'],
-	['Playlist: Default', 'Library View', 'libPlaylist'],
+	['Playlist: Default', '媒体库选择项', 'libPlaylist'], // Regorxxx <- Default CUI/DUI playlist ->
 	['Playlist: Default Activate on Change', true, 'activateOnChange'],
-	['Playlist: Panel Selection', 'Library Tree Panel Selection', 'panelSelectionPlaylist'],
-	['Playlist: Last Panel Selection', 'Library Tree Panel Selection', 'lastPanelSelectionPlaylist'],
+	['Playlist: Panel Selection', 'Library Tree 面板选择', 'panelSelectionPlaylist'],
+	['Playlist: Last Panel Selection', 'Library Tree 面板选择', 'lastPanelSelectionPlaylist'],
 	['Playlist: Send to Current', false, 'sendToCur'],
-	['Prefixes to Strip or Swap (| Separator)', 'A|The', 'prefix'],
+	['Playlist: Select added items', true, 'selectAdded'], // Regorxxx <- Send to playlist & select ->
+	// Regorxxx <- Top tracks
+	['Playlist: Top tracks filter', '%RATING% GREATER 3 OR %FEEDBACK% IS 1 OR %2003_LOVED% IS 1', 'topTracksFilter'],
+	['Playlist: Top tracks sorting', '$rand()', 'topTracksSorting'],
+	// Regorxxx ->
+	['Prefixes to Strip or Swap (| Separator)', 'A|The|Las|Los|Les|La|El|Le', 'prefix'], // Regorxxx <- separators in other languages ->
 	['Preset: Load Current View', false, 'presetLoadCurView'],
 	['Remember.PreSearch', true, 'rememberPreSearch'],
 	['Remember.Proc', false, 'process'],
@@ -280,6 +292,7 @@ let properties = [
 	['Search Enter', false, 'searchEnter'],
 	['Search History', JSON.stringify([]), 'searchHistory'],
 	['Search Send', 1, 'searchSend'],
+	['Search Auto-refresh TF Expressions', true, 'searchRefreshTf'], // Regorxxx <- Search text also triggers updates to filtering ->
 
 	['Show Filter', true, 'filterShow'],
 	['Show Panel Source Message', true, 'panelSourceMsg'],
@@ -290,12 +303,24 @@ let properties = [
 	['Statistics Show', 0, 'itemShowStatistics'],
 	['Statistics Show Last', 0, 'itemShowStatisticsLast'],
 	['Statistics Label Show', true, 'labelStatistics'],
-	['Statistics Titleformat Added', '[$date(%added%)]', 'tfAdded'],
-	['Statistics Titleformat Date', '[$year(%date%)]', 'tfDate'],
-	['Statistics Titleformat First Played', '[$date(%first_played%)]', 'tfFirstPlayed'],
-	['Statistics Titleformat Last Played', '[$date(%last_played%)]', 'tfLastPlayed'],
-	['Statistics Titleformat Playcount DataPinningScheme|Field', '%artist%%album%%discnumber%%tracknumber%%title%|%play_count%', 'tfPc'],
-	['Statistics Titleformat Rating', '[%rating%]', 'tfRating'],
+	// Regorxxx <- Default TF for compatibility with all stats components
+	['Statistics Titleformat Added', '[$date($if3(%ADDED_ENHANCED%,%ADDED%,%2003_ADDED%))]', 'tfAdded'],
+	['Statistics Titleformat Date', '[$year(%DATE%)]', 'tfDate'],
+	['Statistics Titleformat First Played', '[$date($if3(%FIRST_PLAYED_ENHANCED%,%2003_FIRST_PLAYED%,%FIRST_PLAYED%))]', 'tfFirstPlayed'],
+	['Statistics Titleformat Last Played', '[$date($if3(%LAST_PLAYED_ENHANCED%,%2003_LAST_PLAYED%,%LAST_PLAYED%))]', 'tfLastPlayed'],
+	['Statistics Titleformat Playcount DataPinningScheme|Field', '%ARTIST%%ALBUM%%DISCNUMBER%%TRACKNUMBER%%TITLE%|$max(%PLAY_COUNT%,%LASTFM_PLAY_COUNT%,%2003_PLAYCOUNT%,0)', 'tfPc'],
+	['Statistics Titleformat Rating', '[$if2(%RATING%,%2003_RATING%)]', 'tfRating'],
+	['Statistics Titleformat Loved', '[$if2(%FEEDBACK%,%2003_LOVED%)]', 'tfLoved'],
+	// Regorxxx ->
+	// Regorxxx <- New statistics
+	['Statistics Titleformat Custom-1 (sum)', '$if($or($meta_test(LYRICS),$meta_test(UNSYNCEDLYRICS)),1,0)', 'tfCustom1Sum'],
+	['Statistics Titleformat Custom-2 (sum)', '$ifequal(%RATING%,5,1,0)', 'tfCustom2Sum'],
+	['Statistics Titleformat Custom-3 (sum)', '$ifgreater($add($if2($strstr($lower(%TITLE%\', \'%COMMENT%\', \'%GENRE%\', \'%STYLE%\', \'%FOLKSONOMY%),instrumental),$strstr(%TITLE%\', \'%COMMENT%\', \'%GENRE%\', \'%STYLE%\', \'%FOLKSONOMY%,伴奏)),$strstr($lower(%LANGUAGE%),zxx)),0,1,0)', 'tfCustom3Sum'],
+	['Statistics Titleformat Custom-1 (avg)', '[%DYNAMIC RANGE%]', 'tfCustom1Avg'],
+	['Statistics Titleformat Custom-2 (avg)', '[%BPM%]', 'tfCustom2Avg'],
+	['Statistics Titleformat Custom-3 (avg)', '$min($add($select($add(%FEEDBACK%,%2003_LOVED%,2),-10,0,10),$select(%RATING%,0,2,5,7,10)),10)', 'tfCustom3Avg'],
+	['Statistics Titleformat Custom labels', '歌词|最高评级|伴奏曲目|平均动态范围|平均 BPM|平均得分', 'tfCustomLabels'],
+	// Regorxxx ->
 	['Statistics Titleformat Popularity', '[$meta(Track Statistics Last.fm,5[score])]', 'tfPopularity'],
 	['Statistics Tooltips Show', true, 'tooltipStatistics'],
 
@@ -313,11 +338,41 @@ let properties = [
 	['View By', 1, 'viewBy'],
 	['View By Album Art', 1, 'albumArtViewBy'],
 	['View By Tree', 1, 'treeViewBy'],
+	// Regorxxx <- Fix "View by Folder Structure" to match Windows Explorer. Custom sorting for standard views
+	['View By Sorting', 0, 'viewSorting'],
+	['View By Sorting transliteration', true, 'viewSortingTrans'],
+	['View By Folder Sorting', 3, 'folderSorting'],
+	['View By Folder Sorting from foobar2000', true, 'folderSortingFb'],
+	['View By Folder Sorting transliteration', true, 'folderSortingTrans'],
+	// Regorxxx ->
 	['Zoom Filter Size (%)', 100, 'zoomFilter'],
 	['Zoom Font Size (%)', 100, 'zoomFont'],
 	['Zoom Node Size (%)', 100, 'zoomNode'],
 	['Zoom Image Size (%)', 100, 'zoomImg'],
-	['Zoom Tooltip [Button] (%)', 100, 'zoomTooltipBut']
+	['Zoom Tooltip [Button] (%)', 100, 'zoomTooltipBut'],
+
+
+	['Logging library profiler', true, 'logLibProfiler'], // Regorxxx <- Library profiling
+	['Statistics Rating/Popularity Decimals', 1, 'ratingDecimals'], // Regorxxx <- Rating decimals
+	['Playlist: Prefer internal cache (if supported)', true, 'panelInternalCache'], // Regorxxx <- Don't create cache playlists if possible
+	['Library Source: Chained source notifications', true, 'libSourceChained'], // Regorxxx <- Chained facets updates
+	// Regorxxx <- Drag n' drop to search box
+	['Search Drag n\' Drop Method (Auto=0, Tags=1, Disabled=-1)', 0, 'searchDragMethod'],
+	['Search Drag n\' Drop Tags (no modifier)', JSON.stringify(['ALBUM ARTIST']), 'searchDragTags'],
+	['Search Drag n\' Drop Tags (ctrl modifier)', JSON.stringify(['ALBUM ARTIST', 'GENRE']), 'searchDragTagsCtrl'],
+	['Search Drag n\' Drop Tags (alt modifier)', JSON.stringify(['ALBUM ARTIST', 'GENRE']), 'searchDragTagsAlt'],
+	['Search Drag n\' Drop Multi-value Operator (no modifier)', 'OR', 'searchDragValOp'],
+	['Search Drag n\' Drop Multi-value Operator (ctrl modifier)', 'OR', 'searchDragValOpCtrl'],
+	['Search Drag n\' Drop Multi-value Operator (alt modifier)', 'AND', 'searchDragValOpAlt'],
+	['Search Drag n\' Drop Inter-tag Operator (none modifier)', 'AND', 'searchDragTagOp'],
+	['Search Drag n\' Drop Inter-tag Operator (ctrl modifier)', 'OR', 'searchDragTagOpCtrl'],
+	['Search Drag n\' Drop Inter-tag Operator (alt modifier)', 'OR', 'searchDragTagOpAlt'],
+	['Search Drag n\' Drop Inter-track Operator (no modifier)', 'OR', 'searchDragTrackOp'],
+	['Search Drag n\' Drop Inter-track Operator (ctrl modifier)', 'OR', 'searchDragTrackOpCtrl'],
+	['Search Drag n\' Drop Inter-track Operator (alt modifier)', 'OR', 'searchDragTrackOpAlt'],
+	['Search Drag n\' Drop Inter-query Operator (none modifier)', '', 'searchDragQueryOp'],
+	['Search Drag n\' Drop Inter-query Operator (shift modifier)', 'OR', 'searchDragQueryOpShift']
+	// Regorxxx ->
 ];
 
 const ppt = new PanelProperties;
@@ -326,7 +381,7 @@ if (!$.file('C:\\check_local\\1450343922.txt')) ppt.themed = false;
 
 if (ppt.get('Tree List View')) {
 	ppt.facetView = ppt.get('Tree List View');
-	ppt.set('Tree List View', null);	
+	ppt.set('Tree List View', null);
 }
 ppt.set('Image Pre-Load Images In Disk Cache', null);
 ppt.set('Image Root Collage', null);

@@ -1,4 +1,7 @@
 ﻿'use strict';
+/* global ui:readable, panel:readable, ppt:readable, pop:readable, but:readable, $:readable, sbar:readable, img:readable, lib:readable, popUpBox:readable, pluralize:readable, sync:readable */
+
+/* exported Panel */
 
 class Panel {
 	constructor() {
@@ -18,7 +21,7 @@ class Panel {
 		this.dialogFiltGrps = [];
 		this.dialogGrps = [];
 		this.draw = true;
-		this.folder_view = 10;
+		this.folder_view = 16;
 		this.folderView = false;
 		this.grp = [];
 		this.imgView = ppt.albumArtShow;
@@ -35,7 +38,7 @@ class Panel {
 		this.pos = -1;
 		this.rc = DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX | DT_END_ELLIPSIS;
 		this.rootName = '';
-		this.s_lc = StringFormat(0, 1);
+		this.s_lc = $.stringFormat(0, 1);
 		this.samePattern = true;
 		this.sbar_x = 0;
 		this.softSplitter = '\u00ac';
@@ -53,22 +56,22 @@ class Panel {
 			x: 0,
 			y: 0,
 			w: 0
-		}
+		};
 
 		this.last_pressed_coord = {
 			x: -1,
 			y: -1
-		}
+		};
 
 		this.ln = {
 			x: 0,
 			w: 100
-		}
+		};
 
 		this.m = {
 			x: -1,
 			y: -1
-		}
+		};
 
 		this.search = {
 			active: false,
@@ -78,9 +81,9 @@ class Panel {
 			w: 100,
 			h: 25,
 			sp: 25
-		}
+		};
 
-		this.settings = {}
+		this.settings = {};
 
 		this.tree = {
 			sel: {
@@ -91,7 +94,7 @@ class Panel {
 			},
 			w: 0,
 			y: 0
-		}
+		};
 
 		ppt.get('Library Tree Dialog Box', JSON.stringify({
 			w: 85,
@@ -165,7 +168,7 @@ class Panel {
 		let ix1 = -1;
 		let ix2 = -1;
 		this.filter.mode = [];
-		this.folder_view = 10;
+		this.folder_view = 16;
 		this.grp = [];
 		this.multiPrefix = false;
 		this.multiProcess = false;
@@ -179,7 +182,7 @@ class Panel {
 				this.grp[i] = {
 					name: grps[0].trim(),
 					type: grps[1]
-				}
+				};
 			}
 		});
 
@@ -190,7 +193,7 @@ class Panel {
 				this.filter.mode[i] = {
 					name: grps[0].trim(),
 					type: grps[1].trim()
-				}
+				};
 			}
 		});
 
@@ -207,12 +210,12 @@ class Panel {
 				}
 			}
 			return -1;
-		}
+		};
 		const indexOfAll = (str, item) => {
 			const indices = [];
 			for (let pos = str.indexOf(item); pos !== -1; pos = str.indexOf(item, pos + 1)) indices.push(pos);
 			return indices.reverse();
-		}
+		};
 		const name = v => v.name;
 		const removeEmpty = v => v && v.name != '' && v.type != '';
 
@@ -314,7 +317,7 @@ class Panel {
 				colView.forEach((v, i, arr) => {
 					if (i % 2 === 1) {
 						const colSplit = v.split(',');
-						arr[i] = '@!#' + (ui.setMarkerCol(colSplit[0]) || (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.text : RGB(240, 240, 240))) + '`' + (ui.setMarkerCol(colSplit[1]) || (ppt.highLightText ? ui.col.text_h : (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.text : RGB(240, 240, 240)))) + '`' + (ui.setMarkerCol(colSplit[2]) || (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.textSel : ui.col.text)) + '@!#';
+						arr[i] = '@!#' + (ui.setMarkerCol(colSplit[0]) || (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.text : $.RGB(240, 240, 240))) + '`' + (ui.setMarkerCol(colSplit[1]) || (ppt.highLightText ? ui.col.text_h : (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.text : $.RGB(240, 240, 240)))) + '`' + (ui.setMarkerCol(colSplit[2]) || (!ppt.albumArtShow || ppt.albumArtLabelType != 4 ? ui.col.textSel : ui.col.text)) + '@!#';
 					}
 				});
 				this.view = colView.join('');
@@ -347,18 +350,28 @@ class Panel {
 	}
 
 	getFilters() {
+		// Regorxxx <- Default TF for compatibility with all stats components and improved filters
 		let pt = [
-			['Filter 01: Name // Query', 'Filter // Button Name'],
-			['Filter 02: Name // Query', 'Lossless // "$info(encoding)" IS lossless'],
-			['Filter 03: Name // Query', 'Lossy // "$info(encoding)" IS lossy'],
-			['Filter 04: Name // Query', 'Missing Replaygain // %replaygain_track_gain% MISSING'],
-			['Filter 05: Name // Query', 'Never Played // %play_count% MISSING'],
-			['Filter 06: Name // Query', 'Played Often // %play_count% GREATER 9'],
-			['Filter 07: Name // Query', 'Recently Added // %added% DURING LAST 2 WEEKS'],
-			['Filter 08: Name // Query', 'Recently Played // %last_played% DURING LAST 2 WEEKS'],
-			['Filter 09: Name // Query', 'Top Rated // %rating% IS 5'],
-			['Filter 10: Name // Query', 'Nowplaying Artist // artist IS $nowplaying{$meta(artist,0)}']
-		];
+			['Filter 01: Name // Query', '过滤 // 按钮名称'],
+			['Filter XX: Name // Query', '无损 // "$info(ENCODING)" IS lossless'],
+			['Filter XX: Name // Query', '有损 // "$info(ENCODING)" IS lossy'],
+			['Filter XX: Name // Query', '无增益信息 // %REPLAYGAIN_TRACK_GAIN% MISSING AND %TRUEPEAK_SCANNER_TRACK_GAIN% MISSING'],
+			['Filter XX: Name // Query', '分隔符 // .'],
+			['Filter XX: Name // Query', '从未播放 // %PLAY_COUNT% MISSING AND %LASTFM_PLAY_COUNT% MISSING AND %2003_PLAYCOUNT% MISSING'],
+			['Filter XX: Name // Query', '经常播放 // ("$max(%PLAY_COUNT%,%LASTFM_PLAY_COUNT%,%2003_PLAYCOUNT%,0)" GREATER 3) AND ((%LAST_PLAYED_ENHANCED% PRESENT AND %LAST_PLAYED_ENHANCED% DURING LAST 50 WEEKS) OR (%2003_LAST_PLAYED% PRESENT AND %2003_LAST_PLAYED% DURING LAST 50 WEEKS) OR (%2003_LAST_PLAYED% MISSING AND %LAST_PLAYED% DURING LAST 50 WEEKS)) AND ("$puts(val,$puts(pcr,$div($mul($max(%PLAY_COUNT%,%LASTFM_PLAY_COUNT%,%2003_PLAYCOUNT%,0),100000),$add($mul($sub($year($if3(%LAST_PLAYED_ENHANCED%,%2003_LAST_PLAYED%,%LAST_PLAYED%,0)),$year($if3(%ADDED_ENHANCED%,%ADDED%,%2003_ADDED%))),365),$mul($sub($month($if3(%LAST_PLAYED_ENHANCED%,%2003_LAST_PLAYED%,%LAST_PLAYED%,0)),$month($if3(%ADDED_ENHANCED%,%ADDED%,%2003_ADDED%))),30),$sub($day_of_month($if3(%LAST_PLAYED_ENHANCED%,%2003_LAST_PLAYED%,%LAST_PLAYED%,0)),$day_of_month($if3(%ADDED_ENHANCED%,%ADDED%,%2003_ADDED%))))))$left($ifgreater($mod($get(pcr),100000),0,$ifgreater($get(pcr),100000,,0)$insert($div($get(pcr),10000),\'.\',$sub($len($div($get(pcr),10000)),1))$ifgreater($mod($get(pcr),10000),0,$insert($div($get(pcr),1000),,$sub($len($div($get(pcr),1000)),1)),0),$div($get(pcr),100000)),4))$get(val)$iflonger($get(val),1,,.00)" GREATER 0)'],
+			['Filter XX: Name // Query', '最近添加 // (%ADDED_ENHANCED% PRESENT AND %ADDED_ENHANCED% DURING LAST 4 WEEKS) OR (%2003_ADDED% PRESENT AND %2003_ADDED% DURING LAST 4 WEEKS) OR (%2003_ADDED% MISSING AND %ADDED% DURING LAST 4 WEEKS)'],
+			['Filter XX: Name // Query', '最近播放 // (%FIRST_PLAYED_ENHANCED% PRESENT AND %FIRST_PLAYED_ENHANCED% DURING LAST 4 WEEKS) OR (%2003_FIRST_PLAYED% PRESENT AND %2003_FIRST_PLAYED% DURING LAST 4 WEEKS) OR (%2003_FIRST_PLAYED% MISSING AND %FIRST_PLAYED% DURING LAST 4 WEEKS)'],
+			['Filter XX: Name // Query', '最高评级 // %RATING% EQUAL 5 OR %2003_RATING% EQUAL 10'],
+			['Filter XX: Name // Query', '分隔符 // .'],
+			['Filter XX: Name // Query', '当前艺术家 // ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,0),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,1),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,2),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,3),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,4),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,5),DUMMY)}'],
+			['Filter XX: Name // Query', '当前流派 // (GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,0)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,1)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,2)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,3)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,4)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,5)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)}) AND NOT ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,0),DUMMY)}'],
+			['Filter XX: Name // Query', '当前风格 // (STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,0)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,1)),female vocal,,live,,hi-fi,,instrumental,)),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,2)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,3)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,4)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,5)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)}) AND NOT ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,0),DUMMY)}'],
+			['Filter XX: Name // Query', '当前相近年代 // "$replace($sub($year(%DATE%),$nowplayingorselected{$year(%DATE%)}),-,)" LESS 10'],
+			['Filter XX: Name // Query', '分隔符 // .'],
+			['Filter XX: Name // Query', '当前相似艺术家 // ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,0),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,1),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,2),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,3),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,4),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,5),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,6),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,7),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,8),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS LISTENBRAINZ,9),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,0),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,1),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,2),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,3),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,4),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,5),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,6),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,7),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,8),DUMMY)} OR ARTIST IS $nowplayingorselected{$if2($meta(SIMILAR ARTISTS SEARCHBYDISTANCE,9),DUMMY)}'],
+			['Filter XX: Name // Query', '当前类似项 // (GENRE MISSING OR (GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,0)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,1)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,2)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,3)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,4)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR GENRE IS $nowplayingorselected{$if2($replace($lower($meta(GENRE,5)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)})) AND (STYLE MISSING OR (STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,0)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,1)),female vocal,,live,,hi-fi,,instrumental,)),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,2)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,3)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,4)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)} OR STYLE IS $nowplayingorselected{$if2($replace($lower($meta(STYLE,5)),female vocal,,live,,hi-fi,,instrumental,),DUMMY)})) AND NOT ARTIST IS $nowplayingorselected{$if2($meta(ARTIST,0),DUMMY)} AND "$replace($sub($year(%DATE%),$nowplayingorselected{$year(%DATE%)}),-,)" LESS 10'],
+		].filter(Boolean).map((entry, i) => [entry[0].replace('Filter XX', 'Filter ' + (i + 1).toString().padStart(2, '0')), entry[1]]);;
+		// Regorxxx ->
 
 		let grps = [];
 		this.defFilterPatterns = pt.map(v => {
@@ -367,7 +380,7 @@ class Panel {
 				name: grps[0].trim(),
 				type: grps[1].trim(),
 				menu: true
-			}
+			};
 		});
 
 		const dialogFilters = [];
@@ -377,9 +390,9 @@ class Panel {
 			const v = pt[i];
 			const prop = ppt.initialLoadFilters ? ppt.get(v[0], v[1]) : ppt.get(v[0]);
 			if (!i) {
-				const defValid = prop && prop.endsWith('// Button Name');
-				dialogFilters.push(defValid ? prop : 'Filter // Button Name');
-				this.filter_ppt.push(defValid ? prop : 'Filter // Button Name');
+				const defValid = prop && prop.endsWith('// 按钮名称');
+				dialogFilters.push(defValid ? prop : '过滤 // 按钮名称');
+				this.filter_ppt.push(defValid ? prop : '过滤 // 按钮名称');
 				if (!defValid) ppt.set(v[0], v[1]);
 				pptNo++;
 			} else {
@@ -408,14 +421,14 @@ class Panel {
 					name: grps[0].trim(),
 					type: grps[1].trim(),
 					menu: true
-				}
+				};
 			} else if (v.includes('/hide/')) {
 				grps = v.split('/hide/');
 				return {
 					name: grps[0].trim(),
 					type: grps[1].trim(),
 					menu: false
-				}
+				};
 			}
 		});
 
@@ -425,43 +438,54 @@ class Panel {
 	}
 
 	getViewIndex(arr, name, type) {
-		let findViewIndex = arr.findIndex(v => {
-			return v.name.trim() === name && v.type.trimStart() === type;
-		})
-		if (findViewIndex != -1) ppt.viewBy = findViewIndex;
+		const findViewIndex = arr.findIndex(v => v.name.trim() === name && v.type.trimStart() === type);
+		if (findViewIndex != -1) { ppt.viewBy = findViewIndex; }
 		return findViewIndex;
 	}
 
 	getViews() {
+		// Regorxxx <- Improve view patterns. Fixed multiple bugs on automatic group handling for default view patterns and cases where a default group was not found.
 		let pt = [
-			['View 01: Name // Pattern', 'View by Folder Structure // Pattern Not Configurable'],
-			['View 02: Name // Pattern', 'View by Artist // %artist%|%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%'],
-			['View 03: Name // Pattern', 'View by Album Artist // %album artist%|%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%'],
-			['View 04: Name // Pattern', "View by Album Artist - Album // [%album artist% - ]['['%date%']' ]%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"],
-			['View 05: Name // Pattern', "View by Album // %album%[ '['%album artist%']']|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%"],
-			['View 06: Name // Pattern', 'View by Genre // %<genre>%|[%album artist% - ]%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%'],
-			['View 07: Name // Pattern', 'View by Year // %date%|[%album artist% - ]%album%|[[%discnumber%.]%tracknumber%. ][%track artist% - ]%title%']
-		];
+			['View 01: Name // Pattern', '按文件夹结构 // 无需配置模板', void (0), void (0), 1],
+			['View XX: Name // Pattern', '按艺术家 // $swapbranchprefix{%<ARTIST>%}|%ALBUM%|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '位艺术家', '张专辑', [2, 2, 2, 1, 1]],
+			['View XX: Name // Pattern', '按专辑艺术家 // $swapbranchprefix{$if2(%<ALBUM ARTIST>%,%<ARTIST>%)}|%ALBUM%|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '位专辑艺术家', '张专辑', [2, 2, 2, 1, 1]],
+			['View XX: Name // Pattern', '按专辑艺术家 - 专辑 // [$swapprefix(%ALBUM ARTIST%,A,The,La,El,Los,Las,Le,Les) - ][\'[\'%date%\']\' ]%ALBUM%|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '张专辑', '首音轨', 1],
+			['View XX: Name // Pattern', '按艺术家首字母 // $puts(initial,$upper($cut($replace($swapprefix(%ARTIST%,A,The,La,El,Los,Las,Le,Les),$char(33),,$char(34),,$char(35),,$char(36),,$char(37),,$char(38),,$char(39)$char(39),,$char(39),,,$char(40),,$char(41),,$char(42),,$char(43),,$char(44),,$char(45),,$char(46),,$char(47),),1)))$if($stricmp($ascii($get(initial)),?),$get(initial),$ascii($get(initial)))|%ARTIST%|$if2(%ALBUM%,εXtra)|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '个艺术家首字母', '位艺术家', [2, 2, 2, 1, 1]],
+			['View XX: Name // Pattern', '按专辑 // %ALBUM%[ \'[\'%ALBUM ARTIST%\']\']|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '张专辑', '首音轨', 1],
+			['View XX: Name // Pattern', '按专辑（年份） // $year(%DATE%) - %ALBUM%[ \'[\'%ALBUM ARTIST%\']\']|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '张专辑', '首音轨', 1],
+			['View XX: Name // Pattern', '按专辑（分面） // $nodisplay{$year(%DATE%)}%ALBUM% \'[\'$year(%DATE%)\']\'|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '张专辑', '首音轨', 1],
+			['View XX: Name // Pattern', '分隔符 // .'],
+			['View XX: Name // Pattern', '按流派 // %<GENRE>%|[%ALBUM ARTIST% - ]%ALBUM%|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '个流派', '张专辑', 1],
+			['View XX: Name // Pattern', '按风格 // %<STYLE>%|[%ALBUM ARTIST% - ]%ALBUM%|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '个风格', '张专辑', 1],
+			['View XX: Name // Pattern', '按流派/风格分级 // %<GENRE>%|%<STYLE>%|[%ALBUM ARTIST% - ]%ALBUM%|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '个流派', '个风格', 1],
+			['View XX: Name // Pattern', '分隔符 // .'],
+			['View XX: Name // Pattern', '按年份 // $year(%DATE%)|[%ALBUM ARTIST% - ]%ALBUM%|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '个日期', '张专辑', 1],
+			['View XX: Name // Pattern', '按年代 // $div($year(%DATE%),10)0s|[%ALBUM ARTIST% - ]%ALBUM%|[[%DISCNUMBER%.]%TRACKNUMBER%. ][%TRACK ARTIST% - ]%TITLE%', '个年代', '张专辑', 1],
+		].filter(Boolean).map((entry, i) => [entry[0].replace('View XX', 'View ' + (i + 1).toString().padStart(2, '0')), ...entry.slice(1)]);
 		let grps = [];
 		this.defViewPatterns = pt.map(v => {
 			grps = v[1].split('//');
 			return {
 				name: grps[0].trim(),
 				type: grps[1].trimStart(),
+				level1: v[2],
+				level2: v[3],
+				lines: v[4],
 				menu: true
-			}
+			};
 		});
 
-		this.defaultViews = this.defViewPatterns.map(v => v.type);
+		this.defaultViews = this.defViewPatterns.filter((v) => v.name !== 'separator' && v.name !== '分隔符').map(v => v.type);
 		this.defaultViews.shift();
 
-		const names1 = ['Artist', 'Album Artist', 'Album', 'Album', 'Genre', 'Year'];
-		const names2 = ['Album', 'Album', 'Track', 'Track', 'Album', 'Album'];
 		const albumArtGrpNames = $.jsonParse(ppt.albumArtGrpNames, {});
-		this.defaultViews.forEach((v, i) => {
-			if (!albumArtGrpNames[`${v}1`]) albumArtGrpNames[`${v}1`] = names1[i];
-			if (!albumArtGrpNames[`${v}2`]) albumArtGrpNames[`${v}2`] = names2[i];
+		this.defViewPatterns.filter((v) => !v.name.startsWith('separator') && !v.name.startsWith('分隔符')).forEach((v, i) => {
+			if (i === 0) { return; }
+			if (!v.name || !v.type || !v.level1 || !v.level2) { console.log('Library Tree：默认查看方式出错\n\t ' + JSON.stringify(v)); }
+			if (!albumArtGrpNames[`${v.type}1`]) albumArtGrpNames[`${v.type}1`] = v.level1;
+			if (!albumArtGrpNames[`${v.type}2`]) albumArtGrpNames[`${v.type}2`] = v.level2;
 		});
+		// Regorxxx ->
 
 		const dialogViews = [];
 		this.view_ppt = [];
@@ -470,9 +494,9 @@ class Panel {
 			const v = pt[i];
 			const prop = ppt.initialLoadViews ? ppt.get(v[0], v[1]) : ppt.get(v[0]);
 			if (!i) {
-				const defValid = prop && prop.endsWith('// Pattern Not Configurable');
-				dialogViews.push(defValid ? prop : 'View by Folder Structure // Pattern Not Configurable');
-				this.view_ppt.push(defValid ? prop : 'View by Folder Structure // Pattern Not Configurable');
+				const defValid = prop && prop.endsWith('// 无需配置模板');
+				dialogViews.push(defValid ? prop : '按文件夹结构 // 无需配置模板');
+				this.view_ppt.push(defValid ? prop : '按文件夹结构 // 无需配置模板');
 				if (!defValid) ppt.set(v[0], v[1]);
 				pptNo++;
 			} else {
@@ -515,14 +539,14 @@ class Panel {
 					name: grps[0].trim(),
 					type: grps[1].trimStart(),
 					menu: true
-				}
+				};
 			} else if (v.includes('/hide/')) {
 				grps = v.split('/hide/');
 				return {
 					name: grps[0].trim(),
 					type: grps[1].trimStart(),
 					menu: false
-				}
+				};
 			}
 		});
 
@@ -530,7 +554,7 @@ class Panel {
 		this.dialogGrps.push(this.dialogGrps.shift());
 		this.defViewPatterns.push(this.defViewPatterns.shift());
 		this.view_ppt.push(this.view_ppt.shift());
-		
+
 		const albumArtGrpNameKeys = Object.keys(albumArtGrpNames);
 		if (albumArtGrpNameKeys.length > 100) {
 			let keysPresent = this.dialogGrps.map(v => `${v.type}1`);
@@ -551,17 +575,21 @@ class Panel {
 		ppt.sbarButType = 0;
 		ppt.searchShow = true;
 		ppt.filterShow = true;
-		ppt.settingsShow = true
+		ppt.settingsShow = true;
 		window.Reload();
 	}
 
 	on_size(fontChanged) {
-		const ln_sp = ui.style.topBarShow && !ui.id.local ? Math.floor(ui.row.h * 0.1) : 0;
+		const ln_sp = ui.style.topBarShow ? Math.floor(ui.row.h * 0.1) : 0; // Regorxxx <- Code cleanup. Remove ui.id.local references ->
 		const sbarStyle = !ppt.sbarFullHeight ? 2 : 0;
 		this.calcText();
 		this.ln.x = ppt.countsRight || ppt.itemShowStatistics || ppt.rowStripes || ppt.fullLineSelection || pop.inlineRoot ? 0 : ui.sz.marginSearch;
 		this.ln.w = ui.w - this.ln.x - 1;
-		this.search.h = ui.style.topBarShow ? ui.row.h + (!ui.id.local ? ln_sp * 2 : 0) : ppt.marginTopBottom;
+		// Regorxxx <- Code cleanup. Remove ui.id.local references
+		this.search.h = ui.style.topBarShow
+			? ui.row.h + ln_sp * 2
+			: ppt.marginTopBottom;
+		// Regorxxx ->
 		this.search.sp = this.search.h - ln_sp;
 		let sp = ui.h - this.search.h - (ui.style.topBarShow ? 0 : ppt.marginTopBottom);
 		this.rows = sp / ui.row.h;
@@ -620,14 +648,14 @@ class Panel {
 					if (!cfg[0][i].type) cfg[0].splice(i, 1);
 				cfg[0].forEach((v, i) => {
 					const nm = v.type ? v.name + (v.menu ? ' // ' : ' /hide/ ') + v.type : null;
-					ppt.set(v.type != 'Pattern Not Configurable' ? `View ${$.padNumber(i + 2, 2)}: Name // Pattern` : `View 01: Name // Pattern`, nm);
+					ppt.set(v.type != '无需配置模板' ? `View ${$.padNumber(i + 2, 2)}: Name // Pattern` : 'View 01: Name // Pattern', nm);
 				});
 				i = cfg[1].length;
 				while (i--)
 					if (!cfg[1][i].type) cfg[1].splice(i, 1);
 				cfg[1].forEach((v, i) => {
 					const nm = v.type ? v.name + (v.menu ? ' // ' : ' /hide/ ') + v.type : null;
-					ppt.set(v.type != 'Button Name' ? `Filter ${$.padNumber(i + 2, 2)}: Name // Query` : `Filter 01: Name // Query`, nm);
+					ppt.set(v.type != '按钮名称' ? `Filter ${$.padNumber(i + 2, 2)}: Name // Query` : 'Filter 01: Name // Query', nm);
 				});
 				const view_name = this.grp[ppt.viewBy].name;
 				const view_type = this.grp[ppt.viewBy].type.trimStart();
@@ -636,20 +664,25 @@ class Panel {
 				this.getViews();
 				this.getFilters();
 				this.getFields(ppt.viewBy, ppt.filterBy, true);
-				if (this.getViewIndex(this.grp, view_name, view_type) == -1 || this.getFilterIndex(this.filter.mode, filter_name, filter_type) == -1) {
+				// Regorxxx <- Fix HTML options panel error on panel reload when changing current library view or filter
+				if (this.getViewIndex(this.grp, view_name, view_type) === -1 || this.getFilterIndex(this.filter.mode, filter_name, filter_type) === -1) {
 					lib.logTree();
-					window.Reload();
-				} else this.getFields(ppt.viewBy, ppt.filterBy);
+					ppt.set('Library Tree Dialog Box Reopen', true);
+					return window.Reload();
+				} else { this.getFields(ppt.viewBy, ppt.filterBy); }
+				// Regorxxx ->
 			}
 
 			if (new_ppt) this.updateProp($.jsonParse(new_ppt, {}), 'value');
 
 			if (new_cfgWindow) ppt.set('Library Tree Dialog Box', new_cfgWindow);
+			ppt.set('Library Tree Dialog Box Reopen', false); // Regorxxx <- Fix HTML options panel error on panel reload when changing current library view or filter ->
 
 			if (type == 'reset') {
 				this.updateProp(ppt, 'default_value');
 			}
-		}
+			return true;
+		};
 
 		this.getViews();
 		let cfgWindow = ppt.get('Library Tree Dialog Box');
@@ -658,10 +691,12 @@ class Panel {
 		cfgWindow.version = `v${window.ScriptInfo.Version}`;
 		cfgWindow = JSON.stringify(cfgWindow);
 		ppt.set('Library Tree Dialog Box', cfgWindow);
-		if (popUpBox.isHtmlDialogSupported()) popUpBox.config(JSON.stringify([this.dialogGrps, this.dialogFiltGrps, this.defViewPatterns, this.defFilterPatterns]), JSON.stringify(ppt), cfgWindow, ok_callback);
+		const pptStr = JSON.stringify(ppt)
+			.replace(/:\\"\.\//gi,':\\"' + my_utils.packageInfo.Directories.Root.replace(/\\/gi, '/') + '/'); // Adjust relative paths
+		if (popUpBox.isHtmlDialogSupported()) popUpBox.config(JSON.stringify([this.dialogGrps, this.dialogFiltGrps, this.defViewPatterns, this.defFilterPatterns]), pptStr, cfgWindow, ok_callback);
 		else {
 			popUpBox.ok = false;
-			$.trace('options dialog isn\'t available with current operating system. All settings in options are available in panel properties. Common settings are on the menu.');	
+			$.trace('当前操作系统不支持选项对话框，其所有设置可在面板属性中调整，常用设置则位于菜单内。');
 		}
 	}
 
@@ -670,7 +705,7 @@ class Panel {
 	}
 
 	set(n, i, treeArtToggle) {
-		const prompt = 'This changes various options ' + (i < 5 ? 'on the display tab' : i < 12 ? 'on the display and album art tabs' : '') + '\n\nContinue?';
+		const prompt = '此操作将修改' + (i < 5 ? ' “显示” 选项卡' : i < 12 ? ' “显示” 与 “专辑封面” 选项卡' : '') + '中的多项设置' + '\n\n是否继续？';
 		switch (n) {
 			case 'quickSetup':
 				switch (i) {
@@ -700,8 +735,8 @@ class Panel {
 								ppt.artId = 0;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Traditional Style';
+						};
+						const caption = '快速设置：传统样式';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -732,8 +767,8 @@ class Panel {
 								ppt.artId = 0;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Modern Style';
+						};
+						const caption = '快速设置：现代样式';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -771,8 +806,8 @@ class Panel {
 								ppt.artId = 0;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Ultra Modern Style';
+						};
+						const caption = '快速设置：超现代样式';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -803,8 +838,8 @@ class Panel {
 								ppt.artId = 0;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Clean';
+						};
+						const caption = '快速设置：简洁';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -835,8 +870,8 @@ class Panel {
 								ppt.rootNode = 3;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Facet';
+						};
+						const caption = '快速设置：分面';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -868,8 +903,8 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Covers [Labels Right]';
+						};
+						const caption = '快速设置：封面 [右侧标签]';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -901,8 +936,8 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Covers [Labels Bottom]';
+						};
+						const caption = '快速设置：封面 [底部标签]';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -934,8 +969,8 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Covers [Labels Blend]';
+						};
+						const caption = '快速设置：封面 [叠加标签]';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -966,8 +1001,8 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Artist Photos [Labels Right]';
+						};
+						const caption = '快速设置：艺术家图像 [右侧标签]';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -995,8 +1030,8 @@ class Panel {
 								ppt.albumArtGrpLevel = 0;
 								this.load();
 							}
-						}
-						const caption = 'Quick Setup: Flow Mode';
+						};
+						const caption = '快速设置：流动封面模式';
 						const wsh = popUpBox.isHtmlDialogSupported() ? popUpBox.confirm(caption, prompt, 'Yes', 'No', '', '', continue_confirmation) : true;
 						if (wsh) continue_confirmation('ok', $.wshPopup(prompt, caption));
 						break;
@@ -1034,20 +1069,18 @@ class Panel {
 									}
 								}
 							}
-						if (!ppt.rememberTree && !ppt.reset) 
-							lib.logTree();
-						else if (ppt.rememberTree) 
-							lib.logFilter();
+							if (!ppt.rememberTree && !ppt.reset) { lib.logTree(); }
+							else if (ppt.rememberTree) { lib.logFilter(); }
 						}
 						lib.getLibrary();
 						lib.rootNodes(!ppt.reset ? 1 : 0, true);
 						but.refresh(true);
 						this.searchPaint();
-						if (!pop.notifySelection())  {
+						if (!pop.notifySelection()) {
 							const list = !this.search.txt.length || !lib.list.Count ? lib.list : this.list;
 							window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
 						}
-						if (ppt.searchSend == 2 && this.search.txt.length) pop.load(this.list, false, false, false, true, false);
+						if (ppt.searchSend == 2 && this.search.txt.length) pop.load({ handleList: this.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 						break;
 				}
 				pop.checkAutoHeight();
@@ -1073,13 +1106,13 @@ class Panel {
 					but.refresh(true);
 					this.searchPaint();
 					lib.logTree();
-					if (!pop.notifySelection())  {
+					if (!pop.notifySelection()) {
 						const list = !this.search.txt.length || !lib.list.Count ? lib.list : this.list;
 						window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
 					}
 				}
 				this.draw = true;
-				if (ppt.searchSend == 2 && this.search.txt.length) pop.load(this.list, false, false, false, true, false);
+				if (ppt.searchSend == 2 && this.search.txt.length) pop.load({ handleList: this.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 				pop.checkAutoHeight();
 				break;
 			}
@@ -1093,21 +1126,22 @@ class Panel {
 	}
 
 	setRootName() {
-		this.sourceName = ['Active Playlist', !ppt.fixedPlaylist ? 'Library' : ppt.fixedPlaylistName, 'Panel'][ppt.libSource];
+		this.sourceName = ['活动列表', !ppt.fixedPlaylist ? '媒体库' : ppt.fixedPlaylistName, '面板'][ppt.libSource];
 		this.viewName = this.grp[ppt.viewBy].name;
 		switch (ppt.rootNode) {
 			case 1:
-				this.rootName = !ppt.showSource ? 'All Music' : this.sourceName;
+				this.rootName = !ppt.showSource ? '所有音乐' : this.sourceName;
 				break;
 			case 2:
 				this.rootName = this.viewName + (!ppt.showSource ? '' : ' [' + this.sourceName + ']');
 				break;
 			case 3: {
-				const nm = this.viewName.replace(/view by|^by\b/i, '').trim();
+				// const nm = this.viewName.replace(/查看按|^按\b/i, '').trim();
+				const nm = this.viewName.replace(/查看按|^按/i, '').trim();
 				const basenames = nm.split(' ').map(v => pluralize(v));
-				const basename = basenames.join(' ').replace(/(album|artist|top|track)s\s/gi, '$1 ').replace(/(similar artist)\s/gi, '$1s ').replace(/years - albums/gi, 'Year - Albums');
-				this.rootName = (!this.imgView ? `${!ppt.showSource ? 'All' : this.sourceName} (#^^^^# ${basename})` : `All #^^^^# ${basename}`);
-				this.rootName1 = (!this.imgView ? `${!ppt.showSource ? 'All' : this.sourceName} (1 ${nm})` : `All 1 ${nm}`);
+				const basename = basenames.join(' ').replace(/(album|artist|top|track)s\s/gi, '$1 ').replace(/(similar artist)\s/gi, '$1s ').replace(/years - albums/gi, '日期 - 专辑');
+				this.rootName = (!this.imgView ? `${!ppt.showSource ? '所有' : this.sourceName} (#^^^^# ${basename})` : `所有 #^^^^# ${basename}`);
+				this.rootName1 = (!this.imgView ? `${!ppt.showSource ? '所有' : this.sourceName} (1 ${nm})` : `所有 1 ${nm}`);
 				break;
 			}
 		}
@@ -1122,7 +1156,7 @@ class Panel {
 		let sz = Math.round(12 * $.scale * this.zoomFilter);
 		let mod = 0;
 		if (sz > 15) mod = (sz % 2) - 1;
-		this.filter.font = gdi.Font('Segoe UI', this.zoomFilter > 1.05 ? Math.floor(11 * $.scale * this.zoomFilter) : Math.max(11 * $.scale * this.zoomFilter, 9), 1);
+		this.filter.font = gdi.Font('Microsoft Yahei UI', this.zoomFilter > 1.05 ? Math.floor(15 * $.scale * this.zoomFilter) : Math.max(15 * $.scale * this.zoomFilter, 12), 0);
 		this.settings.font = gdi.Font('Segoe UI Symbol', sz + mod, 0);
 		this.settings.icon = '\uE10C';
 		this.settings.offset = Math.round(1 * this.settings.font.Size / 17);
@@ -1148,7 +1182,7 @@ class Panel {
 	updateProp(prop, value) {
 		const curActionMode = ppt.actionMode;
 		Object.entries(prop).forEach(v => {
-			ppt[v[0].replace('_internal', '')] = v[1][value]
+			ppt[v[0].replace('_internal', '')] = v[1][value];
 		});
 
 		img.asyncBypass = Date.now();
@@ -1190,25 +1224,16 @@ class Panel {
 			'search': {},
 			'filter': {}
 		};
-	
-		pop.tf = {
-			added: FbTitleFormat(ppt.tfAdded),
-			bitrate: FbTitleFormat('%bitrate%'),
-			bytes: FbTitleFormat('%path%|%filesize%'),
-			date: FbTitleFormat(ppt.tfDate),
-			firstPlayed: FbTitleFormat(ppt.tfFirstPlayed),
-			lastPlayed: FbTitleFormat(ppt.tfLastPlayed),
-			pc: FbTitleFormat(ppt.tfPc),
-			popularity: FbTitleFormat(ppt.tfPopularity),
-			rating: FbTitleFormat(ppt.tfRating)
-		}
-		
+
+		pop.setTf(); // Regorxxx <- New statistics. Fix sorting not being applied after HTML options panel change. ->
+
 		pop.tree.forEach(v => {
 			v.id = '';
 			v.count = '';
 			delete v.statistics;
 			delete v._statistics;
 		});
+		lib.prefix = ppt.prefix.split('|'); // Regorxxx <- Fix values on reset ->
 		lib.checkView();
 		lib.logTree();
 		img.setRoot();
@@ -1237,7 +1262,7 @@ class Panel {
 		on_colours_changed();
 		if (ui.col.counts) panel.colMarker = true;
 		if (ppt.themed && ppt.theme) {
-			const themed_image = `${fb.ProfilePath}settings\\themed\\themed_image.bmp`;	
+			const themed_image = `${fb.ProfilePath}settings\\themed\\themed_image.bmp`;
 			if ($.file(themed_image)) sync.image(gdi.Image(themed_image));
 		}
 		this.setRootName();
@@ -1252,10 +1277,27 @@ class Panel {
 		but.refresh(true);
 		find.on_size();
 		pop.createImages();
+		// Regorxxx <- Fix values on reset
+		img.setRoot();
+		img.setNoArtist();
+		img.setNoCover();
+		if (value === 'default_value') {
+			this.clear('both');
+			this.zoomReset();
+			this.setTopBar();
+			this.getViews();
+			this.getFilters();
+			ppt.initialLoadFilters = false;
+			ppt.initialLoadViews = false;
+			ppt.initialLoadFilters = false;
+			ppt.initialLoadViews = false;
+			this.getFields(ppt.viewBy, ppt.filterBy);
+		}
+		// Regorxxx ->
 
 		if (ppt.highLightNowplaying || ppt.nowPlayingSidemarker) {
 			pop.getNowplaying();
-			pop.nowPlayingShow()
+			pop.nowPlayingShow();
 		}
 
 		if (panel.imgView && pop.tree.length) {

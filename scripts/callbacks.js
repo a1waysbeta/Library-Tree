@@ -1,6 +1,8 @@
 ﻿'use strict';
+/* global ui:readable, panel:readable, ppt:readable, lib:readable, pop:readable, but:readable, img:readable, search:readable, timer:readable, $:readable, men:readable, vk:readable, folders:readable, sync:readable, tooltip:readable, sbar:readable */
+/* global dropEffect:readable */
 
-function on_colours_changed(keepCache) {
+addEventListener('on_colours_changed', (keepCache) => {
 	ui.getColours();
 
 	if (panel.colMarker) {
@@ -20,9 +22,9 @@ function on_colours_changed(keepCache) {
 	ui.createImages();
 	if (!ppt.themed) ui.blurReset();
 	window.Repaint();
-}
+});
 
-function on_font_changed() {
+addEventListener('on_font_changed', () => {
 	sbar.logScroll();
 	pop.deactivateTooltip();
 	ui.getFont();
@@ -31,64 +33,64 @@ function on_font_changed() {
 	sbar.resetAuto();
 	window.Repaint();
 	sbar.setScroll();
-}
+});
 
-function on_char(code) {
+addEventListener('on_char', (code) => {
 	pop.on_char(code);
 	find.on_char(code);
 	if (!ppt.searchShow) return;
 	search.on_char(code);
-}
+});
 
-function on_focus(is_focused) {
+addEventListener('on_focus', (is_focused) => {
 	if (!is_focused) {
 		timer.clear(timer.cursor);
 		panel.search.cursor = false;
 		panel.searchPaint();
 	}
 	pop.on_focus(is_focused);
-}
+});
 
-function on_get_album_art_done(handle, art_id, image, image_path) {
+addEventListener('on_get_album_art_done', (handle, art_id, image, image_path) => {
 	ui.on_get_album_art_done(handle, image, image_path);
-}
+});
 
-function on_item_focus_change(playlistIndex) {
-	lib.checkFilter();
+addEventListener('on_item_focus_change', (playlistIndex) => {
+	lib.checkFilter('selection'); // Regorxxx <- Improve filter checking based on events. Search text also triggers updates to filtering ->
 	if (!pop.setFocus) {
 		if (ppt.followPlaylistFocus && playlistIndex == $.pl_active && !ppt.libSource) {
 			setSelection(fb.GetFocusItem());
 		}
 	} else pop.setFocus = false;
 	ui.focus_changed();
-}
+});
 
-function on_key_down(vkey) {
+addEventListener('on_key_down', (vkey) => {
 	pop.on_key_down(vkey);
 	img.on_key_down(vkey);
 	if (!ppt.searchShow) return;
 	search.on_key_down(vkey);
-}
+});
 
-function on_key_up(vkey) {
+addEventListener('on_key_up', (vkey) => {
 	img.on_key_up(vkey);
 	if (!ppt.searchShow) return;
-	search.on_key_up(vkey)
-}
+	search.on_key_up(vkey);
+});
 
-function on_library_items_added(handleList) {
+addEventListener('on_library_items_added', (handleList) => {
 	if (ppt.libSource == 2) return;
 	if (lib.v2_init) {
 		lib.v2_init = false;
 		if (ui.w < 1 || !window.IsVisible) return;
-		lib.initialise(handleList);
+		lib.initialise(handleList, true); // Regorxxx <- Don't create cache playlists if possible
 		return;
 	}
 	if (!ppt.libAutoSync || ppt.fixedPlaylist || !ppt.libSource) return;
 	lib.treeState(false, 2, handleList, 0);
-}
+});
 
-function on_library_items_removed(handleList) {
+addEventListener('on_library_items_removed', (handleList) => {
 	if (!ppt.libAutoSync || ppt.fixedPlaylist || !ppt.libSource) return;
 	if (ppt.libSource == 2) {
 		const libList = lib.list.Clone();
@@ -97,9 +99,9 @@ function on_library_items_removed(handleList) {
 		handleList.MakeIntersection(libList);
 	}
 	lib.treeState(false, 2, handleList, 2);
-}
+});
 
-function on_library_items_changed(handleList) {
+addEventListener('on_library_items_changed', (handleList) => {
 	if (!ppt.libAutoSync || ppt.fixedPlaylist || !ppt.libSource) return;
 	if (ppt.libSource == 2) {
 		const libList = lib.list.Clone();
@@ -108,15 +110,15 @@ function on_library_items_changed(handleList) {
 		handleList.MakeIntersection(libList);
 	}
 	lib.treeState(false, 2, handleList, 1);
-}
+});
 
-function on_main_menu(index) {
+addEventListener('on_main_menu', (index) => {
 	pop.on_main_menu(index);
-}
+});
 
-function on_metadb_changed(handleList, isDatabase) {
+addEventListener('on_metadb_changed', (handleList, isDatabase) => {
 	if (isDatabase && !panel.statistics || lib.list.Count != lib.libNode.length) return;
-	if (ppt.fixedPlaylist || !ppt.libSource) {	
+	if (ppt.fixedPlaylist || !ppt.libSource) {
 		handleList.Convert().some(h => {
 			const i = lib.full_list.Find(h);
 			if (i != -1) {
@@ -127,16 +129,17 @@ function on_metadb_changed(handleList, isDatabase) {
 			}
 		});
 	}
-}
+});
 
-function on_mouse_lbtn_dblclk(x, y) {
+addEventListener('on_mouse_lbtn_dblclk', (x, y) => {
 	but.lbtn_dn(x, y);
 	if (ppt.searchShow) search.lbtn_dblclk(x, y);
 	pop.lbtn_dblclk(x, y);
+	but.lbtn_dblclk(x, y); // Regorxxx <- Double click scrollbar
 	sbar.lbtn_dblclk(x, y);
-}
+});
 
-function on_mouse_lbtn_down(x, y) {
+addEventListener('on_mouse_lbtn_down', (x, y) => {
 	if (ppt.touchControl) panel.last_pressed_coord = {
 		x: x,
 		y: y
@@ -146,35 +149,35 @@ function on_mouse_lbtn_down(x, y) {
 	pop.lbtn_dn(x, y);
 	sbar.lbtn_dn(x, y);
 	ui.sz.y_start = y;
-}
+});
 
-function on_mouse_lbtn_up(x, y) {
+addEventListener('on_mouse_lbtn_up', (x, y) => {
 	pop.lbtn_up(x, y);
 	if (ppt.searchShow) search.lbtn_up();
 	but.lbtn_up(x, y);
 	sbar.lbtn_up();
-}
+});
 
-function on_mouse_leave() {
+addEventListener('on_mouse_leave', () => {
 	if (ui.style.topBarShow || ppt.sbarShow) but.leave();
 	sbar.leave();
 	pop.leave();
-}
+});
 
-function on_mouse_mbtn_dblclk(x, y, mask) {
+addEventListener('on_mouse_mbtn_dblclk', (x, y, mask) => {
 	pop.mbtnDblClickOrAltDblClick(x, y, mask, 'mbtn');
-}
+});
 
-function on_mouse_mbtn_down(x, y) {
+addEventListener('on_mouse_mbtn_down', (x, y) => {
 	pop.mbtn_dn(x, y);
-}
+});
 
-function on_mouse_mbtn_up(x, y, mask) {
+addEventListener('on_mouse_mbtn_up', (x, y, mask) => {
 	// hacks at default settings blocks on_mouse_mbtn_up, at least in windows; workaround configure hacks: main window > move with > caption only & ensure pseudo-caption doesn't overlap buttons
 	pop.mbtnUpOrAltClickUp(x, y, mask, 'mbtn');
-}
+});
 
-function on_mouse_move(x, y) {
+addEventListener('on_mouse_move', (x, y) => {
 	if (panel.m.x == x && panel.m.y == y) return;
 	pop.hand = false;
 	if (ui.style.topBarShow || ppt.sbarShow) but.move(x, y);
@@ -185,45 +188,77 @@ function on_mouse_move(x, y) {
 	ui.zoomDrag(x, y);
 	panel.m.x = x;
 	panel.m.y = y;
-}
+});
 
-function on_mouse_rbtn_up(x, y) {
+addEventListener('on_mouse_rbtn_up', (x, y) => {
 	if (y < panel.search.h && x > panel.search.x && x < panel.search.x + panel.search.w) {
 		if (ppt.searchShow) search.rbtn_up(x, y);
 	} else men.rbtn_up(x, y);
 	return true;
-}
+});
 
-function on_mouse_wheel(step) {
+addEventListener('on_mouse_wheel', (step) => {
 	pop.deactivateTooltip();
 	if (!vk.k('zoom')) sbar.wheel(step);
 	else ui.wheel(step);
-}
+});
 
-function on_notify_data(name, info) {
+addEventListener('on_notify_data', (name, info) => {
 	if (ppt.libSource == 2 && name != 'bio_imgChange') {
 		const panelSelectionPlaylists = ppt.panelSelectionPlaylist.split(/\s*\|\s*/);
-		panelSelectionPlaylists.some(v=> {
+		// Regorxxx <- Merge multiple panel sources
+		if (ppt.libSourceChained && panelSelectionPlaylists.length > 1) {
+			// Note this doesn't survive after panel reload, so source selections must be re-sent
+			if (!lib.listPerSource) { lib.listPerSource = {}; }
+			panelSelectionPlaylists.forEach(v => {
+				if (name == v) {
+					lib.listPerSource[v] = new FbMetadbHandleList(info);
+					lib.listPerSource[v].Sort();
+				}
+			});
+		}
+		// Regorxxx ->
+		panelSelectionPlaylists.some(v => {
 			if (name == v) {
-				lib.list = new FbMetadbHandleList(info);
+				// Regorxxx <- Merge multiple panel sources
+				if (ppt.libSourceChained && panelSelectionPlaylists.length > 1) {
+					lib.list = new FbMetadbHandleList();
+					Object.values(lib.listPerSource).forEach((handleList) => lib.list.MakeUnion(handleList));
+				} else {
+					lib.list = new FbMetadbHandleList(info);
+				}
+				// Regorxxx ->
 				if ($.equalHandles(lib.list.Convert(), lib.full_list.Convert())) return;
 				lib.full_list = lib.list.Clone();
-				ppt.lastPanelSelectionPlaylist = `${v} Cache`;
-				const pln = plman.FindOrCreatePlaylist(`${v} Cache`, false);
-				plman.ClearPlaylist(pln);
-				plman.InsertPlaylistItems(pln, 0, lib.list);
-				lib.searchCache = {};
-				pop.clearTree();
-				pop.cache = {
-					'standard': {},
-					'search': {},
-					'filter': {}
+				ppt.lastPanelSelectionPlaylist = `${v} 缓存`;
+				// Regorxxx <- Don't create cache playlists if possible
+				if (ppt.panelInternalCache) {
+					if (lib.list.SaveAs) {
+						$.buildPth(my_utils.packageInfo.Directories.Storage + '\\');
+						lib.list.SaveAs(my_utils.packageInfo.Directories.Storage + '\\' + ppt.lastPanelSelectionPlaylist + '.fpl');
+					}
+				} else {
+					const pln = plman.FindOrCreatePlaylist(ppt.lastPanelSelectionPlaylist, false);
+					plman.ClearPlaylist(pln);
+					plman.InsertPlaylistItems(pln, 0, lib.list);
 				}
-				lib.treeState(false, 2, null, 3);
-				ui.expandHandle = lib.list.Count ? lib.list[0] : null;
-				ui.on_playback_new_track();
-				lib.treeState(false, ppt.rememberTree);
-				return;		
+				if (!lib.initialised && ppt.panelInternalCache) { lib.initialise(lib.full_list); }
+				else {
+					lib.searchCache = {};
+					pop.clearTree();
+					pop.cache = {
+						'standard': {},
+						'search': {},
+						'filter': {}
+					};
+					lib.treeState(false, 2, null, 3);
+					ui.expandHandle = lib.list.Count ? lib.list[0] : null;
+					ui.on_playback_new_track();
+					lib.treeState(false, ppt.rememberTree);
+					if (ppt.libSourceChained) { pop.notifySelection(lib.list); } // Regorxxx <- Chained facets updates.
+				}
+				// Regorxxx ->
+				return;
 			}
 		});
 	}
@@ -238,7 +273,7 @@ function on_notify_data(name, info) {
 			ppt.themeBgImage = info.themeBgImage;
 			ppt.themeColour = info.themeColour;
 			on_colours_changed(true);
-			break;	
+			break;
 		case 'Sync col': {
 			if (!ppt.themed) break;
 			const themeLight = ppt.themeLight;
@@ -252,17 +287,171 @@ function on_notify_data(name, info) {
 			if (!ppt.themed) break;
 			sync.image(new GdiBitmap(info.image), info.id);
 			break;
+		// Regorxxx <- Don't create cache playlists if possible
+		case 'Library Tree: ask selection': {
+			if (!info.some((v) => v === window.Name)) { break; }
+			pop.notifySelection();
+			break;
+		}
+		// Regorxxx ->
+		// Regorxxx <- External integration
+		case 'Library Tree: Show now playing': {
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			pop.nowPlayingShow();
+			break;
+		}
+		case 'Library Tree: Show handle': {
+			if (!info || !info.handle) { break; }
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			const item = panel.list.Find(info.handle);
+			if (item !== -1) { pop.selShow(item); }
+			break;
+		}
+		case 'Library Tree: Switch show art':
+		case 'Library Tree: Show art':
+		case 'Library Tree: Show tree': {
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			if (name === 'Library Tree: Show album art' && panel.imgView) { break; }
+			if (name === 'Library Tree: Show tree' && !panel.imgView) { break; }
+			men.setPlaylist(4);
+			break;
+		}
+		case 'Library Tree: Switch show artists / albums':
+		case 'Library Tree: Show artists':
+		case 'Library Tree: Show albums': {
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			if (!panel.imgView && info && info.forceShowArt) { men.setPlaylist(4); }
+			if (name === 'Library Tree: Show albums' && ppt.artId != 4) { break; }
+			if (name === 'Library Tree: Show artists' && ppt.artId === 4) { break; }
+			ppt.artId = ppt.artId === 4 ? 0 : 4;
+			men.setPlaylist(5);
+			break;
+		}
+		case 'Library Tree: Switch art type': {
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			if (!panel.imgView && info && info.forceShowArt) { men.setPlaylist(4); }
+			let idx = -1;
+			const types = men.artTypes();
+			if (typeof info.artType !== 'undefined') { idx = types.findIndex((t) => t.toLowerCase() === info.artType.toLowerCase()); }
+			else if (typeof info.artIdx !== 'undefined' && info.artIdx >= -1 && info.artIdx < types.length) {
+				if (info.artIdx === -1) { idx = 0; }
+				else { idx = info.artIdx; }
+			}
+			if (idx !== -1) { men.setAlbumart(idx); }
+			break;
+		}
+		case 'Library Tree: Collapse all': {
+			if (info && info.window && !info.window.some((v) => v === window.Name)) { break; }
+			men.setTreeState(0);
+			break;
+		}
+		case 'Library Tree: Quicksearch': {
+			if (!info || typeof info.viewName === 'undefined' || !info.search.length) { break; }
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			info.search.split('').forEach((s) => on_char(s.charCodeAt(0)));
+			break;
+		}
+		case 'Library Tree: Search': {
+			if (!ppt.searchShow) { break; }
+			if (!info || typeof info.viewName === 'undefined' || !info.search.length) { break; }
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			info.search.split('').forEach((s) => search.on_char(s.charCodeAt(0), true));
+			search.on_char(vk.enter);
+			break;
+		}
+		case 'Library Tree: Clear': {
+			if (!ppt.searchShow) { break; }
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			search.clear();
+			break;
+		}
+		case 'Library Tree: Switch view': {
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			let idx = -1;
+			if (typeof info.viewName !== 'undefined') { idx = panel.grp.findIndex(v => v.name.trim().toLowerCase() === info.viewName.toLowerCase()); }
+			else if (typeof info.viewIdx !== 'undefined' && info.viewIdx >= -1 && info.viewIdx < panel.grp.length) {
+				if (info.viewIdx === -1) { idx = panel.grp.length - 1; }
+				else if (panel.grp[info.viewIdx].name.trim() !== 'separator') { idx = info.viewIdx; }
+			}
+			if (idx !== -1) { men.setView(idx); }
+			break;
+		}
+		case 'Library Tree: Switch filter': {
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			let idx = -1;
+			if (typeof info.filterName !== 'undefined') { idx = panel.dialogFiltGrps.findIndex(v => v.name.trim().toLowerCase() === info.filterName.toLowerCase()); }
+			else if (typeof info.filterIdx !== 'undefined' && info.filterIdx >= -1 && info.filterIdx < panel.dialogFiltGrps.length) {
+				if (info.filterIdx === -1) { idx = 0; }
+				else if (panel.dialogFiltGrps[info.filterIdx].name.trim() !== 'separator') { idx = info.filterIdx; }
+			}
+			if (idx !== -1) { panel.set('Filter', idx); }
+			break;
+		}
+		case 'Library Tree: Switch source': {
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			let idx = -1;
+			let plsIdx = -1;
+			// Source type
+			const types = men.sourceTypes();
+			if (typeof info.sourceName !== 'undefined') { idx = types.findIndex((t) => t.toLowerCase() === info.sourceName.toLowerCase()); }
+			else if (typeof info.sourceIdx !== 'undefined' && info.sourceIdx >= -1 && info.sourceIdx < types.length) {
+				if (info.sourceIdx === -1) { idx = 0; }
+				else { idx = info.sourceIdx; }
+			}
+			// Playlists
+			if (typeof info.sourcePlaylistName !== 'undefined') { plsIdx = plman.FindOrCreatePlaylist(info.sourcePlaylistName); }
+			else if (typeof info.sourcePlaylistIdx !== 'undefined' && info.sourcePlaylistIdx >= -1 && info.sourcePlaylistIdx > plman.PlaylistCount) {
+				if (info.sourcePlaylistIdx === -1) { plsIdx = plman.ActivePlaylist; }
+				else { plsIdx = info.sourcePlaylistIdx; }
+			}
+			// Panels
+			if (typeof info.sourcePanel !== 'undefined') {
+				ppt.panelSelectionPlaylist = info.sourcePanel;
+			}
+			// Set all
+			if (plsIdx !== -1) { men.setFixedPlaylist(plsIdx); }
+			if (idx !== -1) { men.setSource(idx); }
+			break;
+		}
+		case 'Library Tree: Switch statistics': {
+			if (info.window && !info.window.some((v) => v === window.Name)) { break; }
+			let idx = -1;
+			const types = men.statisticsTypes();
+			const customRe = / \[custom-\d \(avg\)\]/i;
+			if (typeof info.statisticsName !== 'undefined') {
+				const statsName = info.statisticsName.toLowerCase();
+				idx = types.findIndex((t) => {
+					t = t.toLowerCase(); // Match entire name, user label or Custom-X (avg) labels
+					return t === statsName || t.replace(customRe, '') === statsName || t === t.replace(customRe, '') + ' [' + statsName + ']';
+				});
+			} else if (typeof info.statisticsIdx !== 'undefined' && info.statisticsIdx >= -1 && info.statisticsIdx < types.length) {
+				if (info.statisticsIdx === -1) { idx = 0; }
+				else { idx = info.statisticsIdx; }
+			}
+			if (idx !== -1) { men.setSource(idx); }
+			break;
+		}
+		// Regorxxx ->
 	}
-	if (ui.id.local && name.startsWith('opt_')) {
-		const clone = typeof info === 'string' ? String(info) : info;
-		on_notify(name, clone);
-	}
-}
+	// Regorxxx <- Code cleanup. Remove ui.id.local references ->
+});
 
-function on_paint(gr) {
+addEventListener('on_paint', (gr) => {
+	// Regorxxx <- Don't create cache playlists if possible
 	if (!lib.initialised) {
-		lib.initialise();
-	}
+		if (ppt.libSource === 2 && ppt.panelInternalCache) {
+			const cache = my_utils.packageInfo.Directories.Storage + '\\' + ppt.lastPanelSelectionPlaylist + '.fpl';
+			if (utils.IsFile(cache)) {
+				lib.cacheId = fb.AddLocationsAsync([cache]);
+			} else {
+				const panelSelectionPlaylists = ppt.panelSelectionPlaylist.split(/\s*\|\s*/);
+				window.NotifyOthers('Library Tree: ask selection', panelSelectionPlaylists);
+			}
+		} else {
+			lib.initialise(void (0), true);
+		}
+	} else if (ppt.get('Library Tree Dialog Box Reopen')) { ppt.set('Library Tree Dialog Box Reopen', false); panel.open(); } // Regorxxx <- Fix HTML options panel error on panel reload when changing current library view or filter ->
+	// Regorxxx ->
 	ui.draw(gr);
 	lib.checkTree();
 	img.draw(gr);
@@ -272,25 +461,25 @@ function on_paint(gr) {
 	sbar.draw(gr);
 	but.draw(gr);
 	find.draw(gr);
-}
+});
 
-function on_playback_new_track(handle) {
-	lib.checkFilter();
+addEventListener('on_playback_new_track', (handle) => {
+	lib.checkFilter('playback'); // Regorxxx <- Improve filter checking based on events. Search text also triggers updates to filtering ->
 	pop.getNowplaying(handle);
 	if (!ppt.recItemImage || ppt.libSource != 2) ui.on_playback_new_track(handle);
-}
+});
 
-function on_playback_stop(reason) {
+addEventListener('on_playback_stop', (reason) => {
 	if (reason == 2) return;
 	pop.getNowplaying('', true);
 	on_item_focus_change();
-}
+});
 
-function on_playback_queue_changed() {
+addEventListener('on_playback_queue_changed', () => {
 	on_queue_changed();
-}
+});
 
-function on_playlists_changed() {
+addEventListener('on_playlists_changed', () => {
 	men.playlists_changed();
 	if ($.pl_active != plman.ActivePlaylist) $.pl_active = plman.ActivePlaylist;
 	let fixedPlaylistIndex = -1;
@@ -303,49 +492,49 @@ function on_playlists_changed() {
 			lib.playlist_update();
 		}
 	}
-}
+});
 
-function on_playlist_items_added(playlistIndex) {
+addEventListener('on_playlist_items_added', (playlistIndex) => {
 	if (ppt.fixedPlaylist) {
 		const fixedPlaylistIndex = plman.FindPlaylist(ppt.fixedPlaylistName);
 		if (playlistIndex == fixedPlaylistIndex) {
 			lib.playlist_update(playlistIndex);
-			return
+			return;
 		}
 	}
 	if (!ppt.libSource && playlistIndex == $.pl_active) {
 		lib.playlist_update(playlistIndex);
 
 	}
-}
+});
 
-function on_playlist_items_removed(playlistIndex) {
+addEventListener('on_playlist_items_removed', (playlistIndex) => {
 	if (ppt.fixedPlaylist) {
 		const fixedPlaylistIndex = plman.FindPlaylist(ppt.fixedPlaylistName);
 		if (playlistIndex == fixedPlaylistIndex) {
 			lib.playlist_update(playlistIndex);
-			return
+			return;
 		}
 	}
 
 	if (!ppt.libSource && playlistIndex == $.pl_active) {
 		lib.playlist_update(playlistIndex);
 	}
-}
+});
 
-function on_playlist_items_reordered(playlistIndex) {
+addEventListener('on_playlist_items_reordered', (playlistIndex) => {
 	if (!ppt.libSource && playlistIndex == $.pl_active) {
 		lib.playlist_update(playlistIndex);
 	}
-}
+});
 
-function on_playlist_switch() {
+addEventListener('on_playlist_switch', () => {
 	$.pl_active = plman.ActivePlaylist;
 	if (!ppt.libSource) {
 		lib.playlist_update();
 	}
 	ui.focus_changed();
-}
+});
 
 const on_queue_changed = $.debounce(() => {
 	if (ppt.itemShowStatistics != 7) return;
@@ -359,25 +548,26 @@ const on_queue_changed = $.debounce(() => {
 		'standard': {},
 		'search': {},
 		'filter': {}
-	}
+	};
 	panel.treePaint();
-	}, 250, {
-	leading:  true,
+}, 250, {
+	leading: true,
 	trailing: true
 });
 
-function on_script_unload() {
+addEventListener('on_script_unload', () => {
 	but.on_script_unload();
+	if (ppt.searchShow) { search.on_script_unload(); } // Regorxxx <- Tooltip over search input box
 	pop.deactivateTooltip();
-}
+});
 
-function on_selection_changed() {
+addEventListener('on_selection_changed', () => {
 	if (!panel.setSelection()) return;
 	setSelection(fb.GetSelection());
-}
+});
 
 const windowMetricsPath = `${fb.ProfilePath}settings\\themed\\windowMetrics.json`;
-function on_size() {
+addEventListener('on_size', () => {
 	ui.w = window.Width;
 	ui.h = window.Height;
 	if (!ui.w || !ui.h) return;
@@ -385,10 +575,10 @@ function on_size() {
 	pop.deactivateTooltip();
 	tooltip.SetMaxWidth(Math.max(ui.w, 800));
 	ui.blurReset();
-	ui.calcText(true)
+	ui.calcText(true);
 
 	if (ppt.themed && ppt.theme) {
-		const themed_image = `${fb.ProfilePath}settings\\themed\\themed_image.bmp`;	
+		const themed_image = `${fb.ProfilePath}settings\\themed\\themed_image.bmp`;
 		if ($.file(themed_image)) sync.image(gdi.Image(themed_image));
 	}
 
@@ -402,9 +592,9 @@ function on_size() {
 	windowMetrics[window.Name] = {
 		w: ui.w,
 		h: ui.h
-	}
+	};
 	$.save(windowMetricsPath, JSON.stringify(windowMetrics, null, 3), true);
-}
+});
 
 function setSelection(handle) {
 	if (!handle || !panel.list.Count) return;
@@ -417,4 +607,54 @@ function setSelection(handle) {
 		if (!panel.imgView) pop.focusShow(idx);
 		else pop.showItem(idx, 'focus');
 	}
-}
+};
+
+// Regorxxx <- Don't create cache playlists if possible
+addEventListener('on_locations_added', (taskId, handleList) => {
+	if (taskId === lib.cacheId) {
+		lib.cache = handleList.Clone();
+		if (ppt.libSource === 2) { lib.initialise(lib.cache); }
+	}
+});
+// Regorxxx ->
+
+// Regorxxx <- Drag n' drop to search box
+// Drag n drop to copy/move tracks to playlists (only files from foobar2000)
+addEventListener('on_drag_enter', (action, x, y, mask) => { // eslint-disable-line no-unused-vars
+	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
+	// Avoid things outside foobar2000
+	if (action.Effect === dropEffect.none || (action.Effect & dropEffect.link) === dropEffect.link) { action.Effect = dropEffect.none; }
+});
+
+addEventListener('on_drag_leave', (action, x, y, mask) => {
+	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
+	on_mouse_leave(x, y, mask);
+});
+
+addEventListener('on_drag_over', (action, x, y, mask) => {
+	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
+	// Avoid things outside foobar2000
+	if (action.Effect === dropEffect.none || (action.Effect & dropEffect.link) === dropEffect.link) { action.Effect = dropEffect.none; return; }
+	// Move playlist index only while not pressing alt
+	on_mouse_move(x, y, mask);
+	// Set effects
+	action.Effect = dropEffect.copy;
+	action.Text = search.getDragDropTooltipText(ppt.searchDragMethod, mask);
+});
+
+addEventListener('on_drag_drop', (action, x, y, mask) => {
+	if (!ui.w || !ui.h || !ppt.searchShow || ppt.searchDragMethod === -1) { return; }
+	// Avoid things outside foobar2000
+	if (action.Effect === dropEffect.none) { return; }
+	action.Effect = dropEffect.none; // Forces not sending things to a playlist
+	const selItems = fb.GetSelections(1);
+	if (selItems && selItems.Count) {
+		const input = search.getDragDropExpression(selItems, ppt.searchDragMethod, mask);
+		search.clear();
+		if (input.length) {
+			input.split('').forEach((s) => search.on_char(s.charCodeAt(0), true));
+			search.on_char(vk.enter);
+		}
+	}
+});
+// Regorxxx ->

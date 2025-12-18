@@ -1,8 +1,11 @@
-﻿'use strict';
+'use strict';
+/* global panel:readable, pop:readable */
+
+/* exported Timers */
 
 class Timers {
 	constructor() {
-		['cursor', 'jsearch1', 'jsearch2', 'tt'].forEach(v => this[v] = {
+		['cursor', 'jsearch1', 'jsearch2', 'jsearch3', 'tt'].forEach(v => this[v] = { // Regorxxx <- Fixed quick-search on same letter
 			id: null
 		});
 	}

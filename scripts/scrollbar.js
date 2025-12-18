@@ -1,4 +1,7 @@
-﻿'use strict';
+'use strict';
+/* global ppt:readable, $:readable, panel:readable, pop:readable, lib:readable, ui:readable, img:readable, sbar:readable, but:readable, men:readable, vk:readable, ease:readable */
+
+/* exported Scrollbar */
 
 class Scrollbar {
 	constructor() {
@@ -41,7 +44,7 @@ class Scrollbar {
 			h: 0,
 			timer: null,
 			y: 0
-		}
+		};
 
 		this.initial = {
 			drag: {
@@ -51,24 +54,24 @@ class Scrollbar {
 			scr: 1,
 			x: -1,
 			y: -1
-		}
+		};
 
 		this.narrow = {
 			show: ppt.sbarShow == 1 ? true : false,
 			x: 0
-		}
+		};
 
 		this.row = {
 			count: 0,
 			h: 0
-		}
+		};
 
 		this.scrollbar = {
 			cur_zone: false,
 			height: 0,
 			travel: 0,
 			zone: false
-		}
+		};
 
 		this.touch = {
 			dn: false,
@@ -86,16 +89,16 @@ class Scrollbar {
 			ticker: null,
 			timestamp: 0,
 			velocity: 1
-		}
+		};
 
 		this.duration = {
 			drag: 200,
 			inertia: ppt.durationTouchFlick,
 			full: ppt.durationScroll
-		}
+		};
 
-		this.duration.scroll = Math.round(this.duration.full * 0.8)
-		this.duration.step = Math.round(this.duration.full * 2 / 3)
+		this.duration.scroll = Math.round(this.duration.full * 0.8);
+		this.duration.step = Math.round(this.duration.full * 2 / 3);
 		this.duration.bar = this.duration.full;
 		this.duration.barFast = this.duration.step;
 
@@ -239,7 +242,7 @@ class Scrollbar {
 			}
 			const letter_w = gr.CalcTextWidth(letter, ui.font.main) + img.letter.w;
 			const w1 = Math.min(letter_w, ui.w - img.panel.x - img.letter.w);
-			const w2 = Math.min(letter_w, ui.w - img.panel.x) + 1; 
+			const w2 = Math.min(letter_w, ui.w - img.panel.x) + 1;
 			if (img.style.vertical) gr.FillSolidRect(0, this.y + this.bar.y + this.bar.h / 2 - img.text.h / 2, w2, img.text.h + 2, ui.col.bg6);
 			if (img.style.vertical) gr.FillSolidRect(0, this.y + this.bar.y + this.bar.h / 2 - img.text.h / 2, w2, img.text.h + 2, ui.col.bg3);
 			if (img.style.vertical) gr.GdiDrawText(letter, ui.font.main, ui.col.text, ui.l.w + img.letter.w / 2, this.y + this.bar.y + this.bar.h / 2 - img.text.h / 2, w1, img.text.h, panel.lc);
@@ -258,6 +261,12 @@ class Scrollbar {
 				if (y < this.bar.y) dir = 1; // above bar
 				else if (y > this.bar.y + this.bar.h) dir = -1; // below bar
 				if (y < this.bar.y || y > this.bar.y + this.bar.h) this.shiftPage(dir, this.nearestY(y));
+				// Regorxxx <- Double click scrollbar
+				else { // on bar
+					if (fb.IsPlaying && this.nowp !== -1) { pop.nowPlayingShow(); }
+					else { pop.selShow(); }
+				}
+				// Regorxxx ->
 				break;
 			case !this.vertical:
 				if (y < 0 || y > this.h || x < 0 || x > this.w || this.row.count <= this.rows_drawn) return;
@@ -265,6 +274,12 @@ class Scrollbar {
 				if (x < this.bar.x) dir = 1; // above bar
 				else if (x > this.bar.x + this.bar.h) dir = -1; // below bar
 				if (x < this.bar.x || x > this.bar.x + this.bar.h) this.shiftPage(dir, this.nearestX(x));
+				// Regorxxx <- Double click scrollbar
+				else { // on bar
+					if (fb.IsPlaying && this.nowp !== -1) { pop.nowPlayingShow(); }
+					else { pop.selShow(); }
+				}
+				// Regorxxx ->
 				break;
 		}
 	}
@@ -382,10 +397,18 @@ class Scrollbar {
 		// panel info
 		if (this.vertical) this.narrow.x = this.x + this.w - $.clamp(ui.sbar.narrowWidth, 5, this.w);
 		else this.narrow.y = this.y + this.h - $.clamp(ui.sbar.narrowWidth, 5, this.h);
-		panel.tree.w = ui.w - 
-		Math.max(ppt.sbarShow && this.scrollable_lines > 0 ? (!ppt.countsRight && !ppt.itemShowStatistics) || ppt.facetView ? ui.sbar.sp + ui.sz.sel : 
-		ppt.sbarShow == 2 ? ui.sbar.sp + ui.sz.margin : 
-		ppt.sbarShow == 1 ? (ui.w - this.narrow.x) + ui.sz.marginRight + Math.max(this.w - 11, 0) : ui.sz.sel : ui.sz.sel, ui.sz.margin);
+		panel.tree.w = ui.w - Math.max(
+			ppt.sbarShow && this.scrollable_lines > 0
+				? (!ppt.countsRight && !ppt.itemShowStatistics) || ppt.facetView
+					? ui.sbar.sp + ui.sz.sel
+					: ppt.sbarShow == 2
+						? ui.sbar.sp + ui.sz.margin
+						: ppt.sbarShow == 1
+							? (ui.w - this.narrow.x) + ui.sz.marginRight + Math.max(this.w - 11, 0)
+							: ui.sz.sel
+				: ui.sz.sel,
+			ui.sz.margin
+		);
 		pop.id = ui.id.tree + ppt.fullLineSelection + panel.tree.w + panel.imgView + ppt.albumArtLabelType + ppt.albumArtFlipLabels + ppt.albumArtFlowMode;
 		panel.tree.stripe.w = ppt.sbarShow == 2 && this.scrollable_lines > 0 ? ui.w - ui.sbar.sp - ui.sz.pad : ui.w;
 		panel.tree.sel.w = ppt.sbarShow == 2 && this.scrollable_lines > 0 ? ui.w - ui.sbar.sp - ui.sz.pad * 2 : ui.w - ui.sz.pad * 2;
@@ -581,11 +604,11 @@ class Scrollbar {
 			case 0:
 				switch (ui.sbar.col) {
 					case 0:
-						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i);
-						this.col.max = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, 192), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, 192);
+						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i);
+						this.col.max = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, 192), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, 192);
 						break;
 					case 1:
-						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(ui.col.text & RGBA(255, 255, 255, this.alpha + i), ui.col.bg) : ui.col.text & RGBA(255, 255, 255, this.alpha + i);
+						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(ui.col.text & $.RGBA(255, 255, 255, this.alpha + i), ui.col.bg) : ui.col.text & $.RGBA(255, 255, 255, this.alpha + i);
 						this.col.max = opaque ? $.RGBAtoRGB(ui.col.text & 0x99ffffff, ui.col.bg) : ui.col.text & 0x99ffffff;
 						break;
 				}
@@ -593,13 +616,13 @@ class Scrollbar {
 			case 1:
 				switch (ui.sbar.col) {
 					case 0:
-						this.col.bg = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, 15), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, 15);
-						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i);
-						this.col.max = opaque ? $.RGBAtoRGB(RGBA(ui.col.t, ui.col.t, ui.col.t, 192), ui.col.bg) : RGBA(ui.col.t, ui.col.t, ui.col.t, 192);
+						this.col.bg = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, 15), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, 15);
+						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, this.alpha + i);
+						this.col.max = opaque ? $.RGBAtoRGB($.RGBA(ui.col.t, ui.col.t, ui.col.t, 192), ui.col.bg) : $.RGBA(ui.col.t, ui.col.t, ui.col.t, 192);
 						break;
 					case 1:
 						this.col.bg = opaque ? $.RGBAtoRGB(ui.col.text & 0x15ffffff, ui.col.bg) : ui.col.text & 0x15ffffff;
-						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(ui.col.text & RGBA(255, 255, 255, this.alpha + i), ui.col.bg) : ui.col.text & RGBA(255, 255, 255, this.alpha + i);
+						for (let i = 0; i < this.alpha2 - this.alpha + 1; i++) this.col[this.alpha + i] = opaque ? $.RGBAtoRGB(ui.col.text & $.RGBA(255, 255, 255, this.alpha + i), ui.col.bg) : ui.col.text & $.RGBA(255, 255, 255, this.alpha + i);
 						this.col.max = opaque ? $.RGBAtoRGB(ui.col.text & 0x99ffffff, ui.col.bg) : ui.col.text & 0x99ffffff;
 						break;
 				}
@@ -663,7 +686,7 @@ class Scrollbar {
 			panel.last_pressed_coord = {
 				x: -1,
 				y: -1
-			}
+			};
 		}
 		elapsed = now - this.touch.timestamp;
 		if (initial) elapsed = Math.max(elapsed, 32);

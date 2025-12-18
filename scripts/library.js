@@ -1,4 +1,6 @@
 ﻿'use strict';
+/* global panel:readable, ppt:readable, $:readable, sbar:readable, pop:readable, img:readable, but:readable, lib:readable, search:readable, setSelection:readable, ui:readable */
+/* exported Library*/
 
 class Library {
 	constructor() {
@@ -8,11 +10,16 @@ class Library {
 		this.expand = [];
 		this.filterQuery = '';
 		this.filterQueryID = 'N/A';
+		this.searchQueryID = 'N/A'; // Regorxxx <- Don't update search if possible ->
 		this.full_list = new FbMetadbHandleList();
 		this.full_list_need_sort = false;
 		this.initialised = false;
 		this.libNode = [];
 		this.list = new FbMetadbHandleList();
+		// Regorxxx <- Don't create cache playlists if possible
+		this.cacheId = null;
+		this.cache = null;
+		// Regorxxx ->
 		this.noListUpd = false;
 		this.none = '';
 		this.node = [];
@@ -58,7 +65,7 @@ class Library {
 			if (panel.search.txt.length > 2) window.NotifyOthers(window.Name, !lib.list.Count ? lib.list : panel.list);
 			else if (!panel.search.txt.length) pop.notifySelection();
 			if (ppt.searchSend != 2) return;
-			if (panel.search.txt) pop.load(panel.list, false, false, false, true, false);
+			if (panel.search.txt) pop.load({ handleList: panel.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 			else plman.ClearPlaylist(plman.FindOrCreatePlaylist(ppt.libPlaylist.replace(/%view_name%/i, panel.viewName), false));
 		}, 333);
 
@@ -71,7 +78,7 @@ class Library {
 			if (panel.search.txt.length > 2) window.NotifyOthers(window.Name, !lib.list.Count ? lib.list : panel.list);
 			else if (!panel.search.txt.length) pop.notifySelection();
 			if (ppt.searchSend != 2) return;
-			pop.load(panel.list, false, false, false, true, false);
+			pop.load({ handleList: panel.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
 		}, 500);
 
 		this.checkView();
@@ -94,19 +101,43 @@ class Library {
 					let newSearchItems = new FbMetadbHandleList();
 					this.validSearch = true;
 					try {
-						newSearchItems = fb.GetQueryItems(handleList, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
-					} catch (e) {
+						// Regorxxx <- RegExp library search. Support for custom TF expression
+						const isRegExp = search.isSearchRegExp();
+						const tags = isRegExp
+							? panel.folderView
+								? ['%PATH%']
+								: $.getTagsFromTf(panel.view)
+							: null;
+						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? this.processCustomTf(panel.search.txt)
+							: panel.search.txt;
+						this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? searchText
+							: 'N/A';
+						newSearchItems = isRegExp
+							? $.applyRegExp(searchText, handleList, tags)
+							: fb.GetQueryItems(
+								handleList,
+								!this.filterQuery.includes('$searchtext')
+									? searchText
+									: this.filterQuery.replace(/\$searchtext/g, searchText)
+							);
+						// Regorxxx ->
+					} catch (e) { // eslint-disable-line no-unused-vars
 						this.validSearch = false;
 					}
 					this.binaryInsert(panel.folderView, newSearchItems, panel.list, this.searchNode);
 					if (!panel.list.Count) {
 						pop.clearTree();
 						sbar.setRows(0);
-						this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+						this.none = this.validSearch ? '无匹配项' : '无效的搜索表达式';
 						panel.treePaint();
 						this.noListUpd = true;
 					}
-				} else panel.list = this.list;
+				} else {
+					panel.list = this.list;
+					this.searchQueryID = 'N/A'; // Regorxxx <- Don't update search if possible ->
+				}
 				break;
 			}
 			default:
@@ -143,8 +174,29 @@ class Library {
 					let newSearchItems = new FbMetadbHandleList();
 					this.validSearch = true;
 					try {
-						newSearchItems = fb.GetQueryItems(handleList, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
-					} catch (e) {
+						// Regorxxx <- RegExp library search. Support for custom TF expression
+						const isRegExp = search.isSearchRegExp();
+						const tags = isRegExp
+							? panel.folderView
+								? ['%PATH%']
+								: $.getTagsFromTf(panel.view)
+							: null;
+						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? this.processCustomTf(panel.search.txt)
+							: panel.search.txt;
+						this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? searchText
+							: 'N/A';
+						newSearchItems = isRegExp
+							? $.applyRegExp(searchText, handleList, tags)
+							: fb.GetQueryItems(
+								handleList,
+								!this.filterQuery.includes('$searchtext')
+									? searchText
+									: this.filterQuery.replace(/\$searchtext/g, searchText)
+							);
+						// Regorxxx ->
+					} catch (e) { // eslint-disable-line no-unused-vars
 						this.validSearch = false;
 					}
 					panel.list.InsertRange(panel.list.Count, newSearchItems);
@@ -171,11 +223,14 @@ class Library {
 					if (!panel.list.Count) {
 						pop.clearTree();
 						sbar.setRows(0);
-						this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+						this.none = this.validSearch ? '无匹配项' : '无效的搜索表达式';
 						panel.treePaint();
 						this.noListUpd = true;
 					}
-				} else panel.list = this.list;
+				} else {
+					panel.list = this.list;
+					this.searchQueryID = 'N/A'; // Regorxxx <- Don't update search if possible ->
+				}
 				break;
 		}
 	}
@@ -198,7 +253,7 @@ class Library {
 							i = this.list.Find(h);
 							if (i != -1) this.format(items[j], panel.splitter, i, this.libNode);
 						});
-						if (!this.list.Count) this.none = 'Nothing found';
+						if (!this.list.Count) this.none = '无匹配项';
 						break;
 					}
 					default:
@@ -207,7 +262,7 @@ class Library {
 							i = this.list.Find(h);
 							if (i != -1) this.format(items[j], '\\', i, this.libNode);
 						});
-						if (!this.list.Count) this.none = 'Nothing found';
+						if (!this.list.Count) this.none = '无匹配项';
 						break;
 				}
 		}
@@ -298,54 +353,56 @@ class Library {
 		return true;
 	}
 
-	checkFilter() {
+	// Regorxxx <- Improve filter checking based on events. Search text also triggers updates to filtering.
+	checkFilter(type) {
 		pop.cache.filter = {};
 		pop.cache.search = {};
 		this.searchCache = {};
-		if (panel.filter.mode[ppt.filterBy].type.match(/\$nowplaying{(.+?)}/)) {
-			this.getFilterQuery();
-			if (this.filterQuery != this.filterQueryID) {
-				if (!ppt.rememberTree && !ppt.reset) this.logTree();
-				else if (ppt.rememberTree) this.logFilter();
-				if (panel.search.txt) lib.upd_search = true;
-				this.getLibrary();
-				this.rootNodes(!ppt.reset ? 1 : 0, true);
-				if (!pop.notifySelection())  {
-					const list = !panel.search.txt.length || !lib.list.Count ? lib.list : panel.list;
-					window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
+		// Regorxxx <- Merge now playing and selected as fallback.
+		[
+			...(type === 'playback' || !type ? [/\$nowplaying{(.+?)}/] : []),
+			...(type === 'selection' || !type ? [/\$selected{(.+?)}/] : []),
+			/\$nowplayingorselected{(.+?)}/
+		].filter(Boolean).some((re) => {
+			const bSearchMatch = !ppt.searchEnter && ppt.searchRefreshTf && panel.search.txt.match(re);
+			const bFilterMatch = panel.filter.mode[ppt.filterBy].type.match(re);
+			if (bFilterMatch || bSearchMatch) {
+				if (bFilterMatch) { this.getFilterQuery(); }
+				const bFilterChanged = bFilterMatch && this.filterQuery !== this.filterQueryID;
+				const bSearchChanged = bSearchMatch && this.processCustomTf(panel.search.txt) !== this.searchQueryID;
+				if (bFilterChanged || bSearchChanged) {
+					if (!ppt.rememberTree && !ppt.reset) this.logTree();
+					else if (ppt.rememberTree) this.logFilter();
+					if (panel.search.txt) lib.upd_search = true;
+					this.getLibrary();
+					this.rootNodes(!ppt.reset ? 1 : 0, true);
+					if (!pop.notifySelection()) {
+						const list = !panel.search.txt.length || !lib.list.Count ? lib.list : panel.list;
+						window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
+					}
+					if (ppt.searchSend == 2 && panel.search.txt.length) pop.load({ handleList: panel.list, bAddToPls: false, bAutoPlay: false, bUseDefaultPls: true, bInsertToPls: false }); // Regorxxx <- Code cleanup ->
+					pop.checkAutoHeight();
+					return true;
 				}
-				if (ppt.searchSend == 2 && panel.search.txt.length) pop.load(panel.list, false, false, false, true, false);
-				pop.checkAutoHeight();
 			}
-		}
-		if (panel.filter.mode[ppt.filterBy].type.match(/\$selected{(.+?)}/)) {
-			this.getFilterQuery();
-			if (this.filterQuery != this.filterQueryID) {
-				if (!ppt.rememberTree && !ppt.reset) this.logTree();
-				else if (ppt.rememberTree) this.logFilter();
-				if (panel.search.txt) lib.upd_search = true;
-				this.getLibrary();
-				this.rootNodes(!ppt.reset ? 1 : 0, true);
-				if (!pop.notifySelection())  {
-					const list = !panel.search.txt.length || !lib.list.Count ? lib.list : panel.list;
-					window.NotifyOthers(window.Name, ppt.filterBy ? list : new FbMetadbHandleList());
-				}
-				if (ppt.searchSend == 2 && panel.search.txt.length) pop.load(panel.list, false, false, false, true, false);
-				pop.checkAutoHeight();
-			}
-		}
+			return false;
+		});
+		// Regorxxx ->
 	}
 
 	checkLines(arr, arrExpanded) {
 		if (ppt.albumArtGrpLevel) return; // user set
-		const defaultView = !panel.folderView ? panel.defaultViews.indexOf(panel.grp[ppt.viewBy].type.trim()) : 6;
-		if (defaultView != -1) {
-			panel.lines = [
-				[2, 2, 2, 1, 1][ppt.artId],
-				[2, 2, 2, 1, 1][ppt.artId], 1, 1, 1, 1, 1
-			][defaultView];
+		// Regorxxx <- Improve view patterns. Fixed multiple bugs on automatic group handling for default view patterns and cases where a default group was not found.
+		const view = panel.grp[ppt.viewBy].type.trim();
+		const defaultView = !panel.folderView
+			? panel.defaultViews.includes(view)
+			: panel.defaultViews.length - 1;
+		if (defaultView) {
+			const lines = (panel.defViewPatterns.find((v) => v.type === view) || { lines: 1 }).lines;
+			panel.lines = Array.isArray(lines) ? lines[ppt.artId] : lines;
 			return;
 		}
+		// Regorxxx ->
 		const lengths = arr.map(v => v.length);
 		const avg = $.average(lengths);
 		if (avg < (!arrExpanded ? 3 : 2)) panel.lines = 1;
@@ -360,9 +417,9 @@ class Library {
 		handleList.Convert().forEach(h => {
 			const i = this.full_list.Find(h);
 			if (i != -1) {
-				['standard', 'search','filter'].forEach(w => {
+				['standard', 'search', 'filter'].forEach(w => {
 					let keys = Object.keys(pop.cache[w]);
-					let j = keys.length
+					let j = keys.length;
 					while (j--) if (pop.cache[w][keys[j]] && pop.cache[w][keys[j]].items.includes(i)) delete pop.cache[w][keys[j]];
 				});
 			}
@@ -390,7 +447,7 @@ class Library {
 	}
 
 	checkView() {
-		const startIX = ppt.rememberView ? panel.grp.length : 0
+		const startIX = ppt.rememberView ? panel.grp.length : 0;
 		for (let i = startIX; i < 100; i++) {
 			ppt.set(`Tree.View ${$.padNumber(i, 2) + (!panel.imgView ? '' : ' Image')}`, null); // clear non-existent
 			ppt.set(`Tree.View ${$.padNumber(i, 2) + (!panel.imgView ? ' Search' : ' Image Search')}`, null); // clear non-existent
@@ -423,6 +480,14 @@ class Library {
 				if (fb.IsPlaying && fb.PlaybackLength <= 0) return tfo.Eval();
 				handle = fb.GetFocusItem();
 				return handle ? tfo.EvalWithMetadb(handle) : '';
+			// Regorxxx <- Merge now playing and selected as fallback
+			case 'nowplayingorselected':
+				if (!n) return '';
+				tfo = FbTitleFormat(n);
+				if (fb.IsPlaying && fb.PlaybackLength <= 0) return tfo.Eval();
+				handle = fb.IsPlaying ? fb.GetNowPlaying() : fb.GetFocusItem();
+				return handle ? tfo.EvalWithMetadb(handle) : '';
+			// Regorxxx ->
 		}
 	}
 
@@ -442,17 +507,29 @@ class Library {
 		node.splice(i, 0, item);
 	}
 
+	// Regorxxx <- Code cleanup. Expose TF formatting for arbitrary input
 	getFilterQuery() {
-		this.filterQuery = panel.filter.mode[ppt.filterBy].type;
-		while (this.filterQuery.includes('$nowplaying{')) {
-			const q = this.filterQuery.match(/\$nowplaying{(.+?)}/);
-			this.filterQuery = this.filterQuery.replace(q[0], this.eval(q[1], 'nowplaying') || `~#No Value For Item#~`);
-		}
-		while (this.filterQuery.includes('$selected{')) {
-			const q = this.filterQuery.match(/\$selected{(.+?)}/);
-			this.filterQuery = this.filterQuery.replace(q[0], this.eval(q[1], 'selected') || `~#No Value For Item#~`);
-		}
+		this.filterQuery = this.processCustomTf(panel.filter.mode[ppt.filterBy].type);
 	}
+
+	processCustomTf(s) {
+		while (s.includes('$nowplaying{')) {
+			const q = s.match(/\$nowplaying{(.+?)}/);
+			s = s.replace(q[0], this.eval(q[1], 'nowplaying') || `~#项目值为空#~`);
+		}
+		while (s.includes('$selected{')) {
+			const q = s.match(/\$selected{(.+?)}/);
+			s = s.replace(q[0], this.eval(q[1], 'selected') || `~#项目值为空#~`);
+		}
+		// Regorxxx <- Merge now playing and selected as fallback
+		while (s.includes('$nowplayingorselected{')) {
+			const q = s.match(/\$nowplayingorselected{(.+?)}/);
+			s = s.replace(q[0], this.eval(q[1], 'nowplayingorselected') || `~#项目值为空#~`);
+		}
+		// Regorxxx ->
+		return s;
+	}
+	// Regorxxx ->
 
 	getLibrary(items) {
 		this.empty = '';
@@ -467,18 +544,23 @@ class Library {
 			}
 		}
 		if (!items) {
-			this.list = [plman.GetPlaylistItems($.pl_active), !ppt.fixedPlaylist ? fb.GetLibraryItems() : plman.GetPlaylistItems(fixedPlaylistIndex), plman.GetPlaylistItems(plman.FindPlaylist(ppt.lastPanelSelectionPlaylist))][ppt.libSource];
+			// Regorxxx <- Optimize library loading. Previously all items were retrieved and then source chosen! Don't create cache playlists if possible
+			switch (ppt.libSource) {
+				case 0: this.list = plman.GetPlaylistItems($.pl_active); break;
+				case 1: this.list = !ppt.fixedPlaylist ? fb.GetLibraryItems() : plman.GetPlaylistItems(fixedPlaylistIndex); break;
+				case 2: this.list = this.cache || plman.GetPlaylistItems(plman.FindPlaylist(ppt.lastPanelSelectionPlaylist)); break;
+			}
+			// Regorxxx ->
 			if (ppt.recItemImage && ppt.libSource == 2) ui.expandHandle = this.list.Count ? this.list[0] : null;
 			if (ppt.libSource != 2) this.full_list = this.list.Clone();
 		}
 		if (ppt.libSource && (!this.list.Count || !fb.IsLibraryEnabled() && ppt.libSource == 1)) {
 			pop.clearTree();
 			sbar.setRows(0);
-			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? (!this.list.Count && this.v2_init ? 'Loading...\n\n' : 'Nothing to show\n\nClick here to configure the media library') : 'Nothing found\n\n') : 'Nothing received';
+			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? (!this.list.Count && this.v2_init ? '加载中...\n\n' : '媒体库为空，暂无内容显示\n\n点击此处配置媒体库') : '没有项目\n\n') : '未接收到任何内容';
 			panel.treePaint();
 			return;
 		}
-
 		pop.libItems = true;
 		panel.forcePaint();
 		if (ppt.filterBy) {
@@ -492,7 +574,7 @@ class Library {
 		if (!this.list.Count) {
 			pop.clearTree();
 			sbar.setRows(0);
-			this.none = 'Nothing found';
+			this.none = '没有项目';
 			panel.treePaint();
 			return;
 		}
@@ -512,39 +594,42 @@ class Library {
 		return false;
 	}
 
-	initialise(handleList) {
+	initialise(handleList, bNotify) { // Regorxxx <- Don't create cache playlists if possible
+		const profiler = ppt.logLibProfiler ? new FbProfiler('Library Tree：媒体库加载') : null; // Regorxxx <- Library profiling
 		lib.initialised = true;
 		this.load(handleList);
 		this.getLibrary(true);
 		this.rootNodes(ppt.rememberTree, ppt.process);
+		if (bNotify && ppt.panelInternalCache) { setTimeout(() => pop.notifySelection(), 1000); } // Regorxxx <- Don't create cache playlists if possible
+		if (profiler) { profiler.Print(this.list.Count + ' 首音轨 ->'); } // Regorxxx <- Library profiling
 	}
 
 	isMainChanged(handleList) {
 		let i, items;
 		let tree_type = !panel.folderView ? 0 : 1;
-			switch (tree_type) { // check for changes to items; any change updates all
-				case 0: {
-					let tfo = FbTitleFormat(panel.view);
-					items = tfo.EvalWithMetadbs(handleList);
-					let ret = handleList.Convert().some((h, j) => {
-						i = this.list.Find(h);
-						if (i != -1) {
-							let libItem = [];
-							if (!panel.imgView || panel.lines != 2) libItem = this.libNode[i];
-							else {
-								libItem = this.libNode[i].slice();
-								libItem[0] = libItem[0].split('^@^');
-								libItem = libItem.flat();
-							}
-							return !$.equal(libItem, items[j].split(panel.splitter));
+		switch (tree_type) { // check for changes to items; any change updates all
+			case 0: {
+				let tfo = FbTitleFormat(panel.view);
+				items = tfo.EvalWithMetadbs(handleList);
+				let ret = handleList.Convert().some((h, j) => {
+					i = this.list.Find(h);
+					if (i != -1) {
+						let libItem = [];
+						if (!panel.imgView || panel.lines != 2) libItem = this.libNode[i];
+						else {
+							libItem = this.libNode[i].slice();
+							libItem[0] = libItem[0].split('^@^');
+							libItem = libItem.flat();
 						}
-					});
-					if (ret) return true;
-					if (ppt.itemShowStatistics < 2) return false;
-					this.checkStatistics(handleList);
-					break;
-				}
-				
+						return !$.equal(libItem, items[j].split(panel.splitter));
+					}
+				});
+				if (ret) return true;
+				if (ppt.itemShowStatistics < 2) return false;
+				this.checkStatistics(handleList);
+				break;
+			}
+
 			case 1: {
 				items = handleList.GetLibraryRelativePaths();
 				let ret = handleList.Convert().some((h, j) => {
@@ -577,13 +662,19 @@ class Library {
 				ppt.libSource = 0;
 			}
 		}
-		this.list = [plman.GetPlaylistItems($.pl_active), !ppt.fixedPlaylist ? (handleList ? handleList : fb.GetLibraryItems()) : plman.GetPlaylistItems(fixedPlaylistIndex), plman.GetPlaylistItems(plman.FindPlaylist(ppt.lastPanelSelectionPlaylist))][ppt.libSource];
+		// Regorxxx <- Optimize library loading. Previously all items were retrieved and then source chosen! Don't create cache playlists if possible
+		switch (ppt.libSource) {
+			case 0: this.list = plman.GetPlaylistItems($.pl_active); break;
+			case 1: this.list = !ppt.fixedPlaylist ? (handleList ? handleList : fb.GetLibraryItems()) : plman.GetPlaylistItems(fixedPlaylistIndex); break;
+			case 2: this.list = handleList || this.cache || plman.GetPlaylistItems(plman.FindPlaylist(ppt.lastPanelSelectionPlaylist)); break;
+		}
+		// Regorxxx ->
 		if (ppt.recItemImage && ppt.libSource == 2) ui.expandHandle = this.list.Count ? this.list[0] : null;
 		this.full_list = this.list.Clone();
 		if (this.list.Count) this.v2_init = false;
-	
+
 		if (ppt.libSource && (!this.list.Count || !fb.IsLibraryEnabled() && ppt.libSource == 1)) {
-			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? (!this.list.Count && this.v2_init ? 'Loading...\n\n' : 'Nothing to show\n\nClick here to configure the media library') : 'Nothing found\n\n') : 'Nothing received';
+			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? (!this.list.Count && this.v2_init ? '加载中...\n\n' : '媒体库为空，暂无内容显示\n\n点击此处配置媒体库') : '没有项目\n\n') : '未接收到任何内容';
 			panel.treePaint();
 		}
 	}
@@ -631,7 +722,7 @@ class Library {
 					a: pop.tree[i].root || pop.tree[i].srt[0],
 					b: level != 0 ? pop.tree[pop.tree[i].par].root || pop.tree[pop.tree[i].par].srt[0] : '',
 					c: level > 1 ? pop.tree[pop.tree[pop.tree[i].par].par].root || pop.tree[pop.tree[pop.tree[i].par].par].srt[0] : ''
-				})
+				});
 			}
 		}
 		this.sortByLevel(this.expand);
@@ -644,7 +735,7 @@ class Library {
 				scr: this.scr,
 				sel: this.sel.length ? this.sel : cur_sel,
 				s_txt: panel.search.txt
-			}
+			};
 			ppt.set(this.rememberViewProp(), JSON.stringify(this.exp));
 		}
 	}
@@ -765,14 +856,14 @@ class Library {
 			if (!panel.list.Count) {
 				pop.clearTree();
 				sbar.setRows(0);
-				this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+				this.none = this.validSearch ? '无匹配项' : '无效的搜索表达式';
 				panel.treePaint();
 				this.noListUpd = true;
 			}
 		} else panel.list = this.list;
 
 		if (ppt.libSource && !this.full_list.Count) {
-			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? 'Nothing to show\n\nClick here to configure the media library' : 'Nothing found\n\n') : 'Nothing received';
+			this.empty = ppt.libSource == 1 ? (!ppt.fixedPlaylist ? '媒体库为空，暂无内容显示\n\n点击此处配置媒体库' : '没有项目\n\n') : '未接收到任何内容';
 		}
 	}
 
@@ -822,7 +913,7 @@ class Library {
 					break;
 				}
 				case 1:
-					li.GetLibraryRelativePaths().forEach((v, i) => arr[i] = v.length ? v.split('\\') : ['File(s) Not In Library']);
+					li.GetLibraryRelativePaths().forEach((v, i) => arr[i] = v.length ? v.split('\\') : ['文件不在媒体库中']);
 					break;
 			}
 			if (panel.imgView && panel.lines == 2) this.checkLines(arr);
@@ -850,9 +941,30 @@ class Library {
 			this.validSearch = true;
 			this.none = '';
 			try {
-				panel.list = fb.GetQueryItems(this.getSearchList(panel.search.txt) || this.list, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
-				this.searchCache[panel.search.txt] = panel.list;
-			} catch (e) {
+				// Regorxxx <- RegExp library search. Support for custom TF expression
+				const isRegExp = search.isSearchRegExp();
+				const tags = isRegExp
+					? panel.folderView
+						? ['%PATH%']
+						: $.getTagsFromTf(panel.view)
+					: null;
+				const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+					? this.processCustomTf(panel.search.txt)
+					: panel.search.txt;
+				this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+					? searchText
+					: 'N/A';
+				panel.list = isRegExp
+					? $.applyRegExp(searchText, this.list, tags)
+					: fb.GetQueryItems(
+						this.getSearchList(searchText) || this.list,
+						!this.filterQuery.includes('$searchtext')
+							? searchText
+							: this.filterQuery.replace(/\$searchtext/g, searchText)
+					);
+				this.searchCache[searchText] = panel.list;
+				// Regorxxx ->
+			} catch (e) { // eslint-disable-line no-unused-vars
 				this.list = this.list.Clone();
 				panel.list.RemoveAll();
 				this.validSearch = false;
@@ -860,7 +972,7 @@ class Library {
 			if (!panel.list.Count) {
 				pop.clearTree();
 				sbar.setRows(0);
-				this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+				this.none = this.validSearch ? '无匹配项' : '无效的搜索表达式';
 				panel.treePaint();
 				return;
 			}
@@ -868,6 +980,7 @@ class Library {
 			this.node = this.searchNode;
 			this.upd_search = false;
 		} else if (!panel.search.txt) {
+			this.searchQueryID = 'N/A'; // Regorxxx <- Don't update search if possible ->
 			panel.list = this.list;
 			this.node = this.libNode;
 			this.searchNode = [];
@@ -1003,7 +1116,7 @@ class Library {
 		this.checkView();
 		this.logTree();
 	}
-	
+
 	setNodes() {
 		if (panel.search.txt == '' && ppt.rememberPreSearch) {
 			ppt.set(this.rememberViewProp(), JSON.stringify({}));
@@ -1043,8 +1156,8 @@ class Library {
 			this.rootNodes(true, true);
 		} else if (!handleList) {
 			this.getLibrary();
-			this.rootNodes(true, true );
-		} else this.updateLibrary(handleList, handleType)
+			this.rootNodes(true, true);
+		} else this.updateLibrary(handleList, handleType);
 	}
 
 	updateLibrary(handleList, handleType) {
@@ -1072,7 +1185,7 @@ class Library {
 					else this.lib_update(isMainChanged);
 					break;
 				}
-				if (ppt.filterBy && !this.filterQuery.includes('$searchtext')) { // filter: check if not done 
+				if (ppt.filterBy && !this.filterQuery.includes('$searchtext')) { // filter: check if not done
 					let newFilterItems = $.query(handleList, this.filterQuery);
 					let origFilter = this.list.Clone();
 					// addns
@@ -1101,8 +1214,29 @@ class Library {
 					// addns
 					this.validSearch = true;
 					try {
-						newSearchItems = fb.GetQueryItems(handleList, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
-					} catch (e) {
+						// Regorxxx <- RegExp library search. Support for custom TF expression
+						const isRegExp = search.isSearchRegExp();
+						const tags = isRegExp
+							? panel.folderView
+								? ['%PATH%']
+								: $.getTagsFromTf(panel.view)
+							: null;
+						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? this.processCustomTf(panel.search.txt)
+							: panel.search.txt;
+						this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? searchText
+							: 'N/A';
+						newSearchItems = isRegExp
+							? $.applyRegExp(searchText, handleList, tags)
+							: fb.GetQueryItems(
+								handleList,
+								!this.filterQuery.includes('$searchtext')
+									? searchText
+									: this.filterQuery.replace(/\$searchtext/g, searchText)
+							);
+						// Regorxxx ->
+					} catch (e) { // eslint-disable-line no-unused-vars
 						this.validSearch = false;
 					}
 					origSearch.Sort();
@@ -1117,11 +1251,32 @@ class Library {
 					// removals
 					let removeSearchItems = handleList.Clone();
 					removeSearchItems.Sort();
-					removeSearchItems.MakeIntersection(origSearch); // handles in origSearch (present in any filter)	
+					removeSearchItems.MakeIntersection(origSearch); // handles in origSearch (present in any filter)
 					this.validSearch = true;
 					try {
-						handlesInSearch = fb.GetQueryItems(removeSearchItems, !this.filterQuery.includes('$searchtext') ? panel.search.txt : this.filterQuery.replace(/\$searchtext/g, panel.search.txt));
-					} catch (e) {
+						// Regorxxx <- RegExp library search. Support for custom TF expression
+						const isRegExp = search.isSearchRegExp();
+						const tags = isRegExp
+							? panel.folderView
+								? ['%PATH%']
+								: $.getTagsFromTf(panel.view)
+							: null;
+						const searchText = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? this.processCustomTf(panel.search.txt)
+							: panel.search.txt;
+						this.searchQueryID = !isRegExp && !this.filterQuery.includes('$searchtext')
+							? searchText
+							: 'N/A';
+						handlesInSearch = isRegExp
+							? $.applyRegExp(searchText, removeSearchItems, tags)
+							: fb.GetQueryItems(
+								removeSearchItems,
+								!this.filterQuery.includes('$searchtext')
+									? searchText
+									: this.filterQuery.replace(/\$searchtext/g, searchText)
+							);
+						// Regorxxx ->
+					} catch (e) { // eslint-disable-line no-unused-vars
 						this.validSearch = false;
 					}
 					handlesInSearch.Sort();
@@ -1131,14 +1286,14 @@ class Library {
 						if (!panel.list.Count) {
 							pop.clearTree();
 							sbar.setRows(0);
-							this.none = this.validSearch ? 'Nothing found' : 'Invalid search expression';
+							this.none = this.validSearch ? '无匹配项' : '无效的搜索表达式';
 							panel.treePaint();
 							break;
 						}
 						if (ui.w < 1 || !window.IsVisible) this.upd = 2;
 						else this.lib_update();
 					}
-				}
+				} else { this.searchQueryID = 'N/A'; } // Regorxxx <- Don't update search if possible ->
 				break;
 			}
 			case 2:

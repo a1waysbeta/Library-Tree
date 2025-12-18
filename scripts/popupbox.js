@@ -1,10 +1,12 @@
 ﻿'use strict';
+/* global ppt:readable, $:readable, WshShell:readable, doc:readable */
+/* exported PopUpBox */
 
 class PopUpBox {
 	constructor() {
 		this.getHtmlCode();
 		this.ok = true;
-		this.soFeat = {clipboard: true, gecko: true}
+		this.soFeat = { clipboard: true, gecko: true };
 	}
 
 	// Methods
@@ -42,17 +44,17 @@ class PopUpBox {
 			version += '.';
 			version += (WshShell.RegRead('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\CurrentMinorVersionNumber')).toString();
 			return version;
-		} catch (e) {}
+		} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 		try {
 			version = WshShell.RegRead('HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\CurrentVersion');
 			return version;
-		} catch (e) {}
+		} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 		return '6.1';
 	}
 
 	input(title, msg, ok_callback, input, def) {
 		utils.ShowHtmlDialog(0, this.inputHtmlCode, {
-			data: [title, msg, 'Cancel', ok_callback, input, def]
+			data: [title, msg, '取消', ok_callback, input, def]
 		});
 	}
 
@@ -67,18 +69,18 @@ class PopUpBox {
 			let clText = 'test';
 			try {
 				cache = doc.parentWindow.clipboardData.getData('Text');
-			} catch (e) {}
+			} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
 			try {
-				doc.parentWindow.clipboardData.setData('Text', clText); 
+				doc.parentWindow.clipboardData.setData('Text', clText);
 				clText = doc.parentWindow.clipboardData.getData('Text');
-			} catch (e) {
+			} catch (e) { // eslint-disable-line no-unused-vars
 				this.soFeat.clipboard = false;
 			}
 			if (cache) { // Just in case previous clipboard data is needed
 				try {
 					doc.parentWindow.clipboardData.setData('Text', cache);
-				} catch (e) {}
-			} 
+				} catch (e) { /* empty */ } // eslint-disable-line no-unused-vars
+			}
 			if (clText !== 'test') {
 				this.soFeat.clipboard = false;
 			}
@@ -88,24 +90,13 @@ class PopUpBox {
 
 		ppt.isHtmlDialogSupported = this.soFeat.gecko && this.soFeat.clipboard || this.isIEInstalled() ? 1 : 0;
 		if (!ppt.isHtmlDialogSupported) {
-		const caption = 'Show HTML Dialog';
-			const prompt = 
-`A feature check indicates that Spider Monkey Panel show html dialog isn't supported by the current operating system.
-
-This is used to display options. The console will show alternatives on closing this dialog.
-
-Occassionally, the feature check may give the wrong answer.
-
-If you're using windows and have Internet Explorer support it should work, so enter 1 and press OK.
-
-The setting is saved in panel properties as the first item and can be changed there later.
-
-Supported-1; unsupported-0`;
+			const caption = '显示 HTML 面板设置';
+			const prompt = '功能检查表明，当前操作系统不支持 Spider Monkey Panel 显示 Html 对话框。\n\n此对话框用于显示选项设置。关闭后，控制台将显示替代方案。\n\n注：兼容性检测偶尔可能出现误判。若你使用 Windows 系统且支持 Internet Explorer，可尝试输入 1 并确认以启用功能。\n\n该设置将保存为面板属性的首选项，后续可随时修改。\n\n支持-1；不支持-0';
 			let ns = '';
-			let status = 'ok'
+			let status = 'ok';
 			try {
 				ns = utils.InputBox(0, prompt, caption, ppt.isHtmlDialogSupported, true);
-			} catch(e) {
+			} catch (e) { // eslint-disable-line no-unused-vars
 				status = 'cancel';
 			}
 			if (status != 'cancel') {
@@ -121,7 +112,7 @@ Supported-1; unsupported-0`;
 		return diskLetters.some(d => {
 			try { // Needed when permission error occurs and current SMP implementation is broken for some devices....
 				return utils.IsDirectory(d) ? paths.some(p => utils.IsFile(d + p)) : false;
-			} catch (e) {return false;}
+			} catch (e) { return false; } // eslint-disable-line no-unused-vars
 		});
 	}
 
